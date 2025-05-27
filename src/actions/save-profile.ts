@@ -56,7 +56,7 @@ export async function saveProfile(formData: FormData) {
       .doc(profileId)
       .update({
         name: yourName,
-        description: yourDescription,
+        businessDescription: yourDescription,
         ...(hasFile && { imagePath }),
         updatedAt: Timestamp.now().toMillis(),
       })

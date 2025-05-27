@@ -50,7 +50,8 @@ export default async function BusinessId({ params }: Props) {
     )
   }
 
-  const isFavorite = userData?.favorites.some(fav => fav === profileId) || false
+  const isFavorite =
+    userData?.favorites?.some(fav => fav === profileId) || false
 
   if (!isOwner) {
     await increaseBusinessVisits(profileId)

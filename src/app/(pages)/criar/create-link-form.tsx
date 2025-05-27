@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-import { createLink } from '@/actions/create-link'
+import { createBusinessLink } from '@/actions/create-business-link'
 import { verifyLink } from '@/actions/verify-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -38,7 +38,7 @@ export function CreateLinkForm() {
       return setError('Desculpe, esse link já está em uso.')
     }
 
-    const isLinkCreated = await createLink(link)
+    const isLinkCreated = await createBusinessLink(link)
 
     if (!isLinkCreated)
       return setError(

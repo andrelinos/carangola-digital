@@ -69,14 +69,15 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
             )
           )}
         >
-          {Object.entries(schedule).map(
-            ([day, { opening, closing, closed }]: any) => (
-              <div key={day} className="flex w-full justify-between">
-                <span>{WEEK_DAY_TRANSLATIONS[day]}</span>{' '}
-                <span>{closed ? 'Fechado' : `${opening} às ${closing}`}</span>
-              </div>
-            )
-          )}
+          {schedule &&
+            Object.entries(schedule).map(
+              ([day, { opening, closing, closed }]: any) => (
+                <div key={day} className="flex w-full justify-between">
+                  <span>{WEEK_DAY_TRANSLATIONS[day]}</span>{' '}
+                  <span>{closed ? 'Fechado' : `${opening} às ${closing}`}</span>
+                </div>
+              )
+            )}
         </div>
       </div>
     </div>

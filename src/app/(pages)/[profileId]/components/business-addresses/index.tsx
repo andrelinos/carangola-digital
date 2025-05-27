@@ -17,6 +17,7 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
         <h2 className="text-center font-bold text-xl">Endereços</h2>
         {isOwner && <EditBusinessAddresses data={businessAddresses} />}
       </div>
+      {!businessAddresses?.length && <p>Nenhum endereço cadastrado</p>}
 
       {businessAddresses?.map((address, index) => {
         return (

@@ -24,6 +24,10 @@ export function getOperatingStatus(
     'Sunday',
   ]
 
+  if (!schedule || Object?.keys(schedule)?.length === 0) {
+    return 'Nenhum horário cadastrado'
+  }
+
   try {
     const todayIndex = currentTime.getDay()
     const todayName = daysOfWeek[todayIndex]

@@ -11,6 +11,8 @@ interface Props {
 }
 
 export function ContactPhones({ profileData, isOwner }: Props) {
+  const businessPhones = profileData?.businessPhones || []
+
   return (
     <div className="mt-6 flex w-full flex-col gap-1">
       <div className="flex w-full justify-center gap-1 text-center">
@@ -20,7 +22,9 @@ export function ContactPhones({ profileData, isOwner }: Props) {
         {isOwner && <EditContactPhones profileData={profileData} />}
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4">
-        {profileData?.businessPhones?.map((phone: any, index: number) => (
+        {!businessPhones?.length && <p>Nenhum telefone cadastrado</p>}
+
+        {businessPhones?.map((phone: any, index: number) => (
           <div key={String(index)} className="flex w-fit gap-1">
             <Button className="flex w-52 flex-1 items-center justify-center gap-1 px-6">
               <Phone className="h-5 w-5" />

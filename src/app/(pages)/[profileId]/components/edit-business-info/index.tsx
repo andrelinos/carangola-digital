@@ -13,7 +13,6 @@ import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Button } from '@/components/ui/button/index'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
-import { TextArea } from '@/components/ui/text-area'
 import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
 
 interface Props {
@@ -30,9 +29,6 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
 
   const [name, setName] = useState(profileData?.name || '')
   const [profilePic, setProfilePic] = useState<string | null>(imagePath || null)
-  const [description, setDescription] = useState(
-    profileData?.businessDescription || ''
-  )
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -57,7 +53,6 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
       formData.append('profileId', profileId)
       formData.append('businessPic', compressedFile[0])
       formData.append('yourName', name)
-      formData.append('yourDescription', description)
 
       await saveProfile(formData)
     } catch (error) {
@@ -133,16 +128,6 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
               placeholder="Informe o nome do seu negócio"
               value={name}
               onChange={e => setName(e.target.value)}
-            />
-            <TextArea
-              variant="ghost"
-              id="description"
-              title="Breve descrição"
-              placeholder="Fale um pouco sobre seu negócio"
-              className="h-36"
-              maxLength={500}
-              value={description}
-              onChange={e => setDescription(e.target.value)}
             />
           </div>
 

@@ -46,14 +46,14 @@ interface Props {
 }
 
 const initialSchedule: WeeklySchedule = {
-  Monday: { opening: '08:00', closing: '18:00', closed: false },
-  Tuesday: { opening: '08:00', closing: '18:00', closed: false },
-  Wednesday: { opening: '08:00', closing: '18:00', closed: false },
-  Thursday: { opening: '08:00', closing: '18:00', closed: false },
-  Friday: { opening: '08:00', closing: '18:00', closed: false },
-  Saturday: { opening: '08:00', closing: '13:00', closed: false },
-  Sunday: { opening: '', closing: '', closed: true },
-}
+  // Monday: { opening: '08:00', closing: '18:00', closed: false },
+  // Tuesday: { opening: '08:00', closing: '18:00', closed: false },
+  // Wednesday: { opening: '08:00', closing: '18:00', closed: false },
+  // Thursday: { opening: '08:00', closing: '18:00', closed: false },
+  // Friday: { opening: '08:00', closing: '18:00', closed: false },
+  // Saturday: { opening: '08:00', closing: '13:00', closed: false },
+  // Sunday: { opening: '', closing: '', closed: true },
+} as WeeklySchedule
 
 export function EditBusinessOpeningHours({ profileData }: Props) {
   const router = useRouter()

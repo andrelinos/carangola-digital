@@ -20,7 +20,7 @@ export function Description({ profileData, isOwner }: Props) {
         <p className="w-full">
           {profileData.businessDescription
             ? profileData.businessDescription
-            : 'Nenhuma descrição'}
+            : 'Nenhuma descrição cadastrada'}
         </p>
       </div>
     </div>

@@ -20,7 +20,7 @@ export async function HeroBusiness({ profileData, isOwner }: Props) {
             (await getDownloadURLFromPath(profileData?.imagePath)) ||
             '/default-image.png'
           }
-          alt={profileData?.name}
+          alt={profileData?.name || ''}
           className="z-10 size-full object-cover object-left-top"
           priority
         />
@@ -33,7 +33,7 @@ export async function HeroBusiness({ profileData, isOwner }: Props) {
           '/default-image.png'
         }
         className="absolute z-0 size-full object-cover object-left-top blur-lg"
-        alt={profileData?.name}
+        alt={profileData?.name || ''}
         quality={10}
         fill
         unoptimized
