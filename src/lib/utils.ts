@@ -75,3 +75,29 @@ export function handleImageInput(e: ChangeEvent<HTMLInputElement>) {
   }
   return null
 }
+
+export function formatPhoneNumber(phoneNumber: string) {
+  const cleaned = phoneNumber.replace(/\D/g, '')
+  const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/)
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`
+  }
+  return phoneNumber
+}
+
+export function formatCep(cep: string) {
+  return cep.replace(/\D/g, '').replace(/(\d{5})(\d{3})/, '$1-$2')
+}
+
+export function sanitizePhoneNumber(phoneNumber: string) {
+  if (!phoneNumber) return ''
+
+  const sanitizedPhoneNumber = phoneNumber
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/\s/g, '')
+    .replace(/[^0-9]/g, '')
+    .toLowerCase()
+
+  return sanitizedPhoneNumber
+}

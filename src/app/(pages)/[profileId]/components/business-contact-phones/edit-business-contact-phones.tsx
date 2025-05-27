@@ -9,6 +9,7 @@ import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
+import { sanitizePhoneNumber } from '@/lib/utils'
 
 interface FormValuesProps {
   title: string
@@ -47,12 +48,32 @@ export function EditContactPhones({ profileData }: Props) {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value, type, checked } = event.target
 
+    // O nome do input deve seguir o padrão "phone{index}.(phone|isWhatsapp)"
     const match = name.match(/^phone(\d+)\.(phone|isWhatsapp)$/)
     if (!match) return
 
     const index = Number.parseInt(match[1], 10)
     const field = match[2] as keyof FormValuesProps
 
+    // Se o campo for "phone", executa a sanitização sem depender do comprimento
+    if (field === 'phone') {
+      const sanitizedValue = sanitizePhoneNumber(value)
+      setFormValues(prev =>
+        prev
+          ? prev.map((item, i) =>
+              i === index
+                ? {
+                    ...item,
+                    [field]: sanitizedValue,
+                  }
+                : item
+            )
+          : prev
+      )
+      return
+    }
+
+    // Para outros campos, trate normalmente (exemplo: checkbox para "isWhatsapp")
     setFormValues(prev =>
       prev
         ? prev.map((item, i) =>
@@ -119,7 +140,7 @@ export function EditContactPhones({ profileData }: Props) {
                       variant="ghost"
                       name={`phone${index}.phone`}
                       title={`Telefone ${index + 1}`}
-                      placeholder="(00) 0 0000-0000"
+                      placeholder="32999998888 ou 3233334444"
                       maxLength={15}
                       value={phone.phone}
                       onChange={handleChange}

@@ -35,7 +35,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <div className="min-h-screen w-full py-36">
+      <div className="min-h-screen w-full px-4 py-36">
         <div className="flex w-full flex-col items-center pt-28">
           <LogoLight />
           <h1 className="mt-10 max-w-2xl text-center font-bold text-5xl">
