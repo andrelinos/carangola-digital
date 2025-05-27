@@ -1,0 +1,161 @@
+'use client'
+
+import { EditPencil } from 'iconoir-react'
+import { ArrowUpFromLine } from 'lucide-react'
+import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import { startTransition, useState } from 'react'
+
+import type { ProfileDataProps } from '@/_types/profile-data'
+
+import { saveProfile } from '@/actions/save-profile'
+import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Button } from '@/components/ui/button/index'
+import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
+import { TextArea } from '@/components/ui/text-area'
+import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
+
+interface Props {
+  profileData: ProfileDataProps
+  imagePath?: string
+}
+
+export function EditBusinessInfo({ profileData, imagePath }: Props) {
+  const router = useRouter()
+  const { profileId } = useParams() as { profileId: string }
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const [name, setName] = useState(profileData?.name || '')
+  const [profilePic, setProfilePic] = useState<string | null>(imagePath || null)
+  const [description, setDescription] = useState(
+    profileData?.businessDescription || ''
+  )
+
+  function handleOpenModal() {
+    setIsOpen(!isOpen)
+  }
+
+  function onClose() {
+    setIsOpen(!isOpen)
+  }
+
+  async function handleSaveProfile() {
+    const imagesInput = document.getElementById(
+      'profile-image-pic'
+    ) as HTMLInputElement
+
+    if (!imagesInput?.files) return
+
+    try {
+      const compressedFile = await compressFiles(Array.from(imagesInput.files))
+
+      const formData = new FormData()
+
+      formData.append('profileId', profileId)
+      formData.append('businessPic', compressedFile[0])
+      formData.append('yourName', name)
+      formData.append('yourDescription', description)
+
+      await saveProfile(formData)
+    } catch (error) {
+      return false
+    } finally {
+      startTransition(() => {
+        setIsSubmitting(false)
+        onClose()
+
+        router.refresh()
+      })
+    }
+  }
+
+  return (
+    <>
+      <ButtonForOwnerOnly handleExecute={handleOpenModal}>
+        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+      </ButtonForOwnerOnly>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={onClose}
+        title="Novo projeto"
+        description="Crie um novo projeto"
+        classname="w-full max-w-[638px] justify-center rounded-2xl border-[0.5px] border-blue-300 bg-white p-6"
+      >
+        <div className="flex w-full flex-col gap-4 ">
+          <div className="flex flex-col items-center gap-3 text-xs">
+            <div className="h-[209px] w-full overflow-hidden rounded-xl bg-background-tertiary">
+              {profilePic ? (
+                <Image
+                  width={1080}
+                  height={209}
+                  src={profilePic}
+                  alt="Project preview"
+                  className="size-full overflow-hidden object-cover object-left-top"
+                  onError={e => {
+                    e.currentTarget.src = '/default-image.png'
+                    setProfilePic('/default-image.png')
+                    e.currentTarget.onerror = null // prevents looping
+                  }}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className="size-full text-white"
+                  onClick={() => triggerImageInput('profile-image-pic')}
+                >
+                  1080x324
+                </button>
+              )}
+            </div>
+            <button
+              type="button"
+              className="flex items-center gap-2"
+              onClick={() => triggerImageInput('profile-image-pic')}
+            >
+              <ArrowUpFromLine className="size-4" />
+              <span>Adicionar imagem</span>
+            </button>
+            <input
+              type="file"
+              id="profile-image-pic"
+              accept="image/*"
+              className="hidden"
+              onChange={e => setProfilePic(handleImageInput(e))}
+            />
+          </div>
+          <div className="flex w-full flex-col gap-4">
+            <Input
+              variant="ghost"
+              title="Nome do seu negócio"
+              placeholder="Informe o nome do seu negócio"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <TextArea
+              variant="ghost"
+              id="description"
+              title="Breve descrição"
+              placeholder="Fale um pouco sobre seu negócio"
+              className="h-36"
+              maxLength={500}
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+            />
+          </div>
+
+          <footer className="flex justify-end gap-4">
+            <button type="button" className="font-bold" onClick={onClose}>
+              Voltar
+            </button>
+            <Button onClick={handleSaveProfile} disabled={isSubmitting}>
+              Salvar
+            </Button>
+          </footer>
+        </div>
+      </Modal>
+    </>
+  )
+}
