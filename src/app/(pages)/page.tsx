@@ -49,11 +49,11 @@ export default async function Home() {
 
           {session ? (
             <Link href="/criar" className="w-full max-w-xs bg-orange-500">
-              Anuncie2
+              Anunciar
             </Link>
           ) : (
             <form action={manageAuth} className="w-full max-w-xs">
-              <Button className="w-full bg-orange-500">Anuncie</Button>
+              <Button className="w-full bg-orange-500">Anunciar</Button>
             </form>
           )}
         </div>
