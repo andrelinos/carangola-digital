@@ -1,6 +1,8 @@
 import Mixpanel from 'mixpanel'
 
-const mixpanel = Mixpanel.init('token')
+import { serverEnv } from '@/utils/env'
+
+const mixpanel = Mixpanel.init(serverEnv.MIXPANEL_TOKEN)
 
 export function trackServerEvent(eventName: string, properties: any) {
   if (process.env.NODE_ENV === 'development') {

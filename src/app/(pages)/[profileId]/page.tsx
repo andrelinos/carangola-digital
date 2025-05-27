@@ -16,6 +16,7 @@ import { Header } from '@/components/header'
 import { auth } from '@/lib/auth'
 import { getDownloadURLFromPath } from '@/lib/firebase'
 
+import type { Metadata } from 'next'
 import { EditBusinessInfo } from './components/edit-business-info'
 import { HeroBusiness } from './components/hero'
 
@@ -23,6 +24,12 @@ interface Props {
   params: Promise<{
     profileId: string
   }>
+}
+
+export const metadata: Metadata = {
+  title: 'Carangola Digital - Perfil',
+  description:
+    'Carangola Digital é uma plataforma para divulgar negócios locais.',
 }
 
 export default async function BusinessId({ params }: Props) {

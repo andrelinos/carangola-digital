@@ -4,9 +4,33 @@ import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
 import { auth } from '@/lib/auth'
+import { trackServerEvent } from '@/lib/mixpanel'
+import { getSEOTags } from '@/lib/seo'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = getSEOTags({
+  appName: 'Carangola Digital',
+  appDescription:
+    'Carangola Digital é uma plataforma para divulgar negócios locais.',
+  locale: 'pt-BR',
+  keywords: [
+    'Carangola',
+    'Carangola Digital',
+    'link na bio',
+    'negócios',
+    'redes sociais',
+    'link',
+  ],
+  appDomain: 'https://carangoladigital.com.br/',
+  canonicalUrlRelative: '/',
+})
 
 export default async function Home() {
   const session = await auth()
+
+  trackServerEvent('page_view', {
+    page: 'home',
+  })
 
   return (
     <>

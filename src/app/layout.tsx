@@ -1,9 +1,12 @@
 import '@/styles/globals.css'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import type { Metadata } from 'next'
 import { Quicksand } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
+import { serverEnv } from '@/utils/env'
 
 const quicksand = Quicksand({
   variable: '--font-quicksand',
@@ -25,6 +28,7 @@ export default function RootLayout({
       <body className={cn('text-zinc-700 antialiased', quicksand.className)}>
         {children}
       </body>
+      <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
     </html>
   )
 }
