@@ -69,7 +69,7 @@ export default async function BusinessId({ params }: Props) {
       <Header profileData={profileData} />
       <div className="flex flex-col py-32 md:py-36 lg:py-44">
         <HeroBusiness profileData={profileData} isOwner={isOwner} />
-        <div className="flex w-full flex-col items-center gap-4 px-6 pt-8">
+        <div className="flex w-full flex-col items-center gap-4 pt-8">
           <div className="relative mx-auto flex w-full max-w-[1080px] flex-col justify-center gap-4 text-center lg:flex-row">
             <div className="flex justify-center gap-1">
               <h2 className="font-bold text-4xl">{profileData?.name}</h2>

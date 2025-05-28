@@ -2,11 +2,11 @@ import 'next-auth'
 
 declare module 'next-auth' {
   interface User {
-    hasProfileLink: boolean
+    hasProfileLink?: boolean
     emailVerified: string | Date | null
-    favorites: string[]
+    favorites?: string[]
     myProfileLink?: string
-    accountVerified: boolean
+    accountVerified?: boolean
   }
 
   interface Session {

@@ -12,9 +12,11 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-border-primary bg-white',
+        default:
+          'border-border-primary bg-white font-medium placeholder:text-content-placeholder',
         secondary: 'bg-background-tertiary',
-        ghost: 'border-border-primary bg-transparent',
+        ghost:
+          'border-border-primary bg-white font-medium placeholder:text-zinc-300',
       },
     },
     defaultVariants: {

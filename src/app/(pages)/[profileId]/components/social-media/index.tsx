@@ -35,14 +35,16 @@ export function SocialMedia({ profileData, isOwner }: Props) {
   const socialMedias = profileData?.socialMedias as SocialMediasProps | any
 
   return (
-    <div className="mt-6 flex flex-col gap-1">
+    <div className="mt-6 flex w-full flex-col gap-1 bg-blue-50 p-4">
       <div className="flex w-full justify-center gap-1 text-center">
         <h2 className="text-center font-bold text-xl">Redes sociais</h2>
         {isOwner && <EditBusinessSocialMedias profileData={profileData} />}
       </div>
-      {!socialMedias && <p>Nenhuma rede social cadastrada</p>}
+      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4">
+        {!socialMedias && <p>Nenhuma rede social cadastrada</p>}
+      </div>
 
-      <div className="flex w-full max-w-lg flex-wrap justify-center gap-2">
+      <div className="mx-auto flex w-full max-w-lg flex-wrap justify-center gap-2">
         {SOCIAL_MEDIA_CONFIG?.map(({ key, Icon }) => {
           const url = socialMedias?.[key]
           return url ? (

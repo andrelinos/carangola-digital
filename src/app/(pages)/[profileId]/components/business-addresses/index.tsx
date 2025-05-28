@@ -15,7 +15,7 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
   const businessAddresses = profileData?.businessAddresses
 
   return (
-    <div className="mt-6 flex flex-col gap-3">
+    <div className="mt-6 flex w-full flex-col items-center gap-1 bg-purple-50 p-4">
       <div className="flex w-full justify-center gap-1 text-center">
         <h2 className="text-center font-bold text-xl">Endereços</h2>
         {isOwner && <EditBusinessAddresses data={businessAddresses} />}

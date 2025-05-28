@@ -67,13 +67,13 @@ export async function Header({ profileData }: Props) {
           </form>
         </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-center bg-white p-4">
-        {session && (
+      {session && !hasProfileLink && (
+        <div className="fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-center bg-white p-4">
           <Button className="w-full max-w-xs bg-orange-500 px-6 md:hidden">
             ANUNCIAR
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

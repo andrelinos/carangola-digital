@@ -36,6 +36,7 @@ export type BusinessPhoneProps = {
   phone: string
   nameContact: string
   isWhatsapp: boolean
+  isOnlyWhatsapp: boolean
 }
 
 export type BusinessFavoritesProps = {
