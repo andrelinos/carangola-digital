@@ -6,9 +6,11 @@ import { startTransition, useState } from 'react'
 
 import { createBusinessDescription } from '@/actions/create-business-description'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
 import { TextArea } from '@/components/ui/text-area'
+import { toast } from 'sonner'
 
 interface Props {
   data: string
@@ -40,8 +42,10 @@ export function EditBusinessDescription({ data }: Props) {
       formData.append('businessDescription', businessDescription)
 
       await createBusinessDescription(formData)
+      toast.success('Descrição salva com sucesso!')
     } catch (error) {
-      console.error('Erro ao salvar:', error)
+      toast.error('Erro ao salvar descrição')
+      return false
     } finally {
       startTransition(() => {
         setIsSubmitting(false)
@@ -91,12 +95,17 @@ export function EditBusinessDescription({ data }: Props) {
             <button type="button" className="font-bold" onClick={onClose}>
               Voltar
             </button>
-            <Button onClick={handleSaveOpeningHours} disabled={isSubmitting}>
+            <Button
+              onClick={handleSaveOpeningHours}
+              disabled={isSubmitting}
+              className="w-32"
+            >
               Salvar
             </Button>
           </footer>
         </div>
       </Modal>
+      {isSubmitting && <Loading />}
     </>
   )
 }

@@ -11,13 +11,22 @@ export async function createBusinessLink(link: string) {
   if (!session) return
 
   try {
-    await db.collection('profiles').doc(link).set({
+    const profileCreated = await db.collection('profiles').doc(link).set({
       userId: session?.user?.id,
       name: session?.user?.name,
       totalVisits: 0,
       createdAt: Timestamp.now().toMillis(),
       updatedAt: Timestamp.now().toMillis(),
     })
+
+    if (profileCreated.writeTime && session?.user?.id) {
+      await db.collection('users').doc(session?.user?.id).update({
+        hasProfileLink: true,
+        myProfileLink: link,
+        accountVerified: false,
+        updatedAt: Timestamp.now().toMillis(),
+      })
+    }
     return true
   } catch (error) {
     return false

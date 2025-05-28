@@ -8,9 +8,11 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { createBusinessSocialMedia } from '@/actions/create-business-social-media'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
+import { toast } from 'sonner'
 
 interface FormValuesProps {
   instagram?: string
@@ -65,8 +67,10 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
       formData.append('socialMedias', JSON.stringify(formValues))
 
       await createBusinessSocialMedia(formData)
+      toast.success('Redes sociais salvas com sucesso!')
     } catch (error) {
-      // return false
+      toast.error('Erro ao salvar as redes sociais.')
+      return false
     } finally {
       startTransition(() => {
         setIsSubmitting(false)
@@ -101,7 +105,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="instagram"
                 title="Link Instagram"
                 placeholder="https://www.instagram.com/andrelinossilva"
-                defaultValue={socialMedias.instagram || ''}
+                defaultValue={socialMedias?.instagram || ''}
                 onChange={handleChange}
               />
               <Input
@@ -109,7 +113,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="threads"
                 title="Link Threads"
                 placeholder="https://www.threads.com/@andrelinossilva"
-                defaultValue={socialMedias.threads || ''}
+                defaultValue={socialMedias?.threads || ''}
                 onChange={handleChange}
               />
               <Input
@@ -117,7 +121,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="facebook"
                 title="Link Facebook"
                 placeholder="https://www.facebook.com/andrelinossilva"
-                defaultValue={socialMedias.facebook || ''}
+                defaultValue={socialMedias?.facebook || ''}
                 onChange={handleChange}
               />
               <Input
@@ -125,7 +129,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="linkedin"
                 title="Link Linkedin"
                 placeholder="https://www.linkedin.com/in/andrelinosilva"
-                defaultValue={socialMedias.linkedin || ''}
+                defaultValue={socialMedias?.linkedin || ''}
                 onChange={handleChange}
               />
               <Input
@@ -133,7 +137,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="tiktok"
                 title="Link TikTok"
                 placeholder="https://www.tiktok.com/@rocketseat"
-                defaultValue={socialMedias.tiktok || ''}
+                defaultValue={socialMedias?.tiktok || ''}
                 onChange={handleChange}
               />
               <Input
@@ -141,7 +145,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="kwai"
                 title="Link Kwai"
                 placeholder="https://www.kwai.com/@KwaiBrasilOficial"
-                defaultValue={socialMedias.kwai || ''}
+                defaultValue={socialMedias?.kwai || ''}
                 onChange={handleChange}
               />
               <Input
@@ -149,7 +153,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 name="site"
                 title="Link Site"
                 placeholder="https://andrelinosilva.com.br"
-                defaultValue={socialMedias.site || ''}
+                defaultValue={socialMedias?.site || ''}
                 onChange={handleChange}
               />
             </div>
@@ -165,6 +169,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
           </footer>
         </div>
       </Modal>
+      {isSubmitting && <Loading />}
     </>
   )
 }

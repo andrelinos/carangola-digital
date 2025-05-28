@@ -1,8 +1,6 @@
 import { manageAuth } from '@/actions/manage-auth'
-import { LogoLight } from '@/assets/Logos/Logo/LogoLight'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
-import { Link } from '@/components/ui/link'
 import { auth } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
 import { getSEOTags } from '@/lib/seo'
@@ -28,6 +26,8 @@ export const metadata: Metadata = getSEOTags({
 export default async function Home() {
   const session = await auth()
 
+  const hasProfileLink = session?.user?.hasProfileLink || false
+
   trackServerEvent('page_view', {
     page: 'home',
   })
@@ -36,9 +36,8 @@ export default async function Home() {
     <>
       <Header />
       <div className="min-h-screen w-full px-4 py-36">
-        <div className="flex w-full flex-col items-center pt-28">
-          <LogoLight />
-          <h1 className="mt-10 max-w-2xl text-center font-bold text-5xl">
+        <div className="flex size-full flex-1 flex-col items-center justify-center">
+          <h1 className="mt-10 max-w-2xl text-center font-bold text-3xl lg:text-5xl">
             Encontre em compartilhe estabelecimentos e serviços
           </h1>
           <p className="my-4 max-w-2xl text-center">
@@ -47,11 +46,7 @@ export default async function Home() {
             rápida.
           </p>
 
-          {session ? (
-            <Link href="/criar" className="w-full max-w-xs bg-orange-500">
-              Anunciar
-            </Link>
-          ) : (
+          {!hasProfileLink && (
             <form action={manageAuth} className="w-full max-w-xs">
               <Button className="w-full bg-orange-500">Anunciar</Button>
             </form>

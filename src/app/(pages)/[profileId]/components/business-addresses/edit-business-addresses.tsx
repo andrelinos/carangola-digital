@@ -8,9 +8,11 @@ import type { BusinessAddressProps } from '@/_types/profile-data'
 
 import { createBusinessAddress } from '@/actions/create-business-address'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
+import { toast } from 'sonner'
 
 interface Props {
   data: BusinessAddressProps[] | null
@@ -84,8 +86,10 @@ export function EditBusinessAddresses({ data }: Props) {
       formData.append('addresses', JSON.stringify(formValues))
 
       await createBusinessAddress(formData)
+      toast.success('Endereços salvos com sucesso!')
     } catch (error) {
-      // return false
+      toast.error('Erro ao salvar os endereços.')
+      return false
     } finally {
       startTransition(() => {
         setIsSubmitting(false)
@@ -193,12 +197,17 @@ export function EditBusinessAddresses({ data }: Props) {
             <button type="button" className="font-bold" onClick={onClose}>
               Voltar
             </button>
-            <Button onClick={handleSaveAddresses} disabled={isSubmitting}>
+            <Button
+              onClick={handleSaveAddresses}
+              disabled={isSubmitting}
+              className="w-32"
+            >
               Salvar
             </Button>
           </footer>
         </div>
       </Modal>
+      {isSubmitting && <Loading />}
     </>
   )
 }

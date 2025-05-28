@@ -100,7 +100,7 @@ export function getOperatingStatus(
     if (nowMinutes >= openMinutes && nowMinutes < closeMinutes) {
       return (
         <ContainerStatus status="open">
-          `Aberto - Fecha às ${todaySchedule.closing}`
+          {`Aberto - Fecha às ${todaySchedule.closing}`}
         </ContainerStatus>
       )
     }

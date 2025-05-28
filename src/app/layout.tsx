@@ -1,10 +1,12 @@
 import '@/styles/globals.css'
 
-import { GoogleAnalytics } from '@next/third-parties/google'
-
 import type { Metadata } from 'next'
 import { Quicksand } from 'next/font/google'
+import { Toaster } from 'sonner'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
+import { PageTransition, StairTransition } from '@/components/effects'
 import { cn } from '@/lib/utils'
 import { serverEnv } from '@/utils/env'
 
@@ -26,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn('text-zinc-700 antialiased', quicksand.className)}>
-        {children}
+        <StairTransition />
+        <PageTransition>{children}</PageTransition>
+        <Toaster richColors position="top-right" />
       </body>
       <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
     </html>

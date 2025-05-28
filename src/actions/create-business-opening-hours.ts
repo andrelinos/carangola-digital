@@ -24,12 +24,8 @@ export async function createBusinessOpeningHours(formData: FormData) {
   try {
     const profileId = formData.get('profileId') as string
     const openingHoursData = formData.get('openingHours') as string
-    const description = formData.get('description') as string
-    const openingHours = {
-      openingHours: JSON.parse(openingHoursData) as OpeningHours[],
-      description,
-    }
 
+    const openingHours = JSON.parse(openingHoursData) as OpeningHours[]
     await db.collection('profiles').doc(profileId).update({
       openingHours,
       updatedAt: Timestamp.now().toMillis(),

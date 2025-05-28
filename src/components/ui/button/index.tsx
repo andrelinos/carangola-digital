@@ -12,6 +12,10 @@ const buttonVariants = cva(
         default: 'bg-blue-500 hover:cursor-pointer',
         secondary: 'bg-background-tertiary',
         ghost: 'border-border-primary bg-transparent',
+        link: 'bg-transparent text-primary underline-offset-4 hover:underline',
+        destructive: 'bg-red-500 hover:cursor-pointer',
+        outline:
+          'border border-border-primary bg-transparent hover:cursor-pointer',
       },
     },
     defaultVariants: {

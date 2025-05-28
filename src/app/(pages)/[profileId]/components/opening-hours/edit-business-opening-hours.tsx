@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil } from 'iconoir-react'
+import { EditPencil, LightBulbOn } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -8,10 +8,12 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { createBusinessOpeningHours } from '@/actions/create-business-opening-hours'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
-import { TextArea } from '@/components/ui/text-area'
+import clsx from 'clsx'
+import { toast } from 'sonner'
 
 type DaySchedule = {
   opening: string
@@ -45,23 +47,25 @@ interface Props {
   profileData: ProfileDataProps
 }
 
-const initialSchedule: WeeklySchedule = {
-  // Monday: { opening: '08:00', closing: '18:00', closed: false },
-  // Tuesday: { opening: '08:00', closing: '18:00', closed: false },
-  // Wednesday: { opening: '08:00', closing: '18:00', closed: false },
-  // Thursday: { opening: '08:00', closing: '18:00', closed: false },
-  // Friday: { opening: '08:00', closing: '18:00', closed: false },
-  // Saturday: { opening: '08:00', closing: '13:00', closed: false },
-  // Sunday: { opening: '', closing: '', closed: true },
+const exampleSchedule: WeeklySchedule = {
+  Monday: { opening: '08:00', closing: '18:00', closed: false },
+  Tuesday: { opening: '08:00', closing: '18:00', closed: false },
+  Wednesday: { opening: '08:00', closing: '18:00', closed: false },
+  Thursday: { opening: '08:00', closing: '18:00', closed: false },
+  Friday: { opening: '08:00', closing: '18:00', closed: false },
+  Saturday: { opening: '08:00', closing: '13:00', closed: false },
+  Sunday: { opening: '', closing: '', closed: true },
 } as WeeklySchedule
+
+const initialSchedule: WeeklySchedule = {} as WeeklySchedule
 
 export function EditBusinessOpeningHours({ profileData }: Props) {
   const router = useRouter()
   const { profileId } = useParams() as { profileId: string }
 
   const weekSchedule =
-    (profileData.openingHours?.openingHours &&
-      (profileData.openingHours?.openingHours as unknown as WeeklySchedule)) ||
+    (profileData.openingHours &&
+      (profileData.openingHours as unknown as WeeklySchedule)) ||
     undefined
 
   const [isOpen, setIsOpen] = useState(false)
@@ -69,7 +73,6 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
   const [openingHours, setOpeningHours] = useState<WeeklySchedule>(
     weekSchedule || initialSchedule
   )
-  const [description, setDescription] = useState('')
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -101,11 +104,12 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
 
       formData.append('profileId', profileId)
       formData.append('openingHours', JSON.stringify(openingHours))
-      formData.append('description', description)
 
       await createBusinessOpeningHours(formData)
+      toast.success('Horário de funcionamento salvo com sucesso!')
     } catch (error) {
-      console.error('Erro ao salvar:', error)
+      toast.error('Erro ao salvar horário de funcionamento.')
+      return false
     } finally {
       startTransition(() => {
         setIsSubmitting(false)
@@ -142,30 +146,40 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
                 <div
                   className="mx-auto flex w-[90%] justify-between gap-2 lg:w-fit lg:items-end"
                   style={{
-                    pointerEvents: openingHours[day]?.closed ? 'none' : 'auto',
                     opacity: openingHours[day]?.closed ? 0.5 : 1,
                   }}
                 >
-                  <Input
-                    variant="ghost"
-                    type="time"
-                    title="Aberto"
-                    value={openingHours[day]?.opening}
-                    onChange={e => handleChange(day, 'opening', e.target.value)}
-                    disabled={openingHours[day]?.closed}
-                  />
-                  <Input
-                    variant="ghost"
-                    type="time"
-                    title="Fecha"
-                    value={openingHours[day]?.closing}
-                    onChange={e => handleChange(day, 'closing', e.target.value)}
-                    disabled={openingHours[day]?.closed}
-                  />
+                  <div
+                    className={clsx('flex gap-2', {
+                      'pointer-events-none select-none':
+                        openingHours[day]?.closed,
+                    })}
+                  >
+                    <Input
+                      variant="ghost"
+                      type="time"
+                      title="Aberto"
+                      value={openingHours[day]?.opening ?? ''}
+                      onChange={e =>
+                        handleChange(day, 'opening', e.target.value)
+                      }
+                      disabled={openingHours[day]?.closed ?? ''}
+                    />
+                    <Input
+                      variant="ghost"
+                      type="time"
+                      title="Fecha"
+                      value={openingHours[day]?.closing ?? ''}
+                      onChange={e =>
+                        handleChange(day, 'closing', e.target.value)
+                      }
+                      disabled={openingHours[day]?.closed}
+                    />
+                  </div>
                   <span className="flex flex-col items-center justify-end gap-2 text-xs">
                     <input
                       type="checkbox"
-                      checked={openingHours[day]?.closed}
+                      checked={openingHours[day]?.closed ?? false}
                       onChange={e =>
                         handleChange(day, 'closed', e.target.checked)
                       }
@@ -176,17 +190,17 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
               </div>
             </div>
           ))}
+          {Object.keys(openingHours).length === 0 && (
+            <Button
+              variant="link"
+              className="flex cursor-pointer gap-1 font-normal text-xs transition-all duration-300 hover:text-orange-500"
+              onClick={() => setOpeningHours(exampleSchedule)}
+            >
+              <LightBulbOn /> Preencher com dados de exemplo
+            </Button>
+          )}
 
-          <TextArea
-            variant="ghost"
-            title="Breves descrições"
-            placeholder="Adicione descrições sobre o horário de funcionamento"
-            className="h-28"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-
-          <footer className="flex justify-end gap-4">
+          <footer className="flex justify-end gap-4 pt-6">
             <button type="button" className="font-bold" onClick={onClose}>
               Voltar
             </button>
@@ -196,6 +210,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
           </footer>
         </div>
       </Modal>
+      {isSubmitting && <Loading />}
     </>
   )
 }

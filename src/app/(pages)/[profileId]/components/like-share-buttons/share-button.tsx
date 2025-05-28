@@ -33,8 +33,9 @@ export function ShareButton() {
       <button
         onClick={handleOpenModal}
         type="button"
-        className="h-fit text-zinc-600"
+        className="flex h-fit flex-col items-center text-zinc-600"
       >
+        <span className="text-xs">Compartilhar</span>
         <SendDiagonal className="size-8 stroke-1" />
       </button>
 

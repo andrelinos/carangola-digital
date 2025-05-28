@@ -12,11 +12,6 @@ export type TimeRangeProps = {
   end: string
 }
 
-export type OpeningHoursProps = {
-  openingHours: Record<WeekDayProps, TimeRangeProps[]>
-  description: string
-}
-
 export type SocialMediasProps = {
   instagram?: string
   threads?: string
@@ -39,6 +34,7 @@ export type BusinessAddressProps = {
 export type BusinessPhoneProps = {
   title: string
   phone: string
+  nameContact: string
   isWhatsapp: boolean
 }
 
@@ -54,7 +50,7 @@ export type ProfileDataProps = {
   name: string
   imagePath: string
   favorites: BusinessFavoritesProps[]
-  openingHours: OpeningHoursProps
+  openingHours: Record<WeekDayProps, TimeRangeProps[]>
   socialMedias: SocialMediasProps
   businessDescription: string
   businessAddresses: BusinessAddressProps[]

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import NextLink from 'next/link'
 
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
@@ -16,10 +17,15 @@ interface Props {
 export async function Header({ profileData }: Props) {
   const session = await auth()
 
+  const hasProfileLink = session?.user?.hasProfileLink || false
+
   return (
     <div className="absolute top-0 right-0 left-0 z-50 mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
       <div className="flex w-full justify-between">
-        <div className="flex w-full items-center justify-center gap-2">
+        <NextLink
+          href="/"
+          className="flex w-full items-center justify-center gap-2"
+        >
           <Image
             width={80}
             height={80}
@@ -30,14 +36,21 @@ export async function Header({ profileData }: Props) {
           <h2 className="max-w-[112px] font-bold opacity-90 lg:text-xl">
             Carangola Digital
           </h2>
-        </div>
+        </NextLink>
         <div className="flex items-center gap-4">
-          {session && !profileData?.userId && (
+          {!hasProfileLink ? (
             <Link
               href="/criar"
               className="hidden bg-orange-500 px-6 py-2 md:flex"
             >
-              ANUNCIAR {profileData?.userId}
+              ANUNCIAR
+            </Link>
+          ) : (
+            <Link
+              href={`/${session?.user?.myProfileLink}`}
+              className="hidden bg-blue-500 px-6 py-2 md:flex"
+            >
+              Meu perfil
             </Link>
           )}
           <form action={manageAuth} className="w-fit ">

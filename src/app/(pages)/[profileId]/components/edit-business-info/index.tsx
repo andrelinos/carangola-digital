@@ -10,10 +10,12 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { saveProfile } from '@/actions/save-profile'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
+import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button/index'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
+import { toast } from 'sonner'
 
 interface Props {
   profileData: ProfileDataProps
@@ -39,6 +41,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
   }
 
   async function handleSaveProfile() {
+    setIsSubmitting(true)
     const imagesInput = document.getElementById(
       'profile-image-pic'
     ) as HTMLInputElement
@@ -55,7 +58,9 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
       formData.append('yourName', name)
 
       await saveProfile(formData)
+      toast.success('Perfil atualizado com sucesso!')
     } catch (error) {
+      toast.error('Erro ao salvar perfil')
       return false
     } finally {
       startTransition(() => {
@@ -132,15 +137,25 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
           </div>
 
           <footer className="flex justify-end gap-4">
-            <button type="button" className="font-bold" onClick={onClose}>
+            <button
+              type="button"
+              className="font-bold"
+              onClick={onClose}
+              disabled={isSubmitting}
+            >
               Voltar
             </button>
-            <Button onClick={handleSaveProfile} disabled={isSubmitting}>
+            <Button
+              onClick={handleSaveProfile}
+              disabled={isSubmitting}
+              className="w-32"
+            >
               Salvar
             </Button>
           </footer>
         </div>
       </Modal>
+      {isSubmitting && <Loading />}
     </>
   )
 }

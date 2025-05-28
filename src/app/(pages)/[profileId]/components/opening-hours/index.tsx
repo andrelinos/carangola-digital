@@ -28,7 +28,7 @@ interface Props {
 export function ContainerOpeningHours({ profileData, isOwner }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const schedule = profileData.openingHours?.openingHours
+  const schedule = profileData.openingHours
 
   function handleOpen() {
     setIsOpen(!isOpen)
@@ -51,9 +51,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
           <div className="flex w-full flex-col gap-2 tracking-tight">
             <div className="flex w-full items-center justify-center">
               <div className="h-10 flex-1 ">
-                {getOperatingStatus(
-                  profileData?.openingHours?.openingHours as any
-                )}
+                {getOperatingStatus(profileData?.openingHours as any)}
               </div>
             </div>
           </div>
