@@ -83,6 +83,10 @@ export function EditContactPhones({ profileData }: Props) {
   }
 
   function handleNewPhone() {
+    if (formValues?.length && formValues?.length >= 5) {
+      toast.warning('Você atingiu o limite de telefones.')
+      return
+    }
     setFormValues(prev => [
       ...(prev ?? []),
       {
