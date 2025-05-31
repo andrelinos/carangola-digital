@@ -50,7 +50,7 @@ export function ProfileSearchForm() {
         <Button type="submit">Buscar</Button>
       </form>
 
-      {profiles?.length && (
+      {profiles?.length > 0 && (
         <div className="flex size-full flex-col py-8">
           <h2 className="py-6 text-center font-bold text-2xl">Resultados</h2>
           {profiles?.map(profile => (
