@@ -50,24 +50,24 @@ export function ProfileSearchForm() {
         <Button type="submit">Buscar</Button>
       </form>
 
-      <div className="flex size-full flex-col py-8">
-        {profiles?.length && (
+      {profiles?.length && (
+        <div className="flex size-full flex-col py-8">
           <h2 className="py-6 text-center font-bold text-2xl">Resultados</h2>
-        )}
-        {profiles?.map(profile => (
-          <Link
-            variant="ghost"
-            href={profile.link}
-            key={profile?.userId}
-            className="group w-full rounded-none border-zinc-100 border-b font-medium text-zinc-700 transition-all duration-300 ease-in-out"
-            target="_blank"
-          >
-            <h2 className="mx-auto max-w-fit group-hover:scale-125">
-              {profile.name}
-            </h2>
-          </Link>
-        ))}
-      </div>
+          {profiles?.map(profile => (
+            <Link
+              variant="ghost"
+              href={profile.link}
+              key={profile?.userId}
+              className="group w-full rounded-none border-zinc-100 border-b font-medium text-zinc-700 transition-all duration-300 ease-in-out"
+              target="_blank"
+            >
+              <h2 className="mx-auto max-w-fit group-hover:scale-125">
+                {profile.name}
+              </h2>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
