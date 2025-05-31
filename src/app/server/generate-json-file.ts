@@ -10,7 +10,7 @@ interface DataProps {
   userId: string | null | undefined
   name: string | null | undefined
   link: string
-  createdAt: number
+  createdAt?: number
 }
 
 export async function generateJsonFile(data: DataProps) {
