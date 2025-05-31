@@ -58,3 +58,12 @@ export type ProfileDataProps = {
   businessPhones: BusinessPhoneProps[]
   updatedAt: number
 }
+
+export type ProfileDataResponseProps = {
+  profileId: string
+  name: string
+  imagePath: string
+  totalVisits: number
+  businessAddresses: BusinessAddressProps[]
+  businessPhones: BusinessPhoneProps[]
+}

@@ -3,7 +3,6 @@
 import { Timestamp } from 'firebase-admin/firestore'
 import { randomUUID } from 'node:crypto'
 
-import { generateJsonFile } from '@/app/server/generate-json-file'
 import { auth } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
 
@@ -52,23 +51,17 @@ export async function saveProfile(formData: FormData) {
       imagePath = storageRef.name
     }
 
-    const response = await db
+    await db
       .collection('profiles')
       .doc(profileId)
       .update({
         name: yourName,
+
+        nameLower: yourName.toLowerCase(),
         businessDescription: yourDescription,
         ...(hasFile && { imagePath }),
         updatedAt: Timestamp.now().toMillis(),
       })
-
-    if (response.writeTime) {
-      generateJsonFile({
-        userId: session?.user?.id,
-        name: yourName,
-        link: profileId,
-      })
-    }
 
     return true
   } catch (error) {

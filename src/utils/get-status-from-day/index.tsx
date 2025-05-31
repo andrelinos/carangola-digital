@@ -73,12 +73,12 @@ export function getOperatingStatus(
         return <ContainerStatus status="closed">'Fechado'</ContainerStatus>
       return next.daysFromNow === 1 ? (
         <ContainerStatus status="closed">
-          {`Fechado. Abre amanhã às ${next.opening}`}
+          {`Fechado - Abre amanhã às ${next.opening}`}
         </ContainerStatus>
       ) : (
         <ContainerStatus status="closed">
-          Fechado. Abre{' '}
-          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às $
+          Fechado - Abre{' '}
+          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong>{' '}
           {next.opening}
         </ContainerStatus>
       )
@@ -90,7 +90,7 @@ export function getOperatingStatus(
     if (nowMinutes < openMinutes) {
       return (
         <ContainerStatus status="closed">
-          {`Fechado. Abre às ${todaySchedule.opening}`}
+          {`Fechado - Abre às ${todaySchedule.opening}`}
         </ContainerStatus>
       )
     }

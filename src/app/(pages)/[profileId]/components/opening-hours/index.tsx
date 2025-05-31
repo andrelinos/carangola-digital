@@ -95,7 +95,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
             <div
               key={day}
               className={clsx('flex w-full justify-between', {
-                'py-3 font-medium': day === WEEK_DAYS[todayIndex],
+                'py-2 font-semibold': day === WEEK_DAYS[todayIndex],
               })}
             >
               <span>{translateWeekDay(day)}</span>{' '}

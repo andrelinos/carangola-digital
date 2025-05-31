@@ -1,5 +1,5 @@
 import { manageAuth } from '@/actions/manage-auth'
-import { ProfileSearchForm } from '@/components/form-search'
+import SearchFormClient from '@/components/form-search'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
@@ -47,10 +47,11 @@ export default async function Home() {
             rápida.
           </p>
 
-          <ProfileSearchForm />
+          {/* <ProfileSearchForm /> */}
+          <SearchFormClient />
 
           {!hasProfileLink && (
-            <form action={manageAuth} className="w-full max-w-xs">
+            <form action={manageAuth} className="w-full max-w-xs pt-16">
               <Button className="w-full bg-orange-500">Anunciar</Button>
             </form>
           )}

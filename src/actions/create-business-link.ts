@@ -15,6 +15,7 @@ export async function createBusinessLink(link: string) {
     const profileCreated = await db.collection('profiles').doc(link).set({
       userId: session?.user?.id,
       name: session?.user?.name,
+      nameLower: session?.user?.name?.toLowerCase(),
       totalVisits: 0,
       createdAt: Timestamp.now().toMillis(),
       updatedAt: Timestamp.now().toMillis(),
