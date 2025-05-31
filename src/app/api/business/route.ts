@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       data: filteredRecords,
     })
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ message: 'Erro interno' }, { status: 500 })
   }
 }
