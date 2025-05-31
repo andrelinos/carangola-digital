@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 import { getInitialsFullNameAvatar } from '@/utils/get-initials-full-names'
+import Link from 'next/link'
 
 interface DropdownMenuProps {
   LogOut: () => void
@@ -57,12 +58,12 @@ export function DropdownMenu({ LogOut, userInfo }: DropdownMenuProps) {
         <div className="absolute right-6 w-[240px] bg-transparent py-1 font-medium transition-all duration-300 ease-in-out md:top-10 md:right-0 md:w-full">
           <div className="w-full rounded-lg border border-blue-500 bg-white py-2 font-medium text-zinc-700 ">
             <div className="flex flex-col gap-2 py-4">
-              <button
-                type="button"
+              <Link
+                href={`/${userInfo?.myProfileLink}`}
                 className="px-4 text-left transition-all duration-300 ease-in-out hover:cursor-pointer hover:pl-5.5 "
               >
                 Meu perfil
-              </button>
+              </Link>
               <button
                 type="button"
                 onClick={handleLogOut}
