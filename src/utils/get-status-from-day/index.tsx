@@ -9,19 +9,29 @@ type DaySchedule = {
 
 type WeeklySchedule = Record<string, DaySchedule>
 
+const dayTranslations: Record<string, string> = {
+  Sunday: 'Domingo',
+  Monday: 'Segunda-feira',
+  Tuesday: 'Terça-feira',
+  Wednesday: 'Quarta-feira',
+  Thursday: 'Quinta-feira',
+  Friday: 'Sexta-feira',
+  Saturday: 'Sábado',
+}
+
 const currentTime = new Date()
 
 export function getOperatingStatus(
   schedule: WeeklySchedule
 ): JSX.Element | string {
   const daysOfWeek = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ]
 
   if (!schedule || Object?.keys(schedule)?.length === 0) {
@@ -58,6 +68,7 @@ export function getOperatingStatus(
       !todaySchedule.closing
     ) {
       const next = getNextOpenDay(schedule, currentTime, daysOfWeek)
+
       if (!next)
         return <ContainerStatus status="closed">'Fechado'</ContainerStatus>
       return next.daysFromNow === 1 ? (
@@ -66,7 +77,9 @@ export function getOperatingStatus(
         </ContainerStatus>
       ) : (
         <ContainerStatus status="closed">
-          {`Fechado. Abre ${next.dayName.toLowerCase()} às ${next.opening}`}
+          Fechado. Abre{' '}
+          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às $
+          {next.opening}
         </ContainerStatus>
       )
     }
@@ -82,25 +95,27 @@ export function getOperatingStatus(
       )
     }
 
-    if (nowMinutes >= closeMinutes) {
-      const next = getNextOpenDay(schedule, currentTime, daysOfWeek)
-      if (!next)
-        return <ContainerStatus status="closed">'Fechado'</ContainerStatus>
-      return next.daysFromNow === 1 ? (
-        <ContainerStatus status="closed">
-          {`Fechado. Abre amanhã às ${next.opening}`}
-        </ContainerStatus>
-      ) : (
-        <ContainerStatus status="closed">
-          {`Fechado. Abre ${next.dayName.toLowerCase()} às ${next.opening}`}
-        </ContainerStatus>
-      )
-    }
-
     if (nowMinutes >= openMinutes && nowMinutes < closeMinutes) {
       return (
         <ContainerStatus status="open">
           {`Aberto - Fecha às ${todaySchedule.closing}`}
+        </ContainerStatus>
+      )
+    }
+
+    if (nowMinutes >= closeMinutes) {
+      const next = getNextOpenDay(schedule, currentTime, daysOfWeek)
+      if (!next)
+        return <ContainerStatus status="closed">Fechado</ContainerStatus>
+      return next.daysFromNow === 1 ? (
+        <ContainerStatus status="closed">
+          {`Fechado - Abre amanhã às ${next.opening}`}
+        </ContainerStatus>
+      ) : (
+        <ContainerStatus status="closed">
+          Fechado - Abre{' '}
+          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às{' '}
+          {next.opening}
         </ContainerStatus>
       )
     }

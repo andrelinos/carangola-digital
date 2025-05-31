@@ -1,7 +1,6 @@
 'use client'
 
-import clsx from 'clsx'
-import { Heart } from 'iconoir-react'
+import { Heart, HeartSolid } from 'iconoir-react'
 import type { Session } from 'next-auth'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
@@ -47,18 +46,24 @@ export function LikeShareButtons({
   return (
     <div className="top-0 right-0 flex justify-center gap-2 p-4 text-zinc-500 lg:absolute">
       {!isOwner && userInfo?.id && (
-        <Button
-          variant="ghost"
-          className={clsx('flex flex-col items-center gap-1 p-0', {
-            'text-red-500': isFavorite,
-            'text-zinc-500': !isFavorite,
-          })}
-          onClick={handleAddToFavorites}
-        >
-          <Heart className="size-8 stroke-1" />
-        </Button>
+        <div className="flex items-center gap-6 lg:flex-col lg:gap-1">
+          <div className="flex flex-col items-center gap-1 lg:flex-col">
+            <span className="font-normal text-xs text-zinc-700">Favoritos</span>
+            <Button
+              variant="ghost"
+              className="flex flex-col items-center p-0 transition-all duration-300 ease-in-out hover:scale-115 hover:cursor-pointer"
+              onClick={handleAddToFavorites}
+            >
+              {isFavorite ? (
+                <HeartSolid className=" size-8 stroke-1 text-red-500" />
+              ) : (
+                <Heart className="size-8 stroke-1 text-zinc-700" />
+              )}
+            </Button>
+          </div>
+          <ShareButton />
+        </div>
       )}
-      <ShareButton />
     </div>
   )
 }

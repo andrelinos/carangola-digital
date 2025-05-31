@@ -5,7 +5,13 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  status: any
+  status:
+    | 'open'
+    | 'closed'
+    | 'undefinedTime'
+    | 'permanentlyClosed'
+    | 'onVacation'
+    | 'onHolidayBreak'
   children: ReactNode
 }
 
@@ -16,8 +22,8 @@ export function ContainerStatus({ status, children }: Props) {
         clsx(
           'relative flex w-full max-w-md flex-col items-center gap-1 p-2 [data-state=open]:rounded-none',
           {
-            'bg-green-50 text-green-800': status === 'open',
-            'bg-red-50 text-rose-800': status === 'closed',
+            'bg-green-50 text-green-900': status === 'open',
+            'bg-red-50 text-red-900': status === 'closed',
             'bg-yellow-50 text-yellow-600': status === 'undefinedTime',
             'bg-gray-50 text-gray-800': status === 'permanentlyClosed',
             'bg-blue-50 text-blue-800': status === 'onVacation',

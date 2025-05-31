@@ -29,13 +29,13 @@ export function ShareButton() {
   const shareUrl = `https://localhost:3000/${profileId}`
 
   return (
-    <>
+    <div className="flex flex-col items-center gap-1">
+      <span className="text-xs">Compartilhar</span>
       <button
         onClick={handleOpenModal}
         type="button"
-        className="flex h-fit flex-col items-center text-zinc-600"
+        className="flex h-fit flex-col items-center text-zinc-600 transition-all duration-300 ease-in-out hover:scale-115 hover:cursor-pointer"
       >
-        <span className="text-xs">Compartilhar</span>
         <SendDiagonal className="size-8 stroke-1" />
       </button>
 
@@ -63,6 +63,6 @@ export function ShareButton() {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   )
 }

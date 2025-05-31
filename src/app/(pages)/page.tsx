@@ -1,4 +1,5 @@
 import { manageAuth } from '@/actions/manage-auth'
+import { ProfileSearchForm } from '@/components/form-search'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
@@ -45,6 +46,8 @@ export default async function Home() {
             você com o que precisa e ajudando a compartilhar de forma simples e
             rápida.
           </p>
+
+          <ProfileSearchForm />
 
           {!hasProfileLink && (
             <form action={manageAuth} className="w-full max-w-xs">

@@ -2,6 +2,7 @@
 
 import { Timestamp } from 'firebase-admin/firestore'
 
+import { generateJsonFile } from '@/app/server/generate-json-file'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 
@@ -27,6 +28,15 @@ export async function createBusinessLink(link: string) {
         updatedAt: Timestamp.now().toMillis(),
       })
     }
+
+    if (profileCreated.writeTime) {
+      generateJsonFile({
+        userId: session?.user?.id,
+        name: session?.user?.name,
+        link,
+      })
+    }
+
     return true
   } catch (error) {
     return false

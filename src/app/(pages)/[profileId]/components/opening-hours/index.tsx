@@ -8,17 +8,18 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 import { cn } from '@/lib/utils'
 import { getOperatingStatus } from '@/utils/get-status-from-day'
 
+import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
 import { EditBusinessOpeningHours } from './edit-business-opening-hours'
 
-const WEEK_DAY_TRANSLATIONS: Record<string, string> = {
-  Monday: 'Segunda-feira',
-  Tuesday: 'Terça-feira',
-  Wednesday: 'Quarta-feira',
-  Thursday: 'Quinta-feira',
-  Friday: 'Sexta-feira',
-  Saturday: 'Sábado',
-  Sunday: 'Domingo',
-}
+const WEEK_DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+]
 
 interface Props {
   profileData: ProfileDataProps
@@ -33,6 +34,29 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
   function handleOpen() {
     setIsOpen(!isOpen)
   }
+
+  const getDayIndex = (day: string): number => {
+    const order = {
+      Monday: 0,
+      Tuesday: 1,
+      Wednesday: 2,
+      Thursday: 3,
+      Friday: 4,
+      Saturday: 5,
+      Sunday: 6,
+    }
+    return order[day as keyof typeof order] ?? 99
+  }
+
+  const sortedSchedule =
+    schedule &&
+    Object.entries(schedule).sort((a, b) => {
+      const [dayA] = a
+      const [dayB] = b
+      return getDayIndex(dayA) - getDayIndex(dayB)
+    })
+
+  const todayIndex = new Date().getDay() - 1
 
   return (
     <div className="relative mt-6 flex w-full max-w-md flex-col items-center gap-1 rounded-t-lg p-2 [data-state=open]:rounded-none">
@@ -67,15 +91,17 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
             )
           )}
         >
-          {schedule &&
-            Object.entries(schedule).map(
-              ([day, { opening, closing, closed }]: any) => (
-                <div key={day} className="flex w-full justify-between">
-                  <span>{WEEK_DAY_TRANSLATIONS[day]}</span>{' '}
-                  <span>{closed ? 'Fechado' : `${opening} às ${closing}`}</span>
-                </div>
-              )
-            )}
+          {sortedSchedule?.map(([day, { opening, closing, closed }]: any) => (
+            <div
+              key={day}
+              className={clsx('flex w-full justify-between', {
+                'py-3 font-medium': day === WEEK_DAYS[todayIndex],
+              })}
+            >
+              <span>{translateWeekDay(day)}</span>{' '}
+              <span>{closed ? 'Fechado' : `${opening} às ${closing}`}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

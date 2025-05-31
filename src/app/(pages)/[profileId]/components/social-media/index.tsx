@@ -48,7 +48,7 @@ export function SocialMedia({ profileData, isOwner }: Props) {
         {SOCIAL_MEDIA_CONFIG?.map(({ key, Icon }) => {
           const url = socialMedias?.[key]
           return url ? (
-            <Link key={key} href={url} variant="secondary">
+            <Link key={key} href={url} variant="secondary" target="_blank">
               <Icon />
             </Link>
           ) : null
