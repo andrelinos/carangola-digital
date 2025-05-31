@@ -10,6 +10,7 @@ interface DataProps {
   userId: string | null | undefined
   name: string | null | undefined
   link: string
+  createdAt: number
 }
 
 export async function generateJsonFile(data: DataProps) {
@@ -26,11 +27,19 @@ export async function generateJsonFile(data: DataProps) {
         records = []
       }
     } catch (error) {
-      records = []
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        (error as { code?: string }).code === 'ENOENT'
+      ) {
+        records = [] as DataProps[]
+        await fs.writeFile(filePath, JSON.stringify(records, null, 2), 'utf-8')
+      }
     }
 
-    const recordIndex = records.findIndex(
-      record => record.userId === data.userId
+    const recordIndex: number = (records as DataProps[]).findIndex(
+      (record: DataProps) => record.userId === data.userId
     )
 
     if (recordIndex !== -1) {

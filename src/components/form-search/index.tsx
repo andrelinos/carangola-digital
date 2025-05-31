@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from '../ui/link'
 
 interface DataProps {
@@ -13,7 +13,7 @@ interface DataProps {
 
 export function ProfileSearchForm() {
   const [searchTerms, setSearchTerms] = useState('')
-  const [profiles, setProfiles] = useState<DataProps[]>(() => [])
+  const [profiles, setProfiles] = useState<DataProps[]>()
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -29,13 +29,10 @@ export function ProfileSearchForm() {
 
     const { data } = await response.json()
 
-    console.log(data)
-    setProfiles(data)
+    if (data) {
+      setProfiles(data)
+    } else setProfiles([])
   }
-
-  useEffect(() => {
-    console.log(profiles)
-  }, [profiles])
 
   return (
     <div className="w-full pt-8">
@@ -47,10 +44,12 @@ export function ProfileSearchForm() {
           onChange={e => setSearchTerms(e.target.value)}
           placeholder="Quem você deseja encontrar?"
         />
-        <Button type="submit">Buscar</Button>
+        <Button type="submit" disabled={!searchTerms}>
+          Buscar
+        </Button>
       </form>
 
-      {profiles?.length > 0 && (
+      {profiles && profiles?.length > 0 && (
         <div className="flex size-full flex-col py-8">
           <h2 className="py-6 text-center font-bold text-2xl">Resultados</h2>
           {profiles?.map(profile => (
@@ -66,6 +65,13 @@ export function ProfileSearchForm() {
               </h2>
             </Link>
           ))}
+        </div>
+      )}
+      {profiles && profiles?.length === 0 && (
+        <div className="flex size-full flex-col py-8">
+          <h2 className="py-6 text-center font-bold text-2xl">
+            Nenhum resultado encontrado
+          </h2>
         </div>
       )}
     </div>
