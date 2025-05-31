@@ -23,8 +23,6 @@ export function ContactPhones({ profileData, isOwner }: Props) {
     (item: BusinessPhoneProps) => item?.isWhatsapp
   )
 
-  console.log('businessPhone', businessPhone)
-
   return (
     <div className="mt-6 flex w-full flex-col gap-1 bg-green-50 p-4">
       <div className="flex w-full justify-center gap-1 text-center">

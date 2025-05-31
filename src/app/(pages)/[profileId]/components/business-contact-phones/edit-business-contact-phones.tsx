@@ -2,7 +2,7 @@
 
 import { EditPencil, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
-import { startTransition, useEffect, useState } from 'react'
+import { startTransition, useState } from 'react'
 
 import { createBusinessPhones } from '@/actions/create-business-phones'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -178,10 +178,6 @@ export function EditContactPhones({ profileData }: Props) {
     setIsSubmitting(false)
     onClose()
   }
-
-  useEffect(() => {
-    console.log(formValues)
-  }, [formValues])
 
   return (
     <>

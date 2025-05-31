@@ -43,7 +43,6 @@ export async function generateJsonFile(data: DataProps) {
     )
 
     if (recordIndex !== -1) {
-      console.log('recordIndex', recordIndex, data)
       records[recordIndex] = {
         userId: data.userId,
         name: data.name,
