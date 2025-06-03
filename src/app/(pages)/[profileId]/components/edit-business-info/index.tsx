@@ -139,7 +139,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
           <footer className="flex justify-end gap-4">
             <button
               type="button"
-              className="font-bold"
+              className="font-bold hover:cursor-pointer"
               onClick={onClose}
               disabled={isSubmitting}
             >

@@ -92,7 +92,11 @@ export function EditBusinessDescription({ data }: Props) {
           </div>
 
           <footer className="flex justify-end gap-4">
-            <button type="button" className="font-bold" onClick={onClose}>
+            <button
+              type="button"
+              className="font-bold hover:cursor-pointer"
+              onClick={onClose}
+            >
               Voltar
             </button>
             <Button
