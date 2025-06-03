@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil, Trash } from 'iconoir-react'
+import { EditPencil, Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -9,8 +9,11 @@ import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Modal } from '@/components/ui/modal'
-import { sanitizePhoneNumber } from '@/lib/utils'
+import { handleImageInput, sanitizePhoneNumber } from '@/lib/utils'
+import { ArrowUpFromLine } from 'lucide-react'
+import Image from 'next/image'
 import { toast } from 'sonner'
 
 interface FormValuesProps {
@@ -25,53 +28,26 @@ interface Props {
   profileData: any
 }
 
-const initialFormValues: FormValuesProps[] = [
-  {
-    title: 'Telefone 1',
-    phone: '',
-    nameContact: '',
-    isWhatsapp: false,
-    isOnlyWhatsapp: false,
-  },
-  {
-    title: 'Telefone 2',
-    phone: '',
-    nameContact: '',
-    isWhatsapp: false,
-    isOnlyWhatsapp: false,
-  },
-  {
-    title: 'Telefone 3',
-    phone: '',
-    nameContact: '',
-    isWhatsapp: false,
-    isOnlyWhatsapp: false,
-  },
-  {
-    title: 'Telefone 4',
-    phone: '',
-    nameContact: '',
-    isWhatsapp: false,
-    isOnlyWhatsapp: false,
-  },
-  {
-    title: 'Telefone 5',
-    phone: '',
-    nameContact: '',
-    isWhatsapp: false,
-    isOnlyWhatsapp: false,
-  },
-]
-
 export function EditContactPhones({ profileData }: Props) {
   const router = useRouter()
   const profileId = useParams().profileId as string
 
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [profileWhatsAppPic, setProfileWhatsAppPic] = useState<string | null>(
+    null
+  )
 
   const [formValues, setFormValues] = useState<FormValuesProps[] | null>(
-    profileData?.businessPhones || initialFormValues
+    profileData?.businessPhones || [
+      {
+        title: 'Telefone 1',
+        phone: '',
+        nameContact: '',
+        isWhatsapp: false,
+        isOnlyWhatsapp: false,
+      },
+    ]
   )
 
   function handleOpenModal() {
@@ -83,10 +59,15 @@ export function EditContactPhones({ profileData }: Props) {
   }
 
   function handleNewPhone() {
-    if (formValues?.length && formValues?.length >= 5) {
-      toast.warning('Você atingiu o limite de telefones.')
+    if (formValues?.length && formValues?.length >= 3) {
+      toast.info('Em breve você poderá adicionar mais telefones.', {
+        description: 'Ainda estamos trabalhando nisso.',
+        position: 'top-center',
+      })
+
       return
     }
+
     setFormValues(prev => [
       ...(prev ?? []),
       {
@@ -104,6 +85,13 @@ export function EditContactPhones({ profileData }: Props) {
       return
     const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
     setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
+  }
+
+  function handleShowMessage() {
+    toast.info('Em breve você poderá carregar uma foto para este contato!', {
+      description: 'Ainda estamos trabalhando nisso.',
+      position: 'top-center',
+    })
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -202,45 +190,120 @@ export function EditContactPhones({ profileData }: Props) {
                     className="flex w-full gap-2 border-zinc-200 border-b pb-4"
                   >
                     <div className="flex w-full flex-col gap-2">
-                      <div className="flex flex-col gap-4 ">
-                        <Input
-                          variant="ghost"
-                          name={`phone${index}.phone`}
-                          title={`Telefone ${index + 1}`}
-                          placeholder="32999998888 ou 3233334444"
-                          maxLength={15}
-                          value={phone.phone}
-                          onChange={handleChange}
-                        />
-                        <Input
-                          variant="ghost"
-                          name={`phone${index}.nameContact`}
-                          title="Nome do contato"
-                          placeholder="Contato"
-                          maxLength={15}
-                          value={phone.nameContact ?? ''}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <span className="flex flex-col items-center justify-end gap-2 text-xs">
-                          <input
-                            type="checkbox"
-                            name={`phone${index}.isWhatsapp`}
-                            checked={phone?.isWhatsapp ?? false}
+                      <div className="flex w-full justify-center gap-4">
+                        <div className="flex flex-col gap-2">
+                          <Label className="text-start font-bold">Foto</Label>
+
+                          <div className="">
+                            <div className="flex size-32 flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-200">
+                              {profileWhatsAppPic ? (
+                                <Image
+                                  width={126}
+                                  height={126}
+                                  src={profileWhatsAppPic}
+                                  className="size-full overflow-hidden object-cover object-left-top"
+                                  alt="Project preview"
+                                  onError={e => {
+                                    e.currentTarget.src =
+                                      '/images/user-no-image.png'
+                                    setProfileWhatsAppPic(
+                                      '/images/user-no-image.png'
+                                    )
+                                    e.currentTarget.onerror = null
+                                  }}
+                                />
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="size-full text-zinc-700"
+                                  // onClick={() =>
+                                  //   triggerImageInput(
+                                  //     'profile-whatsapp-image-pic'
+                                  //   )
+                                  // }
+                                  onClick={handleShowMessage}
+                                >
+                                  <Image
+                                    width={126}
+                                    height={126}
+                                    src="/images/user-no-image.png"
+                                    className="size-full object-cover"
+                                    alt="Telefone"
+                                    title="Clique para adicionar uma foto 200x200"
+                                    priority
+                                  />
+                                </button>
+                              )}
+                            </div>
+
+                            <div>
+                              <button
+                                type="button"
+                                className="flex h-6 items-center gap-2 transition-all duration-300 hover:cursor-pointer hover:text-blue-500"
+                                // onClick={() =>
+                                //   triggerImageInput(
+                                //     'profile-whatsapp-image-pic'
+                                //   )
+                                // }
+                                onClick={handleShowMessage}
+                              >
+                                <ArrowUpFromLine className="size-4" />
+                                <span className="text-xs">
+                                  Adicionar imagem
+                                </span>
+                              </button>
+                              <input
+                                type="file"
+                                id="profile-whatsapp-image-pic"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={e =>
+                                  setProfileWhatsAppPic(handleImageInput(e))
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-1 flex-col gap-4 ">
+                          <Input
+                            variant="ghost"
+                            name={`phone${index}.nameContact`}
+                            title="Nome do contato"
+                            placeholder="Contato"
+                            maxLength={15}
+                            value={phone.nameContact ?? ''}
                             onChange={handleChange}
                           />
-                          Também WhatsApp
-                        </span>
-                        <span className="flex flex-col items-center justify-end gap-2 text-xs">
-                          <input
-                            type="checkbox"
-                            name={`phone${index}.isOnlyWhatsapp`}
-                            checked={phone?.isOnlyWhatsapp ?? false}
+                          <Input
+                            variant="ghost"
+                            name={`phone${index}.phone`}
+                            title={`Telefone ${index + 1}`}
+                            placeholder="32999998888 ou 3233334444"
+                            maxLength={15}
+                            value={phone.phone}
                             onChange={handleChange}
                           />
-                          Apenas WhatsApp
-                        </span>
+                          <div className="flex justify-center gap-2">
+                            <span className="flex flex-col items-center justify-end gap-2 text-xs">
+                              <input
+                                type="checkbox"
+                                name={`phone${index}.isWhatsapp`}
+                                checked={phone?.isWhatsapp ?? false}
+                                onChange={handleChange}
+                              />
+                              Também WhatsApp
+                            </span>
+                            <span className="flex flex-col items-center justify-end gap-2 text-xs">
+                              <input
+                                type="checkbox"
+                                name={`phone${index}.isOnlyWhatsapp`}
+                                checked={phone?.isOnlyWhatsapp ?? false}
+                                onChange={handleChange}
+                              />
+                              Apenas WhatsApp
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="">
@@ -257,9 +320,16 @@ export function EditContactPhones({ profileData }: Props) {
                 )
               })}
             </div>
-            <Button variant="link" onClick={handleNewPhone}>
-              Adicionar +
-            </Button>
+            <div className="flex w-full justify-end pb-6">
+              <Button
+                variant="link"
+                className="m-0 flex items-center py-0 text-xs hover:cursor-pointer hover:text-blue-500"
+                onClick={handleNewPhone}
+              >
+                <Plus />
+                Adicionar novo telefone
+              </Button>
+            </div>
           </div>
 
           <footer className="flex justify-end gap-4">

@@ -18,6 +18,9 @@ const quicksand = Quicksand({
 export const metadata: Metadata = {
   title: 'Carangola Digital',
   description: 'Tenha a cidade ao seu alcance!',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil } from 'iconoir-react'
+import { EditPencil, Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -45,7 +45,16 @@ export function EditBusinessAddresses({ data }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formValues, setFormValues] = useState<BusinessAddressProps[] | null>(
-    data || initialAddresses
+    data || [
+      {
+        title: 'Endereço 1',
+        address: '',
+        neighborhood: '',
+        cep: '',
+        latitude: '',
+        longitude: '',
+      },
+    ]
   )
 
   function handleOpenModal() {
@@ -54,6 +63,29 @@ export function EditBusinessAddresses({ data }: Props) {
 
   function onClose() {
     setIsOpen(false)
+  }
+
+  function handleNewAddress() {
+    if (formValues?.length && formValues?.length >= 2) {
+      toast.info('Em breve você poderá adicionar mais endereços.', {
+        description: 'Ainda estamos trabalhando nisso.',
+        position: 'top-center',
+      })
+
+      return
+    }
+
+    setFormValues(prevState => [
+      ...(prevState ?? []),
+      {
+        title: `Endereço ${(prevState?.length ?? 0) + 1}`,
+        address: '',
+        neighborhood: '',
+        cep: '',
+        latitude: '',
+        longitude: '',
+      },
+    ])
   }
 
   function handleChange(
@@ -100,15 +132,13 @@ export function EditBusinessAddresses({ data }: Props) {
       })
     }
   }
-  // function handleDeleteAddress(index: number) {
-  //   setFormValues(prevState => {
-  //     if (!prevState) return prevState
-  //     const updatedAddresses = [...prevState]
-  //     updatedAddresses.splice(index, 1)
-  //     return updatedAddresses
-  //   })
-  // }
 
+  function handleDeleteAddress(event: React.MouseEvent<HTMLButtonElement>) {
+    if (!event || !event.currentTarget || !event.currentTarget.dataset.index)
+      return
+    const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
+    setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
+  }
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
@@ -118,8 +148,8 @@ export function EditBusinessAddresses({ data }: Props) {
       <Modal
         isOpen={isOpen}
         setIsOpen={onClose}
-        title="Telefones de contato"
-        description="Defina seus telefones de contato"
+        title="Endereços"
+        description="Informe seus endereços"
         classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
@@ -128,74 +158,96 @@ export function EditBusinessAddresses({ data }: Props) {
               return (
                 <div
                   key={String(index)}
-                  className="flex w-full flex-1 flex-col gap-4 text-zinc-700"
+                  className="mt-6 flex w-full flex-1 text-zinc-700"
                 >
-                  <h2 className="mt-6 font-bold">
-                    Endereço {String(index + 1)}
-                  </h2>
-                  <div className="flex flex-col gap-4">
-                    <Input
-                      name="address"
-                      variant="ghost"
-                      title="Endereço"
-                      placeholder="Rua Pedro de Oliveira, 9999"
-                      value={item.address}
-                      onChange={e => handleChange(e, index, 'address')}
-                    />
-                    <div className="flex gap-4">
+                  <div className="flex w-full flex-1 flex-col gap-4 text-zinc-700">
+                    <h2 className="font-bold">Endereço {String(index + 1)}</h2>
+                    <div className="flex flex-col gap-4">
                       <Input
-                        name="district"
+                        name="address"
                         variant="ghost"
-                        title="Bairro"
-                        placeholder="Centro"
-                        value={item.neighborhood}
-                        onChange={e => handleChange(e, index, 'neighborhood')}
+                        title="Endereço"
+                        placeholder="Rua Pedro de Oliveira, 9999"
+                        value={item.address}
+                        onChange={e => handleChange(e, index, 'address')}
                       />
-                      <div className="max-w-[156px]">
+                      <div className="flex gap-4">
                         <Input
-                          name="cep"
+                          name="district"
                           variant="ghost"
-                          title="cep"
-                          placeholder="36800-000"
-                          value={item.cep}
-                          onChange={e => handleChange(e, index, 'cep')}
+                          title="Bairro"
+                          placeholder="Centro"
+                          value={item.neighborhood}
+                          onChange={e => handleChange(e, index, 'neighborhood')}
                         />
+                        <div className="max-w-[156px]">
+                          <Input
+                            name="cep"
+                            variant="ghost"
+                            title="cep"
+                            placeholder="36800-000"
+                            value={item.cep}
+                            onChange={e => handleChange(e, index, 'cep')}
+                          />
+                        </div>
                       </div>
                     </div>
+                    <div className="flex gap-4">
+                      <Input
+                        type="number"
+                        name="latitude"
+                        variant="ghost"
+                        title="Latitude"
+                        placeholder="-20.73370461095738"
+                        value={item.latitude}
+                        onChange={e => handleChange(e, index, 'latitude')}
+                      />
+                      <Input
+                        type="number"
+                        name="longitude"
+                        variant="ghost"
+                        title="Longitude"
+                        placeholder="-42.0299412669833"
+                        value={item.longitude}
+                        onChange={e => handleChange(e, index, 'longitude')}
+                      />
+                    </div>
+
+                    <p className="text-xs">
+                      Para conseguir a latitude e longitude você precisar
+                      acessar o{' '}
+                      <Link
+                        href="https://google.com/maps"
+                        className="text-blue-500"
+                        target="_blank"
+                      >
+                        Google Maps
+                      </Link>{' '}
+                      pelo computador e copiar.
+                    </p>
                   </div>
-                  <div className="flex gap-4">
-                    <Input
-                      name="latitude"
-                      variant="ghost"
-                      title="Latitude"
-                      placeholder="-20.73370461095738"
-                      value={item.latitude}
-                      onChange={e => handleChange(e, index, 'latitude')}
-                    />
-                    <Input
-                      name="longitude"
-                      variant="ghost"
-                      title="Longitude"
-                      placeholder="-42.0299412669833"
-                      value={item.longitude}
-                      onChange={e => handleChange(e, index, 'longitude')}
-                    />
-                  </div>
-                  <p className="text-xs">
-                    Para conseguir a latitude e longitude você precisar acessar
-                    o{' '}
-                    <Link
-                      href="https://google.com/maps"
-                      className="text-blue-500"
-                      target="_blank"
+                  <div className="">
+                    <Button
+                      data-index={index}
+                      variant="link"
+                      className="size-4 p-0 text-rose-400 transition-all duration-300 hover:scale-125 hover:cursor-pointer"
+                      onClick={handleDeleteAddress}
                     >
-                      Google Maps
-                    </Link>{' '}
-                    pelo computador e copiar.
-                  </p>
+                      <Trash className="size-4" />
+                    </Button>
+                  </div>
                 </div>
               )
             })}
+          </div>
+          <div className="flex w-full justify-end">
+            <Button
+              variant="link"
+              className="m-0 flex items-center py-0 text-xs hover:cursor-pointer hover:text-blue-500"
+              onClick={handleNewAddress}
+            >
+              <Plus /> Adicionar no endereço
+            </Button>
           </div>
 
           <div>

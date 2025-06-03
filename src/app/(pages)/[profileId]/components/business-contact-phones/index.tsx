@@ -42,7 +42,7 @@ export function ContactPhones({ profileData, isOwner }: Props) {
               item?.phone && (
                 <Link
                   key={String(index)}
-                  href={`phone:${item.phone}`}
+                  href={`tel:${item.phone}`}
                   className="flex w-full flex-1 items-center justify-center gap-1 px-6 sm:w-64"
                 >
                   <Phone className="h-5 w-5" />
