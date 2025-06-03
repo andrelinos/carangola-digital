@@ -12,6 +12,7 @@ import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
+import Link from 'next/link'
 import { toast } from 'sonner'
 
 interface Props {
@@ -180,6 +181,18 @@ export function EditBusinessAddresses({ data }: Props) {
                       onChange={e => handleChange(e, index, 'longitude')}
                     />
                   </div>
+                  <p className="text-xs">
+                    Para conseguir a latitude e longitude você precisar acessar
+                    o{' '}
+                    <Link
+                      href="https://google.com/maps"
+                      className="text-blue-500"
+                      target="_blank"
+                    >
+                      Google Maps
+                    </Link>{' '}
+                    pelo computador e copiar.
+                  </p>
                 </div>
               )
             })}

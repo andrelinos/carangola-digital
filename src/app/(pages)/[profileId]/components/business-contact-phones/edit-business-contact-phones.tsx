@@ -190,11 +190,11 @@ export function EditContactPhones({ profileData }: Props) {
         setIsOpen={onClose}
         title="Telefones de contato"
         description="Defina seus telefones de contato"
-        classname="w-full max-w-md justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
+        classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
-        <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
+        <div className=" lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
           <div className="flex w-full flex-col items-end gap-4 ">
-            <div className="flex w-full flex-1 flex-col items-end gap-4 text-zinc-700 lg:max-w-96">
+            <div className="flex w-full flex-1 flex-col items-end gap-4 text-zinc-700">
               {formValues?.map((phone, index) => {
                 return (
                   <div
@@ -202,7 +202,7 @@ export function EditContactPhones({ profileData }: Props) {
                     className="flex w-full gap-2 border-zinc-200 border-b pb-4"
                   >
                     <div className="flex w-full flex-col gap-2">
-                      <div className="flex gap-4">
+                      <div className="flex flex-col gap-4 ">
                         <Input
                           variant="ghost"
                           name={`phone${index}.phone`}
@@ -216,7 +216,7 @@ export function EditContactPhones({ profileData }: Props) {
                           variant="ghost"
                           name={`phone${index}.nameContact`}
                           title="Nome do contato"
-                          placeholder="32999998888 ou 3233334444"
+                          placeholder="Contato"
                           maxLength={15}
                           value={phone.nameContact ?? ''}
                           onChange={handleChange}

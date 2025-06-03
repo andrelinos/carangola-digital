@@ -40,15 +40,14 @@ export function ContactPhones({ profileData, isOwner }: Props) {
           businessPhone?.map(
             (item: BusinessPhoneProps | undefined, index: number) =>
               item?.phone && (
-                <div key={String(index)} className="flex w-fit gap-1">
-                  <Link
-                    href={`phone:${item.phone}`}
-                    className="flex w-52 flex-1 items-center justify-center gap-1 px-6"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <p className="">{formatPhoneNumber(item.phone)}</p>
-                  </Link>
-                </div>
+                <Link
+                  key={String(index)}
+                  href={`phone:${item.phone}`}
+                  className="flex w-full flex-1 items-center justify-center gap-1 px-6 sm:w-64"
+                >
+                  <Phone className="h-5 w-5" />
+                  <p className="">{formatPhoneNumber(item.phone)}</p>
+                </Link>
               )
           )}
       </div>
@@ -60,18 +59,16 @@ export function ContactPhones({ profileData, isOwner }: Props) {
         )}
         {businessWhatsapp?.map(
           (item: BusinessPhoneProps | undefined, index: number) =>
-            item?.phone && (
-              <div key={String(index)} className="flex w-fit gap-1">
-                {item.isWhatsapp && (
-                  <Link
-                    href={`https://wa.me/+55${item.phone}`}
-                    className="flex w-52 flex-1 items-center justify-center gap-1 bg-accent-green px-6"
-                  >
-                    <Whatsapp className="h-5 w-5" />
-                    <p className="">{item.nameContact}</p>
-                  </Link>
-                )}
-              </div>
+            item?.phone &&
+            item.isWhatsapp && (
+              <Link
+                key={String(index)}
+                href={`https://wa.me/+55${item.phone}`}
+                className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 sm:w-64"
+              >
+                <Whatsapp className="h-5 w-5" />
+                <p className="">{item.nameContact}</p>
+              </Link>
             )
         )}
       </div>
