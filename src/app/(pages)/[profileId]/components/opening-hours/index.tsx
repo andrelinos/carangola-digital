@@ -94,7 +94,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
           {sortedSchedule?.map(([day, { opening, closing, closed }]: any) => (
             <div
               key={day}
-              className={clsx('flex w-full justify-between', {
+              className={clsx('flex w-full justify-between px-4', {
                 'py-2 font-semibold': day === WEEK_DAYS[todayIndex],
               })}
             >

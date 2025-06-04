@@ -6,11 +6,12 @@ import { type AnchorHTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 const linkVariants = cva(
-  'whitespace-nowrap rounded-lg p-3 text-center font-bold text-white hover:opacity-95 disabled:opacity-70',
+  'whitespace-nowrap rounded-lg p-3 text-center font-bold text-zinc-700 hover:opacity-95 disabled:opacity-70',
   {
     variants: {
       variant: {
         default: 'bg-blue-500 hover:cursor-pointer',
+        primary: 'font-semibold underline-offset-4 hover:underline',
         secondary: 'bg-background-tertiary',
         ghost: 'border-border-primary bg-transparent',
       },

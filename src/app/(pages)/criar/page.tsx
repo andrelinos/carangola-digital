@@ -1,7 +1,7 @@
 import { Rocket } from 'lucide-react'
 import type { Metadata } from 'next'
 
-import { Header } from '@/components/header'
+// import { Header } from '@/components/commons/headers'
 import { trackServerEvent } from '@/lib/mixpanel'
 
 import { CreateLinkForm } from './create-link-form'
@@ -18,7 +18,7 @@ export default function CreatePage() {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="mx-auto flex h-screen max-w-xl flex-col items-center justify-center gap-4">
         <div className="flex items-center gap-4">
           <h1 className="font-bold text-4xl ">Escolha seu link</h1>

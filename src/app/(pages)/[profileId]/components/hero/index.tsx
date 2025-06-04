@@ -12,7 +12,8 @@ interface Props {
 export async function HeroBusiness({ profileData, isOwner }: Props) {
   return (
     <div className="relative size-full max-h-[384px] overflow-y-hidden ">
-      <div className="mx-auto flex size-full max-h-[384px] max-w-[1080px] justify-center overflow-hidden">
+      {/* <div className="mx-auto flex size-full max-h-[17vh] max-w-[1080px] justify-center overflow-hidden lg:max-h-[384px]"> */}
+      <div className="flex size-full max-h-[342px] overflow-hidden">
         <Image
           width={1080}
           height={384}
@@ -21,7 +22,7 @@ export async function HeroBusiness({ profileData, isOwner }: Props) {
             '/default-image.png'
           }
           alt={profileData?.name || ''}
-          className="z-10 size-full object-cover object-left-top"
+          className="z-10 mx-auto max-h-[342px] w-auto"
           priority
         />
       </div>

@@ -12,10 +12,10 @@ import { SocialMedia } from '@/app/(pages)/[profileId]/components/social-media'
 
 import { increaseBusinessVisits } from '@/actions/increase-business-visits'
 import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
-import { Header } from '@/components/header'
 import { auth } from '@/lib/auth'
 import { getDownloadURLFromPath } from '@/lib/firebase'
 
+import { HeaderProfile } from '@/components/commons/headers'
 import type { Metadata } from 'next'
 import { EditBusinessInfo } from './components/edit-business-info'
 import { HeroBusiness } from './components/hero'
@@ -66,20 +66,24 @@ export default async function BusinessId({ params }: Props) {
 
   return (
     <>
-      <Header profileData={profileData} />
+      <HeaderProfile profileData={profileData} isOwner={isOwner} />
       <div className="flex flex-col py-32 md:py-36 lg:py-44">
         <HeroBusiness profileData={profileData} isOwner={isOwner} />
         <div className="flex w-full flex-col items-center gap-4 pt-8">
           <div className="relative mx-auto flex w-full max-w-[1080px] flex-col justify-center gap-4 text-center lg:flex-row">
-            <div className="flex justify-center gap-1">
-              <h2 className="font-bold text-4xl">{profileData?.name}</h2>
+            <div className="relative flex justify-center gap-1">
+              <h2 className="px-6 font-bold text-3xl sm:text-4xl">
+                {profileData?.name}
+              </h2>
 
-              {isOwner && (
-                <EditBusinessInfo
-                  profileData={profileData}
-                  imagePath={imagePath}
-                />
-              )}
+              <div className="absolute right-2 z-10 size-8 rounded-full bg-white/70 to-0">
+                {isOwner && (
+                  <EditBusinessInfo
+                    profileData={profileData}
+                    imagePath={imagePath}
+                  />
+                )}
+              </div>
             </div>
 
             <LikeShareButtons

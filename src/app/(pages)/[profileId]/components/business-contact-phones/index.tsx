@@ -5,6 +5,7 @@ import { Phone, Whatsapp } from 'iconoir-react'
 import type { BusinessPhoneProps } from '@/_types/profile-data'
 import { Link } from '@/components/ui/link'
 import { formatPhoneNumber } from '@/lib/utils'
+import Image from 'next/image'
 import { EditContactPhones } from './edit-business-contact-phones'
 
 interface Props {
@@ -43,7 +44,7 @@ export function ContactPhones({ profileData, isOwner }: Props) {
                 <Link
                   key={String(index)}
                   href={`tel:${item.phone}`}
-                  className="flex w-full flex-1 items-center justify-center gap-1 px-6 sm:w-64"
+                  className="flex w-full flex-1 items-center justify-center gap-1 px-6 text-white sm:w-64"
                 >
                   <Phone className="h-5 w-5" />
                   <p className="">{formatPhoneNumber(item.phone)}</p>
@@ -64,8 +65,18 @@ export function ContactPhones({ profileData, isOwner }: Props) {
               <Link
                 key={String(index)}
                 href={`https://wa.me/+55${item.phone}`}
-                className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 sm:w-64"
+                className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 text-white sm:w-64"
               >
+                {item?.imageProfileWhatsApp && (
+                  <span>
+                    <Image
+                      width={24}
+                      height={24}
+                      src={item?.imageProfileWhatsApp || ''}
+                      alt=""
+                    />
+                  </span>
+                )}
                 <Whatsapp className="h-5 w-5" />
                 <p className="">{item.nameContact}</p>
               </Link>

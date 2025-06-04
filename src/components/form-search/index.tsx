@@ -7,12 +7,14 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 import { Loading } from '@/components/commons/loading'
 import { getOperatingStatus } from '@/utils/get-status-from-day'
 import Image from 'next/image'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
 
 interface SearchProps extends ProfileDataProps {
   profileId: string
 }
 
-export default function SearchFormClient() {
+export default function SearchFormBusiness() {
   const [searchTerms, setSearchTerms] = useState('')
   const [resultsSearch, setResultsSearch] = useState<SearchProps[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -41,12 +43,12 @@ export default function SearchFormClient() {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-4 p-4">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-4 py-4">
         <form
           onSubmit={onSubmit}
-          className="mx-auto flex max-w-xl flex-col gap-1 sm:flex-row"
+          className="mx-auto flex w-full max-w-xl flex-col gap-2 sm:flex-row"
         >
-          <input
+          <Input
             type="text"
             name="searchTerms"
             value={searchTerms}
@@ -54,17 +56,19 @@ export default function SearchFormClient() {
             placeholder="Quem você deseja encontrar?"
             className="flex-1 rounded border border-gray-300 px-6 text-xl"
           />
-          <button
+          <Button
             type="submit"
-            className="rounded bg-blue-500 px-4 py-2 text-white"
+            className="rounded bg-blue-500 px-4 py-3 text-white"
           >
             Buscar
-          </button>
+          </Button>
         </form>
 
         {resultsSearch && resultsSearch?.length > 0 && (
           <div className="flex size-full flex-col gap-2 py-8">
-            <h2 className=" py-6 text-center font-bold text-2xl">Resultados</h2>
+            <h2 className=" py-6 text-center font-bold text-2xl">
+              Resultados da sua busca
+            </h2>
             <div className="flex w-full max-w-5xl flex-wrap justify-around gap-6">
               {resultsSearch?.map((profile, index) => (
                 <Link
@@ -98,7 +102,7 @@ export default function SearchFormClient() {
             </div>
           </div>
         )}
-        {resultsSearch && resultsSearch?.length === 0 && (
+        {searchTerms && resultsSearch && resultsSearch?.length === 0 && (
           <div className="flex size-full flex-col py-8">
             <h2 className="py-6 text-center font-bold text-2xl">
               Nenhum resultado encontrado

@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
 import { getTextsBySlug } from '@/app/server/get-texts-by-slug'
-import { Header } from '@/components/header'
 
+import { HeaderHome } from '@/components/commons/headers'
 import { HeroBusiness } from '../../[profileId]/components/hero'
 
 export default async function LinkInBio({
@@ -20,7 +20,7 @@ export default async function LinkInBio({
 
   return (
     <div className="mx-auto max-w-7xl">
-      <Header />
+      <HeaderHome />
       <HeroBusiness profileData={texts} />
       {/* <VideoExplanation />
       <Pricing />

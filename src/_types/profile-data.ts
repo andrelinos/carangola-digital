@@ -34,6 +34,7 @@ export type BusinessAddressProps = {
 export type BusinessPhoneProps = {
   title: string
   phone: string
+  imageProfileWhatsApp?: string
   nameContact: string
   isWhatsapp: boolean
   isOnlyWhatsapp: boolean
