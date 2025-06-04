@@ -45,19 +45,11 @@ export async function HeaderHome({ profileData }: Props) {
             ))}
           </div>
           {!hasProfileLink ? (
-            <Link
-              variant="primary"
-              href="/criar"
-              className="hidden bg-orange-500 px-6 py-2 md:flex"
-            >
+            <Link variant="primary" href="/criar">
               Meu perfil
             </Link>
           ) : (
-            <Link
-              variant="primary"
-              href={`/${session?.user?.myProfileLink}`}
-              className="hidden underline-offset-4 hover:underline md:flex"
-            >
+            <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
               Meu perfil
             </Link>
           )}

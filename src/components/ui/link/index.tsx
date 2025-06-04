@@ -12,7 +12,7 @@ const linkVariants = cva(
       variant: {
         default: 'bg-blue-500 hover:cursor-pointer',
         primary: 'font-semibold underline-offset-4 hover:underline',
-        secondary: 'bg-background-tertiary',
+        secondary: 'bg-zinc-600 text-white',
         ghost: 'border-border-primary bg-transparent',
       },
     },
