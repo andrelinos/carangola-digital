@@ -25,7 +25,7 @@ export function FooterProfile({ profileData, isOwner }: Props) {
         <div className="flex flex-1 justify-end px-4 text-white">{/*  */}</div>
       </div>
       <div className="flex h-32 w-full max-w-screen-xl items-center justify-center text-sm text-zinc-200">
-        Desenvolvido por{' '}
+        Desenvolvido com 💜
         <Link variant="footer" href="https://andrelino.dev/" target="_blank">
           Andrelino Silva
         </Link>

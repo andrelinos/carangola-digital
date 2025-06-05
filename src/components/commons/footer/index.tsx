@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export function Footer() {
   return (
-    <div className="flex w-full justify-center bg-zinc-700">
+    <div className="flex w-full flex-col items-center bg-zinc-700">
       <div className="flex w-full max-w-screen-xl px-4 py-10">
         <div className="w-fit">
           <Link
@@ -52,6 +52,17 @@ export function Footer() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex h-32 w-full max-w-screen-xl items-center justify-center text-sm text-zinc-200">
+        Desenvolvido com 💜 por{' '}
+        <Link
+          variant="footer"
+          href="https://andrelino.dev/"
+          target="_blank"
+          className="ml-1 p-0"
+        >
+          Andrelino Silva
+        </Link>
       </div>
     </div>
   )
