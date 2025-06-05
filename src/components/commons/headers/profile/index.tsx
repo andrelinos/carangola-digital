@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import NextLink from 'next/link'
 
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
@@ -9,6 +8,7 @@ import { auth } from '@/lib/auth'
 import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { getInitialsFullNameAvatar } from '@/utils/get-initials-full-names'
+import { Search } from 'iconoir-react'
 
 interface Props {
   profileData?: ProfileDataProps
@@ -23,22 +23,22 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
   return (
     <div className="absolute top-0 right-0 left-0 z-50 mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
       <div className="flex w-full justify-between">
-        <NextLink
-          href="/"
-          className="flex w-fit items-center justify-center gap-2"
-        >
-          <Image
-            width={80}
-            height={80}
-            className="max-h-14 lg:max-h-16"
-            src="/logo-blue.svg"
-            alt="Logo Carangola Digital"
-          />
-          <h2 className="max-w-[112px] font-bold opacity-90 lg:text-xl">
-            Carangola Digital
-          </h2>
-        </NextLink>
+        <div className="size-full max-h-24 max-w-24 overflow-hidden rounded-lg shadow">
+          {profileData?.imagePath && (
+            <Image
+              width={80}
+              height={80}
+              className="size-full rounded-lg object-cover object-center"
+              src={profileData?.imagePath}
+              alt={profileData?.name || ''}
+            />
+          )}
+        </div>
         <div className="flex items-center gap-4">
+          <Link variant="primary" href="/" className="flex gap-1">
+            <Search /> Buscar
+          </Link>
+
           {!hasProfileLink ? (
             <Link variant="primary" href="/criar">
               Criar perfil

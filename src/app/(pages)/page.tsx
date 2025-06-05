@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { manageAuth } from '@/actions/manage-auth'
-import { HeaderHome } from '@/components/commons/headers'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
@@ -37,10 +36,9 @@ export default async function Home() {
 
   return (
     <>
-      <HeaderHome />
-      <div className="min-h-screen w-full px-4 py-36">
+      <div className="size-full px-4 py-36">
         <div className="flex size-full flex-1 flex-col items-center justify-center">
-          <h1 className="mt-10 max-w-2xl text-center font-bold text-3xl lg:text-5xl">
+          <h1 className=" max-w-2xl text-center font-bold text-3xl lg:text-5xl">
             Encontre em compartilhe estabelecimentos e serviços
           </h1>
           <p className="my-4 max-w-2xl text-center">

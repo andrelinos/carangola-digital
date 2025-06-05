@@ -3,7 +3,7 @@ import 'server-only'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
 
-import { db } from '@/lib/firebase'
+import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function getProfileData(profileId: string) {
   const snapshot = await db.collection('profiles').doc(profileId).get()
@@ -12,9 +12,16 @@ export async function getProfileData(profileId: string) {
     return null
   }
 
-  const data = snapshot.data()
+  const data = snapshot.data() as ProfileDataProps
 
-  return data as ProfileDataProps
+  const imageUrl = await getDownloadURLFromPath(data.imagePath)
+
+  const formattedData = {
+    ...data,
+    imagePath: imageUrl,
+  }
+
+  return formattedData
 }
 
 export async function getUsersData(userId: string) {

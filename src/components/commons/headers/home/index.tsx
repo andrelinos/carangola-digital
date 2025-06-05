@@ -19,7 +19,7 @@ export async function HeaderHome({ profileData }: Props) {
   const hasProfileLink = session?.user?.hasProfileLink || false
 
   return (
-    <div className="absolute top-0 right-0 left-0 z-50 mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
       <div className="flex w-full justify-between">
         <NextLink
           href="/"

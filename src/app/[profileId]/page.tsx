@@ -3,22 +3,21 @@ import Link from 'next/link'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
 
-import { BusinessAddresses } from '@/app/(pages)/[profileId]/components/business-addresses'
-import { ContactPhones } from '@/app/(pages)/[profileId]/components/business-contact-phones'
-import { Description } from '@/app/(pages)/[profileId]/components/business-description'
-import { LikeShareButtons } from '@/app/(pages)/[profileId]/components/like-share-buttons'
-import { ContainerOpeningHours } from '@/app/(pages)/[profileId]/components/opening-hours'
-import { SocialMedia } from '@/app/(pages)/[profileId]/components/social-media'
-
 import { increaseBusinessVisits } from '@/actions/increase-business-visits'
 import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
 import { auth } from '@/lib/auth'
-import { getDownloadURLFromPath } from '@/lib/firebase'
 
+import { FooterProfile } from '@/components/commons/footer-profile'
 import { HeaderProfile } from '@/components/commons/headers'
 import type { Metadata } from 'next'
+import { BusinessAddresses } from './components/business-addresses'
+import { ContactPhones } from './components/business-contact-phones'
+import { Description } from './components/business-description'
 import { EditBusinessInfo } from './components/edit-business-info'
 import { HeroBusiness } from './components/hero'
+import { LikeShareButtons } from './components/like-share-buttons'
+import { ContainerOpeningHours } from './components/opening-hours'
+import { SocialMedia } from './components/social-media'
 
 interface Props {
   params: Promise<{
@@ -44,7 +43,7 @@ export default async function BusinessId({ params }: Props) {
   const userData = (await getUsersData(session?.user?.id || '')) as UserProps
 
   const isOwner = profileData?.userId === session?.user?.id
-  const imagePath = await getDownloadURLFromPath(profileData?.imagePath)
+  // const imagePath = await getDownloadURLFromPath(profileData?.imagePath)
 
   if (!profileData) {
     return (
@@ -76,14 +75,14 @@ export default async function BusinessId({ params }: Props) {
                 {profileData?.name}
               </h2>
 
-              <div className="absolute right-2 z-10 size-8 rounded-full bg-white/70 to-0">
-                {isOwner && (
+              {isOwner && (
+                <div className="absolute top-0 right-1 z-10 size-6 rounded-full bg-white/70">
                   <EditBusinessInfo
                     profileData={profileData}
-                    imagePath={imagePath}
+                    imagePath={profileData?.imagePath}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             <LikeShareButtons
@@ -104,6 +103,7 @@ export default async function BusinessId({ params }: Props) {
           <Description profileData={profileData} isOwner={isOwner} />
         </div>
       </div>
+      <FooterProfile profileData={profileData} isOwner={isOwner} />
     </>
   )
 }

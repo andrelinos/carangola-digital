@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('text-zinc-700 antialiased', quicksand.className)}>
+      <body className={cn(' text-zinc-700 antialiased', quicksand.className)}>
         <StairTransition />
         <PageTransition>{children}</PageTransition>
         <Toaster richColors position="top-right" />

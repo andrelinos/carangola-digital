@@ -54,7 +54,7 @@ export default function SearchFormBusiness() {
             value={searchTerms}
             onChange={e => setSearchTerms(e.target.value)}
             placeholder="Quem você deseja encontrar?"
-            className="flex-1 rounded border border-gray-300 px-6 text-xl"
+            className="flex-1 rounded-lg border border-gray-300 px-6 text-xl"
           />
           <Button
             type="submit"

@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 
 import { getTextsBySlug } from '@/app/server/get-texts-by-slug'
 
+import { HeroBusiness } from '@/app/[profileId]/components/hero'
 import { HeaderHome } from '@/components/commons/headers'
-import { HeroBusiness } from '../../[profileId]/components/hero'
 
 export default async function LinkInBio({
   params,

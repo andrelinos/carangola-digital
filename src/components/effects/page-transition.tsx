@@ -26,7 +26,6 @@ export function PageTransition({ children }: Props) {
           }}
           className="pointer-events-none fixed top-0 h-screen w-screen bg-blue-500/10"
         />
-
         {children}
       </div>
     </AnimatePresence>
