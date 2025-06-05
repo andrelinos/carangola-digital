@@ -46,7 +46,12 @@ export function Footer() {
           <div>
             <h2 className="px-3 font-bold text-xl">Redes sociais</h2>
             <div className="flex flex-col gap-2">
-              <Link variant="footer" href="/" className="flex gap-2">
+              <Link
+                variant="footer"
+                href="https://instagram.com/carangoladigital"
+                className="flex gap-2"
+                target="_blank"
+              >
                 <Instagram /> Instagram
               </Link>
             </div>

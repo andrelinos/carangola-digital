@@ -51,7 +51,9 @@ export default async function Home() {
 
           {!hasProfileLink && (
             <form action={manageAuth} className="w-full max-w-xs pt-16">
-              <Button className="w-full bg-orange-500">Anunciar</Button>
+              <Button className="w-full bg-orange-500">
+                Anunciar seu negócio
+              </Button>
             </form>
           )}
         </div>

@@ -18,6 +18,7 @@ export default function SearchFormBusiness() {
   const [searchTerms, setSearchTerms] = useState('')
   const [resultsSearch, setResultsSearch] = useState<SearchProps[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -37,6 +38,7 @@ export default function SearchFormBusiness() {
     } catch (error) {
       console.error('Erro na busca:', error)
     } finally {
+      setHasSearched(true)
       setIsLoading(false)
     }
   }
@@ -102,13 +104,16 @@ export default function SearchFormBusiness() {
             </div>
           </div>
         )}
-        {searchTerms && resultsSearch && resultsSearch?.length === 0 && (
-          <div className="flex size-full flex-col py-8">
-            <h2 className="py-6 text-center font-bold text-2xl">
-              Nenhum resultado encontrado
-            </h2>
-          </div>
-        )}
+        {hasSearched &&
+          !isLoading &&
+          resultsSearch &&
+          resultsSearch.length === 0 && (
+            <div className="flex size-full flex-col py-8">
+              <h2 className="py-6 text-center font-bold text-2xl">
+                Nenhum resultado encontrado
+              </h2>
+            </div>
+          )}
       </div>
       {isLoading && <Loading />}
     </>
