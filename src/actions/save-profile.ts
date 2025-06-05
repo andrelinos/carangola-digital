@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto'
 
 import { auth } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
+import { generateKeywords } from '@/utils/generate-keywords'
 
 export async function saveProfile(formData: FormData) {
   const session = await auth()
@@ -51,13 +52,23 @@ export async function saveProfile(formData: FormData) {
       imagePath = storageRef.name
     }
 
+    const normalizedName = yourName
+      .normalize('NFD')
+      .replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .trim()
+
+    const keywordsResult = generateKeywords(normalizedName)
+
+    const keywords = [...new Set([...keywordsResult, profileId])]
+
     await db
       .collection('profiles')
       .doc(profileId)
       .update({
         name: yourName,
-
-        nameLower: yourName.toLowerCase(),
+        keywords,
+        nameLower: normalizedName,
         businessDescription: yourDescription,
         ...(hasFile && { imagePath }),
         updatedAt: Timestamp.now().toMillis(),

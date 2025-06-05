@@ -9,6 +9,11 @@ type DaySchedule = {
 
 type WeeklySchedule = Record<string, DaySchedule>
 
+interface GetOperatingStatusProps {
+  schedule: WeeklySchedule
+  currentTime: Date
+}
+
 const dayTranslations: Record<string, string> = {
   Sunday: 'Domingo',
   Monday: 'Segunda-feira',
@@ -19,11 +24,10 @@ const dayTranslations: Record<string, string> = {
   Saturday: 'Sábado',
 }
 
-const currentTime = new Date()
-
-export function getOperatingStatus(
-  schedule: WeeklySchedule
-): JSX.Element | string {
+export function getOperatingStatus({
+  schedule,
+  currentTime,
+}: GetOperatingStatusProps): JSX.Element | string {
   const daysOfWeek = [
     'Sunday',
     'Monday',

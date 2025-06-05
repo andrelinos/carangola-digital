@@ -81,7 +81,10 @@ export default function SearchFormBusiness() {
                 >
                   <div className="flex w-full flex-col gap-2">
                     <div className="flex h-14 w-full items-center justify-center">
-                      {getOperatingStatus(profile.openingHours as any)}
+                      {getOperatingStatus({
+                        schedule: profile.openingHours as any,
+                        currentTime: new Date(),
+                      })}
                     </div>
                     <div className="flex h-[96.735px] w-full items-center justify-center overflow-hidden bg-zinc-100">
                       <Image

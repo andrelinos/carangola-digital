@@ -75,7 +75,10 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
           <div className="flex w-full flex-col gap-2 tracking-tight">
             <div className="flex w-full items-center justify-center">
               <div className="h-10 flex-1 ">
-                {getOperatingStatus(profileData?.openingHours as any)}
+                {getOperatingStatus({
+                  schedule: profileData?.openingHours as any,
+                  currentTime: new Date(),
+                })}
               </div>
             </div>
           </div>

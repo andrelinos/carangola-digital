@@ -19,10 +19,17 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    const normalizedSearchValue = searchValue
+      .normalize('NFD')
+      .replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .trim()
+
     const snapshot = await db
       .collection('profiles')
-      .where('nameLower', '>=', searchValue)
-      .where('nameLower', '<', `${searchValue}\uf8ff`)
+      .where('nameLower', '>=', normalizedSearchValue)
+      .where('nameLower', '<', `${normalizedSearchValue}\uf8ff`)
+      // .where('keywords', 'array-contains', normalizedSearchValue)
       .orderBy('nameLower')
       .limit(20)
       .get()
@@ -37,7 +44,7 @@ export async function POST(request: NextRequest) {
           profileId,
           userId: data.userId,
           name: data.name,
-          imagePath: imageUrl, // URL da imagem já resolvida
+          imagePath: imageUrl,
           totalVisits: data.totalVisits,
           businessAddresses: data.businessAddresses,
           businessPhones: data.businessPhones,
@@ -52,13 +59,14 @@ export async function POST(request: NextRequest) {
       })
     )
 
-    console.log(dataResponse)
-
     return NextResponse.json({
       data: dataResponse,
     })
   } catch (error) {
     // console.error(error)
-    return NextResponse.json({ message: 'Erro interno' }, { status: 500 })
+    return NextResponse.json(
+      { message: 'Erro interno', error },
+      { status: 500 }
+    )
   }
 }
