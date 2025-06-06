@@ -43,7 +43,6 @@ export default async function BusinessId({ params }: Props) {
   const userData = (await getUsersData(session?.user?.id || '')) as UserProps
 
   const isOwner = profileData?.userId === session?.user?.id
-  // const imagePath = await getDownloadURLFromPath(profileData?.imagePath)
 
   if (!profileData) {
     return (
@@ -70,10 +69,14 @@ export default async function BusinessId({ params }: Props) {
         <HeroBusiness profileData={profileData} isOwner={isOwner} />
         <div className="flex w-full flex-col items-center gap-4 pt-8">
           <div className="relative mx-auto flex w-full max-w-[1080px] flex-col justify-center gap-4 text-center lg:flex-row">
-            <div className="relative flex justify-center gap-1">
+            <div className="relative flex flex-col items-center gap-1">
               <h2 className="px-6 font-bold text-3xl sm:text-4xl">
                 {profileData?.name}
               </h2>
+              <div className="flex text-base">
+                <span className="font-medium">Categoria</span>:
+                <span className="pl-2">{profileData.category || 'Geral'}</span>
+              </div>
 
               {isOwner && (
                 <div className="absolute top-0 right-1 z-10 size-6 rounded-full bg-white/70">
@@ -96,13 +99,14 @@ export default async function BusinessId({ params }: Props) {
 
           <ContactPhones profileData={profileData} isOwner={isOwner} />
 
-          <SocialMedia profileData={profileData} isOwner={isOwner} />
-
           <BusinessAddresses profileData={profileData} isOwner={isOwner} />
 
           <Description profileData={profileData} isOwner={isOwner} />
+
+          <SocialMedia profileData={profileData} isOwner={isOwner} />
         </div>
       </div>
+
       <FooterProfile profileData={profileData} isOwner={isOwner} />
     </>
   )

@@ -15,6 +15,7 @@ export async function saveProfile(formData: FormData) {
   try {
     const profileId = formData.get('profileId') as string
     const yourName = formData.get('yourName') as string
+    const category = formData.get('category') as string
     const yourDescription = formData.get('yourDescription') as string
     const file = formData.get('businessPic') as File
 
@@ -67,6 +68,7 @@ export async function saveProfile(formData: FormData) {
       .doc(profileId)
       .update({
         name: yourName,
+        category,
         keywords,
         nameLower: normalizedName,
         businessDescription: yourDescription,

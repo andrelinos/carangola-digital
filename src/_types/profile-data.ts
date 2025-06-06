@@ -50,6 +50,7 @@ export type ProfileDataProps = {
   totalVisits: number
   createdAt: number
   name: string
+  category: string
   imagePath: string
   favorites: BusinessFavoritesProps[]
   openingHours: Record<WeekDayProps, TimeRangeProps[]>

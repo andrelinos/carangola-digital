@@ -86,13 +86,24 @@ export default function SearchFormBusiness() {
                         currentTime: new Date(),
                       })}
                     </div>
-                    <div className="flex h-[96.735px] w-full items-center justify-center overflow-hidden bg-zinc-100">
+                    <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">
                       <Image
-                        width={400}
+                        width={100}
                         height={100}
-                        className="size-full object-cover object-left-top"
+                        className="z-10 max-h-24 shadow-2xl lg:max-h-24"
                         src={profile.imagePath || '/default-image.png'}
                         alt={profile.name}
+                        priority
+                      />
+                      <Image
+                        id="background-image"
+                        loading="eager"
+                        src={profile?.imagePath || '/default-image.png'}
+                        className="absolute z-0 size-full object-cover object-center opacity-90 blur-md"
+                        alt={profile?.name || ''}
+                        quality={10}
+                        fill
+                        unoptimized
                         priority
                       />
                     </div>

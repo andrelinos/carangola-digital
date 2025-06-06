@@ -25,37 +25,43 @@ export function ContactPhones({ profileData, isOwner }: Props) {
   )
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-1 bg-green-50 p-4">
+    <div className="mt-6 flex w-full flex-col gap-1 bg-green-50 px-4 pt-6 pb-12">
       <div className="flex w-full justify-center gap-1 text-center">
         <h2 className=" max-w-lg text-center font-bold text-xl">
           Telefones de contato
         </h2>
         {isOwner && <EditContactPhones profileData={profileData} />}
       </div>
-      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
         {(!businessPhone || businessPhone.length === 0) && (
           <p>Nenhum telefone para contato</p>
         )}
 
-        {businessPhones?.length >= 1 &&
-          businessPhone?.map(
-            (item: BusinessPhoneProps | undefined, index: number) =>
-              item?.phone && (
-                <Link
-                  key={String(index)}
-                  href={`tel:${item.phone}`}
-                  className="flex w-full flex-1 items-center justify-center gap-1 px-6 text-white sm:w-64"
-                >
-                  <Phone className="h-5 w-5" />
-                  <p className="">{formatPhoneNumber(item.phone)}</p>
-                </Link>
-              )
-          )}
+        {businessPhones?.length >= 1 && (
+          <>
+            <h2 className="mt-6 max-w-lg text-center font-bold text-lg">
+              Telefones
+            </h2>
+            {businessPhone?.map(
+              (item: BusinessPhoneProps | undefined, index: number) =>
+                item?.phone && (
+                  <Link
+                    key={String(index)}
+                    href={`tel:${item.phone}`}
+                    className="flex w-full flex-1 items-center justify-center gap-1 px-6 text-white sm:w-64"
+                  >
+                    <Phone className="h-5 w-5" />
+                    <p className="">{formatPhoneNumber(item.phone)}</p>
+                  </Link>
+                )
+            )}
+          </>
+        )}
       </div>
-      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
         {!!businessWhatsapp?.length && (
           <h2 className=" mt-8 max-w-lg text-center font-bold text-lg">
-            Contatos de WhatsApp
+            WhatsApp
           </h2>
         )}
         {businessWhatsapp?.map(

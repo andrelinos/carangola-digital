@@ -4,16 +4,18 @@ import { EditPencil } from 'iconoir-react'
 import { ArrowUpFromLine } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { type ChangeEvent, startTransition, useState } from 'react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { saveProfile } from '@/actions/save-profile'
+import { categories } from '@/assets/data/categories'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button/index'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
+import { Select } from '@/components/ui/select'
 import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -31,6 +33,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
 
   const [name, setName] = useState(profileData?.name || '')
   const [profilePic, setProfilePic] = useState<string | null>(imagePath || null)
+  const [category, setCategory] = useState(profileData?.category || '')
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -38,6 +41,11 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
 
   function onClose() {
     setIsOpen(!isOpen)
+  }
+
+  function handleSelectChange(e: ChangeEvent<HTMLSelectElement>): void {
+    const value = (e.target as HTMLSelectElement).value
+    setCategory(value)
   }
 
   async function handleSaveProfile() {
@@ -56,6 +64,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
       formData.append('profileId', profileId)
       formData.append('businessPic', compressedFile[0])
       formData.append('yourName', name)
+      formData.append('category', category)
 
       await saveProfile(formData)
       toast.success('Perfil atualizado com sucesso!')
@@ -133,6 +142,13 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
               placeholder="Informe o nome do seu negócio"
               value={name}
               onChange={e => setName(e.target.value)}
+            />
+            <Select
+              options={categories}
+              placeholder="Selecione uma opção"
+              title="Categoria"
+              selected={category}
+              handleSelectChange={handleSelectChange}
             />
           </div>
 

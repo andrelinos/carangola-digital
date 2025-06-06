@@ -5,8 +5,8 @@ import Image from 'next/image'
 export function Footer() {
   return (
     <div className="flex w-full flex-col items-center bg-zinc-700">
-      <div className="flex w-full max-w-screen-xl px-4 py-10">
-        <div className="w-fit">
+      <div className="flex w-full max-w-screen-xl flex-wrap px-4 py-10">
+        <div className="w-fit pb-16">
           <Link
             variant="ghost"
             href="/"
@@ -24,7 +24,7 @@ export function Footer() {
             </h2>
           </Link>
         </div>
-        <div className="flex flex-1 justify-end px-4 text-white">
+        <div className="flex flex-1 flex-wrap px-4 text-white md:justify-end">
           <div>
             <h2 className="px-3 font-bold text-xl">Links rápidos</h2>
             <div className="flex flex-col gap-2">

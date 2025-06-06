@@ -42,19 +42,8 @@ export async function POST(request: NextRequest) {
 
         return {
           profileId,
-          userId: data.userId,
-          name: data.name,
+          ...data,
           imagePath: imageUrl,
-          totalVisits: data.totalVisits,
-          businessAddresses: data.businessAddresses,
-          businessPhones: data.businessPhones,
-          openingHours: data.openingHours,
-          businessSocialMedias: data.socialMedias,
-          socialMedias: data.socialMedias,
-          favorites: data.favorites,
-          businessDescription: data.businessDescription,
-          createdAt: data.createdAt,
-          updatedAt: data.updatedAt,
         } as ProfileDataProps
       })
     )
