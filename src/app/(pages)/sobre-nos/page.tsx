@@ -2,7 +2,7 @@ import { Link } from '@/components/ui/link'
 
 export default function AboutUs() {
   return (
-    <section className="mx-auto flex max-w-4xl flex-col px-4 py-12">
+    <section className="mx-auto flex max-w-screen flex-col px-4 py-12 lg:max-w-4xl">
       <h1 className="mb-6 font-semibold text-4xl">
         Sobre o Carangola Digital🌟
       </h1>
@@ -19,7 +19,7 @@ export default function AboutUs() {
 
       <h2 className="mt-6 mb-4 font-semibold text-2xl">Como funciona?</h2>
 
-      <ul className="mb-4 list-inside list-none space-y-2">
+      <ul className="list-inside list-none space-y-2 pb-4">
         <li>
           ✅ Com o Carangola Digital, os estabelecimentos da cidade podem se{' '}
           <strong>cadastrar gratuitamente</strong>.
@@ -28,16 +28,16 @@ export default function AboutUs() {
           ✅ Eles recebem uma <strong>página de perfil personalizada</strong>,
           como:
           <br />
-          <code className="pl-6">
+          <code className="text-wrap md:pl-6">
             https://carangoladigital.com.br/nome-estabelecimento
           </code>
           <br />{' '}
           <p
-            className="bg-zinc-100 pl-6"
+            className="flex flex-wrap text-wrap bg-zinc-100 md:pl-6"
             title="Exemplo de link de um estabelecimento"
           >
-            Exemplo:
-            <Link variant="ghost" href="/andrelino">
+            <span>Exemplo:</span>
+            <Link variant="ghost" href="/andrelino" className="text-wrap">
               https://carangoladigital.com.br/andrelino
             </Link>
           </p>

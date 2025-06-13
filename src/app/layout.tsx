@@ -6,6 +6,7 @@ import { Toaster } from 'sonner'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 
+import { CookieBanner } from '@/components/commons/cookie-banner'
 import { PageTransition, StairTransition } from '@/components/effects'
 import { cn } from '@/lib/utils'
 import { serverEnv } from '@/utils/env'
@@ -32,7 +33,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(' text-zinc-700 antialiased', quicksand.className)}>
         <StairTransition />
-        <PageTransition>{children}</PageTransition>
+        <PageTransition>
+          {children}
+          <CookieBanner />
+        </PageTransition>
+
         <Toaster richColors position="top-right" />
       </body>
       <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />

@@ -1,15 +1,6 @@
-export default function ContactPage() {
-  const Email = () => {
-    const user = 'andrelinodev'
-    const domain = 'gmail.com'
-    const email = `${user}@${domain}`
-    return (
-      <a href={`mailto:${email}`} className="text-blue-500 hover:underline">
-        {email}
-      </a>
-    )
-  }
+import { EmailDev } from '@/assets/email-dev'
 
+export default function ContactPage() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-12">
       <h1 className="mb-6 font-semibold text-4xl">Fale Conosco</h1>
@@ -29,7 +20,19 @@ export default function ContactPage() {
             📍 <strong>Cidade:</strong> Carangola/MG
           </li>
           <li>
-            📧 <strong>E-mail:</strong> <Email />
+            📸 <strong>Instagram Carangola Digital:</strong>{' '}
+            <a
+              className="text-blue-500 hover:underline"
+              href="https://instagram.com/carangoladigital"
+              target="_blank"
+              rel="noreferrer"
+            >
+              @andrelinossilva
+            </a>
+          </li>
+          <p className="mt-8 font-bold text-xl">Desenvolvedor </p>
+          <li>
+            📧 <strong>E-mail:</strong> <EmailDev />
           </li>
           <li>
             📸 <strong>Instagram:</strong>{' '}

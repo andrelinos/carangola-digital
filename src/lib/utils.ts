@@ -78,10 +78,26 @@ export function handleImageInput(e: ChangeEvent<HTMLInputElement>) {
 
 export function formatPhoneNumber(phoneNumber: string) {
   const cleaned = phoneNumber.replace(/\D/g, '')
-  const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/)
-  if (match) {
-    return `(${match[1]}) ${match[2]}-${match[3]}`
+
+  // Verifica se é um celular: 11 dígitos e o terceiro dígito é 9
+  const isMobile = cleaned.length === 11 && cleaned[2] === '9'
+
+  let match: RegExpMatchArray | null = null
+
+  if (isMobile) {
+    // Formata celular: (XX) 9XXXX-XXXX
+    match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/)
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`
+    }
+  } else {
+    // Formata número fixo: (XX) XXXX-XXXX
+    match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/)
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`
+    }
   }
+
   return phoneNumber
 }
 

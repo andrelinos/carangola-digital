@@ -1,20 +1,13 @@
 import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
+import { pathsSitemap } from '@/assets/data/paths-to-sitemap'
 import type { MetadataRoute } from 'next'
 import { getAllProfileData } from './server/get-all-profile-data'
-import { socialMedias } from './server/get-texts-by-slug'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://carangoladigital.com.br'
   const lastModified = new Date().toISOString()
 
   const profiles = await getAllProfileData()
-
-  const socialMediasList: MetadataRoute.Sitemap = socialMedias.map(profile => ({
-    url: `${siteUrl}/${profile}`,
-    changeFrequency: 'monthly',
-    priority: 0.5,
-    lastModified,
-  }))
 
   const allowedProfiles = profiles?.filter(profile => {
     const profileIdNormalized = profile.profileId.toLowerCase()
@@ -29,14 +22,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     })) || []
 
-  const staticEntries: MetadataRoute.Sitemap[number][] = [
-    {
-      url: siteUrl,
+  const staticEntries: MetadataRoute.Sitemap[number][] = pathsSitemap.map(
+    path => ({
+      url: `${siteUrl}${path}`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 1,
-    },
-  ]
+      priority: 0.7,
+    })
+  )
 
-  return [...staticEntries, ...socialMediasList, ...dynamicEntries]
+  return [...staticEntries, ...dynamicEntries]
 }

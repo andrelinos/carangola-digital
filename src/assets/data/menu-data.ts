@@ -2,14 +2,17 @@ export const menus = [
   {
     title: 'Home',
     href: '/',
-    // icon: <ListChecks />
   },
   {
-    title: 'Sobre nós',
+    title: 'Sobre',
     href: '/sobre-nos',
   },
   {
-    title: 'Fale conosco',
+    title: 'Contato',
     href: '/fale-conosco',
+  },
+  {
+    title: 'Telefones úteis',
+    href: '/telefones-uteis',
   },
 ]
