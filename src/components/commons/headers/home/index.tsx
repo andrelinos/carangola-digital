@@ -57,7 +57,10 @@ export async function HeaderHome({ profileData }: Props) {
             ))}
           <form action={manageAuth} className="w-fit ">
             {!session && (
-              <Button variant="link" className="text-zinc-700">
+              <Button
+                variant="link"
+                className="text-zinc-700 hover:cursor-pointer"
+              >
                 Entrar
               </Button>
             )}
