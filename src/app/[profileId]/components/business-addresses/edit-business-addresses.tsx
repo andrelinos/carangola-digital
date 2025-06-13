@@ -237,7 +237,7 @@ export function EditBusinessAddresses({ data }: Props) {
                       <Button
                         data-index={index}
                         variant="link"
-                        className="size-4 p-0 text-rose-400 transition-all duration-300 hover:scale-125 hover:cursor-pointer"
+                        className="size-4 p-0 text-rose-400 transition-all duration-300 hover:animate-bounce hover:cursor-pointer"
                         onClick={handleDeleteAddress}
                       >
                         <Trash className="size-4" />
@@ -249,12 +249,8 @@ export function EditBusinessAddresses({ data }: Props) {
             })}
           </div>
           <div className="flex w-full justify-end">
-            <Button
-              variant="link"
-              className="m-0 flex items-center py-0 text-xs text-zinc-700 hover:cursor-pointer hover:text-blue-500"
-              onClick={handleNewAddress}
-            >
-              <Plus /> Adicionar no endereço
+            <Button variant="new" onClick={handleNewAddress}>
+              <Plus /> Adicionar novo endereço
             </Button>
           </div>
 

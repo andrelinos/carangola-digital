@@ -1,7 +1,5 @@
 import Image from 'next/image'
 
-import NextLink from 'next/link'
-
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
@@ -11,6 +9,7 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { getInitialsFullNameAvatar } from '@/utils/get-initials-full-names'
 import { Search } from 'iconoir-react'
+import { LogoHeader } from '../logo-header'
 
 interface Props {
   profileData?: ProfileDataProps
@@ -23,24 +22,9 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
   const hasProfileLink = session?.user?.hasProfileLink || false
 
   return (
-    <div className="absolute top-0 right-0 left-0 z-50 mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-4">
       <div className="flex w-full justify-between">
-        <NextLink
-          href="/"
-          className="flex w-fit items-center justify-center gap-2"
-        >
-          <Image
-            width={80}
-            height={80}
-            className="h-full max-h-14 w-auto lg:max-h-16"
-            src="/logo-blue.svg"
-            alt="Logo Carangola Digital"
-            priority
-          />
-          <h2 className="max-w-[112px] font-bold opacity-90 lg:text-xl">
-            Carangola Digital
-          </h2>
-        </NextLink>
+        <LogoHeader />
         <div className="flex items-center gap-4">
           <Link variant="primary" href="/" className="flex gap-1">
             <Search /> Buscar
@@ -62,7 +46,7 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
               )
             ))}
 
-          <form action={manageAuth} className="w-fit ">
+          <form action={manageAuth} className="w-fit">
             {session ? (
               <div className="flex min-w-8 items-center justify-center overflow-hidden rounded-full bg-white font-medium ">
                 {session?.user?.image ? (
@@ -70,7 +54,7 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
                     <button
                       type="button"
                       onClick={manageAuth}
-                      className="px-4 text-left font-semibold outline-0 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-rose-400"
+                      className="text-left font-semibold outline-0 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-rose-400"
                     >
                       Sair
                     </button>

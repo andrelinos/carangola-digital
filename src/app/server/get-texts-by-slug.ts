@@ -6,23 +6,50 @@ export const socialMedias = [
   'x',
   'facebook',
   'youtube',
-]
+  'google',
+  'tiktok',
+  'pinterest',
+  'whatsapp',
+] as const
 
-export async function getTextsBySlug(slug: string) {
-  for (const socialMedia of socialMedias) {
-    const mediaSlug = `link-na-bio-para-${socialMedia}`
-    if (slug === mediaSlug) {
-      const capitalizeSocialMedia =
-        socialMedia.charAt(0).toUpperCase() + socialMedia.slice(1)
+export type SocialMedia = (typeof socialMedias)[number]
 
-      return {
-        name: `Link na bio para ${capitalizeSocialMedia}`,
-        description: `Divulgue seu negócio para todos no ${capitalizeSocialMedia}`,
-        imagePath: '/images/og-image.png',
-        totalVisits: 12356,
-      }
-    }
+export interface SocialMediaText {
+  name: string
+  description: string
+  imagePath: string
+  totalVisits: number
+}
+
+/**
+ * Retorna os textos e dados associados a um slug específico.
+ * Se o slug corresponder ao padrão "link-na-bio-para-{socialMedia}", retorna
+ * as informações associadas a essa social media. Caso contrário, retorna undefined.
+ *
+ * @param slug - O slug a ser verificado.
+ * @returns Um objeto SocialMediaText ou undefined.
+ */
+export async function getTextsBySlug(
+  slug: string
+): Promise<SocialMediaText | undefined> {
+  // Encontra a mídia social que corresponde ao slug fornecido.
+  const matchedMedia = socialMedias.find(
+    socialMedia => slug === `link-na-bio-para-${socialMedia}`
+  )
+
+  // Se nenhum slug válido for encontrado, retorna undefined.
+  if (!matchedMedia) {
+    return undefined
   }
 
-  return undefined
+  // Capitaliza o nome da mídia social.
+  const capitalizeSocialMedia =
+    matchedMedia.charAt(0).toUpperCase() + matchedMedia.slice(1)
+
+  return {
+    name: `Link na bio para ${capitalizeSocialMedia}`,
+    description: `Divulgue seu negócio para todos no ${capitalizeSocialMedia}`,
+    imagePath: '/images/og-image.png',
+    totalVisits: 12356, // Valor estático - ajuste se necessário.
+  }
 }

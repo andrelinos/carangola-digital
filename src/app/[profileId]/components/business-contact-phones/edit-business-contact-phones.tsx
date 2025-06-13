@@ -310,7 +310,7 @@ export function EditContactPhones({ profileData }: Props) {
                       <Button
                         data-index={index}
                         variant="link"
-                        className="size-4 p-0 text-rose-400 transition-all duration-300 hover:scale-125 hover:cursor-pointer"
+                        className="size-4 p-0 text-rose-400 transition-all duration-300 hover:animate-bounce hover:cursor-pointer"
                         onClick={handleDeletePhone}
                       >
                         <Trash className="size-4" />
@@ -321,11 +321,7 @@ export function EditContactPhones({ profileData }: Props) {
               })}
             </div>
             <div className="flex w-full justify-end pb-6">
-              <Button
-                variant="link"
-                className="m-0 flex items-center py-0 text-xs hover:cursor-pointer hover:text-blue-500"
-                onClick={handleNewPhone}
-              >
+              <Button variant="new" onClick={handleNewPhone}>
                 <Plus />
                 Adicionar novo telefone
               </Button>

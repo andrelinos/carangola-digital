@@ -25,8 +25,8 @@ export function ContactPhones({ profileData, isOwner }: Props) {
   )
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-1 bg-green-50 px-4 pt-6 pb-12">
-      <div className="flex w-full justify-center gap-1 text-center">
+    <div className="mt-6 flex w-full flex-col gap-1 px-4 pt-6 pb-12 shadow-lg">
+      <div className="flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
         <h2 className=" max-w-lg text-center font-bold text-xl">
           Telefones de contato
         </h2>

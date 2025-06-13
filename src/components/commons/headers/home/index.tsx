@@ -1,6 +1,3 @@
-import Image from 'next/image'
-import NextLink from 'next/link'
-
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
@@ -8,6 +5,7 @@ import { auth } from '@/lib/auth'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { menus } from '@/assets/data/menu-data'
 import { Link } from '@/components/ui/link'
+import { LogoHeader } from '../logo-header'
 
 interface Props {
   profileData?: ProfileDataProps
@@ -21,22 +19,7 @@ export async function HeaderHome({ profileData }: Props) {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-6">
       <div className="flex w-full justify-between">
-        <NextLink
-          href="/"
-          className="flex w-fit items-center justify-center gap-2"
-        >
-          <Image
-            width={80}
-            height={80}
-            className="size-auto max-h-14 lg:max-h-16"
-            src="/logo-blue.svg"
-            alt="Logo Carangola Digital"
-            priority
-          />
-          <h2 className="max-w-[112px] font-bold opacity-90 lg:text-xl">
-            Carangola Digital
-          </h2>
-        </NextLink>
+        <LogoHeader />
         <div className="flex items-center gap-4">
           <div className="hidden items-center gap-4 md:flex">
             {menus.map(menu => (

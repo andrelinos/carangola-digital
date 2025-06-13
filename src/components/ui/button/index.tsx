@@ -12,6 +12,7 @@ const buttonVariants = cva(
         default: 'bg-blue-500 text-white hover:cursor-pointer',
         secondary: 'bg-background-tertiary',
         ghost: 'border-border-primary bg-transparent text-zinc-700',
+        new: 'm-0 flex items-center border border-zinc-400 py-1 text-xs text-zinc-700 hover:cursor-pointer hover:border-blue-500 hover:bg-blue-500 hover:text-white',
         link: 'bg-transparent text-blue-500 underline-offset-4 hover:underline',
         destructive: 'bg-red-500 hover:cursor-pointer',
         outline:

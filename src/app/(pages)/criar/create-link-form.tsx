@@ -8,6 +8,7 @@ import { verifyLink } from '@/actions/verify-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
 import { sanitizeLink } from '@/lib/utils'
 
 export function CreateLinkForm() {
@@ -30,6 +31,21 @@ export function CreateLinkForm() {
 
     if (!link) {
       setError('Escolha um link antes de continuar :)')
+      return
+    }
+
+    if (link.length < 3) {
+      setError('O link deve ter pelo menos 3 caracteres')
+      return
+    }
+
+    if (link.length > 30) {
+      setError('O link deve ter no máximo 30 caracteres')
+      return
+    }
+
+    if (forbiddenProfiles.some(profile => link.includes(profile))) {
+      setError('Este link não é permitido.')
       return
     }
 

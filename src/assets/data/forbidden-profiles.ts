@@ -1,0 +1,73 @@
+export const forbiddenProfiles = [
+  // Autenticação e administração
+  'admin',
+  'login',
+  'root',
+  'register',
+  'reset-password',
+  'forgot-password',
+  'verify-email',
+  'teste',
+  'carangola',
+  'carangoladigital',
+
+  // Nomes reservados para institucional
+  'sitemap',
+  'privacy',
+  'terms',
+  'about',
+  'contact',
+
+  // Rotas administrativas e de configurações
+  'dashboard',
+  'settings',
+  'support',
+  'help',
+  'maintenance',
+  'backup',
+
+  // Endpoints e recursos estáticos
+  'api',
+  'assets',
+  'static',
+  'public',
+  'server',
+  'client',
+
+  // Nomes que poderiam colidir com perfis de usuário
+  'profile',
+  'profiles',
+  'user',
+  'users',
+  'home',
+  'news',
+  'blog',
+
+  // Outros caminhos específicos que você quer reservar
+  'feed',
+  'search',
+  'explore',
+  'notification',
+  'notifications',
+  'messages',
+  'inbox',
+  'checkout',
+  'cart',
+  'payment',
+  'billing',
+  'orders',
+  'transactions',
+  'report',
+  'reports',
+  'statistics',
+  'analytics',
+  'webhooks',
+  'integrations',
+  'plugins',
+  'extensions',
+  'debug',
+  'health',
+  'status',
+  'robots.txt',
+  '.well-known',
+]

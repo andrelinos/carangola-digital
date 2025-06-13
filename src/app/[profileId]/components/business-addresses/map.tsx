@@ -116,7 +116,7 @@ export const MapPage = ({ coordinates, setCoordinates }: Props) => {
       <Button
         variant="default"
         onClick={handleOpenModal}
-        className="ml-auto flex size-fit gap-1 bg-orange-500 text-zinc-700 shadow-xl hover:bg-orange-600"
+        className="ml-auto flex size-fit gap-1 bg-zinc-200 text-zinc-700 shadow-xl hover:bg-zinc-600 hover:text-white"
       >
         <MapIconButton className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
         <span className="text-xs">Selecionar no mapa</span>

@@ -13,6 +13,7 @@ const linkVariants = cva(
         default: 'bg-blue-500 hover:cursor-pointer',
         primary: 'font-semibold underline-offset-4 hover:underline',
         secondary: 'bg-zinc-600 text-white',
+        tertiary: 'font-semibold underline-offset-4 hover:brightness-95',
         ghost: 'border-border-primary bg-transparent',
         footer:
           'text-left font-normal text-white transition-all duration-300 ease-in-out hover:cursor-pointer hover:underline hover:underline-offset-4',

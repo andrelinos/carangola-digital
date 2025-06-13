@@ -35,8 +35,8 @@ export function SocialMedia({ profileData, isOwner }: Props) {
   const socialMedias = profileData?.socialMedias as SocialMediasProps | any
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-1 bg-gray-50 px-4 pt-6 pb-12">
-      <div className="flex w-full justify-center gap-1 text-center">
+    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
+      <div className="mb-6 flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
         <h2 className="text-center font-bold text-xl">Redes sociais</h2>
         {isOwner && <EditBusinessSocialMedias profileData={profileData} />}
       </div>

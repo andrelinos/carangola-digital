@@ -56,7 +56,7 @@ export function RemoveAdminFromManagerProfile({ adminUID }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <Trash className="size-4 text-zinc-400 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-red-500" />
+        <Trash className="size-4 text-zinc-400 transition-all duration-300 ease-in-out hover:animate-bounce hover:cursor-pointer hover:text-red-500" />
       </ButtonForOwnerOnly>
 
       <Modal
