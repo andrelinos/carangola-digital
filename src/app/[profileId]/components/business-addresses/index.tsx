@@ -1,4 +1,4 @@
-import { Car, MapPin } from 'iconoir-react'
+import { MapPin } from 'iconoir-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 
@@ -26,20 +26,7 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
         {businessAddresses?.map((item, index) => {
           return (
             item.address && (
-              <Link
-                key={String(index)}
-                className="flex items-center gap-2 hover:underline"
-                href={
-                  (item?.latitude &&
-                    item?.latitude &&
-                    generateGoogleMapsLink({
-                      latitude: Number(item.latitude),
-                      longitude: Number(item.longitude),
-                    })) ||
-                  ''
-                }
-                target="_blank"
-              >
+              <div key={String(index)} className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <MapPin className="size-4" />
                   <div className="transition-all duration-300 ease-in-out ">
@@ -47,8 +34,24 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                   </div>
                 </div>
 
-                {item.latitude && item.longitude && <Car className="size-4" />}
-              </Link>
+                {item.latitude && item.longitude && (
+                  <Link
+                    className="flex items-center gap-2 font-medium text-blue-500 text-xs hover:underline"
+                    href={
+                      (item?.latitude &&
+                        item?.latitude &&
+                        generateGoogleMapsLink({
+                          latitude: Number(item.latitude),
+                          longitude: Number(item.longitude),
+                        })) ||
+                      ''
+                    }
+                    target="_blank"
+                  >
+                    Como chegar
+                  </Link>
+                )}
+              </div>
             )
           )
         })}

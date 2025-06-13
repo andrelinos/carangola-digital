@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
+import { menus } from '@/assets/data/menu-data'
 import { Link } from '@/components/ui/link'
-import { menus } from '../menu-data'
 
 interface Props {
   profileData?: ProfileDataProps
@@ -45,15 +45,16 @@ export async function HeaderHome({ profileData }: Props) {
               </Link>
             ))}
           </div>
-          {!hasProfileLink ? (
-            <Link variant="primary" href="/criar">
-              Meu perfil
-            </Link>
-          ) : (
-            <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
-              Meu perfil
-            </Link>
-          )}
+          {session &&
+            (!hasProfileLink ? (
+              <Link variant="primary" href="/criar">
+                Meu perfil
+              </Link>
+            ) : (
+              <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
+                Meu perfil
+              </Link>
+            ))}
           <form action={manageAuth} className="w-fit ">
             {!session && (
               <Button variant="link" className="text-zinc-700">

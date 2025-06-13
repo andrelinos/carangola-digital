@@ -46,17 +46,21 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
             <Search /> Buscar
           </Link>
 
-          {!hasProfileLink ? (
-            <Link variant="primary" href="/criar">
-              Criar perfil
-            </Link>
-          ) : (
-            !isOwner && (
-              <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
-                Meu perfil
+          {session &&
+            (!hasProfileLink ? (
+              <Link variant="primary" href="/criar">
+                Criar perfil
               </Link>
-            )
-          )}
+            ) : (
+              !isOwner && (
+                <Link
+                  variant="primary"
+                  href={`/${session?.user?.myProfileLink}`}
+                >
+                  Meu perfil
+                </Link>
+              )
+            ))}
 
           <form action={manageAuth} className="w-fit ">
             {session ? (
@@ -87,8 +91,8 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
               </div>
             ) : (
               <Button
-                variant="ghost"
-                className="h-12 min-w-40 rounded-lg bg-blue-500 p-0 px-2 hover:cursor-pointer"
+                variant="link"
+                className="text-zinc-700 hover:cursor-pointer"
               >
                 Entrar
               </Button>

@@ -1,3 +1,4 @@
+import { menus } from '@/assets/data/menu-data'
 import { Link } from '@/components/ui/link'
 import { Instagram } from 'iconoir-react'
 import Image from 'next/image'
@@ -29,12 +30,12 @@ export function Footer() {
           <div>
             <h2 className="px-3 font-bold text-xl">Links rápidos</h2>
             <div className="flex flex-col gap-2">
-              <Link variant="footer" href="/sobre-nos">
-                Sobre nós
-              </Link>
-              <Link variant="footer" href="/contato">
-                Fale conosco
-              </Link>
+              {menus.map(menu => (
+                <Link variant="footer" key={menu.title} href={menu.href}>
+                  {menu.title}
+                </Link>
+              ))}
+
               <Link variant="footer" href="/policita-de-privacidade">
                 Política de privacidade
               </Link>
