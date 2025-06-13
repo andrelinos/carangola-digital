@@ -27,8 +27,8 @@ export type BusinessAddressProps = {
   address: string
   neighborhood: string
   cep: string
-  latitude: string
-  longitude: string
+  latitude: number
+  longitude: number
 }
 
 export type BusinessPhoneProps = {
@@ -45,11 +45,18 @@ export type BusinessFavoritesProps = {
   businessId: string
 }
 
+export type AdminsProfileProps = {
+  userId: string
+  email: string
+  name: string
+}
+
 export type ProfileDataProps = {
   userId: string
   totalVisits: number
   createdAt: number
   name: string
+  admins: AdminsProfileProps[]
   category: string
   imagePath: string
   favorites: BusinessFavoritesProps[]

@@ -90,11 +90,12 @@ export default function SearchFormBusiness() {
                       <Image
                         width={100}
                         height={100}
-                        className="z-10 max-h-24 shadow-2xl lg:max-h-24"
+                        className="z-10 h-full max-h-24 w-auto shadow-2xl lg:max-h-24"
                         src={profile.imagePath || '/default-image.png'}
                         alt={profile.name}
                         priority
                       />
+
                       <Image
                         id="background-image"
                         loading="eager"

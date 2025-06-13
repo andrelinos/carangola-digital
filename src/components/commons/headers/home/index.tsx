@@ -28,9 +28,10 @@ export async function HeaderHome({ profileData }: Props) {
           <Image
             width={80}
             height={80}
-            className="max-h-14 lg:max-h-16"
+            className="size-auto max-h-14 lg:max-h-16"
             src="/logo-blue.svg"
             alt="Logo Carangola Digital"
+            priority
           />
           <h2 className="max-w-[112px] font-bold opacity-90 lg:text-xl">
             Carangola Digital

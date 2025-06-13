@@ -108,6 +108,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
                     setProfilePic('/default-image.png')
                     e.currentTarget.onerror = null // prevents looping
                   }}
+                  priority
                 />
               ) : (
                 <button

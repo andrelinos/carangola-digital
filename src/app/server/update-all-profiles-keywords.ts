@@ -13,7 +13,6 @@ function generateKeywords(name: string): string[] {
 export async function updateAllProfilesKeywords(): Promise<void> {
   try {
     const profilesSnapshot = await db.collection('profiles').get()
-    console.log(`Foram encontrados ${profilesSnapshot.size} perfis`)
 
     const BATCH_LIMIT = 500
     let batch = db.batch()
@@ -41,7 +40,7 @@ export async function updateAllProfilesKeywords(): Promise<void> {
     }
 
     await Promise.all(batches)
-    console.log('Atualização de keywords concluída com sucesso!')
+    console.info('Atualização de keywords concluída com sucesso!')
   } catch (error) {
     console.error('Erro ao atualizar keywords:', error)
   }

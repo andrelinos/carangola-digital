@@ -3,6 +3,11 @@
 import { EditPencil, Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
+import { toast } from 'sonner'
+
+const MapPage = dynamic(() => import('./map'), {
+  ssr: false,
+})
 
 import type { BusinessAddressProps } from '@/_types/profile-data'
 
@@ -12,8 +17,7 @@ import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
-import Link from 'next/link'
-import { toast } from 'sonner'
+import dynamic from 'next/dynamic'
 
 interface Props {
   data: BusinessAddressProps[] | null
@@ -23,27 +27,9 @@ export function EditBusinessAddresses({ data }: Props) {
   const router = useRouter()
   const profileId = useParams().profileId as string
 
-  const initialAddresses: BusinessAddressProps[] = [
-    {
-      title: 'Endereço 1',
-      address: '',
-      neighborhood: '',
-      cep: '',
-      latitude: '',
-      longitude: '',
-    },
-    {
-      title: 'Endereço 2',
-      address: '',
-      neighborhood: '',
-      cep: '',
-      latitude: '',
-      longitude: '',
-    },
-  ]
-
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   const [formValues, setFormValues] = useState<BusinessAddressProps[] | null>(
     data || [
       {
@@ -51,8 +37,8 @@ export function EditBusinessAddresses({ data }: Props) {
         address: '',
         neighborhood: '',
         cep: '',
-        latitude: '',
-        longitude: '',
+        latitude: 0,
+        longitude: 0,
       },
     ]
   )
@@ -82,8 +68,8 @@ export function EditBusinessAddresses({ data }: Props) {
         address: '',
         neighborhood: '',
         cep: '',
-        latitude: '',
-        longitude: '',
+        latitude: 0,
+        longitude: 0,
       },
     ])
   }
@@ -139,6 +125,10 @@ export function EditBusinessAddresses({ data }: Props) {
     const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
     setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
   }
+
+  const defaultLatitude = -20.73385181091924
+  const defaultLongitude = -42.03013264654137
+
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
@@ -155,86 +145,104 @@ export function EditBusinessAddresses({ data }: Props) {
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
           <div className="flex w-full flex-col gap-4 ">
             {formValues?.map((item, index) => {
+              const coordinates: [number, number] = [
+                typeof item.latitude === 'number' && item.latitude !== 0
+                  ? item.latitude
+                  : defaultLatitude,
+                typeof item.longitude === 'number' && item.latitude !== 0
+                  ? item.longitude
+                  : defaultLongitude,
+              ]
               return (
                 <div
                   key={String(index)}
-                  className="mt-6 flex w-full flex-1 text-zinc-700"
+                  className="relative mt-6 flex w-full flex-1 flex-col text-zinc-700"
                 >
-                  <div className="flex w-full flex-1 flex-col gap-4 text-zinc-700">
-                    <h2 className="font-bold">Endereço {String(index + 1)}</h2>
-                    <div className="flex flex-col gap-4">
-                      <Input
-                        name="address"
-                        variant="ghost"
-                        title="Endereço"
-                        placeholder="Rua Pedro de Oliveira, 9999"
-                        value={item.address}
-                        onChange={e => handleChange(e, index, 'address')}
-                      />
-                      <div className="flex gap-4">
+                  <div className="flex w-full gap-4">
+                    <div className="flex w-full flex-1 flex-col gap-4 text-zinc-700">
+                      <h2 className="font-bold">
+                        Endereço {String(index + 1)}
+                      </h2>
+                      <div className="flex flex-col gap-4">
                         <Input
-                          name="district"
+                          name="address"
                           variant="ghost"
-                          title="Bairro"
-                          placeholder="Centro"
-                          value={item.neighborhood}
-                          onChange={e => handleChange(e, index, 'neighborhood')}
+                          title="Endereço"
+                          placeholder="Rua Pedro de Oliveira, 9999"
+                          value={item.address}
+                          onChange={e => handleChange(e, index, 'address')}
                         />
-                        <div className="max-w-[156px]">
+                        <div className="flex gap-4">
                           <Input
-                            name="cep"
+                            name="district"
                             variant="ghost"
-                            title="cep"
-                            placeholder="36800-000"
-                            value={item.cep}
-                            onChange={e => handleChange(e, index, 'cep')}
+                            title="Bairro"
+                            placeholder="Centro"
+                            value={item.neighborhood}
+                            onChange={e =>
+                              handleChange(e, index, 'neighborhood')
+                            }
                           />
+                          <div className="max-w-[156px]">
+                            <Input
+                              name="cep"
+                              variant="ghost"
+                              title="cep"
+                              placeholder="36800-000"
+                              value={item.cep}
+                              onChange={e => handleChange(e, index, 'cep')}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <Input
-                        type="number"
-                        name="latitude"
-                        variant="ghost"
-                        title="Latitude"
-                        placeholder="-20.73370461095738"
-                        value={item.latitude}
-                        onChange={e => handleChange(e, index, 'latitude')}
-                      />
-                      <Input
-                        type="number"
-                        name="longitude"
-                        variant="ghost"
-                        title="Longitude"
-                        placeholder="-42.0299412669833"
-                        value={item.longitude}
-                        onChange={e => handleChange(e, index, 'longitude')}
-                      />
-                    </div>
+                      <div className="flex gap-4">
+                        <Input
+                          type="number"
+                          name="latitude"
+                          variant="ghost"
+                          title="Latitude"
+                          placeholder="-20.73370461095738"
+                          value={item.latitude}
+                          onChange={e => handleChange(e, index, 'latitude')}
+                        />
+                        <Input
+                          type="number"
+                          name="longitude"
+                          variant="ghost"
+                          title="Longitude"
+                          placeholder="-42.0299412669833"
+                          value={item.longitude}
+                          onChange={e => handleChange(e, index, 'longitude')}
+                        />
+                      </div>
 
-                    <p className="text-xs">
-                      Para conseguir a latitude e longitude você precisar
-                      acessar o{' '}
-                      <Link
-                        href="https://google.com/maps"
-                        className="text-blue-500"
-                        target="_blank"
+                      <MapPage
+                        coordinates={coordinates}
+                        // setCoordinates={setSelectedPosition}
+                        setCoordinates={(newCoords: [number, number]) => {
+                          setFormValues(prevState => {
+                            if (!prevState) return prevState
+                            const updatedAddresses = [...prevState]
+                            updatedAddresses[index] = {
+                              ...updatedAddresses[index],
+                              latitude: newCoords[0],
+                              longitude: newCoords[1],
+                            }
+                            return updatedAddresses
+                          })
+                        }}
+                      />
+                    </div>
+                    <div className="">
+                      <Button
+                        data-index={index}
+                        variant="link"
+                        className="size-4 p-0 text-rose-400 transition-all duration-300 hover:scale-125 hover:cursor-pointer"
+                        onClick={handleDeleteAddress}
                       >
-                        Google Maps
-                      </Link>{' '}
-                      pelo computador e copiar.
-                    </p>
-                  </div>
-                  <div className="">
-                    <Button
-                      data-index={index}
-                      variant="link"
-                      className="size-4 p-0 text-rose-400 transition-all duration-300 hover:scale-125 hover:cursor-pointer"
-                      onClick={handleDeleteAddress}
-                    >
-                      <Trash className="size-4" />
-                    </Button>
+                        <Trash className="size-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )
@@ -243,7 +251,7 @@ export function EditBusinessAddresses({ data }: Props) {
           <div className="flex w-full justify-end">
             <Button
               variant="link"
-              className="m-0 flex items-center py-0 text-xs hover:cursor-pointer hover:text-blue-500"
+              className="m-0 flex items-center py-0 text-xs text-zinc-700 hover:cursor-pointer hover:text-blue-500"
               onClick={handleNewAddress}
             >
               <Plus /> Adicionar no endereço
@@ -276,6 +284,7 @@ export function EditBusinessAddresses({ data }: Props) {
           </footer>
         </div>
       </Modal>
+
       {isSubmitting && <Loading />}
     </>
   )
