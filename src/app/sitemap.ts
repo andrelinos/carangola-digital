@@ -1,6 +1,8 @@
+import type { MetadataRoute } from 'next'
+
 import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
 import { pathsSitemap } from '@/assets/data/paths-to-sitemap'
-import type { MetadataRoute } from 'next'
+
 import { getAllProfileData } from './server/get-all-profile-data'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -19,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/${profile.profileId}`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 1,
     })) || []
 
   const staticEntries: MetadataRoute.Sitemap[number][] = pathsSitemap.map(
@@ -27,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}${path}`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 1,
     })
   )
 
