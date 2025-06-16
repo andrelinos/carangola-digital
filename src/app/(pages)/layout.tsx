@@ -3,12 +3,6 @@ import { HeaderHome } from '@/components/commons/headers'
 import '@/styles/globals.css'
 
 import type { Metadata } from 'next'
-import { Quicksand } from 'next/font/google'
-
-const quicksand = Quicksand({
-  variable: '--font-quicksand',
-  subsets: ['latin'],
-})
 
 export const metadata: Metadata = {
   title: 'Carangola Digital',

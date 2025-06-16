@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
           },
         ],
         payment_methods: {
-          // Descomente para desativar métodos de pagamento
+          // Des-comente para desativar métodos de pagamento
           //   excluded_payment_methods: [
           //     {
           //       id: "bolbradesco",
