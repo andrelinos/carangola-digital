@@ -35,6 +35,10 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
     setIsOpen(!isOpen)
   }
 
+  function handleClose() {
+    setIsOpen(false)
+  }
+
   const getDayIndex = (day: string): number => {
     const order = {
       Monday: 0,
@@ -66,7 +70,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
         </h2>
         {isOwner && <EditBusinessOpeningHours profileData={profileData} />}
       </div>
-      <div className=" flex w-full flex-col gap-1" onMouseLeave={handleOpen}>
+      <div className=" flex w-full flex-col gap-1" onMouseLeave={handleClose}>
         <button
           type="button"
           className="flex w-full items-center justify-between gap-2"
@@ -86,7 +90,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
         <div
           className={cn(
             clsx(
-              'absolute inset-x-0 top-22 z-2 rounded-b-lg bg-white p-2 text-zinc-700 shadow-lg',
+              'absolute inset-x-0 top-22 z-2 rounded-b-lg bg-white px-2 pt-2 pb-6 text-zinc-700 shadow-lg',
               {
                 hidden: !isOpen,
                 block: isOpen,

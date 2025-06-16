@@ -56,8 +56,8 @@ export async function POST(req: NextRequest) {
         },
         auto_return: 'approved',
         back_urls: {
-          success: `${req.headers.get('origin')}/success/?status=sucesso`,
-          failure: `${req.headers.get('origin')}/failure/?status=falha`,
+          success: `${req.headers.get('origin')}/compra?status=sucesso`,
+          failure: `${req.headers.get('origin')}/compra?status=falha`,
           pending: `${req.headers.get('origin')}/api/mercado-pago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
         },
       },

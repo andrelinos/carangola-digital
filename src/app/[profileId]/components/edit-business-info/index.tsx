@@ -1,6 +1,5 @@
 'use client'
 
-import { EditPencil } from 'iconoir-react'
 import { ArrowUpFromLine } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
@@ -17,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { Select } from '@/components/ui/select'
 import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
+import { EditPencil } from 'iconoir-react'
 import { toast } from 'sonner'
 
 interface Props {

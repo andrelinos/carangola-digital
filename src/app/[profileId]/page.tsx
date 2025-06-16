@@ -79,7 +79,7 @@ export default async function BusinessId({ params }: Props) {
               </div>
 
               {isOwner && (
-                <div className="absolute top-0 right-1 z-10 size-6 rounded-full bg-white/70">
+                <div className="absolute top-0 right-0 z-10 size-6 rounded-full bg-white/70">
                   <EditBusinessInfo
                     profileData={profileData}
                     imagePath={profileData?.imagePath}

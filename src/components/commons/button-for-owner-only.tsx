@@ -19,9 +19,13 @@ export function ButtonForOwnerOnly({
     <button
       onClick={handleExecute}
       type="button"
-      className="h-fit text-zinc-600"
+      className="ga-1 group relative flex h-fit rounded-md bg-blue-500 p-1 font-bold text-white text-xs hover:cursor-pointer"
     >
       {children}
+
+      <span className="-top-7 -translate-x-1/2 absolute left-1/2 z-40 hidden w-fit transform text-nowrap rounded-md bg-white-500 px-2 py-1 text-xs text-zinc-700 shadow-lg group-hover:flex">
+        Editar informações
+      </span>
     </button>
   )
 }
