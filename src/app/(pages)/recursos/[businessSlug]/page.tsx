@@ -15,7 +15,7 @@ export default async function LinkInBio({
 
   return (
     <div className="mx-auto max-w-7xl">
-      <HeaderHome />
+      <HeaderHome headerShow={false} />
       {/* <HeroBusiness profileData={texts} /> */}
       {/* <VideoExplanation />
       <Pricing />

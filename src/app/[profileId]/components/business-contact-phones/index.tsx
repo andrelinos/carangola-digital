@@ -70,7 +70,8 @@ export function ContactPhones({ profileData, isOwner }: Props) {
             item.isWhatsapp && (
               <Link
                 key={String(index)}
-                href={`https://wa.me/+55${item.phone}`}
+                href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}
+                target="_blank"
                 className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 text-white sm:w-64"
               >
                 {item?.imageProfileWhatsApp && (

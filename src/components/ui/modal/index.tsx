@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 
-import { useOnClickOutside } from '@/hooks/handle-click-outside'
+import { useOnClickOutside } from '@/hooks/use-handle-click-outside'
 import { cn } from '@/lib/utils'
 
 interface ModalProps {

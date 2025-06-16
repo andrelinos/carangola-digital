@@ -5,4 +5,5 @@ export const pathsSitemap: string[] = [
   '/telefones-uteis',
   '/politica-de-privacidade',
   '/termos-de-uso',
+  '/404',
 ]

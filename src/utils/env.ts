@@ -10,6 +10,9 @@ const serverEnvSchema = z.object({
   AUTH_SECRET: z.string(),
   MIXPANEL_TOKEN: z.string(),
   ANALYTICS_GOOGLE_ID: z.string(),
+  MERCADO_PAGO_ACCESS_TOKEN: z.string(),
+  MERCADO_PAGO_WEBHOOK_SECRET: z.string(),
+  NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY: z.string(),
 })
 
 const _env = serverEnvSchema.safeParse({
@@ -22,6 +25,10 @@ const _env = serverEnvSchema.safeParse({
   AUTH_SECRET: process.env.AUTH_SECRET,
   MIXPANEL_TOKEN: process.env.MIXPANEL_TOKEN,
   ANALYTICS_GOOGLE_ID: process.env.ANALYTICS_GOOGLE_ID,
+  MERCADO_PAGO_ACCESS_TOKEN: process.env.MERCADO_PAGO_ACCESS_TOKEN,
+  MERCADO_PAGO_WEBHOOK_SECRET: process.env.MERCADO_PAGO_WEBHOOK_SECRET,
+  NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY:
+    process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY,
 })
 
 if (!_env.success) {
