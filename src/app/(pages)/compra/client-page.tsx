@@ -16,6 +16,8 @@ export default function CompraClient({
   const searchParams = useSearchParams()
   const status = initialStatus || searchParams.get('status') || ''
 
+  const [success, response] = status
+
   useEffect(() => {
     console.log('Client-side status:', status)
   }, [status])
@@ -24,13 +26,14 @@ export default function CompraClient({
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-6 text-center shadow-lg">
         <h1 className="font-bold text-2xl">
-          {status === 'sucesso' && '✅ Pagamento Confirmado!'}
-          {status === 'falha' && '❌ Pagamento Falhou!'}
+          {success === 'sucesso' && '✅ Pagamento Confirmado!'}
+          {success === 'falha' && '❌ Pagamento Falhou!'}
         </h1>
+        <p>{status}</p>
         <p className="mt-4 text-gray-600">
-          {status === 'sucesso'
+          {success === 'sucesso'
             ? 'Obrigado por sua compra! Seu pagamento foi processado com sucesso.'
-            : status === 'falha'
+            : success === 'falha'
               ? 'O pagamento não foi concluído. Tente novamente ou escolha outra forma de pagamento.'
               : 'Status desconhecido.'}
         </p>
