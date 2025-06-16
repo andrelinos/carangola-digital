@@ -40,4 +40,5 @@ export const blockedPaths = [
   // Outros que você julgar sensíveis:
   '/config.php',
   '/admin.php',
+  '/favicon.svg',
 ]
