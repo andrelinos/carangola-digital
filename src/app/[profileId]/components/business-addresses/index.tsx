@@ -40,7 +40,7 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                   </div>
                 </div>
 
-                {item.latitude > 10 && item.longitude > 10 && (
+                {item.latitude !== 0 && item.longitude !== 0 && (
                   <Link
                     variant="tertiary"
                     className="group relative w-14 bg-blue-600 px-2 py-1 text-white text-xs"
