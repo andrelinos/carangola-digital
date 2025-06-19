@@ -31,7 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(' text-zinc-700 antialiased', quicksand.className)}>
+      <body
+        className={cn(
+          'bg-background text-content-body antialiased ',
+          quicksand.className
+        )}
+      >
         <StairTransition />
         <PageTransition>
           {children}

@@ -59,6 +59,14 @@ export type ProfileDataProps = {
   admins: AdminsProfileProps[]
   category: string
   imagePath: string
+
+  planType: string
+  rating: string
+  isActive: boolean
+  isPremium: boolean
+  isVerified: boolean
+  reviewCount: number
+
   favorites: BusinessFavoritesProps[]
   openingHours: Record<WeekDayProps, TimeRangeProps[]>
   socialMedias: SocialMediasProps

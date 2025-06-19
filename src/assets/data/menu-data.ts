@@ -1,14 +1,11 @@
 export const menus = [
   {
-    title: 'Home',
-    href: '/',
+    title: 'Explorar',
+    href: '/business',
   },
+
   {
-    title: 'Sobre',
-    href: '/sobre-nos',
-  },
-  {
-    title: 'Contato',
+    title: 'Suporte',
     href: '/fale-conosco',
   },
   {

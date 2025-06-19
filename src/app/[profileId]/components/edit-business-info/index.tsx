@@ -16,7 +16,6 @@ import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { Select } from '@/components/ui/select'
 import { compressFiles, handleImageInput, triggerImageInput } from '@/lib/utils'
-import { EditPencil } from 'iconoir-react'
 import { toast } from 'sonner'
 
 interface Props {
@@ -84,13 +83,13 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
       <Modal
         isOpen={isOpen}
         setIsOpen={onClose}
-        title="Novo projeto"
-        description="Crie um novo projeto"
+        title="Alterar informações"
+        description="Alterando as informações do seu perfil"
         classname="w-full max-w-[638px] justify-center rounded-2xl border-[0.5px] border-blue-300 bg-white p-6"
       >
         <div className="flex w-full flex-col gap-4 ">
@@ -126,7 +125,7 @@ export function EditBusinessInfo({ profileData, imagePath }: Props) {
               onClick={() => triggerImageInput('profile-image-pic')}
             >
               <ArrowUpFromLine className="size-4" />
-              <span>Adicionar imagem</span>
+              <span>Adicionar capa</span>
             </button>
             <input
               type="file"

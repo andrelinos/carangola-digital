@@ -7,7 +7,7 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-import { Copy, SendDiagonal } from 'iconoir-react'
+import { Copy, ShareAndroid } from 'iconoir-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
@@ -29,14 +29,14 @@ export function ShareButton() {
   const shareUrl = `https://localhost:3000/${profileId}`
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-xs">Compartilhar</span>
+    <div className="flex items-center gap-1">
       <button
         onClick={handleOpenModal}
         type="button"
-        className="flex h-fit flex-col items-center text-zinc-600 transition-all duration-300 ease-in-out hover:scale-115 hover:cursor-pointer"
+        className="group flex h-fit items-center gap-2 rounded-lg bg-zinc-600 px-4 py-1 text-white hover:cursor-pointer"
       >
-        <SendDiagonal className="size-8 stroke-1" />
+        <ShareAndroid className="size-6 stroke-1 transition-all duration-300 ease-in-out group-hover:scale-115" />
+        <span className="">Compartilhar</span>
       </button>
 
       <Modal

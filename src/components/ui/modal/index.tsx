@@ -42,9 +42,9 @@ export function Modal({
       onKeyDown={handleKeyDown}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#787878]/10 backdrop-blur-md"
     >
-      <div ref={ref} {...props} className={cn(classname)}>
+      <div ref={ref} {...props} className={cn('relative', classname)}>
         <p className="font-bold text-xl">{title}</p>
-        <p className="font-light ">{description}</p>
+        <p className="-mt-1 pb-8 font-light text-sm">- {description}</p>
         {children}
       </div>
     </div>

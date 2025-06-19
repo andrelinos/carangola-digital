@@ -1,6 +1,5 @@
 'use client'
 
-import { EditPencil } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -62,7 +61,7 @@ export function EditBusinessDescription({ data }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
 
       <Modal

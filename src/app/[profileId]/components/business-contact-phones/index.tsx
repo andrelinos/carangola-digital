@@ -5,6 +5,7 @@ import { Phone, Whatsapp } from 'iconoir-react'
 import type { BusinessPhoneProps } from '@/_types/profile-data'
 import { Link } from '@/components/ui/link'
 import { formatPhoneNumber } from '@/lib/utils'
+import { PhoneCall } from 'lucide-react'
 import Image from 'next/image'
 import { EditContactPhones } from './edit-business-contact-phones'
 
@@ -25,12 +26,16 @@ export function ContactPhones({ profileData, isOwner }: Props) {
   )
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-1 px-4 pt-6 pb-12 shadow-lg">
-      <div className="flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
-        <h2 className=" max-w-lg text-center font-bold text-xl">
-          Telefones de contato
+    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-24 shadow-lg">
+      <div className="relative flex">
+        <h2 className="flex max-w-lg items-center gap-2 text-center font-bold text-xl">
+          <PhoneCall className="size-6" /> Telefones de contato
         </h2>
-        {isOwner && <EditContactPhones profileData={profileData} />}
+        {isOwner && (
+          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+            <EditContactPhones profileData={profileData} />
+          </div>
+        )}
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
         {(!businessPhone || businessPhone.length === 0) && (

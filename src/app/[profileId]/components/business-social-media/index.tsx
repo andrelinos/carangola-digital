@@ -6,6 +6,7 @@ import {
   Globe,
   Instagram,
   Linkedin,
+  Network,
   Threads,
   Tiktok,
 } from 'iconoir-react'
@@ -36,20 +37,39 @@ export function SocialMedia({ profileData, isOwner }: Props) {
 
   return (
     <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
-      <div className="mb-6 flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
-        <h2 className="text-center font-bold text-xl">Redes sociais</h2>
-        {isOwner && <EditBusinessSocialMedias profileData={profileData} />}
+      <div className="relative flex">
+        <h2 className="flex items-center gap-2 text-center font-bold text-xl">
+          <Network className="size-6" /> Redes sociais
+        </h2>
+        {isOwner && (
+          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+            <EditBusinessSocialMedias profileData={profileData} />
+          </div>
+        )}
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4">
-        {!socialMedias && <p>Nenhuma rede social cadastrada</p>}
+        {!socialMedias && (
+          <div className="-top-5 absolute right-0 z-10 h-6 rounded-full bg-white/70">
+            <p>Nenhuma rede social cadastrada</p>
+          </div>
+        )}
       </div>
 
       <div className="mx-auto flex w-full max-w-lg flex-wrap justify-center gap-2">
         {SOCIAL_MEDIA_CONFIG?.map(({ key, Icon }) => {
           const url = socialMedias?.[key]
           return url ? (
-            <Link key={key} href={url} variant="secondary" target="_blank">
+            <Link
+              key={key}
+              href={url}
+              variant="outline"
+              target="_blank"
+              className="group relative"
+            >
               <Icon />
+              <span className="-top-7 -translate-x-1/2 absolute left-1/2 z-10 hidden w-fit transform text-nowrap rounded-md bg-zinc-500 px-2 py-1 text-white text-xs shadow-lg group-hover:flex">
+                {key?.toUpperCase()}
+              </span>
             </Link>
           ) : null
         })}

@@ -29,5 +29,4 @@ export const useMercadoPago = () => {
 
   return { createMercadoPagoCheckout }
 }
-
-// export default useMercadoPago
+// #src/app/api/mercado-pago/create-checkout/route.ts

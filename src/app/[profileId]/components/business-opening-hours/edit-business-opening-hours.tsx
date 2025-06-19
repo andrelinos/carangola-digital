@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil, LightBulbOn } from 'iconoir-react'
+import { LightBulbOn } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -123,7 +123,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
 
       <Modal

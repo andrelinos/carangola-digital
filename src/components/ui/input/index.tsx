@@ -1,11 +1,13 @@
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
+
 import { type InputHTMLAttributes, forwardRef } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import { Link } from '../link'
 
 const inputVariants = cva(
   'w-full whitespace-nowrap rounded-xl border border-transparent p-3 placeholder:text-content-placeholder hover:border-border-secondary hover:opacity-95 active:border-border-tertiary disabled:opacity-70',
@@ -29,6 +31,7 @@ export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {
   asChild?: boolean
+  isPremium?: boolean
   title?: string
   error?: FieldError | undefined
   requiredfield?: boolean
@@ -43,6 +46,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type,
       requiredfield = false,
       literalerror,
+      isPremium = false,
       asChild = false,
       ...props
     },
@@ -55,7 +59,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {props?.title && (
           <Label className="flex flex-row gap-2" htmlFor={props?.title}>
             <div>
-              <span className="font-bold">{props?.title}</span>
+              <div className="flex gap-2">
+                <span className="font-bold">{props?.title}</span>
+                <div>
+                  {isPremium ? (
+                    <Link
+                      variant="primary"
+                      href="/#plan"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      upgrade
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </div>
               {requiredfield && (
                 <span
                   className="pl-[2px] text-red-400"

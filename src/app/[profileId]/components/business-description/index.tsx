@@ -1,6 +1,7 @@
 import { EditBusinessDescription } from './edit-business-description'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
+import { InfoCircle } from 'iconoir-react'
 
 interface Props {
   profileData: ProfileDataProps
@@ -12,9 +13,15 @@ export function Description({ profileData, isOwner }: Props) {
 
   return (
     <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
-      <div className="mb-6 flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
-        <h2 className="text-center font-bold text-xl">Descrição</h2>
-        {isOwner && <EditBusinessDescription data={businessDescription} />}
+      <div className="relative flex">
+        <h2 className="flex items-center gap-2 text-center font-bold text-xl">
+          <InfoCircle className="size-6" /> Descrição
+        </h2>
+        {isOwner && (
+          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+            <EditBusinessDescription data={businessDescription} />{' '}
+          </div>
+        )}
       </div>
       <div className="mx-auto flex w-full max-w-[1080px] flex-col items-center gap-4">
         <p className="w-full">

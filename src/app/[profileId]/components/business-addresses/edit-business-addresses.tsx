@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil, Plus, Trash } from 'iconoir-react'
+import { Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 import { toast } from 'sonner'
@@ -132,7 +132,7 @@ export function EditBusinessAddresses({ data }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
 
       <Modal
@@ -248,8 +248,8 @@ export function EditBusinessAddresses({ data }: Props) {
               )
             })}
           </div>
-          <div className="flex w-full justify-end">
-            <Button variant="new" onClick={handleNewAddress}>
+          <div className="mt-4 flex w-full justify-end">
+            <Button variant="secondary" onClick={handleNewAddress}>
               <Plus /> Adicionar novo endereço
             </Button>
           </div>

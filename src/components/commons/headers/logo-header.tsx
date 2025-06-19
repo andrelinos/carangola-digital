@@ -7,12 +7,12 @@ export function LogoHeader() {
       <Image
         width={80}
         height={80}
-        className="size-auto max-h-11 lg:max-h-16"
+        className="size-auto max-h-11 lg:max-h-10"
         src="/logo-blue.svg"
         alt="Logo Carangola Digital"
         priority
       />
-      <h2 className="max-w-[112px] font-bold text-sm opacity-90 lg:text-xl">
+      <h2 className="max-w-[112px] font-bold text-sm opacity-90">
         Carangola Digital
       </h2>
     </Link>

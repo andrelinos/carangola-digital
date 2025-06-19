@@ -1,13 +1,15 @@
 'use client'
 
-import { manageAuth } from '@/actions/manage-auth'
-import { menus } from '@/assets/data/menu-data'
-import { Button } from '@/components/ui/button'
-import { Link } from '@/components/ui/link'
 import clsx from 'clsx'
 import { List, X } from 'lucide-react'
 import type { Session } from 'next-auth'
 import { useState } from 'react'
+
+import { manageAuth } from '@/actions/manage-auth'
+import { menus } from '@/assets/data/menu-data'
+import { ManageAuthButton } from '@/components/commons/manage-auth-button'
+import { Button } from '@/components/ui/button'
+import { Link } from '@/components/ui/link'
 
 interface Props {
   hasProfileLink: boolean
@@ -16,7 +18,6 @@ interface Props {
 
 export function Menus({ hasProfileLink, session }: Props) {
   const [isOpen, setIsOpen] = useState(false)
-  const [isOpenMobile, setIsOpenMobile] = useState(false)
 
   function handleOpen() {
     setIsOpen(!isOpen)
@@ -29,7 +30,6 @@ export function Menus({ hasProfileLink, session }: Props) {
       </Button>
       <div
         className={clsx(' items-center gap-4 bg-white md:flex', {
-          // 'flex flex-col': isOpenMobile,
           'fixed inset-0 z-50 flex flex-col': isOpen,
           hidden: !isOpen,
         })}
@@ -45,25 +45,13 @@ export function Menus({ hasProfileLink, session }: Props) {
               {menu.title}
             </Link>
           ))}
-          {session &&
-            (!hasProfileLink ? (
-              <Link variant="primary" href="/criar">
-                Meu perfil
-              </Link>
-            ) : (
-              <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
-                Meu perfil
-              </Link>
-            ))}
-          <form action={manageAuth} className="w-fit ">
-            {!session && (
-              <Button
-                variant="link"
-                className="text-zinc-700 hover:cursor-pointer"
-              >
-                Entrar
-              </Button>
-            )}
+          {session && hasProfileLink && (
+            <Link variant="primary" href={`/${session?.user?.myProfileLink}`}>
+              Dashboard
+            </Link>
+          )}
+          <form action={manageAuth} className="w-fit">
+            <ManageAuthButton session={session} />
           </form>
         </div>
       </div>

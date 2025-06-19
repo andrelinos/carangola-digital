@@ -1,6 +1,5 @@
 'use client'
 
-import { EditPencil } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -84,10 +83,12 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
     onClose()
   }
 
+  const isPremium = profileData?.isPremium ?? true
+
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
 
       <Modal
@@ -110,14 +111,6 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
               />
               <Input
                 variant="ghost"
-                name="threads"
-                title="Link Threads"
-                placeholder="https://www.threads.com/@andrelinossilva"
-                defaultValue={socialMedias?.threads || ''}
-                onChange={handleChange}
-              />
-              <Input
-                variant="ghost"
                 name="facebook"
                 title="Link Facebook"
                 placeholder="https://www.facebook.com/andrelinossilva"
@@ -126,11 +119,23 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
               />
               <Input
                 variant="ghost"
+                name="threads"
+                title="Link Threads"
+                placeholder="https://www.threads.com/@andrelinossilva"
+                defaultValue={socialMedias?.threads || ''}
+                isPremium={isPremium}
+                disabled={isPremium}
+                // onChange={handleChange}
+              />
+              <Input
+                variant="ghost"
                 name="linkedin"
                 title="Link Linkedin"
                 placeholder="https://www.linkedin.com/in/andrelinosilva"
                 defaultValue={socialMedias?.linkedin || ''}
-                onChange={handleChange}
+                isPremium={isPremium}
+                disabled={isPremium}
+                // onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -138,7 +143,9 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link TikTok"
                 placeholder="https://www.tiktok.com/@rocketseat"
                 defaultValue={socialMedias?.tiktok || ''}
-                onChange={handleChange}
+                isPremium={isPremium}
+                disabled={isPremium}
+                // onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -146,7 +153,9 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Kwai"
                 placeholder="https://www.kwai.com/@KwaiBrasilOficial"
                 defaultValue={socialMedias?.kwai || ''}
-                onChange={handleChange}
+                isPremium={isPremium}
+                disabled={isPremium}
+                // onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -154,7 +163,9 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Site"
                 placeholder="https://andrelinosilva.com.br"
                 defaultValue={socialMedias?.site || ''}
-                onChange={handleChange}
+                isPremium={isPremium}
+                disabled={isPremium}
+                // onChange={handleChange}
               />
             </div>
           </div>

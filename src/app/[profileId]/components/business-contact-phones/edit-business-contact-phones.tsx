@@ -1,6 +1,6 @@
 'use client'
 
-import { EditPencil, Plus, Trash } from 'iconoir-react'
+import { Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
 
@@ -170,7 +170,7 @@ export function EditContactPhones({ profileData }: Props) {
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
-        <EditPencil className="size-4 transition-all duration-300 hover:scale-150 hover:cursor-pointer" />
+        Editar
       </ButtonForOwnerOnly>
 
       <Modal
@@ -321,7 +321,7 @@ export function EditContactPhones({ profileData }: Props) {
               })}
             </div>
             <div className="flex w-full justify-end pb-6">
-              <Button variant="new" onClick={handleNewPhone}>
+              <Button variant="secondary" onClick={handleNewPhone}>
                 <Plus />
                 Adicionar novo telefone
               </Button>

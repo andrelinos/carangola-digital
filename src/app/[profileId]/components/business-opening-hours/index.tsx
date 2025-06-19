@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { getOperatingStatus } from '@/utils/get-status-from-day'
 
 import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
+import { Clock } from 'iconoir-react'
 import { EditBusinessOpeningHours } from './edit-business-opening-hours'
 
 const WEEK_DAYS = [
@@ -63,12 +64,16 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
   const todayIndex = new Date().getDay() - 1
 
   return (
-    <div className="relative mt-6 flex w-full max-w-md flex-col items-center gap-1 rounded-t-lg p-2 [data-state=open]:rounded-none">
-      <div className="flex w-full justify-center gap-1 text-center">
-        <h2 className="max-w-lg text-center font-bold text-xl text-zinc-700">
-          Horário de funcionamento
+    <div className="relative flex w-full max-w-md flex-col items-center gap-1 rounded-t-lg p-2 [data-state=open]:rounded-none">
+      <div className="relative flex">
+        <h2 className="flex max-w-lg items-center gap-2 text-center font-bold text-xl text-zinc-700">
+          <Clock className="size-6" /> Horário de funcionamento
         </h2>
-        {isOwner && <EditBusinessOpeningHours profileData={profileData} />}
+        {isOwner && (
+          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+            <EditBusinessOpeningHours profileData={profileData} />
+          </div>
+        )}
       </div>
       <div className=" flex w-full flex-col gap-1" onMouseLeave={handleClose}>
         <button

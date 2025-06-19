@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+/* @theme {
   --color-background-primary: #050505;
   --color-background-secondary: #0f0f10;
   --color-background-tertiary: #19191a;
@@ -13,7 +13,84 @@
   --color-accent-purple: #4b2dbb;
   --color-accent-green: #87bb20;
   --color-accent-pink: #b5446b;
+} */
+
+@theme {
+  /* Cores de fundo */
+  --color-background-primary: hsl(0, 0%, 100%); /* #ffffff */
+  --color-background-secondary: hsl(240, 10%, 3.9%); /* #09090f */
+
+  /* Cores de conteúdo */
+  --color-content-primary: hsl(20, 14.3%, 4.1%); /* #140d0a */
+  --color-content-secondary: hsl(25, 5.3%, 44.7%); /* #735d4a */
+
+  /* Cores de borda e entrada */
+  --color-border-primary: hsl(20, 5.9%, 90%); /* #e5e1db */
+  --color-border-secondary: hsl(240, 3.7%, 15.9%); /* #2a2a2b */
+
+  /* Cores principais */
+  --color-primary: hsl(207, 90%, 54%); /* #0077d7 */
+  --color-primary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
+
+  /* Cores secundárias */
+  --color-secondary: hsl(159, 74%, 40%); /* #38a872 */
+  --color-secondary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
+
+  /* Cores de destaque */
+  --color-accent: hsl(0, 84%, 60%); /* #ff564d */
+  --color-accent-foreground: hsl(60, 9.1%, 97.8%); /* #f7f7df */
+
+  /* Cores destrutivas */
+  --color-destructive: hsl(0, 84.2%, 60.2%); /* #ff4d4d */
+  --color-destructive-foreground: hsl(60, 9.1%, 97.8%); /* #f7f7df */
+
+  /* Cores do anel */
+  --color-ring: hsl(20, 14.3%, 4.1%); /* #140d0a */
+
+  /* Raio */
+  --radius: 0.5rem;
+
+  --color-accent-purple: #4b2dbb;
+  --color-accent-green: #87bb20;
+  --color-accent-pink: #b5446b;
 }
+
+.dark {
+  /* Cores de fundo */
+  --color-background-primary: hsl(240, 10%, 3.9%); /* #09090f */
+  --color-background-secondary: hsl(0, 0%, 98%); /* #fafafa */
+
+  /* Cores de conteúdo */
+  --color-content-primary: hsl(0, 0%, 98%); /* #fafafa */
+  --color-content-secondary: hsl(240, 5%, 64.9%); /* #a3a3a3 */
+
+  /* Cores de borda e entrada */
+  --color-border-primary: hsl(240, 3.7%, 15.9%); /* #2a2a2b */
+  --color-border-secondary: hsl(240, 4.9%, 83.9%); /* #d4d4d6 */
+
+  /* Cores principais */
+  --color-primary: hsl(207, 90%, 54%); /* #0077d7 */
+  --color-primary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
+
+  /* Cores secundárias */
+  --color-secondary: hsl(159, 74%, 40%); /* #38a872 */
+  --color-secondary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
+
+  /* Cores de destaque */
+  --color-accent: hsl(0, 84%, 60%); /* #ff564d */
+  --color-accent-foreground: hsl(60, 9.1%, 97.8%); /* #f7f7df */
+
+  /* Cores destrutivas */
+  --color-destructive: hsl(0, 62.8%, 30.6%); /* #992929 */
+  --color-destructive-foreground: hsl(0, 0%, 98%); /* #fafafa */
+
+  /* Cores do anel */
+  --color-ring: hsl(240, 4.9%, 83.9%); /* #d4d4d6 */
+
+  /* Raio */
+  --radius: 0.5rem;
+}
+
 
 /* Firefox */
 * {

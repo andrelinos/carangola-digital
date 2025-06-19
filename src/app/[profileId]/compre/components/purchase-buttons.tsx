@@ -1,23 +1,29 @@
 'use client'
 
 import { useMercadoPago } from '@/hooks/use-mercado-pago'
+import type { Session } from 'next-auth'
 
-export default function Home() {
+interface Props {
+  profileId: string
+  user: Session['user'] | undefined
+}
+
+export function PurchaseButtons({ profileId, user }: Props) {
   const { createMercadoPagoCheckout } = useMercadoPago()
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex">
       <button
         type="button"
         onClick={() =>
           createMercadoPagoCheckout({
-            testeId: '123',
-            userEmail: 'andrelinopis@gmail.com',
+            testeId: { profileId },
+            userEmail: user?.email,
           })
         }
         className="rounded-md bg-blue-500 px-4 py-2 text-white"
       >
-        Comprar
+        Comprar 1
       </button>
     </div>
   )

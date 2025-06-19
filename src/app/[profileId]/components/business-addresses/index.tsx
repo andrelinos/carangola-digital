@@ -17,9 +17,15 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
 
   return (
     <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
-      <div className="mb-6 flex w-full justify-center gap-1 bg-zinc-100 p-6 text-center">
-        <h2 className="text-center font-bold text-xl">Endereços</h2>
-        {isOwner && <EditBusinessAddresses data={businessAddresses} />}
+      <div className="relative flex">
+        <h2 className="flex items-center gap-2 text-center font-bold text-xl">
+          <MapPin className="size-6" /> Endereços
+        </h2>
+        {isOwner && (
+          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+            <EditBusinessAddresses data={businessAddresses} />
+          </div>
+        )}
       </div>
       {!businessAddresses?.length && <p>Nenhum endereço cadastrado</p>}
 
@@ -40,29 +46,32 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                   </div>
                 </div>
 
-                {item.latitude !== 0 && item.longitude !== 0 && (
-                  <Link
-                    variant="tertiary"
-                    className="group relative w-14 bg-blue-600 px-2 py-1 text-white text-xs"
-                    href={
-                      (item?.latitude &&
-                        item?.latitude &&
-                        generateGoogleMapsLink({
-                          latitude: Number(item.latitude),
-                          longitude: Number(item.longitude),
-                        })) ||
-                      ''
-                    }
-                    target="_blank"
-                  >
-                    <span className="-top-4 -left-2 absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-10">
-                      <Car className="size-4 stroke-2" />
-                    </span>
-                    <span className="-top-4 -left-2 absolute flex h-6 w-6 scale-100 transform items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 opacity-50 transition-all duration-300 ease-linear group-hover:scale-150 group-hover:opacity-0" />
-                    Como <br />
-                    chegar
-                  </Link>
-                )}
+                {item.latitude &&
+                  item.longitude &&
+                  item.latitude !== 0 &&
+                  item.longitude !== 0 && (
+                    <Link
+                      variant="tertiary"
+                      className="group relative w-14 bg-blue-600 px-2 py-1 text-white text-xs"
+                      href={
+                        (item?.latitude &&
+                          item?.latitude &&
+                          generateGoogleMapsLink({
+                            latitude: Number(item.latitude),
+                            longitude: Number(item.longitude),
+                          })) ||
+                        ''
+                      }
+                      target="_blank"
+                    >
+                      <span className="-top-4 -left-2 absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-10">
+                        <Car className="size-4 stroke-2" />
+                      </span>
+                      <span className="-top-4 -left-2 absolute flex h-6 w-6 scale-100 transform items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 opacity-50 transition-all duration-300 ease-linear group-hover:scale-150 group-hover:opacity-0" />
+                      Como <br />
+                      chegar
+                    </Link>
+                  )}
               </div>
             )
           )
