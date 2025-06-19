@@ -39,7 +39,11 @@ export function PurchaseButtons({
                 ? 'bg-white text-gray-900 hover:bg-gray-100'
                 : 'bg-primary text-white hover:bg-blue-700'
           }`}
-          disabled={user?.email !== 'andrelinodev@gmail.com'}
+          disabled={
+            !['andrelinodev@gmail.com', 'andrelinoclientes@gmail.com'].includes(
+              user?.email ?? ''
+            )
+          }
           variant={plan.buttonVariant}
           onClick={() =>
             createMercadoPagoCheckout({
