@@ -11,10 +11,14 @@ import { useMercadoPago } from '@/hooks/use-mercado-pago'
 interface Props {
   profileId: string | undefined
   user: Session['user'] | undefined
-  plan: PlanProps
+  plan?: PlanProps
 }
 
-export function PurchaseButtons({ profileId, user, plan }: Props) {
+export function PurchaseButtons({
+  profileId,
+  user,
+  plan = {} as PlanProps,
+}: Props) {
   const { createMercadoPagoCheckout } = useMercadoPago()
 
   return (
