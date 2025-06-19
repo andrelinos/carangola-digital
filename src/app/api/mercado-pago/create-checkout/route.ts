@@ -12,6 +12,8 @@ interface RequestProps {
 export async function POST(req: NextRequest) {
   const { testeId, userEmail, plan } = (await req.json()) as RequestProps
 
+  console.log('testeId', testeId, userEmail, plan)
+
   try {
     const preference = new Preference(mpClient)
 

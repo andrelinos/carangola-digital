@@ -47,7 +47,7 @@ export function PurchaseButtons({
           variant={plan.buttonVariant}
           onClick={() =>
             createMercadoPagoCheckout({
-              testeId: { profileId },
+              testeId: profileId,
               userEmail: user?.email,
               plan,
             })
