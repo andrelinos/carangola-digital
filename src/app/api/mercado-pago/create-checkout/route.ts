@@ -1,9 +1,16 @@
+import type { PlanProps } from '@/_types/plan'
 import mpClient from '@/lib/mercado-pago'
 import { Preference } from 'mercadopago'
 import { type NextRequest, NextResponse } from 'next/server'
 
+interface RequestProps {
+  testeId: string
+  userEmail: string | null | undefined
+  plan: PlanProps
+}
+
 export async function POST(req: NextRequest) {
-  const { testeId, userEmail } = await req.json()
+  const { testeId, userEmail, plan } = (await req.json()) as RequestProps
 
   try {
     const preference = new Preference(mpClient)
@@ -13,8 +20,8 @@ export async function POST(req: NextRequest) {
         external_reference: testeId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
         metadata: {
           testeId, // O Mercado Pago converte para snake_case, ou seja, testeId vai virar teste_id
-          // userEmail: userEmail,
-          // plan: '123'
+          userEmail,
+          plan,
           //etc
         },
         ...(userEmail && {
@@ -25,11 +32,11 @@ export async function POST(req: NextRequest) {
 
         items: [
           {
-            id: 'id-do-seu-produto',
-            description: 'Descrição do produto',
-            title: 'Nome do produto',
+            id: plan.id,
+            description: plan.features.join(', '),
+            title: plan.name,
             quantity: 1,
-            unit_price: 9.99,
+            unit_price: plan.price,
             currency_id: 'BRL',
             category_id: 'digital_product',
             // Recomendado inserir, mesmo que não tenha categoria - Aumenta a pontuação da sua integração com o Mercado Pago

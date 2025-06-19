@@ -1,5 +1,44 @@
-export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
-  console.log('TETE :: ', 'tudo certo pagamento', paymentData)
+import { db } from '@/lib/firebase'
+import { Timestamp } from 'firebase-admin/firestore'
+
+export async function handleMercadoPagoPayment(paymentData: any) {
+  let profileId = ''
+  let planType = ''
+
+  try {
+    if (paymentData?.external_reference) {
+      try {
+        const externalData = JSON.parse(paymentData.external_reference)
+        profileId = externalData.profileId || ''
+        planType = externalData.plan || ''
+      } catch (error) {
+        console.error(
+          'Erro ao analisar external_reference, verifique o formato dos dados.',
+          error
+        )
+      }
+    }
+
+    if (profileId && planType) {
+      // Grava em profiles/{profileId}/plan/{planType}
+      await db
+        .collection('profiles')
+        .doc(profileId)
+        .collection('plan')
+        .doc(planType)
+        .set(
+          {
+            paymentData,
+            updatedAt: Timestamp.now().toMillis(),
+          },
+          { merge: true }
+        )
+    } else {
+      console.error(
+        'profileId ou planType não foram identificados no external_reference.'
+      )
+    }
+  } catch (error) {}
 
   return true
 }

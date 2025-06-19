@@ -1,14 +1,17 @@
-import { Button } from '@/components/ui/button'
+import { PurchaseButtons } from '@/app/[profileId]/compre/components/purchase-buttons'
 import { Card, CardContent } from '@/components/ui/card'
+import { auth } from '@/lib/auth'
+import { formatPrice } from '@/utils/format-price'
 
 import { Check } from 'lucide-react'
-import Link from 'next/link'
 
-export function PricingPlans() {
+export async function PricingPlans() {
+  const session = await auth()
   const plans = [
     {
+      id: 'free',
       name: 'Grátis',
-      price: 'R$ 0',
+      price: 0,
       period: 'Para sempre',
       popular: false,
       features: [
@@ -23,8 +26,9 @@ export function PricingPlans() {
     },
 
     {
+      id: 'pro',
       name: 'Pro',
-      price: 'R$ 49,99',
+      price: 49.99,
       period: 'por ano',
       popular: true,
       features: [
@@ -41,8 +45,9 @@ export function PricingPlans() {
         'bg-gradient-to-br from-gray-900 lg:-top-6 shadow-3xl to-gray-800 text-white',
     },
     {
+      id: 'basic',
       name: 'Básico',
-      price: 'R$ 4,99',
+      price: 4.99,
       period: 'por mês',
       popular: false,
       features: [
@@ -97,7 +102,7 @@ export function PricingPlans() {
                           : 'text-gray-900'
                     }`}
                   >
-                    {plan.price}
+                    {formatPrice(plan.price)}
                   </div>
                   <p
                     className={
@@ -123,21 +128,11 @@ export function PricingPlans() {
                   ))}
                 </ul>
 
-                <Link href={plan.name === 'Grátis' ? '/criar' : ''}>
-                  <Button
-                    className={`w-full ${
-                      plan.name === 'Grátis'
-                        ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-800'
-                        : plan.name === 'Pro'
-                          ? 'bg-white text-gray-900 hover:bg-gray-100'
-                          : 'bg-primary text-white hover:bg-blue-700'
-                    }`}
-                    disabled={plan.name !== 'Grátis'}
-                    variant={plan.buttonVariant}
-                  >
-                    {plan.name === 'Grátis' ? plan.buttonText : 'Em breve...'}
-                  </Button>
-                </Link>
+                <PurchaseButtons
+                  profileId={session?.user.myProfileLink}
+                  user={session?.user}
+                  plan={plan}
+                />
               </CardContent>
             </Card>
           ))}
