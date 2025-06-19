@@ -35,7 +35,7 @@ export function PurchaseButtons({ profileId, user, plan }: Props) {
                 ? 'bg-white text-gray-900 hover:bg-gray-100'
                 : 'bg-primary text-white hover:bg-blue-700'
           }`}
-          // disabled={plan.name !== 'Grátis'}
+          disabled={user?.email !== 'andrelinodev@gmail.com'}
           variant={plan.buttonVariant}
           onClick={() =>
             createMercadoPagoCheckout({
