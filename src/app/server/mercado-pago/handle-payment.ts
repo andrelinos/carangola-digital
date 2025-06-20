@@ -19,19 +19,35 @@ export async function handleMercadoPagoPayment(paymentData: any) {
     }
 
     if (profileId && planType) {
+      // Obtém a data e hora atual
+      const currentDate = new Date()
+      const expirationDate = new Date(currentDate)
+
+      // Define a data de expiração com base no planType
+      if (planType === 'pro') {
+        // Para o plano Pro, adiciona 1 mês
+        expirationDate.setMonth(expirationDate.getMonth() + 1)
+      } else if (planType === 'basic') {
+        // Para o plano Basic, adiciona 1 ano
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1)
+      } else {
+        // Se houver outros tipos, defina um padrão ou trate conforme necessário
+        expirationDate.setMonth(expirationDate.getMonth() + 1)
+      }
       // Grava em profiles/{profileId}/plan/{planType}
-      await db
-        .collection('testeProgram')
-        .doc(profileId)
-        .collection('plan')
-        .doc(planType)
-        .set(
-          {
-            paymentData,
-            updatedAt: Timestamp.now().toMillis(),
-          },
-          { merge: true }
-        )
+      await db.collection('profiles').doc(profileId).update({
+        plan: planType,
+        period: expirationDate.getTime(), // ou use Timestamp.fromMillis(expirationDate.getTime()) se preferir gravar como Timestamp
+        updatedAt: Timestamp.now().toMillis(),
+      })
+      // .doc(planType)
+      // .set(
+      //   {
+      //     period: Timestamp.now().toMillis(),
+      //     updatedAt: Timestamp.now().toMillis(),
+      //   },
+      //   { merge: true }
+      // )
     } else {
       console.error(
         'profileId ou planType não foram identificados no external_reference.'
