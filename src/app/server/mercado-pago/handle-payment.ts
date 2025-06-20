@@ -37,15 +37,13 @@ export async function handleMercadoPagoPayment(paymentData: any) {
           planActive: {
             id: paymentData.id,
             type: planType,
-            expiresAt: Timestamp.fromMillis(expirationDate.getTime()),
+            expiresAt: expirationDate.getTime(),
             paymentDate: Timestamp.now().toMillis(),
             status: 'active',
             lastPaymentId: paymentData.id,
             transactionAmount: paymentData.transaction_amount,
             currency: paymentData.currency_id,
-            dateApproved: Timestamp.fromMillis(
-              new Date(paymentData.date_approved).getTime()
-            ),
+            dateApproved: new Date(paymentData.date_approved).getTime(),
             planDetails: {
               name: paymentData.metadata.plan.name,
               period: paymentData.metadata.plan.period,
