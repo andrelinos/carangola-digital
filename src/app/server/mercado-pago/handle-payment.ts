@@ -8,9 +8,8 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   try {
     if (paymentData?.external_reference) {
       try {
-        const externalData = JSON.parse(paymentData.external_reference)
-        profileId = externalData.profileId || ''
-        planType = externalData.plan || ''
+        profileId = paymentData.metadata.teste_id || ''
+        planType = paymentData.metadata.plan.id || ''
       } catch (error) {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.',
