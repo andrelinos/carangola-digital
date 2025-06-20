@@ -14,9 +14,9 @@ export default function CompraClient({
   // Se você desejar que o valor venha tanto do servidor quanto do client,
   // pode combinar o prop inicial com o hook
   const searchParams = useSearchParams()
-  const status = initialStatus || searchParams.get('status') || ''
+  const status = initialStatus || searchParams.get('status') || ['']
 
-  const [success, response] = status
+  const [success, approved] = status
 
   useEffect(() => {
     console.log('Client-side status:', status)
@@ -29,7 +29,7 @@ export default function CompraClient({
           {success === 'sucesso' && '✅ Pagamento Confirmado!'}
           {success === 'falha' && '❌ Pagamento Falhou!'}
         </h1>
-        <p>{status}</p>
+
         <p className="mt-4 text-gray-600">
           {success === 'sucesso'
             ? 'Obrigado por sua compra! Seu pagamento foi processado com sucesso.'

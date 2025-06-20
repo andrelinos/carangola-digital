@@ -22,9 +22,9 @@ export async function handleMercadoPagoPayment(paymentData: any) {
     if (profileId && planType) {
       // Grava em profiles/{profileId}/plan/{planType}
       await db
-        .collection('profiles')
-        .doc(profileId)
-        .collection('plan')
+        .collection('testeProgram')
+        // .doc(profileId)
+        // .collection('plan')
         .doc(planType)
         .set(
           {
