@@ -1,13 +1,13 @@
 // app/api/mercadopago-webhook/route.js
 
 import { handleMercadoPagoPayment } from '@/app/server/mercado-pago/handle-payment'
-import mpClient, { verifyMercadoPagoSignature } from '@/lib/mercado-pago'
+import mpClient from '@/lib/mercado-pago'
 import { Payment } from 'mercadopago'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    verifyMercadoPagoSignature(request)
+    // verifyMercadoPagoSignature(request)
 
     const body = await request.json()
 
