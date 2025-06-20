@@ -35,11 +35,16 @@ export async function handleMercadoPagoPayment(paymentData: any) {
         expirationDate.setMonth(expirationDate.getMonth() + 1)
       }
       // Grava em profiles/{profileId}/plan/{planType}
-      await db.collection('profiles').doc(profileId).update({
-        plan: planType,
-        period: expirationDate.getTime(), // ou use Timestamp.fromMillis(expirationDate.getTime()) se preferir gravar como Timestamp
-        updatedAt: Timestamp.now().toMillis(),
-      })
+      await db
+        .collection('profiles')
+        .doc(profileId)
+        .update({
+          planActive: {
+            plan: planType,
+            period: expirationDate.getTime(), // ou use Timestamp.fromMillis(expirationDate.getTime()) se preferir gravar como Timestamp
+          },
+          updatedAt: Timestamp.now().toMillis(),
+        })
       // .doc(planType)
       // .set(
       //   {
