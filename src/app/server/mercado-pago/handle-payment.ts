@@ -23,8 +23,8 @@ export async function handleMercadoPagoPayment(paymentData: any) {
       // Grava em profiles/{profileId}/plan/{planType}
       await db
         .collection('testeProgram')
-        // .doc(profileId)
-        // .collection('plan')
+        .doc(profileId)
+        .collection('plan')
         .doc(planType)
         .set(
           {

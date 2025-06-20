@@ -1,38 +1,43 @@
 // app/api/mercadopago-webhook/route.js
 
 import { handleMercadoPagoPayment } from '@/app/server/mercado-pago/handle-payment'
-import mpClient from '@/lib/mercado-pago'
+import mpClient, { verifyMercadoPagoSignature } from '@/lib/mercado-pago'
 import { Payment } from 'mercadopago'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    // verifyMercadoPagoSignature(request)
+    console.log('Início do webhook')
+    verifyMercadoPagoSignature(request)
+    console.log('Assinatura verificada')
 
     const body = await request.json()
+    console.log('Corpo do webhook:', body)
 
     const { type, data } = body
 
     switch (type) {
       case 'payment': {
+        console.log('Evento de pagamento recebido')
         const payment = new Payment(mpClient)
         const paymentData = await payment.get({ id: data.id })
+        console.log('Dados do pagamento obtidos:', paymentData)
+
         if (
-          paymentData.status === 'approved' || // Pagamento por cartão OU
-          paymentData.date_approved !== null // Pagamento por Pix
+          paymentData.status === 'approved' ||
+          paymentData.date_approved !== null
         ) {
+          console.log('Pagamento aprovado, processando...')
           await handleMercadoPagoPayment(paymentData)
+          console.log('Processamento do pagamento concluído')
         }
         break
       }
-      // case "subscription_preapproval": Eventos de assinatura
-      //   console.log("Subscription preapproval event");
-      //   console.log(data);
-      //   break;
       default:
-        console.log('Unhandled event type:', type)
+        console.log('Evento não tratado:', type)
     }
 
+    console.log('Enviando resposta ao Mercado Pago')
     return NextResponse.json({ received: true }, { status: 200 })
   } catch (error) {
     console.error('Error handling webhook:', error)
