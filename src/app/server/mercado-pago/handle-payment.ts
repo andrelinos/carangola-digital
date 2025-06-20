@@ -35,8 +35,22 @@ export async function handleMercadoPagoPayment(paymentData: any) {
         .doc(profileId)
         .update({
           planActive: {
-            plan: planType,
-            period: Timestamp.fromMillis(expirationDate.getTime()),
+            id: paymentData.id,
+            type: planType,
+            expiresAt: Timestamp.fromMillis(expirationDate.getTime()),
+            paymentDate: Timestamp.now().toMillis(),
+            status: 'active',
+            lastPaymentId: paymentData.id,
+            transactionAmount: paymentData.transaction_amount,
+            currency: paymentData.currency_id,
+            dateApproved: Timestamp.fromMillis(
+              new Date(paymentData.date_approved).getTime()
+            ),
+            planDetails: {
+              name: paymentData.metadata.plan.name,
+              period: paymentData.metadata.plan.period,
+              price: paymentData.metadata.plan.price,
+            },
           },
           updatedAt: Timestamp.now().toMillis(),
         })
