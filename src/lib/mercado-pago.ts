@@ -53,7 +53,7 @@ export function verifyMercadoPagoSignature(request: Request) {
   }
   manifest += `ts:${ts};`
 
-  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET as string
+  const secret = serverEnv.MERCADO_PAGO_WEBHOOK_SECRET as string
   const hmac = crypto.createHmac('sha256', secret)
   hmac.update(manifest)
   const generatedHash = hmac.digest('hex')
