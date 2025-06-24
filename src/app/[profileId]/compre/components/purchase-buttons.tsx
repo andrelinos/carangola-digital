@@ -47,7 +47,7 @@ export function PurchaseButtons({
           variant={plan.buttonVariant}
           onClick={() =>
             createMercadoPagoCheckout({
-              testeId: profileId,
+              profileId: profileId,
               userEmail: user?.email,
               plan,
             })
@@ -56,18 +56,6 @@ export function PurchaseButtons({
           {plan.name === 'Grátis' ? plan.buttonText : 'Em breve...'}
         </Button>
       )}
-      {/* <button
-        type="button"
-        onClick={() =>
-          createMercadoPagoCheckout({
-            testeId: { profileId },
-            userEmail: user?.email,
-          })
-        }
-        className="rounded-md bg-blue-500 px-4 py-2 text-white"
-      >
-        Comprar 1
-      </button> */}
     </div>
   )
 }

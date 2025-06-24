@@ -4,24 +4,24 @@ import { Preference } from 'mercadopago'
 import { type NextRequest, NextResponse } from 'next/server'
 
 interface RequestProps {
-  testeId: string
+  profileId: string
   userEmail: string | null | undefined
   plan: PlanProps
 }
 
 export async function POST(req: NextRequest) {
-  const { testeId, userEmail, plan } = (await req.json()) as RequestProps
+  const { profileId, userEmail, plan } = (await req.json()) as RequestProps
 
-  console.log('testeId', testeId, userEmail, plan)
+  console.log('profileId', profileId, userEmail, plan)
 
   try {
     const preference = new Preference(mpClient)
 
     const createdPreference = await preference.create({
       body: {
-        external_reference: testeId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
+        external_reference: profileId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
         metadata: {
-          testeId, // O Mercado Pago converte para snake_case, ou seja, testeId vai virar teste_id
+          profileId, // O Mercado Pago converte para snake_case, ou seja, profileId vai virar teste_id
           userEmail,
           plan,
           //etc

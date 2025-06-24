@@ -7,6 +7,7 @@ declare module 'next-auth' {
     favorites?: string[]
     myProfileLink?: string
     accountVerified?: boolean
+    role?: 'admin' | 'user' | 'moderator'
   }
 
   interface Session {

@@ -6,6 +6,10 @@ import type { UserProps } from '@/_types/user'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function getProfileData(profileId: string) {
+  if (!profileId) {
+    return null
+  }
+
   const snapshot = await db.collection('profiles').doc(profileId).get()
 
   if (!snapshot.exists) {
@@ -25,6 +29,10 @@ export async function getProfileData(profileId: string) {
 }
 
 export async function getUsersData(userId: string) {
+  if (!userId) {
+    return null
+  }
+
   try {
     const snapshot = await db.collection('users').doc(userId).get()
 

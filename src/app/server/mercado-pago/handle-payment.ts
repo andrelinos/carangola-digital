@@ -1,7 +1,16 @@
+import { auth } from '@/lib/auth'
 import { db } from '@/lib/firebase'
+import admin from 'firebase-admin'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export async function handleMercadoPagoPayment(paymentData: any) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    console.error('Usuário não autenticado ou ID de usuário ausente.')
+    return false
+  }
+  const userId = session.user.id
+
   let profileId = ''
   let planType = ''
 
@@ -52,6 +61,8 @@ export async function handleMercadoPagoPayment(paymentData: any) {
           },
           updatedAt: Timestamp.now().toMillis(),
         })
+
+      await admin.auth().setCustomUserClaims(userId, { plan: planType })
     } else {
       console.error(
         'profileId ou planType não foram identificados no external_reference.'
