@@ -1,6 +1,5 @@
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/firebase'
-import admin from 'firebase-admin'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export async function handleMercadoPagoPayment(paymentData: any) {
@@ -40,8 +39,8 @@ export async function handleMercadoPagoPayment(paymentData: any) {
       }
 
       await db
-        .collection('profiles')
-        .doc(profileId)
+        .collection('users')
+        .doc(userId)
         .update({
           planActive: {
             id: paymentData.id,
@@ -61,8 +60,6 @@ export async function handleMercadoPagoPayment(paymentData: any) {
           },
           updatedAt: Timestamp.now().toMillis(),
         })
-
-      await admin.auth().setCustomUserClaims(userId, { plan: planType })
     } else {
       console.error(
         'profileId ou planType não foram identificados no external_reference.'
