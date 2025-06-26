@@ -6,8 +6,6 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   let planType = ''
   let userId = ''
 
-  console.log('paymentData', JSON.stringify(paymentData, null, 2))
-
   try {
     if (paymentData?.external_reference) {
       try {
@@ -15,10 +13,7 @@ export async function handleMercadoPagoPayment(paymentData: any) {
         planType = paymentData.metadata.plan_id || ''
         userId = paymentData.metadata.user_id || ''
 
-        console.log(
-          'Dados extraídos de external_reference:',
-          paymentData.external_reference
-        )
+        console.log('Dados extraídos de external_reference:', paymentData)
       } catch (error) {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.'
