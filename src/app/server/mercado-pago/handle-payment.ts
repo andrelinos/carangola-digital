@@ -1,7 +1,8 @@
+import type { PaymentDataProps } from '@/_types/payment-data'
 import { db } from '@/lib/firebase'
 import { Timestamp } from 'firebase-admin/firestore'
 
-export async function handleMercadoPagoPayment(paymentData: any) {
+export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
   let profileId = ''
   let planType = ''
   let userId = ''
@@ -34,51 +35,33 @@ export async function handleMercadoPagoPayment(paymentData: any) {
         expirationDate.setMonth(expirationDate.getMonth() + 1)
       }
 
-      await db
-        .collection('profiles')
-        .doc(profileId)
-        .update({
-          planActive: {
-            id: paymentData.id,
-            type: planType,
-            expiresAt: expirationDate.getTime(),
-            paymentDate: Timestamp.now().toMillis(),
-            status: 'active',
-            lastPaymentId: paymentData.id,
-            transactionAmount: paymentData.transaction_amount,
-            currency: paymentData.currency_id,
-            dateApproved: new Date(paymentData.date_approved).getTime(),
-            planDetails: {
-              name: paymentData.metadata.plan_name,
-              period: paymentData.metadata.plan_period,
-              price: paymentData.metadata.plan_price,
-            },
-          },
-          updatedAt: Timestamp.now().toMillis(),
-        })
+      const planActive = {
+        id: paymentData.id,
+        type: planType,
+        expiresAt: expirationDate.getTime(),
+        paymentDate: Timestamp.now().toMillis(),
+        status: 'active',
+        lastPaymentId: paymentData.id,
+        transactionAmount: paymentData.transaction_amount,
+        currency: paymentData.currency_id,
+        dateApproved: new Date(paymentData.date_approved).getTime(),
+        planDetails: {
+          id: paymentData.metadata.plan_id,
+          name: paymentData.metadata.plan_name,
+          period: paymentData.metadata.plan_period,
+          price: paymentData.metadata.plan_price,
+        },
+      }
 
-      await db
-        .collection('users')
-        .doc(userId)
-        .update({
-          planActive: {
-            id: paymentData.id,
-            type: planType,
-            expiresAt: expirationDate.getTime(),
-            paymentDate: Timestamp.now().toMillis(),
-            status: 'active',
-            lastPaymentId: paymentData.id,
-            transactionAmount: paymentData.transaction_amount,
-            currency: paymentData.currency_id,
-            dateApproved: new Date(paymentData.date_approved).getTime(),
-            planDetails: {
-              name: paymentData.metadata.plan.name,
-              period: paymentData.metadata.plan.period,
-              price: paymentData.metadata.plan.price,
-            },
-          },
-          updatedAt: Timestamp.now().toMillis(),
-        })
+      await db.collection('profiles').doc(profileId).update({
+        planActive,
+        updatedAt: Timestamp.now().toMillis(),
+      })
+
+      await db.collection('users').doc(userId).update({
+        planActive,
+        updatedAt: Timestamp.now().toMillis(),
+      })
     } else {
       console.error(
         'profileId ou planType não foram identificados no external_reference.'

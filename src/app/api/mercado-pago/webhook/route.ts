@@ -1,5 +1,6 @@
 // app/api/mercadopago-webhook/route.js
 
+import type { PaymentDataProps } from '@/_types/payment-data'
 import { handleMercadoPagoPayment } from '@/app/server/mercado-pago/handle-payment'
 import mpClient, { verifyMercadoPagoSignature } from '@/lib/mercado-pago'
 import { Payment } from 'mercadopago'
@@ -16,7 +17,9 @@ export async function POST(request: Request) {
     switch (type) {
       case 'payment': {
         const payment = new Payment(mpClient)
-        const paymentData = await payment.get({ id: data.id })
+        const paymentData = (await payment.get({
+          id: data.id,
+        })) as any as PaymentDataProps
 
         if (
           paymentData.status === 'approved' ||
