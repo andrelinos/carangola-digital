@@ -13,7 +13,7 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
     if (paymentData?.external_reference) {
       try {
         profileId = paymentData.external_reference
-        planType = paymentData.metadata.plan.plan_type
+        planType = paymentData.metadata.plan.type
         userId = paymentData.metadata.user_id
       } catch (error) {
         console.error(

@@ -102,7 +102,7 @@ export interface FeeDetail {
 
 export interface PlanProps {
   id: string
-  plan_type: string
+  type: string
   name: string
   price: number
   period: string
