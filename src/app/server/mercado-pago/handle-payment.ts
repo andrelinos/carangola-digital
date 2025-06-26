@@ -6,12 +6,14 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   let planType = ''
   let userId = ''
 
+  console.log('paymentData', JSON.stringify(paymentData, null, 2))
+
   try {
     if (paymentData?.external_reference) {
       try {
         profileId = paymentData.metadata.teste_id || ''
-        planType = paymentData.metadata.plan.id || ''
-        userId = paymentData.metadata.user.id || ''
+        planType = paymentData.metadata.plan_id || ''
+        userId = paymentData.metadata.user_id || ''
 
         console.log(
           'Dados extraídos de external_reference:',
