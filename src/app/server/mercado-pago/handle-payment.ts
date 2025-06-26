@@ -12,19 +12,21 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   let profileId = ''
   let planType = ''
   let userEmail = ''
-  let plan = ''
   let userId = ''
 
   try {
     if (paymentData?.external_reference) {
+      console.log('external_reference', paymentData.external_reference)
       try {
-        const externalReference = JSON.parse(paymentData.external_reference)
+        ;[profileId, userEmail, planType, userId] = JSON.parse(
+          paymentData.external_reference
+        )
 
-        profileId = paymentData.metadata.teste_id || ''
-        planType = paymentData.metadata.plan.id || ''
-        userEmail = externalReference.userEmail || ''
-        plan = externalReference.plan || ''
-        userId = externalReference.userId || ''
+        // profileId = paymentData.metadata.teste_id || ''
+        // planType = paymentData.metadata.plan.id || ''
+        // userEmail = externalReference.userEmail || ''
+        // plan = externalReference.plan || ''
+        // userId = externalReference.userId || ''
       } catch (error) {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.'

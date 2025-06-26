@@ -18,12 +18,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.error()
   }
 
-  const externalReference = JSON.stringify({
-    profileId,
-    userEmail,
-    plan,
-    userId: session.user.id,
-  })
+  const userId = session.user.id
+
+  const externalReference = JSON.stringify([profileId, userEmail, plan, userId])
   try {
     const preference = new Preference(mpClient)
 
