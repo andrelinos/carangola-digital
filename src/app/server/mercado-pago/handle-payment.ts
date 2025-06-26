@@ -9,10 +9,9 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   try {
     if (paymentData?.external_reference) {
       try {
-        const parsedData = JSON.parse(paymentData.external_reference)
         profileId = paymentData.metadata.teste_id || ''
         planType = paymentData.metadata.plan.id || ''
-        userId = parsedData.userId || ''
+        userId = paymentData.metadata.user.id || ''
 
         console.log(
           'Dados extraídos de external_reference:',
@@ -37,6 +36,29 @@ export async function handleMercadoPagoPayment(paymentData: any) {
       } else {
         expirationDate.setMonth(expirationDate.getMonth() + 1)
       }
+
+      await db
+        .collection('profiles')
+        .doc(profileId)
+        .update({
+          planActive: {
+            id: paymentData.id,
+            type: planType,
+            expiresAt: expirationDate.getTime(),
+            paymentDate: Timestamp.now().toMillis(),
+            status: 'active',
+            lastPaymentId: paymentData.id,
+            transactionAmount: paymentData.transaction_amount,
+            currency: paymentData.currency_id,
+            dateApproved: new Date(paymentData.date_approved).getTime(),
+            planDetails: {
+              name: paymentData.metadata.plan.name,
+              period: paymentData.metadata.plan.period,
+              price: paymentData.metadata.plan.price,
+            },
+          },
+          updatedAt: Timestamp.now().toMillis(),
+        })
 
       await db
         .collection('users')

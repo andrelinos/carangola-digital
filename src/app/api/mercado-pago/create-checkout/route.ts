@@ -20,22 +20,17 @@ export async function POST(req: NextRequest) {
 
   const userId = session.user.id
 
-  const externalReference = JSON.stringify({
-    profileId,
-    userEmail,
-    plan,
-    userId,
-  })
   try {
     const preference = new Preference(mpClient)
 
     const createdPreference = await preference.create({
       body: {
-        external_reference: externalReference, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
+        external_reference: profileId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
         metadata: {
           profileId, // O Mercado Pago converte para snake_case, ou seja, profileId vai virar teste_id
           userEmail,
           plan,
+          userId,
           //etc
         },
         ...(userEmail && {
