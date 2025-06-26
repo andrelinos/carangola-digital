@@ -2,6 +2,7 @@ import { PurchaseButtons } from '@/app/[profileId]/compre/components/purchase-bu
 import { Card, CardContent } from '@/components/ui/card'
 import { auth } from '@/lib/auth'
 import { formatPrice } from '@/utils/format-price'
+import clsx from 'clsx'
 
 import { Check } from 'lucide-react'
 
@@ -30,7 +31,7 @@ export async function PricingPlans() {
       name: 'Pro',
       price: 49.99,
       period: 'por ano',
-      popular: true,
+      popular: false,
       features: [
         'Tudo do plano Básico',
         'Galeria com até 15 fotos',
@@ -42,7 +43,7 @@ export async function PricingPlans() {
       buttonText: 'Escolher Pro',
       buttonVariant: 'default' as const,
       cardClass:
-        'bg-gradient-to-br from-gray-900 lg:-top-6 shadow-3xl to-gray-800 text-white',
+        'bg-gradient-to-br from-gray-900  shadow-3xl to-gray-800 text-white',
     },
     {
       id: 'basic',
@@ -77,7 +78,12 @@ export async function PricingPlans() {
 
         <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
           {plans.map((plan, index) => (
-            <Card key={plan.name} className={`relative ${plan.cardClass}`}>
+            <Card
+              key={plan.name}
+              className={clsx(`relative ${plan.cardClass}`, {
+                'lg:-top-6': plan.popular,
+              })}
+            >
               {plan.popular && (
                 <div className="-top-4 -translate-x-1/2 absolute left-1/2 transform">
                   <span className="rounded-full bg-primary px-4 py-1 font-semibold text-sm text-white">
