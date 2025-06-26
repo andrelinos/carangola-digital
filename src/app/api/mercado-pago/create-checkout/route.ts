@@ -1,4 +1,5 @@
 import type { PlanProps } from '@/_types/plan'
+import { auth } from '@/lib/auth'
 import mpClient from '@/lib/mercado-pago'
 import { Preference } from 'mercadopago'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -11,15 +12,24 @@ interface RequestProps {
 
 export async function POST(req: NextRequest) {
   const { profileId, userEmail, plan } = (await req.json()) as RequestProps
+  const session = await auth()
 
-  console.log('profileId', profileId, userEmail, plan)
+  if (!session || !profileId || !userEmail || !plan) {
+    return NextResponse.error()
+  }
 
+  const externalReference = JSON.stringify({
+    profileId,
+    userEmail,
+    plan,
+    userId: session.user.id,
+  })
   try {
     const preference = new Preference(mpClient)
 
     const createdPreference = await preference.create({
       body: {
-        external_reference: profileId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
+        external_reference: externalReference, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
         metadata: {
           profileId, // O Mercado Pago converte para snake_case, ou seja, profileId vai virar teste_id
           userEmail,
