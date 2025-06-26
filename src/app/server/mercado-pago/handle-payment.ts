@@ -1,32 +1,23 @@
-import { auth } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export async function handleMercadoPagoPayment(paymentData: any) {
-  const session = await auth()
-  if (!session?.user?.id) {
-    console.error('Usuário não autenticado ou ID de usuário ausente.')
-    return false
-  }
-
   let profileId = ''
   let planType = ''
-  let userEmail = ''
   let userId = ''
 
   try {
     if (paymentData?.external_reference) {
-      console.log('external_reference', paymentData.external_reference)
       try {
-        ;[profileId, userEmail, planType, userId] = JSON.parse(
+        const parsedData = JSON.parse(paymentData.external_reference)
+        profileId = paymentData.metadata.teste_id || ''
+        planType = paymentData.metadata.plan.id || ''
+        userId = parsedData.userId || ''
+
+        console.log(
+          'Dados extraídos de external_reference:',
           paymentData.external_reference
         )
-
-        // profileId = paymentData.metadata.teste_id || ''
-        // planType = paymentData.metadata.plan.id || ''
-        // userEmail = externalReference.userEmail || ''
-        // plan = externalReference.plan || ''
-        // userId = externalReference.userId || ''
       } catch (error) {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.'
