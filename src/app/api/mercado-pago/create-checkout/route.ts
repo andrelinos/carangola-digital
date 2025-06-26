@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
           profileId,
           userEmail,
           userId,
+          planType: plan.id,
           //etc
         },
         ...(userEmail && {
