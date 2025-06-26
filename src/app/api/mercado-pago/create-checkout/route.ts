@@ -31,6 +31,9 @@ export async function POST(req: NextRequest) {
           userEmail,
           userId,
           planType: plan.id,
+          planName: plan.name,
+          planPeriod: plan.period,
+          plan_Price: plan.price,
           //etc
         },
         ...(userEmail && {

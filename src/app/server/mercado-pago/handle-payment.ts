@@ -49,9 +49,9 @@ export async function handleMercadoPagoPayment(paymentData: any) {
             currency: paymentData.currency_id,
             dateApproved: new Date(paymentData.date_approved).getTime(),
             planDetails: {
-              name: paymentData.metadata.plan.name,
-              period: paymentData.metadata.plan.period,
-              price: paymentData.metadata.plan.price,
+              name: paymentData.metadata.plan_name,
+              period: paymentData.metadata.plan_period,
+              price: paymentData.metadata.plan_price,
             },
           },
           updatedAt: Timestamp.now().toMillis(),
