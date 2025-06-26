@@ -9,7 +9,7 @@ export async function handleMercadoPagoPayment(paymentData: any) {
   try {
     if (paymentData?.external_reference) {
       try {
-        profileId = paymentData.metadata.teste_id || ''
+        profileId = paymentData.external_reference
         planType = paymentData.metadata.plan_id || ''
         userId = paymentData.metadata.user_id || ''
 

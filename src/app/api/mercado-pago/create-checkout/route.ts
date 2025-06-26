@@ -25,9 +25,9 @@ export async function POST(req: NextRequest) {
 
     const createdPreference = await preference.create({
       body: {
-        external_reference: userId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
+        external_reference: profileId,
         metadata: {
-          profileId, // O Mercado Pago converte para snake_case, ou seja, profileId vai virar teste_id
+          profileId,
           userEmail,
           userId,
           //etc
