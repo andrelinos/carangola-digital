@@ -7,11 +7,13 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
   let planType = ''
   let userId = ''
 
+  console.log('Dados recebidos do MercadoPago:', paymentData)
+
   try {
     if (paymentData?.external_reference) {
       try {
         profileId = paymentData.external_reference
-        planType = paymentData.metadata.plan_type
+        planType = paymentData.metadata.plan.plan_type
         userId = paymentData.metadata.user_id
 
         console.log('Dados extraídos de external_reference:', paymentData)
@@ -46,10 +48,10 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
         currency: paymentData.currency_id,
         dateApproved: new Date(paymentData.date_approved).getTime(),
         planDetails: {
-          id: paymentData.metadata.plan_id,
-          name: paymentData.metadata.plan_name,
-          period: paymentData.metadata.plan_period,
-          price: paymentData.metadata.plan_price,
+          id: paymentData.metadata.plan.id,
+          name: paymentData.metadata.plan.name,
+          period: paymentData.metadata.plan.period,
+          price: paymentData.metadata.plan.price,
         },
       }
 

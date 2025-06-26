@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { auth } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
 import { getSEOTags } from '@/lib/seo'
 
@@ -25,12 +24,6 @@ export const metadata: Metadata = getSEOTags({
 })
 
 export default async function Home() {
-  const session = await auth()
-
-  console.log('session', session)
-
-  const hasProfileLink = session?.user?.hasProfileLink || false
-
   trackServerEvent('page_view', {
     page: 'home',
   })

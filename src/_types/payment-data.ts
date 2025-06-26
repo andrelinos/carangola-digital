@@ -100,15 +100,23 @@ export interface FeeDetail {
   type: string
 }
 
-export interface Metadata {
+export interface PlanProps {
+  id: string
   plan_type: string
+  name: string
+  price: number
+  period: string
+}
+export interface Metadata {
+  profile_id: string
   user_email: string
   user_id: string
-  profile_id: string
-  plan_id: string
-  plan_price: number
-  plan_period: string
-  plan_name: string
+  plan: PlanProps
+  // plan_type: string
+  // plan_id: string
+  // plan_price: number
+  // plan_period: string
+  // plan_name: string
 }
 
 export interface Order {
