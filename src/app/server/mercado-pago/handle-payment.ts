@@ -10,8 +10,8 @@ export async function handleMercadoPagoPayment(paymentData: any) {
     if (paymentData?.external_reference) {
       try {
         profileId = paymentData.external_reference
-        planType = paymentData.metadata.plan_type || 'planTESTE'
-        userId = paymentData.metadata.user_id || 'userTESTE'
+        planType = paymentData.metadata.plan_type
+        userId = paymentData.metadata.user_id
 
         console.log('Dados extraídos de external_reference:', paymentData)
       } catch (error) {
@@ -22,7 +22,7 @@ export async function handleMercadoPagoPayment(paymentData: any) {
       }
     }
 
-    if (profileId && planType) {
+    if (profileId && planType && userId) {
       const currentDate = new Date()
       const expirationDate = new Date(currentDate)
 
@@ -83,8 +83,12 @@ export async function handleMercadoPagoPayment(paymentData: any) {
       console.error(
         'profileId ou planType não foram identificados no external_reference.'
       )
+      return false
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('Erro ao processar pagamento:', error)
+    return false
+  }
 
   return true
 }
