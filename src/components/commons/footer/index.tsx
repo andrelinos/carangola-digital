@@ -2,6 +2,7 @@ import { menus } from '@/assets/data/menu-data'
 import { Link } from '@/components/ui/link'
 import { Instagram } from 'iconoir-react'
 import Image from 'next/image'
+import { FooterByDevNameTitle } from '../footer-by-dev-name-title'
 
 export function Footer() {
   return (
@@ -60,17 +61,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex h-32 w-full max-w-screen-xl items-center justify-center text-sm text-zinc-200">
-        Desenvolvido com 💜 por{' '}
-        <Link
-          variant="footer"
-          href="https://andrelino.dev/"
-          target="_blank"
-          className="ml-1 p-0"
-        >
-          Andrelino Silva
-        </Link>
-      </div>
+      <FooterByDevNameTitle />
     </div>
   )
 }

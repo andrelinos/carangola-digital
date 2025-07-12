@@ -7,8 +7,6 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
   let planType = ''
   let userId = ''
 
-  console.log('Dados PRocesso:', paymentData)
-
   try {
     if (paymentData?.external_reference) {
       try {

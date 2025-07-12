@@ -1,3 +1,8 @@
+import {
+  type PlanConfigProps,
+  type PlanTypeProps,
+  plansConfig,
+} from '@/configs/plans'
 import imageCompression from 'browser-image-compression'
 import type { ClassValue } from 'clsx'
 import clsx from 'clsx'
@@ -117,3 +122,61 @@ export function sanitizePhoneNumber(phoneNumber: string) {
 
   return sanitizedPhoneNumber
 }
+
+type PlanActive = {
+  type?: string
+  status: string
+  expiresAt: number
+  // … demais campos do seu objeto
+}
+
+export function getPlanConfig(planActive?: PlanActive): PlanConfigProps {
+  const now = Date.now()
+
+  const isValid =
+    planActive &&
+    planActive.status === 'active' &&
+    typeof planActive.expiresAt === 'number' &&
+    planActive.expiresAt > now
+
+  const key: PlanTypeProps =
+    isValid && (planActive?.type as PlanTypeProps) in plansConfig
+      ? (planActive?.type as PlanTypeProps)
+      : 'free'
+
+  return plansConfig[key]
+}
+
+// // Exemplo de payload do usuário
+// type UserData = {
+//   socialMedias: Array<{
+//     platform: keyof PlanConfigProps['socialMedias']
+//     value: string
+//   }>
+//   businessPhones: Array<{ number: string }>
+// }
+
+// // Função que aplica o corte de acordo com o config
+// export function filterUserData(
+//   user: UserData,
+//   planConfigProps: PlanConfigProps
+// ): UserData {
+//   // 1) Só retorna socialMedias com permissão `true`
+//   const allowedSM = Object.entries(planConfigProps.socialMedias)
+//     .filter(([, allowed]) => allowed)
+//     .map(([platform]) => platform) as Array<
+//     keyof PlanConfigProps['socialMedias']
+//   >
+
+//   const socialMedias = user.socialMedias.filter(item =>
+//     allowedSM.includes(item.platform)
+//   )
+
+//   // 2) Limita a quantidade de telefones
+//   const businessPhones = user.businessPhones.slice(
+//     0,
+//     planConfigProps.businessPhones.quantity
+//   )
+
+//   return { socialMedias, businessPhones }
+// }

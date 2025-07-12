@@ -46,10 +46,8 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                   </div>
                 </div>
 
-                {item.latitude &&
-                  item.longitude &&
-                  item.latitude !== 0 &&
-                  item.longitude !== 0 && (
+                {Number(item.latitude) && Number(item.longitude) ? (
+                  <div>
                     <Link
                       variant="tertiary"
                       className="group relative w-14 bg-blue-600 px-2 py-1 text-white text-xs"
@@ -71,7 +69,10 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                       Como <br />
                       chegar
                     </Link>
-                  )}
+                  </div>
+                ) : (
+                  <div />
+                )}
               </div>
             )
           )

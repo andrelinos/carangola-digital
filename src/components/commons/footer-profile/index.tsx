@@ -1,6 +1,6 @@
 import type { ProfileDataProps } from '@/_types/profile-data'
-import { Link } from '@/components/ui/link'
 import Image from 'next/image'
+import { FooterByDevNameTitle } from '../footer-by-dev-name-title'
 
 interface Props {
   profileData?: ProfileDataProps
@@ -24,12 +24,7 @@ export function FooterProfile({ profileData, isOwner }: Props) {
         </div>
         <div className="flex flex-1 justify-end px-4 text-white">{/*  */}</div>
       </div>
-      <div className="flex h-32 w-full max-w-screen-xl items-center justify-center text-sm text-zinc-200">
-        Desenvolvido com 💜
-        <Link variant="footer" href="https://andrelino.dev/" target="_blank">
-          Andrelino Silva
-        </Link>
-      </div>
+      <FooterByDevNameTitle />
     </div>
   )
 }

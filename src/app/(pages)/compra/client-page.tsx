@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
 
 interface CompraClientProps {
   status?: string
@@ -17,10 +16,6 @@ export default function CompraClient({
   const status = initialStatus || searchParams.get('status') || ['']
 
   const [success, approved] = status
-
-  useEffect(() => {
-    console.log('Client-side status:', status)
-  }, [status])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">

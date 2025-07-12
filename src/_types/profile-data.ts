@@ -1,3 +1,5 @@
+import type { PlanTypeProps } from '@/configs/plans'
+
 export type WeekDayProps =
   | 'Segunda-feira'
   | 'Terça-feira'
@@ -59,6 +61,10 @@ export type ProfileDataProps = {
   admins: AdminsProfileProps[]
   category: string
   imagePath: string
+  planActive: {
+    type: PlanTypeProps
+    expiresAt: number
+  }
 
   planType: string
   rating: string

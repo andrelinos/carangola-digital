@@ -8,9 +8,10 @@ import { fakeContent } from './assets/data/content-fake'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (pathname === '/sitemap.xml') {
-    const userAgent = request.headers.get('user-agent') || ''
+  const isProduction = process.env.NODE_ENV === 'production'
 
+  if (isProduction && pathname === '/sitemap.xml') {
+    const userAgent = request.headers.get('user-agent') || ''
     const isAllowedUserAgent = allowedUserAgents.some(agent =>
       userAgent.includes(agent)
     )
@@ -23,7 +24,6 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Se o caminho da URL iniciar com algum dos padrões bloqueados, retorna 404 ou redireciona para uma página segura.
   if (blockedPaths.some(blocked => pathname.startsWith(blocked))) {
     return new NextResponse(fakeContent, {
       status: 200,
@@ -33,7 +33,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
-// Configura o matcher para que o middleware seja executado para todas as rotas (exceto as da API, se preferir)
 export const config = {
   matcher: '/:path*',
 }

@@ -10,8 +10,6 @@ export const useMercadoPago = () => {
   }, [])
 
   async function createMercadoPagoCheckout(checkoutData: any) {
-    console.log(checkoutData)
-
     try {
       const response = await fetch('/api/mercado-pago/create-checkout', {
         method: 'POST',
@@ -25,10 +23,9 @@ export const useMercadoPago = () => {
 
       router.push(data.initPoint)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
   return { createMercadoPagoCheckout }
 }
-// #src/app/api/mercado-pago/create-checkout/route.ts

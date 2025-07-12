@@ -27,7 +27,7 @@ export default function ContactPage() {
               target="_blank"
               rel="noreferrer"
             >
-              @andrelinossilva
+              @carangoladigital
             </a>
           </li>
           <p className="mt-8 font-bold text-xl">Desenvolvedor </p>

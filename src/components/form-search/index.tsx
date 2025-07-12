@@ -17,12 +17,18 @@ interface SearchProps extends ProfileDataProps {
 export default function SearchFormBusiness() {
   const [searchTerms, setSearchTerms] = useState('')
   const [resultsSearch, setResultsSearch] = useState<SearchProps[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingBusiness, setIsLoadingBusiness] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+
+  function onChangeSearchTerms(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value
+    setSearchTerms(value)
+    setHasSearched(false)
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setIsLoading(true)
+    setIsLoadingBusiness(true)
 
     try {
       const formData = new FormData()
@@ -39,7 +45,7 @@ export default function SearchFormBusiness() {
       console.error('Erro na busca:', error)
     } finally {
       setHasSearched(true)
-      setIsLoading(false)
+      setIsLoadingBusiness(false)
     }
   }
 
@@ -51,16 +57,17 @@ export default function SearchFormBusiness() {
           className="mx-auto flex w-full max-w-xl flex-col gap-2 sm:flex-row"
         >
           <Input
-            type="text"
+            type="search"
             name="searchTerms"
             value={searchTerms}
-            onChange={e => setSearchTerms(e.target.value)}
+            onChange={onChangeSearchTerms}
             placeholder="Quem você deseja encontrar?"
-            className="flex-1 rounded-lg border border-gray-300 px-6 text-xl"
+            className="flex-1 rounded-lg border border-gray-300 px-6 text-xl shadow-sm"
           />
           <Button
             type="submit"
-            className="rounded bg-blue-500 px-4 py-3 text-white"
+            className="h-14 rounded bg-blue-500 px-4 py-4 text-white"
+            disabled={searchTerms.trim().length < 3 || isLoadingBusiness}
           >
             Buscar
           </Button>
@@ -120,7 +127,7 @@ export default function SearchFormBusiness() {
           </div>
         )}
         {hasSearched &&
-          !isLoading &&
+          !isLoadingBusiness &&
           resultsSearch &&
           resultsSearch.length === 0 && (
             <div className="flex size-full flex-col py-8">
@@ -130,7 +137,7 @@ export default function SearchFormBusiness() {
             </div>
           )}
       </div>
-      {isLoading && <Loading />}
+      {isLoadingBusiness && <Loading />}
     </>
   )
 }

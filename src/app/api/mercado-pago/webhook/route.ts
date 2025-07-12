@@ -21,8 +21,6 @@ export async function POST(request: Request) {
           id: data.id,
         })) as any as PaymentDataProps
 
-        console.log('Dados recebidos do MercadoPago (hook):', paymentData)
-
         if (
           paymentData.status === 'approved' ||
           paymentData.date_approved !== null

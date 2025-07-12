@@ -3,8 +3,9 @@ import type { Metadata } from 'next'
 import { trackServerEvent } from '@/lib/mixpanel'
 import { getSEOTags } from '@/lib/seo'
 
+import { ActionSection } from '@/components/commons/action-section'
+import { BenefitsSection } from '@/components/commons/benefits-section'
 import { HeroSection } from '@/components/commons/hero-section'
-import { PricingPlans } from '@/components/commons/plan-section'
 
 export const metadata: Metadata = getSEOTags({
   appName: 'Carangola Digital',
@@ -33,7 +34,8 @@ export default async function Home() {
       <div className="min-h-screen bg-gray-50">
         <main>
           <HeroSection />
-          <PricingPlans />
+          <BenefitsSection />
+          <ActionSection />
           {/* <BusinessProfileDemo /> */}
           {/* <FeaturesSection /> */}
           {/* <CTASection /> */}

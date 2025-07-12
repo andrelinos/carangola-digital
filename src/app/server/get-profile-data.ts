@@ -3,6 +3,8 @@ import 'server-only'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
 
+import { plansConfig } from '@/configs/plans'
+import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function getProfileData(profileId: string) {
@@ -16,14 +18,35 @@ export async function getProfileData(profileId: string) {
     return null
   }
 
-  const data = snapshot.data() as ProfileDataProps
+  const profileData = snapshot.data() as ProfileDataProps
 
-  const imageUrl = await getDownloadURLFromPath(data.imagePath)
+  const imageUrl = await getDownloadURLFromPath(profileData.imagePath)
+
+  const { socialMedias, businessPhones, businessAddresses, planActive } =
+    profileData
+
+  const allowedInformationByFilterDataPlan = filterUserDataByPlan({
+    itemsToFilter: {
+      socialMedias,
+      businessPhones,
+      businessAddresses,
+    },
+    planConfig: plansConfig[profileData?.planActive?.type] || plansConfig.free,
+    planActive,
+  })
 
   const formattedData = {
-    ...data,
+    ...profileData,
     imagePath: imageUrl,
+    socialMedias: { ...allowedInformationByFilterDataPlan.socialMedias },
+    businessPhones: allowedInformationByFilterDataPlan.businessPhones,
+    businessAddresses: allowedInformationByFilterDataPlan.businessAddresses,
   }
+
+  // const formattedData = {
+  //   ...data,
+  //   imagePath: imageUrl,
+  // }
 
   return formattedData
 }
