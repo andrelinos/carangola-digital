@@ -45,7 +45,7 @@ export default async function Home() {
       <div className="size-full px-4 py-36">
         <div className="flex size-full flex-1 flex-col items-center justify-center">
           <h1 className=" max-w-2xl text-center font-bold text-3xl lg:text-5xl">
-            Encontre em compartilhe estabelecimentos e serviços
+            Encontre e compartilhe estabelecimentos e serviços
           </h1>
           <p className="my-4 max-w-2xl text-center">
             Estamos aqui para facilitar a sua vida em Carangola — conectando
