@@ -1,10 +1,9 @@
-// app/api/mercadopago-webhook/route.js
+import { Payment } from 'mercadopago'
+import { NextResponse } from 'next/server'
 
 import type { PaymentDataProps } from '@/_types/payment-data'
 import { handleMercadoPagoPayment } from '@/app/server/mercado-pago/handle-payment'
 import mpClient, { verifyMercadoPagoSignature } from '@/lib/mercado-pago'
-import { Payment } from 'mercadopago'
-import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {

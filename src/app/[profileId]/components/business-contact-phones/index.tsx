@@ -12,9 +12,10 @@ import { EditContactPhones } from './edit-business-contact-phones'
 interface Props {
   profileData: any
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
-export function ContactPhones({ profileData, isOwner }: Props) {
+export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
   const businessPhones = profileData?.businessPhones || []
 
   const businessPhone = businessPhones?.filter(
@@ -31,7 +32,7 @@ export function ContactPhones({ profileData, isOwner }: Props) {
         <h2 className="flex max-w-lg items-center gap-2 text-center font-bold text-xl">
           <PhoneCall className="size-6" /> Telefones de contato
         </h2>
-        {isOwner && (
+        {(isOwner || isUserAuth) && (
           <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
             <EditContactPhones profileData={profileData} />
           </div>

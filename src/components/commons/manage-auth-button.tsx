@@ -12,9 +12,9 @@ export function ManageAuthButton({ session }: Props) {
     <Button
       variant="outline"
       className={clsx(
-        'text-zinc-700 transition-colors duration-300 ease-in-out hover:cursor-pointer',
+        'w-full max-w-xs text-base text-zinc-700 transition-colors duration-300 ease-in-out hover:cursor-pointer ',
         {
-          ' hover:border-red-500 hover:bg-red-500 hover:text-white': session,
+          ' hover:border-rose-400 hover:bg-rose-400 hover:text-white': session,
         }
       )}
     >

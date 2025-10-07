@@ -1,6 +1,4 @@
 import { Footer } from '@/components/commons/footer'
-import { HeaderHome } from '@/components/commons/headers'
-import '@/styles/globals.css'
 
 import type { Metadata } from 'next'
 
@@ -19,7 +17,6 @@ export default function SlugLayout({
 }>) {
   return (
     <div className="flex min-h-screen flex-col justify-between">
-      <HeaderHome />
       {children}
       <Footer />
     </div>

@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ArrowLeft } from 'iconoir-react'
 import type { Metadata } from 'next'
+
 import { BusinessAddresses } from './components/business-addresses'
 import { ContactPhones } from './components/business-contact-phones'
 import { Description } from './components/business-description'
@@ -42,9 +43,15 @@ export default async function BusinessId({ params }: Props) {
     profileId
   )) as ProfileDataProps | null
 
+  console.log('profileData >> ', profileData)
+
   const userData = (await getUsersData(session?.user?.id || '')) as UserProps
 
   const isOwner = profileData?.userId === session?.user?.id
+  const isUserAuth = !!(
+    session?.user?.id &&
+    profileData?.admins?.some(admin => admin.userId === session.user.id)
+  )
 
   if (!profileData) {
     return (
@@ -66,7 +73,6 @@ export default async function BusinessId({ params }: Props) {
 
   return (
     <>
-      <HeaderProfile profileData={profileData} isOwner={isOwner} />
       <main className="mx-auto w-full max-w-4xl pt-6 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Link href="/">
@@ -78,7 +84,11 @@ export default async function BusinessId({ params }: Props) {
         </div>
         <Card className="overflow-hidden rounded-2xl bg-white shadow-xl">
           <CardContent className="flex flex-col p-0">
-            <BusinessHero profileData={profileData} isOwner={isOwner} />
+            <BusinessHero
+              profileData={profileData}
+              isOwner={isOwner}
+              isUserAuth={isUserAuth}
+            />
 
             <div className="flex w-full flex-col items-center gap-8 pt-8">
               <ContainerOpeningHours
@@ -86,17 +96,34 @@ export default async function BusinessId({ params }: Props) {
                 isOwner={isOwner}
               />
 
-              <ContactPhones profileData={profileData} isOwner={isOwner} />
+              <ContactPhones
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
 
-              <BusinessAddresses profileData={profileData} isOwner={isOwner} />
+              <BusinessAddresses
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
 
-              <Description profileData={profileData} isOwner={isOwner} />
+              <Description
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
 
-              <SocialMedia profileData={profileData} isOwner={isOwner} />
+              <SocialMedia
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
               <LikeShareButtons
                 userInfo={session?.user}
                 isFavorite={isFavorite}
                 isOwner={isOwner}
+                isUserAuth={isUserAuth}
               />
             </div>
           </CardContent>

@@ -60,7 +60,12 @@ export type ProfileDataProps = {
   name: string
   admins: AdminsProfileProps[]
   category: string
-  imagePath: string
+  coverImageUrl?: string
+  coverImagePath?: string
+  logoImagePath?: string
+  logoImageUrl?: string
+  categories?: string[]
+  imagePath?: string
   planActive: {
     type: PlanTypeProps
     expiresAt: number

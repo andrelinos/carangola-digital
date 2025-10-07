@@ -10,23 +10,12 @@ const linkVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
-      // variant: {
-      //   default: 'bg-blue-500 hover:cursor-pointer',
-      //   primary: 'font-normal underline-offset-4 hover:underline',
-      //   secondary: 'bg-zinc-600 text-white',
-      //   tertiary: 'font-semibold underline-offset-4 hover:brightness-95',
-      //   outline:
-      //     'border border-border-primary bg-background hover:bg-accent hover:text-accent-foreground',
-      //   ghost: 'border-border-primary bg-transparent',
-      //   footer:
-      //     'text-left font-normal text-white transition-all duration-300 ease-in-out hover:cursor-pointer hover:underline hover:underline-offset-4',
-      // },
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
-          'border border-border-primary bg-background hover:bg-accent hover:text-accent-foreground',
+          'border border-border-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
         primary: 'font-normal underline-offset-4 hover:underline',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',

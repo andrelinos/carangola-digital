@@ -1,3 +1,4 @@
+import type { typeProps } from '@/_types/user'
 import type { PlanConfigProps } from '@/configs/plans'
 import { plansConfig } from '@/configs/plans'
 
@@ -11,7 +12,7 @@ interface FilterUserDataByPlanProps {
   itemsToFilter: Profile
   planConfig: PlanConfigProps
   planActive?: {
-    type: 'free' | 'basic' | 'pro'
+    type: typeProps
     expiresAt: number
   }
 }

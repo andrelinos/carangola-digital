@@ -6,9 +6,10 @@ import { InfoCircle } from 'iconoir-react'
 interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
-export function Description({ profileData, isOwner }: Props) {
+export function Description({ profileData, isOwner, isUserAuth }: Props) {
   const businessDescription = profileData?.businessDescription || ''
 
   return (
@@ -17,9 +18,9 @@ export function Description({ profileData, isOwner }: Props) {
         <h2 className="flex items-center gap-2 text-center font-bold text-xl">
           <InfoCircle className="size-6" /> Descrição
         </h2>
-        {isOwner && (
+        {(isOwner || isUserAuth) && (
           <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
-            <EditBusinessDescription data={businessDescription} />{' '}
+            <EditBusinessDescription data={businessDescription} />
           </div>
         )}
       </div>

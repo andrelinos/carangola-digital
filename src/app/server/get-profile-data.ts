@@ -1,4 +1,4 @@
-import 'server-only'
+'server-only'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
@@ -7,7 +7,9 @@ import { plansConfig } from '@/configs/plans'
 import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
-export async function getProfileData(profileId: string) {
+export async function getProfileData(
+  profileId: string
+): Promise<ProfileDataProps | null> {
   if (!profileId) {
     return null
   }
@@ -20,7 +22,13 @@ export async function getProfileData(profileId: string) {
 
   const profileData = snapshot.data() as ProfileDataProps
 
-  const imageUrl = await getDownloadURLFromPath(profileData.imagePath)
+  const coverPath = profileData.coverImagePath || profileData.imagePath
+  const logoPath = profileData.logoImagePath
+
+  const [coverImageUrl, logoImageUrl] = await Promise.all([
+    getDownloadURLFromPath(coverPath),
+    getDownloadURLFromPath(logoPath),
+  ])
 
   const { socialMedias, businessPhones, businessAddresses, planActive } =
     profileData
@@ -35,18 +43,16 @@ export async function getProfileData(profileId: string) {
     planActive,
   })
 
-  const formattedData = {
+  const formattedData: ProfileDataProps = {
     ...profileData,
-    imagePath: imageUrl,
+    coverImageUrl: coverImageUrl,
+    logoImageUrl: logoImageUrl,
+
+    imagePath: coverImageUrl,
     socialMedias: { ...allowedInformationByFilterDataPlan.socialMedias },
     businessPhones: allowedInformationByFilterDataPlan.businessPhones,
     businessAddresses: allowedInformationByFilterDataPlan.businessAddresses,
   }
-
-  // const formattedData = {
-  //   ...data,
-  //   imagePath: imageUrl,
-  // }
 
   return formattedData
 }
@@ -80,6 +86,8 @@ export async function getProfileId(userId?: string) {
     const snapshot = await db
       .collection('profiles')
       .where('userId', '==', userId)
+      .where('isPrimary', '==', true)
+      .limit(1)
       .get()
 
     if (!snapshot.docs) {

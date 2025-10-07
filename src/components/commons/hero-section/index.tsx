@@ -34,9 +34,9 @@ export function HeroSection() {
             </Button>
           </NextLink>
           <Link
+            variant="outline"
             href="/andrelino"
             size="lg"
-            variant="outline"
             className="h-11 border-2 border-white px-8 font-semibold text-white hover:bg-white hover:text-primary"
           >
             Ver Como Fica Seu Perfil

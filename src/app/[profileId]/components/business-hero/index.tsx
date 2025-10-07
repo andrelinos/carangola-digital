@@ -1,118 +1,175 @@
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Badge } from '@/components/ui/badge'
-import { Star } from 'iconoir-react'
+import { SafeImage } from '@/components/ui/safe-image'
+import { MessageText, Star } from 'iconoir-react'
 import Image from 'next/image'
 import { EditBusinessInfo } from '../edit-business-info'
 
 interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
-export async function BusinessHero({ profileData, isOwner }: Props) {
-  const renderStars = (rating: string | null) => {
-    const ratingNum = Number.parseFloat(rating || '0')
+// Componente Refatorado para um visual mais elegante
+export async function BusinessHero({
+  profileData,
+  isOwner,
+  isUserAuth,
+}: Props) {
+  const {
+    name,
+    imagePath,
+    coverImageUrl,
+    logoImageUrl,
+    businessDescription,
+    category,
+    categories,
+    planType,
+    rating,
+    reviewCount,
+    isPremium,
+  } = profileData
+  const currentRating = isPremium ? '4.9' : rating || '0.0'
+  const currentReviewCount = isPremium ? 19 : reviewCount || 0
+
+  // Função para renderizar as estrelas (mantida, mas com estilo refinado no uso)
+  const renderStars = (ratingValue: string) => {
+    const ratingNum = Number.parseFloat(ratingValue)
     const stars = []
-    const fullStars = Math.floor(ratingNum)
-    const hasHalfStar = ratingNum % 1 !== 0
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Star key={i} className="h-4 w-4 fill-current text-yellow-400" />
-      )
+    for (let i = 1; i <= 5; i++) {
+      if (i <= ratingNum) {
+        // Estrela cheia
+        stars.push(
+          <Star
+            key={i}
+            className="h-5 w-5 text-yellow-400"
+            fill="currentColor"
+          />
+        )
+      } else if (i === Math.ceil(ratingNum) && !Number.isInteger(ratingNum)) {
+        // Meia estrela (pode ser implementado com um ícone específico se disponível)
+        stars.push(
+          <div key={i} className="relative">
+            <Star className="h-5 w-5 text-zinc-300" fill="currentColor" />
+            <div className="absolute top-0 left-0 h-full w-1/2 overflow-hidden">
+              <Star className="h-5 w-5 text-yellow-400" fill="currentColor" />
+            </div>
+          </div>
+        )
+      } else {
+        // Estrela vazia
+        stars.push(
+          <Star key={i} className="h-5 w-5 text-zinc-300" fill="currentColor" />
+        )
+      }
     }
-
-    if (hasHalfStar) {
-      stars.push(
-        <Star
-          key="half"
-          className="h-4 w-4 fill-current text-yellow-400 opacity-50"
-        />
-      )
-    }
-
-    const remainingStars = 5 - Math.ceil(ratingNum)
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />)
-    }
-
     return stars
   }
 
-  const ratingOwnerSite = profileData.isPremium
-
   return (
-    <>
-      <div className="relative h-64 w-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600">
-        <Image
-          width={896}
-          height={256}
-          src={profileData?.imagePath || '/default-image.png'}
-          alt={profileData?.name || ''}
-          className="mx-auto w-auto shadow-2xl"
-          priority
+    <section className="w-full bg-slate-50 pb-12">
+      {/* Banner Superior */}
+      <div className="relative h-48 w-full md:h-64">
+        <SafeImage
+          src={coverImageUrl || '/default-image.png'}
+          alt={`Banner de ${name}`}
+          className="object-cover shadow-md"
+          fill
         />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-black/10" />
       </div>
-      <div className="p-8">
-        <div className="mb-8 flex flex-col items-start space-x-6 lg:flex-row">
-          <div className="-mt-16 relative h-24 w-24 rounded-2xl bg-white p-2 shadow-lg">
-            <Image
-              width={96}
-              height={96}
-              src={profileData?.imagePath || '/default-image.png'}
-              alt={profileData?.name || ''}
-              className="h-full w-full rounded-2xl object-cover"
-              priority
-            />
+
+      {/* Container Principal do Conteúdo */}
+      <div className="-mt-20 container px-4">
+        <div className="relative rounded-2xl bg-white p-6 shadow-lg">
+          {/* Cabeçalho com Foto, Título e Botão de Editar */}
+          <div className="flex flex-col items-center gap-4 border-slate-200 border-b pb-6 text-center sm:flex-row sm:text-left">
+            {/* Foto de Perfil */}
+            <div className="relative h-28 w-28 flex-shrink-0">
+              <SafeImage
+                src={logoImageUrl || '/default-image.png'}
+                alt={`Banner de ${name}`}
+                className="rounded-full border-4 border-white object-cover shadow-md"
+                fill
+              />
+            </div>
+
+            {/* Título e Botão */}
+            <div className="flex w-full flex-col items-center justify-between sm:flex-row sm:items-start">
+              <h1 className="font-bold text-3xl text-zinc-800">{name}</h1>
+              {(isOwner || isUserAuth) && (
+                <div className="mt-2 sm:mt-0 sm:ml-4">
+                  <EditBusinessInfo profileData={profileData} />
+                </div>
+              )}
+            </div>
           </div>
-          <div className=" flex flex-1 flex-col gap-1 pt-8">
-            <div className="relative flex w-fit">
-              <h2 className="flex items-center gap-2 text-center font-bold text-3xl">
-                {profileData.name}
-              </h2>
-              {isOwner && (
-                <div className="-top-5 absolute right-0 z-1 h-6 rounded-full bg-white/70">
-                  <EditBusinessInfo
-                    profileData={profileData}
-                    imagePath={profileData?.imagePath}
-                  />
+
+          {/* Corpo do Card */}
+          <div className="pt-6">
+            {/* Linha de Informações Rápidas (Avaliações e Tags) */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              {/* Avaliações */}
+              <div className="flex items-center justify-center gap-3 sm:justify-start">
+                <div className="flex">{renderStars(currentRating)}</div>
+                <div className="text-sm">
+                  <span className="font-bold text-zinc-800">
+                    {currentRating}
+                  </span>
+                  <span className="text-zinc-500"> / 5</span>
                 </div>
-              )}
-            </div>
-            <p className="mb-4 text-gray-600 text-lg">
-              {profileData.businessDescription}
-            </p>
-            <div className="mb-2 flex items-center space-x-4">
-              <Badge variant="outline" className="w-fit">
-                {profileData.category || 'Geral'}
-              </Badge>
-              {isOwner && (
-                <Badge variant="outline">
-                  {profileData.planType?.toUpperCase() || 'GRÁTIS'}
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <div className="flex">
-                  {renderStars(
-                    ratingOwnerSite ? '4.9' : profileData.rating || '0'
-                  )}
-                </div>
-                <span className="ml-2 font-semibold text-gray-900">
-                  {ratingOwnerSite ? '4.9' : profileData.rating || '0.0'}
-                </span>
-                <span className="ml-1 text-gray-600">/ 5</span>
+                <div className="h-4 w-px bg-slate-200" />
+                <a
+                  href="#avaliacoes"
+                  className="flex items-center gap-1.5 text-sm text-zinc-600 hover:text-blue-600"
+                >
+                  <MessageText className="h-4 w-4" />
+                  <span>{currentReviewCount} avaliações</span>
+                </a>
               </div>
-              <span className="text-gray-500">•</span>
-              <span className="text-gray-600">
-                {ratingOwnerSite ? 19 : profileData.reviewCount || 0} avaliações
-              </span>
+
+              {/* Tags */}
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {categories?.length ? (
+                  categories?.map(category => (
+                    <Badge
+                      key={category}
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800"
+                    >
+                      {category}
+                    </Badge>
+                  ))
+                ) : (
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-100 text-blue-800"
+                  >
+                    Geral
+                  </Badge>
+                )}
+
+                {(isOwner || isUserAuth) && (
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-800"
+                  >
+                    {planType?.toUpperCase() || 'GRÁTIS'}
+                  </Badge>
+                )}
+              </div>
             </div>
+
+            {/* Descrição do Negócio */}
+            {businessDescription && (
+              <p className="mt-6 text-center text-base text-zinc-600 sm:text-left">
+                {businessDescription}
+              </p>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </section>
   )
 }

@@ -5,11 +5,12 @@ import { startTransition, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { AdminsProfileProps } from '@/_types/profile-data'
+import { addAdminToProfile } from '@/actions/add-admin-to-profile'
 import { manageAdminToProfile } from '@/actions/manage-admins'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-import { RemoveAdminFromManagerProfile } from './delete'
+import { RemoveAdmin } from './delete'
+import { EditAdmin } from './edit'
 
 interface Props {
   profileId: string
@@ -20,7 +21,7 @@ export function FormManage({ profileId, admins }: Props) {
   const router = useRouter()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [newAdminUID, setNewAdminUID] = useState('')
+  const [newAdminEmail, setNewAdminEmail] = useState('')
   const [error, setError] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
@@ -36,12 +37,21 @@ export function FormManage({ profileId, admins }: Props) {
     try {
       const formData = new FormData()
       formData.append('profileId', profileId)
-      formData.append('userUID', newAdminUID)
+      formData.append('userEmail', newAdminEmail)
 
-      await manageAdminToProfile(formData)
-      toast.success('Redes sociais salvas com sucesso!')
+      const response = await addAdminToProfile(formData)
+
+      if (!response?.success) {
+        throw new Error(response.error)
+      }
+      toast.success('Administrador adicionado com sucesso!')
     } catch (error) {
-      toast.error('Erro ao salvar as redes sociais.')
+      if (error instanceof Error) {
+        toast.error(`Erro ao adicionar administrador. ${error.message}`)
+      } else {
+        toast.error('Erro ao adicionar administrador.')
+      }
+
       return false
     } finally {
       startTransition(() => {
@@ -59,8 +69,8 @@ export function FormManage({ profileId, admins }: Props) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
       <h1 className="mb-8 font-bold text-3xl">Painel de Controle</h1>
-      <section className="mb-8 flex w-full max-w-md flex-col rounded bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-2xl">Administradores atuais do seu perfil</h2>
+      <section className="mb-8 flex w-full max-w-lg flex-col rounded bg-white p-6 shadow-md">
+        <h2 className="mb-4 text-2xl">Gerentes do seu perfil</h2>
         {admins.length > 0 ? (
           <div>
             {admins.map((admin, index) => (
@@ -72,22 +82,24 @@ export function FormManage({ profileId, admins }: Props) {
                   <p>{admin.name}</p>
                   <p className="text-xs text-zinc-400">- {admin.email}</p>
                 </div>
-                <RemoveAdminFromManagerProfile adminUID={admin.userId} />
+                <div className="flex gap-1">
+                  <RemoveAdmin admin={admin as any} />
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <p>Nenhum administrador cadastrado.</p>
+          <p>Nenhum gerente cadastrado.</p>
         )}
       </section>
-      <section className="w-full max-w-md rounded bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-2xl">Adicionar Administrador</h2>
+      <section className="w-full max-w-lg rounded bg-white p-6 shadow-md">
+        <h2 className="mb-4 text-2xl">Adicionar gerente ao seu perfil</h2>
         <form onSubmit={handleAddAdmin} className="flex flex-col gap-2">
           <Input
             type="text"
-            placeholder="Digite o UID do novo administrador"
-            value={newAdminUID}
-            onChange={e => setNewAdminUID(e.target.value)}
+            placeholder="Digite o ID do novo gerente"
+            value={newAdminEmail}
+            onChange={e => setNewAdminEmail(e.target.value)}
           />
           <Button type="submit">Adicionar</Button>
           {error && <p className="mt-2 text-red-500">{error}</p>}

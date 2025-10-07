@@ -20,6 +20,7 @@ import { EditBusinessSocialMedias } from './edit-business-social-medias'
 interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
 const SOCIAL_MEDIA_CONFIG = [
@@ -32,7 +33,7 @@ const SOCIAL_MEDIA_CONFIG = [
   { key: 'site', Icon: Globe },
 ]
 
-export function SocialMedia({ profileData, isOwner }: Props) {
+export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
   const socialMedias = profileData?.socialMedias as SocialMediasProps | any
 
   return (
@@ -41,7 +42,7 @@ export function SocialMedia({ profileData, isOwner }: Props) {
         <h2 className="flex items-center gap-2 text-center font-bold text-xl">
           <Network className="size-6" /> Redes sociais
         </h2>
-        {isOwner && (
+        {(isOwner || isUserAuth) && (
           <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
             <EditBusinessSocialMedias profileData={profileData} />
           </div>

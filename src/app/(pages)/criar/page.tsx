@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 // import { Header } from '@/components/commons/headers'
 import { trackServerEvent } from '@/lib/mixpanel'
 
+import { auth } from '@/lib/auth'
 import { CreateLinkForm } from './create-link-form'
 
 export const metadata: Metadata = {
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
   description: 'Anuncie seu negócio no Carangola Digital',
 }
 
-export default function CreatePage() {
+export default async function CreatePage() {
+  const session = await auth()
+
   trackServerEvent('create_page', {
     page: 'create',
   })
@@ -24,7 +27,7 @@ export default function CreatePage() {
           <h1 className="font-bold text-4xl ">Escolha seu link</h1>
           <Rocket className="size-10" />
         </div>
-        <CreateLinkForm />
+        <CreateLinkForm session={session} />
         <div>
           O criado, será o endereço de sua página de perfil no Carangola
           Digital. Ou seja, se você criar um link para o seu perfil, o link será

@@ -13,24 +13,28 @@ export async function POST(request: NextRequest) {
       .trim()
       .toLowerCase()
 
-    if (!searchValue || !searchValue) {
+    if (!searchValue) {
       return NextResponse.json({
         message: 'Search terms are required',
       })
     }
 
-    const normalizedSearchValue = searchValue
+    // Normaliza a string de busca e a divide em termos individuais
+    const searchTerms = searchValue
       .normalize('NFD')
       .replace(/\p{M}/gu, '')
-      .toLowerCase()
-      .trim()
+      .split(' ') // Divide a string em um array de palavras
+      .filter(term => term.length > 0) // Remove termos vazios
+
+    if (searchTerms.length === 0) {
+      return NextResponse.json({
+        message: 'Search terms are required',
+      })
+    }
 
     const snapshot = await db
       .collection('profiles')
-      .where('nameLower', '>=', normalizedSearchValue)
-      .where('nameLower', '<', `${normalizedSearchValue}\uf8ff`)
-      // .where('keywords', 'array-contains', normalizedSearchValue)
-      .orderBy('nameLower')
+      .where('keywords', 'array-contains-any', searchTerms)
       .limit(20)
       .get()
 
@@ -54,7 +58,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     // console.error(error)
     return NextResponse.json(
-      { message: 'Erro interno', error },
+      { message: 'Internal Server Error', error },
       { status: 500 }
     )
   }

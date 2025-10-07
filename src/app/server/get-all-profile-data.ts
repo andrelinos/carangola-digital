@@ -1,4 +1,4 @@
-import 'server-only'
+'server-only'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 

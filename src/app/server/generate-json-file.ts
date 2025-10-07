@@ -1,10 +1,10 @@
-import 'server-only'
+'server-only'
 
 import path from 'node:path'
 
+import { promises as fs } from 'node:fs'
 import { serverEnv } from '@/utils/env'
 import { Timestamp } from 'firebase-admin/firestore'
-import { promises as fs } from 'node:fs'
 
 interface DataProps {
   userId: string | null | undefined

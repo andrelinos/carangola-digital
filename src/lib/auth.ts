@@ -19,13 +19,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           .collection('users')
           .doc(user.id)
           .set({
+            name: user.name,
             accountVerified: false,
             planActive: {
               expiresAt: null,
               type: 'free',
               status: 'active',
               planDetails: {
-                name: 'Free',
+                name: 'free',
                 period: 'indeterminado',
                 price: 0,
               },

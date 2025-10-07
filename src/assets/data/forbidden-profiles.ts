@@ -9,8 +9,12 @@ export const forbiddenProfiles = [
   'forgot-password',
   'verify-email',
   'teste',
+  'testes',
   'carangola',
   'carangoladigital',
+  'dashboard',
+  'painel',
+  'paineldecontrole',
 
   // Nomes reservados para institucional
   'sitemap',

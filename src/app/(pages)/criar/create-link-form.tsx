@@ -9,16 +9,26 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
+import { Label } from '@/components/ui/label'
 import { sanitizeLink } from '@/lib/utils'
+import type { Session } from 'next-auth'
 
-export function CreateLinkForm() {
+interface Props {
+  session: Session | null
+}
+
+export function CreateLinkForm({ session }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const user = session?.user || null
 
   const [link, setLink] = useState(
     sanitizeLink(searchParams?.get('link') || '') ?? ''
   )
   const [error, setError] = useState('')
+  const [name, setName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
@@ -28,6 +38,7 @@ export function CreateLinkForm() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsLoading(true)
 
     if (!link) {
       setError('Escolha um link antes de continuar :)')
@@ -44,7 +55,7 @@ export function CreateLinkForm() {
       return
     }
 
-    if (forbiddenProfiles.some(profile => link.includes(profile))) {
+    if (forbiddenProfiles.some(profile => link === profile)) {
       setError('Este link não é permitido.')
       return
     }
@@ -54,29 +65,46 @@ export function CreateLinkForm() {
       return setError('Desculpe, esse link já está em uso.')
     }
 
-    const isLinkCreated = await createBusinessLink(link)
+    try {
+      await createBusinessLink({ link, name })
 
-    if (!isLinkCreated)
+      router.push(`/${link}`)
+    } catch (error) {
+      console.log(error)
       return setError(
         'Desculpe, não conseguimos criar o link. Tente novamente.'
       )
-
-    router.push(`/${link}`)
+    } finally {
+      setIsLoading(false)
+    }
   }
-
   return (
     <>
-      <form onSubmit={onSubmit} className="flex w-full items-center gap-2 ">
-        <span className="">carangoladigital.com.br/</span>
-        <Input
-          literalerror={!!error}
-          value={link}
-          onChange={handleLinkChange}
-        />
+      <form onSubmit={onSubmit} className="flex w-full flex-col gap-2 ">
+        {!user?.name && (
+          <div className="flex w-full flex-col items-center gap-2">
+            <Label className="mt-4 font-semibold">
+              Informe um nome para seu negócio
+            </Label>
+            <Input
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
+          </div>
+        )}
+        <div className="flex w-full items-center gap-2">
+          <span className="">carangoladigital.com.br/</span>
+          <Input
+            literalerror={!!error}
+            value={link}
+            onChange={handleLinkChange}
+          />
+        </div>
         <Button
-          disabled={!link}
+          disabled={!link || isLoading}
           variant={link ? 'default' : 'secondary'}
-          className="w-[126px] disabled:cursor-not-allowed disabled:opacity-25"
+          className="mx-auto mt-4 w-full max-w-xs disabled:cursor-not-allowed disabled:opacity-25"
         >
           Criar
         </Button>

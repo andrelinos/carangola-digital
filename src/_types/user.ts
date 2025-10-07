@@ -5,3 +5,5 @@ export interface UserProps {
   emailVerified: string | Date | null
   favorites: string[]
 }
+
+export type typeProps = 'free' | 'basic' | 'pro' | 'master'

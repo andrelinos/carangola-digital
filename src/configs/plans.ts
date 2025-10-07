@@ -84,6 +84,35 @@ export const plansConfig = {
       quantity: 10,
     },
   },
+  master: {
+    socialMedias: {
+      linkedin: true,
+      kwai: true,
+      tiktok: true,
+      threads: true,
+      site: true,
+      facebook: true,
+      instagram: true,
+      twitter: true,
+      youtube: true,
+      whatsapp: true,
+      telegram: true,
+      pinterest: true,
+      snapchat: true,
+      reddit: true,
+      behance: true,
+      twitch: true,
+      tumblr: true,
+      discord: true,
+    },
+
+    businessPhones: {
+      quantity: -1,
+    },
+    addresses: {
+      quantity: -1,
+    },
+  },
 } as const
 
 export type PlanTypeProps = keyof typeof plansConfig

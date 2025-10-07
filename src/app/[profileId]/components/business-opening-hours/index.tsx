@@ -6,7 +6,7 @@ import { useState } from 'react'
 import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { cn } from '@/lib/utils'
-import { getOperatingStatus } from '@/utils/get-status-from-day'
+import { getOperatingStatus } from '@/utils/get-status-from-day' // ATENÇÃO: Esta função precisa ser atualizada
 
 import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
 import { Clock } from 'iconoir-react'
@@ -26,6 +26,10 @@ interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
 }
+
+// ATENÇÃO: Você precisará atualizar a função 'getOperatingStatus' para que ela
+// considere o novo array 'intervals'. Ela deve iterar sobre cada intervalo
+// do dia atual para determinar o status (aberto/fechado).
 
 export function ContainerOpeningHours({ profileData, isOwner }: Props) {
   const [isOpen, setIsOpen] = useState(false)
@@ -61,7 +65,8 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
       return getDayIndex(dayA) - getDayIndex(dayB)
     })
 
-  const todayIndex = new Date().getDay() - 1
+  const todayDate = new Date()
+  const todayIndex = (todayDate.getDay() + 6) % 7 // Ajuste para Monday=0, Sunday=6
 
   return (
     <div className="relative flex w-full max-w-md flex-col items-center gap-1 rounded-t-lg p-2 [data-state=open]:rounded-none">
@@ -83,10 +88,11 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
         >
           <div className="flex w-full flex-col gap-2 tracking-tight">
             <div className="flex w-full items-center justify-center">
-              <div className="h-10 flex-1 ">
+              <div className="flex h-10 flex-1 items-center justify-center">
                 {getOperatingStatus({
                   schedule: profileData?.openingHours as any,
-                  currentTime: new Date(),
+                  currentTime: todayDate,
+                  openingHours: profileData?.openingHours,
                 })}
               </div>
             </div>
@@ -95,7 +101,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
         <div
           className={cn(
             clsx(
-              'absolute inset-x-0 top-22 z-2 rounded-b-lg bg-white px-2 pt-2 pb-6 text-zinc-700 shadow-lg',
+              'absolute inset-x-0 top-20 z-20 rounded-b-lg bg-white px-2 pt-2 pb-6 text-zinc-700 shadow-lg',
               {
                 hidden: !isOpen,
                 block: isOpen,
@@ -103,17 +109,37 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
             )
           )}
         >
-          {sortedSchedule?.map(([day, { opening, closing, closed }]: any) => (
-            <div
-              key={day}
-              className={clsx('flex w-full justify-between px-4', {
-                'py-2 font-semibold': day === WEEK_DAYS[todayIndex],
-              })}
-            >
-              <span>{translateWeekDay(day)}</span>{' '}
-              <span>{closed ? 'Fechado' : `${opening} às ${closing}`}</span>
-            </div>
-          ))}
+          {sortedSchedule?.map(
+            ([day, { opening, closing, closed, intervals }]: any, index) => {
+              // 1. LÓGICA PARA EXIBIR MÚLTIPLOS HORÁRIOS
+              const displayTime = () => {
+                if (closed) return 'Fechado'
+                // Se tivermos o array de intervalos, usamos ele
+                if (intervals && intervals.length > 0) {
+                  return intervals
+                    .map(
+                      (i: { opening: string; closing: string }) =>
+                        `${i.opening} às ${i.closing}`
+                    )
+                    .join(' / ')
+                }
+                // Caso contrário, usamos os campos antigos para retrocompatibilidade
+                return `${opening} às ${closing}`
+              }
+
+              return (
+                <div
+                  key={day}
+                  className={clsx('flex w-full justify-between px-4', {
+                    'py-2 font-semibold text-blue-600': index === todayIndex,
+                  })}
+                >
+                  <span>{translateWeekDay(day)}</span>{' '}
+                  <span className="text-right">{displayTime()}</span>
+                </div>
+              )
+            }
+          )}
         </div>
       </div>
     </div>

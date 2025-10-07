@@ -10,9 +10,10 @@ import { EditBusinessAddresses } from './edit-business-addresses'
 interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
-export function BusinessAddresses({ profileData, isOwner }: Props) {
+export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
   const businessAddresses = profileData?.businessAddresses
 
   return (
@@ -21,7 +22,7 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
         <h2 className="flex items-center gap-2 text-center font-bold text-xl">
           <MapPin className="size-6" /> Endereços
         </h2>
-        {isOwner && (
+        {(isOwner || isUserAuth) && (
           <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
             <EditBusinessAddresses data={businessAddresses} />
           </div>
@@ -29,13 +30,13 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
       </div>
       {!businessAddresses?.length && <p>Nenhum endereço cadastrado</p>}
 
-      <div className="mx-auto flex w-full max-w-lg flex-col items-center justify-center gap-1">
+      <div className="mx-auto flex w-full max-w-full flex-col items-center justify-center gap-1">
         {businessAddresses?.map((item, index) => {
           return (
             item.address && (
               <div
                 key={String(index)}
-                className="flex w-full items-center justify-between gap-2 border-zinc-100 border-y p-4 hover:bg-zinc-50"
+                className="flex w-full flex-col gap-2 border-zinc-100 border-y p-4 hover:bg-zinc-50"
               >
                 <div className="flex items-center gap-1">
                   <MapPin className="size-4" />
@@ -47,10 +48,10 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                 </div>
 
                 {Number(item.latitude) && Number(item.longitude) ? (
-                  <div>
+                  <div className="flex w-full justify-end">
                     <Link
                       variant="tertiary"
-                      className="group relative w-14 bg-blue-600 px-2 py-1 text-white text-xs"
+                      className="group relative h-8 w-fit bg-blue-600 px-4 py-1 font-semibold text-white text-xs"
                       href={
                         (item?.latitude &&
                           item?.latitude &&
@@ -62,12 +63,11 @@ export function BusinessAddresses({ profileData, isOwner }: Props) {
                       }
                       target="_blank"
                     >
-                      <span className="-top-4 -left-2 absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-10">
+                      <span className="-top-4 -left-2 absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-20">
                         <Car className="size-4 stroke-2" />
                       </span>
                       <span className="-top-4 -left-2 absolute flex h-6 w-6 scale-100 transform items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 opacity-50 transition-all duration-300 ease-linear group-hover:scale-150 group-hover:opacity-0" />
-                      Como <br />
-                      chegar
+                      Como chegar
                     </Link>
                   </div>
                 ) : (

@@ -15,12 +15,14 @@ interface Props {
   userInfo?: Session['user']
   isFavorite?: boolean
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
 export function LikeShareButtons({
   userInfo,
   isFavorite = false,
   isOwner = false,
+  isUserAuth = false,
 }: Props) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -51,8 +53,8 @@ export function LikeShareButtons({
   return (
     <>
       <div className="flex justify-center gap-2 p-4 text-zinc-500">
-        {!isOwner && userInfo?.id && (
-          <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6">
+          {!isUserAuth && !isOwner && userInfo?.id && (
             <div className=" flex items-center ">
               <button
                 type="button"
@@ -69,9 +71,9 @@ export function LikeShareButtons({
                 <span className="font-normal ">Favoritos</span>
               </button>
             </div>
-            <ShareButton />
-          </div>
-        )}
+          )}
+          <ShareButton />
+        </div>
       </div>
       {isSubmitting && <Loading />}
     </>

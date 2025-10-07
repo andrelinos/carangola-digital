@@ -8,13 +8,14 @@ import {
 } from 'react-share'
 
 import { Copy, ShareAndroid } from 'iconoir-react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Modal } from '@/components/ui/modal'
 
 export function ShareButton() {
   const profileId = useParams().profileId as string
+  const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -26,7 +27,7 @@ export function ShareButton() {
     setIsOpen(false)
   }
 
-  const shareUrl = `https://localhost:3000/${profileId}`
+  const shareUrl = `https://carangoladigital.com.br/${profileId}`
 
   return (
     <div className="flex items-center gap-1">

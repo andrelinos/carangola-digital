@@ -1,4 +1,4 @@
-import 'server-only'
+'server-only'
 
 import { db } from '@/lib/firebase'
 

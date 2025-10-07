@@ -9,9 +9,14 @@ import { Menus } from './menus'
 interface Props {
   profileData?: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
-export async function HeaderProfile({ profileData, isOwner }: Props) {
+export async function HeaderProfile({
+  profileData,
+  isOwner,
+  isUserAuth,
+}: Props) {
   const session = await auth()
 
   const hasProfileLink = session?.user?.hasProfileLink || false
@@ -24,6 +29,7 @@ export async function HeaderProfile({ profileData, isOwner }: Props) {
           hasProfileLink={hasProfileLink}
           session={session}
           isOwner={isOwner}
+          isUserAuth={isUserAuth}
         />
       </div>
     </HeaderPageContainer>

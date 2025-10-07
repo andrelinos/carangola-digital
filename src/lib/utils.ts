@@ -13,42 +13,40 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function sanitizeLink(link: string) {
+export function sanitizeLink(link: string): string {
   if (!link) return ''
 
-  const sanitizedLink = link
-    .replace(/\s/g, '')
-    .replace(/[^a-zA-Z0-9]/g, '')
+  const normalizedLink = link.normalize('NFD')
+
+  const linkWithoutAccents = normalizedLink.replace(/\p{M}/gu, '')
+
+  const sanitizedLink = linkWithoutAccents
     .toLocaleLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
 
   return sanitizedLink
 }
 
-export async function compressFiles(files: File[]) {
-  const compressPromises = files.map(async file => {
-    try {
-      return await compressImage(file)
-    } catch (error) {
-      return null
-    }
-  })
+export const compressImage = async (file: File): Promise<File> => {
+  const options = {
+    maxSizeMB: 0.5,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  }
 
-  return (await Promise.all(compressPromises)).filter(file => file != null)
-}
-
-export const compressImage = (file: File): Promise<File> => {
-  return new Promise((resolve, reject) => {
-    const options = {
-      maxSize: 0.2, // MAX 200KB
-      maxWidthOrHeight: 900,
-      useWebWork: true,
-      fileType: 'image/png',
-    }
-
-    imageCompression(file, options).then(compressedFile => {
-      resolve(compressedFile)
-    })
-  })
+  try {
+    console.log(`Tamanho original: ${(file.size / 1024 / 1024).toFixed(2)} MB`)
+    const compressedFile = await imageCompression(file, options)
+    console.log(
+      `Tamanho comprimido: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`
+    )
+    return compressedFile
+  } catch (error) {
+    console.error('Erro ao comprimir a imagem, enviando a original:', error)
+    return file
+  }
 }
 
 export const normalizeUrl = (url: string): string => {

@@ -7,6 +7,7 @@ import { Toaster } from 'sonner'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { CookieBanner } from '@/components/commons/cookie-banner'
+import { HeaderHome } from '@/components/commons/headers'
 import { PageTransition, StairTransition } from '@/components/effects'
 import { cn } from '@/lib/utils'
 import { serverEnv } from '@/utils/env'
@@ -39,6 +40,7 @@ export default function RootLayout({
       >
         <StairTransition />
         <PageTransition>
+          <HeaderHome />
           {children}
           <CookieBanner />
         </PageTransition>

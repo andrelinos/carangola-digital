@@ -69,7 +69,7 @@ export default function SearchFormBusiness() {
             className="h-14 rounded bg-blue-500 px-4 py-4 text-white"
             disabled={searchTerms.trim().length < 3 || isLoadingBusiness}
           >
-            Buscar
+            Encontrar
           </Button>
         </form>
 
@@ -91,6 +91,7 @@ export default function SearchFormBusiness() {
                       {getOperatingStatus({
                         schedule: profile.openingHours as any,
                         currentTime: new Date(),
+                        openingHours: profile.openingHours,
                       })}
                     </div>
                     <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">
