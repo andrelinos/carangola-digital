@@ -22,6 +22,7 @@ export type SocialMediasProps = {
   tiktok?: string
   kwai?: string
   site?: string
+  email?: string
 }
 
 export type BusinessAddressProps = {

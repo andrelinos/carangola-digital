@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import {
   Home,
   LayoutPanelLeft,
-  List,
   PhoneCall,
   Search,
   Store,
@@ -14,12 +13,10 @@ import type { Session } from 'next-auth'
 import { useState } from 'react'
 
 import { manageAuth } from '@/actions/manage-auth'
-import { menus } from '@/assets/data/menu-data'
-import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
 
 import { ManageAuthButton } from '@/components/commons/manage-auth-button'
-import { AppStore, ChatBubbleQuestion, Menu } from 'iconoir-react'
+import { ChatBubbleQuestion, Menu } from 'iconoir-react'
 
 interface MenusProps {
   hasProfileLink: boolean

@@ -125,7 +125,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 defaultValue={socialMedias?.threads || ''}
                 isPremium={isPremium}
                 disabled={isPremium}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -135,7 +135,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 defaultValue={socialMedias?.linkedin || ''}
                 isPremium={isPremium}
                 disabled={isPremium}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -145,7 +145,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 defaultValue={socialMedias?.tiktok || ''}
                 isPremium={isPremium}
                 disabled={isPremium}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -155,7 +155,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 defaultValue={socialMedias?.kwai || ''}
                 isPremium={isPremium}
                 disabled={isPremium}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
               <Input
                 variant="ghost"
@@ -165,7 +165,16 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 defaultValue={socialMedias?.site || ''}
                 isPremium={isPremium}
                 disabled={isPremium}
-                // onChange={handleChange}
+                onChange={handleChange}
+              />
+              <Input
+                variant="ghost"
+                type="email"
+                name="email"
+                title="E-mail"
+                placeholder="usuario@example.com"
+                defaultValue={socialMedias?.email || ''}
+                onChange={handleChange}
               />
             </div>
           </div>

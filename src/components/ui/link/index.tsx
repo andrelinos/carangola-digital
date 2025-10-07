@@ -44,17 +44,30 @@ export interface LinkProps
     VariantProps<typeof linkVariants> {
   asChild?: boolean
   href: string
+  type?: 'email' | 'phone'
 }
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, variant, asChild = false, href, ...props }, ref) => {
-    const Comp = asChild ? Slot : NextLink
+  ({ className, variant, asChild = false, href, type, ...props }, ref) => {
+    const isSpecialLink = type === 'email' || type === 'phone'
+    const Comp = asChild ? Slot : isSpecialLink ? 'a' : NextLink
+
+    const processedHref = (() => {
+      switch (type) {
+        case 'email':
+          return `mailto:${href}`
+        case 'phone':
+          return `tel:${href}`
+        default:
+          return href
+      }
+    })()
 
     return (
       <Comp
         className={cn(linkVariants({ variant, className }))}
         ref={ref}
-        href={href}
+        href={processedHref}
         {...props}
       />
     )

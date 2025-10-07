@@ -59,10 +59,7 @@ const exampleSchedule: WeeklySchedule = {
     opening: '08:00',
     closing: '18:00',
     closed: false,
-    intervals: [
-      { opening: '08:00', closing: '12:00' },
-      { opening: '14:00', closing: '18:00' },
-    ],
+    intervals: [{ opening: '08:00', closing: '18:00' }],
   },
   Tuesday: {
     opening: '08:00',

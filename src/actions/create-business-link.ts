@@ -40,6 +40,7 @@ export async function createBusinessLink({ link, name }: Props) {
       userId: session?.user?.id,
       name: userName,
       nameLower: normalizedName,
+      isPublished: true,
       keywords: keywords,
       totalVisits: 0,
       createdAt: Timestamp.now().toMillis(),

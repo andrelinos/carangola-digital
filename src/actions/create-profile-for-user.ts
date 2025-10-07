@@ -20,7 +20,6 @@ export async function createProfileForUser(formData: FormData) {
     return { success: false, message: 'Todos os campos são obrigatórios.' }
   }
 
-  // Lógica para gerar keywords, igual a sua função original
   const normalizedName = name
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
@@ -31,28 +30,22 @@ export async function createProfileForUser(formData: FormData) {
     link,
   ]
 
-  // Usar uma transação para garantir a consistência dos dados
   try {
     await db.runTransaction(async transaction => {
       const profileRef = db.collection('profiles').doc(link)
 
-      console.log('profileRef :: ', profileRef)
       const userRef = db.collection('users').doc(targetUserId)
 
-      // Verificar se o link já existe
       const profileDoc = await transaction.get(profileRef)
       if (profileDoc.exists) {
         throw new Error('Este link de perfil já está em uso.')
       }
-      console.log('profileDoc :: ', profileDoc)
 
-      // Verificar se o usuário alvo já possui um perfil
       const userDoc = await transaction.get(userRef)
       if (!userDoc.exists) {
         throw new Error('Usuário alvo não encontrado.')
       }
 
-      // Criar o perfil
       transaction.set(profileRef, {
         userId: targetUserId,
         name: name,
@@ -64,7 +57,6 @@ export async function createProfileForUser(formData: FormData) {
         updatedAt: Timestamp.now().toMillis(),
       })
 
-      // Atualizar o documento do usuário
       transaction.set(
         userRef,
         {
@@ -75,8 +67,8 @@ export async function createProfileForUser(formData: FormData) {
         { merge: true }
       )
     })
-    console.log('Passou em todos')
-    revalidatePath('/admin/dashboard') // Atualiza a página do dashboard admin
+
+    revalidatePath('/admin/dashboard')
     return { success: true, message: 'Perfil criado com sucesso!' }
   } catch (error: any) {
     return { success: false, message: error.message }

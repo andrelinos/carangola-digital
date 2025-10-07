@@ -23,7 +23,7 @@ export const useMercadoPago = () => {
 
       router.push(data.initPoint)
     } catch (error) {
-      // console.log(error)
+      // console.error(error)
     }
   }
 

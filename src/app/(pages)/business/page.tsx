@@ -31,8 +31,6 @@ export const metadata: Metadata = getSEOTags({
 
 const latestPublicProfiles = await getLatestPublicProfiles()
 
-console.log('latestPublicProfiles', latestPublicProfiles)
-
 export default async function Home() {
   const session = await auth()
 

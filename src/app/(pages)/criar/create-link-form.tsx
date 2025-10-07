@@ -8,8 +8,8 @@ import { verifyLink } from '@/actions/verify-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
 import { Label } from '@/components/ui/label'
+import { forbiddenProfiles } from '@/configs/forbidden-profiles'
 import { sanitizeLink } from '@/lib/utils'
 import type { Session } from 'next-auth'
 
@@ -69,8 +69,7 @@ export function CreateLinkForm({ session }: Props) {
       await createBusinessLink({ link, name })
 
       router.push(`/${link}`)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
       return setError(
         'Desculpe, não conseguimos criar o link. Tente novamente.'
       )

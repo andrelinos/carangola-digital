@@ -17,7 +17,6 @@ export default async function AdminDashboardPage() {
   }
 
   const profiles = await getAllProfiles()
-  console.log('profiles :: ', profiles)
 
   return (
     <div className="container mx-auto p-8">

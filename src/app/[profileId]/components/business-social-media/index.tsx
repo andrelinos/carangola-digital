@@ -15,6 +15,8 @@ import type { ProfileDataProps, SocialMediasProps } from '@/_types/profile-data'
 
 import { Link } from '@/components/ui/link'
 
+import { Mail } from 'lucide-react'
+import { EmailIcon } from 'react-share'
 import { EditBusinessSocialMedias } from './edit-business-social-medias'
 
 interface Props {
@@ -31,6 +33,7 @@ const SOCIAL_MEDIA_CONFIG = [
   { key: 'tiktok', Icon: Tiktok },
   { key: 'kwai', Icon: CinemaOld },
   { key: 'site', Icon: Globe },
+  { key: 'email', Icon: Mail },
 ]
 
 export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
@@ -59,9 +62,13 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
       <div className="mx-auto flex w-full max-w-lg flex-wrap justify-center gap-2">
         {SOCIAL_MEDIA_CONFIG?.map(({ key, Icon }) => {
           const url = socialMedias?.[key]
+          const type = url?.includes('@') ? 'email' : ''
+
+          console.log('URL :: ', url, type)
           return url ? (
             <Link
               key={key}
+              type={type as any}
               href={url}
               variant="outline"
               target="_blank"

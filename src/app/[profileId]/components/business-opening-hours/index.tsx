@@ -25,13 +25,18 @@ const WEEK_DAYS = [
 interface Props {
   profileData: ProfileDataProps
   isOwner?: boolean
+  isUserAuth?: boolean
 }
 
 // ATENÇÃO: Você precisará atualizar a função 'getOperatingStatus' para que ela
 // considere o novo array 'intervals'. Ela deve iterar sobre cada intervalo
 // do dia atual para determinar o status (aberto/fechado).
 
-export function ContainerOpeningHours({ profileData, isOwner }: Props) {
+export function ContainerOpeningHours({
+  profileData,
+  isOwner,
+  isUserAuth,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   const schedule = profileData.openingHours
@@ -74,7 +79,7 @@ export function ContainerOpeningHours({ profileData, isOwner }: Props) {
         <h2 className="flex max-w-lg items-center gap-2 text-center font-bold text-xl text-zinc-700">
           <Clock className="size-6" /> Horário de funcionamento
         </h2>
-        {isOwner && (
+        {(isOwner || isUserAuth) && (
           <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
             <EditBusinessOpeningHours profileData={profileData} />
           </div>

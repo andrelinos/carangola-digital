@@ -19,12 +19,13 @@ export const plansConfig = {
       twitch: false,
       tumblr: false,
       discord: false,
+      email: true,
     },
     businessPhones: {
-      quantity: 1,
+      quantity: 2,
     },
     addresses: {
-      quantity: 1,
+      quantity: 2,
     },
   },
   basic: {
@@ -47,6 +48,7 @@ export const plansConfig = {
       twitch: false,
       tumblr: false,
       discord: false,
+      email: true,
     },
     businessPhones: {
       quantity: 5,
@@ -75,6 +77,7 @@ export const plansConfig = {
       twitch: true,
       tumblr: true,
       discord: true,
+      email: true,
     },
 
     businessPhones: {
@@ -104,6 +107,7 @@ export const plansConfig = {
       twitch: true,
       tumblr: true,
       discord: true,
+      email: true,
     },
 
     businessPhones: {

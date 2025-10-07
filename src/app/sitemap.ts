@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
-import { forbiddenProfiles } from '@/assets/data/forbidden-profiles'
-import { pathsSitemap } from '@/assets/data/paths-to-sitemap'
+import { forbiddenProfiles } from '@/configs/forbidden-profiles'
+import { pathsSitemap } from '@/configs/paths-to-sitemap'
 
 import { getAllProfileData } from './server/get-all-profile-data'
 

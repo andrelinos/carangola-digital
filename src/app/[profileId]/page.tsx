@@ -43,8 +43,6 @@ export default async function BusinessId({ params }: Props) {
     profileId
   )) as ProfileDataProps | null
 
-  console.log('profileData >> ', profileData)
-
   const userData = (await getUsersData(session?.user?.id || '')) as UserProps
 
   const isOwner = profileData?.userId === session?.user?.id
@@ -94,6 +92,7 @@ export default async function BusinessId({ params }: Props) {
               <ContainerOpeningHours
                 profileData={profileData}
                 isOwner={isOwner}
+                isUserAuth={isUserAuth}
               />
 
               <ContactPhones

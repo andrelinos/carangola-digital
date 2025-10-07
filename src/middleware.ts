@@ -1,8 +1,8 @@
-// middleware.ts
-import { blockedPaths } from '@/assets/data/blocked-paths'
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { allowedUserAgents } from './assets/data/allowed-user-agents'
+import { type NextRequest, NextResponse } from 'next/server'
+
+import { allowedUserAgents } from '@/configs/allowed-user-agents'
+import { blockedPaths } from '@/configs/blocked-paths'
+
 import { fakeContent } from './assets/data/content-fake'
 
 export function middleware(request: NextRequest) {
