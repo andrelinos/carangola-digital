@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 export async function verifyAdmin() {
   try {
@@ -14,8 +15,6 @@ export async function verifyAdmin() {
 
     return session
   } catch (error) {
-    throw new Error(
-      'Acesso negado. Apenas administradores podem executar esta ação.'
-    )
+    redirect('/')
   }
 }
