@@ -179,7 +179,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
             </div>
           </div>
 
-          <footer className="flex justify-end gap-4">
+          <footer className="flex w-full justify-end gap-4 pt-6">
             <button
               type="button"
               className="font-bold hover:cursor-pointer"
@@ -187,7 +187,11 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
             >
               Voltar
             </button>
-            <Button onClick={handleSaveSocialMedia} disabled={isSubmitting}>
+            <Button
+              onClick={handleSaveSocialMedia}
+              disabled={isSubmitting}
+              className="min-w-[120px] font-bold "
+            >
               Salvar
             </Button>
           </footer>

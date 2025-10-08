@@ -39,10 +39,6 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
         )}
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
-        {(!businessPhone || businessPhone.length === 0) && (
-          <p>Nenhum telefone para contato</p>
-        )}
-
         {businessPhones?.length >= 1 && (
           <>
             <h2 className="mt-6 max-w-lg text-center font-bold text-lg">
@@ -62,6 +58,9 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
                 )
             )}
           </>
+        )}
+        {(!businessPhone || businessPhone.length === 0) && (
+          <p>Nenhum telefone para contato</p>
         )}
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">

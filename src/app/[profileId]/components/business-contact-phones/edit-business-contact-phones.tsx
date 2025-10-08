@@ -178,19 +178,19 @@ export function EditContactPhones({ profileData }: Props) {
         setIsOpen={onClose}
         title="Telefones de contato"
         description="Defina seus telefones de contato"
-        classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
+        classname="w-full max-w-lg max-h-[90vh] justify-center  overflow-y-auto  md:rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
-        <div className=" lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
+        <div className="lg:fex-row flex w-full flex-col gap-4 pt-8 pb-24">
           <div className="flex w-full flex-col items-end gap-4 ">
-            <div className="flex w-full flex-1 flex-col items-end gap-4 text-zinc-700">
+            <div className="flex w-full flex-1 flex-col items-end gap-8 p-4 text-zinc-700">
               {formValues?.map((phone, index) => {
                 return (
                   <div
                     key={String(index)}
-                    className="flex w-full gap-2 border-zinc-200 border-b pb-4"
+                    className="relative flex w-full gap-2 rounded border-zinc-200 border-b p-2 pb-4 shadow-md"
                   >
                     <div className="flex w-full flex-col gap-2">
-                      <div className="flex w-full justify-center gap-4">
+                      <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row md:items-start">
                         <div className="flex flex-col gap-2">
                           <Label className="text-start font-bold">Foto</Label>
 
@@ -264,7 +264,7 @@ export function EditContactPhones({ profileData }: Props) {
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-1 flex-col gap-4 ">
+                        <div className="flex w-full flex-1 flex-col gap-4 ">
                           <Input
                             variant="ghost"
                             name={`phone${index}.nameContact`}
@@ -273,6 +273,7 @@ export function EditContactPhones({ profileData }: Props) {
                             maxLength={15}
                             value={phone.nameContact ?? ''}
                             onChange={handleChange}
+                            className="w-full"
                           />
                           <Input
                             variant="ghost"
@@ -306,14 +307,14 @@ export function EditContactPhones({ profileData }: Props) {
                         </div>
                       </div>
                     </div>
-                    <div className="">
+                    <div className="absolute top-0 right-1">
                       <Button
                         data-index={index}
                         variant="link"
                         className="size-4 p-0 text-rose-400 transition-all duration-300 hover:animate-bounce hover:cursor-pointer"
                         onClick={handleDeletePhone}
                       >
-                        <Trash className="size-4" />
+                        <Trash className="size-6" />
                       </Button>
                     </div>
                   </div>
@@ -328,7 +329,7 @@ export function EditContactPhones({ profileData }: Props) {
             </div>
           </div>
 
-          <footer className="flex justify-end gap-4">
+          <footer className="flex w-full justify-end gap-4 pt-6">
             <button
               type="button"
               className="font-bold hover:cursor-pointer"
@@ -339,7 +340,7 @@ export function EditContactPhones({ profileData }: Props) {
             <Button
               onClick={handleSaveContactPhones}
               disabled={isSubmitting}
-              className="w-32"
+              className="min-w-[120px] font-bold"
             >
               Salvar
             </Button>

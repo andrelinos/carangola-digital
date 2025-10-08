@@ -261,36 +261,37 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
         setIsOpen={onClose}
         title="Definir horário de funcionamento"
         description="Defina seu horário de funcionamento para cada dia, podendo adicionar mais de um período."
-        classname="w-full max-w-[638px] justify-center rounded-2xl border-[0.5px] border-blue-300 bg-white p-6 text-zinc-700"
+        classname="w-full max-w-[638px] max-h-[90vh] overflow-y-auto justify-center md:rounded-2xl border-[0.5px] border-blue-300 bg-white py-16 px-6 text-zinc-700"
       >
-        <div className="lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
+        <div className="lg:fex-row flex w-full flex-col gap-4 ">
           {WEEK_DAYS.map(day => (
             <div
               key={day}
-              className="flex w-full flex-col items-start justify-between gap-4 border-b pb-4 lg:flex-row lg:items-center"
+              className="flex w-full flex-col items-start justify-between gap-4 rounded-b-md border-b p-2 pb-4 shadow-md lg:flex-row lg:items-center"
             >
-              <span className="flex w-32 items-center justify-start font-bold">
-                {WEEK_DAY_TRANSLATIONS[day]}:
-              </span>
               <div className="flex w-full flex-1 flex-col items-end gap-2 text-zinc-700">
-                <div className="flex w-full items-center justify-end gap-4">
-                  <span className="flex flex-col items-center justify-end gap-2 text-xs">
+                <div className="flex w-full items-center justify-end gap-4 bg-gray-400/50 p-2">
+                  <span className="flex flex-1 items-center justify-start font-bold">
+                    {WEEK_DAY_TRANSLATIONS[day]}:
+                  </span>
+                  <div className="flex items-center justify-end gap-2 text-xs">
+                    <span className="font-semibold">Fechado</span>
                     <input
                       type="checkbox"
                       checked={openingHours[day]?.closed ?? false}
                       onChange={e => handleClosedChange(day, e.target.checked)}
+                      className="size-6"
                     />
-                    Fechado
-                  </span>
+                  </div>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
                     onClick={() => addInterval(day)}
                     disabled={openingHours[day]?.closed}
-                    className="size-8 rounded-full"
+                    className="size-8 border-blue-400"
                     aria-label="Adicionar novo horário"
                   >
-                    <Plus />
+                    <Plus className="size-6 text-blue-400" />
                   </Button>
                 </div>
                 <div
@@ -363,7 +364,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
             </Button>
           )}
 
-          <footer className="flex justify-end gap-4 pt-6">
+          <footer className="flex w-full justify-end gap-4 pt-6">
             <button
               type="button"
               className="font-bold hover:cursor-pointer"
@@ -371,7 +372,11 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
             >
               Voltar
             </button>
-            <Button onClick={handleSaveOpeningHours} disabled={isSubmitting}>
+            <Button
+              onClick={handleSaveOpeningHours}
+              disabled={isSubmitting}
+              className="min-w-[120px] font-bold "
+            >
               {isSubmitting ? 'Salvando...' : 'Salvar'}
             </Button>
           </footer>

@@ -24,7 +24,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import type { ProfileDataProps } from '@/_types/profile-data'
 
 import { saveProfile } from '@/actions/save-profile'
-import { categories } from '@/assets/data/categories' // Supondo que este é seu array de strings de categorias
+import { categories } from '@/assets/data/categories'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button/index'
@@ -32,6 +32,7 @@ import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 
 import { compressImage } from '@/lib/utils'
+import clsx from 'clsx'
 import { toast } from 'sonner'
 
 interface ImageUploaderProps {
@@ -39,7 +40,8 @@ interface ImageUploaderProps {
   aspectRatio: number
   initialImageUrl?: string
   onCropComplete: (file: File | null) => void
-
+  className?: string
+  container?: string
   recommendation?: string
 }
 
@@ -113,26 +115,14 @@ function useDebounceEffect(
   }, deps)
 }
 
-// Função para converter o canvas do recorte em um arquivo para upload
-async function canvasToFile(
-  canvas: HTMLCanvasElement,
-  fileName: string
-): Promise<File> {
-  const blob = await new Promise<Blob | null>(resolve =>
-    canvas.toBlob(resolve, 'image/jpeg', 0.9)
-  )
-  if (!blob) {
-    throw new Error('Canvas to Blob conversion failed')
-  }
-  return new File([blob], fileName, { type: 'image/jpeg' })
-}
-
 function ImageUploader({
   label,
   aspectRatio,
   initialImageUrl,
   onCropComplete,
   recommendation,
+  className,
+  container,
 }: ImageUploaderProps) {
   const [imgSrc, setImgSrc] = useState('')
   const [crop, setCrop] = useState<Crop>()
@@ -180,26 +170,27 @@ function ImageUploader({
   )
 
   return (
-    <div>
+    <div className={clsx('max-h-[400px]', container)}>
       <label htmlFor="" className="font-medium text-sm text-zinc-700">
         {label}
       </label>
       <div className="mt-2">
         {imgSrc ? (
-          <div className="flex flex-col items-center gap-4">
+          <div className={clsx('flex flex-col items-center gap-4', className)}>
             <ReactCrop
               crop={crop}
               onChange={(_, percentCrop) => setCrop(percentCrop)}
               onComplete={c => setCompletedCrop(c)}
               aspect={aspectRatio}
               minWidth={150}
+              className="max-h-[400px] "
             >
               <img
                 ref={imgRef}
                 alt="Recortar imagem"
                 src={imgSrc}
                 onLoad={onImageLoad}
-                className="max-h-[400px]"
+                className="max-h-[400px] object-cover"
               />
             </ReactCrop>
             <Button
@@ -213,7 +204,10 @@ function ImageUploader({
           <div
             onClick={() => fileInputRef.current?.click()}
             onKeyDown={() => fileInputRef.current?.click()}
-            className="relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-zinc-300 border-dashed bg-zinc-50 text-zinc-500 transition-colors hover:border-blue-400 hover:bg-blue-50"
+            className={clsx(
+              'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-zinc-300 border-dashed bg-zinc-50 text-zinc-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
+              className
+            )}
             style={{ aspectRatio }}
           >
             {initialImageUrl && (
@@ -252,32 +246,20 @@ export function EditBusinessInfo({ profileData }: Props) {
 
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  // --- Estados do Formulário ---
   const [name, setName] = useState(profileData?.name || '')
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     profileData?.categories || []
   )
-  const [imgSrc, setImgSrc] = useState('')
-  const [croppedImageFile, setCroppedImageFile] = useState<File | null>(null)
+
   const [croppedLogoFile, setCroppedLogoFile] = useState<File | null>(null)
   const [croppedCoverFile, setCroppedCoverFile] = useState<File | null>(null)
 
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
-  const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-  const imgRef = useRef<HTMLImageElement>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // const initialImageUrl = profileData?.imagePath || '/default-cover.png'
-
   const onClose = () => {
     setIsOpen(false)
-    setImgSrc('')
     setCroppedLogoFile(null)
     setCroppedCoverFile(null)
   }
 
-  // --- Função de Salvamento ---
   async function handleSaveProfile() {
     setIsSubmitting(true)
     try {
@@ -341,7 +323,7 @@ export function EditBusinessInfo({ profileData }: Props) {
     }, [wrapperRef])
 
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 overflow-y-auto">
         <label htmlFor="" className="font-medium text-sm text-zinc-700">
           Categorias
         </label>
@@ -349,7 +331,7 @@ export function EditBusinessInfo({ profileData }: Props) {
           ref={wrapperRef}
           className="relative w-full rounded-lg border border-zinc-300 bg-zinc-50 p-2 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200"
         >
-          <div className="flex flex-wrap gap-2">
+          <div className="lg:fex-row flex w-full flex-col gap-4 ">
             {selectedCategories.map(cat => (
               <div
                 key={cat}
@@ -409,10 +391,10 @@ export function EditBusinessInfo({ profileData }: Props) {
         setIsOpen={onClose}
         title="Alterar informações"
         description="Atualize os dados e imagens do seu perfil."
-        classname="w-full max-w-2xl rounded-2xl bg-white p-6 md:p-8"
+        classname="w-full max-w-2xl md:rounded-2xl overflow-y-auto max-h-screen bg-white px-6 py-16 md:px-8"
       >
-        <div className="flex w-full flex-col gap-8">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="flex w-full flex-col items-center gap-6">
+          <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-start">
             {/* Uploader para a Logomarca */}
             <ImageUploader
               label="Logomarca"
@@ -420,6 +402,8 @@ export function EditBusinessInfo({ profileData }: Props) {
               initialImageUrl={profileData.logoImageUrl}
               onCropComplete={setCroppedLogoFile}
               recommendation="Recomendado: 400x400px"
+              className="max-h-48 w-full min-w-48 md:mb-16 md:max-w-48"
+              container="max-h-48"
             />
             {/* Uploader para a Imagem de Capa */}
             <ImageUploader
@@ -428,6 +412,8 @@ export function EditBusinessInfo({ profileData }: Props) {
               initialImageUrl={profileData.coverImageUrl}
               onCropComplete={setCroppedCoverFile}
               recommendation="Recomendado: 1200x450px"
+              className="min-w-[90vw] md:min-w-48"
+              container="flex-1"
             />
           </div>
 
@@ -441,14 +427,19 @@ export function EditBusinessInfo({ profileData }: Props) {
             <MultiCategorySelect />
           </div>
 
-          <footer className="mt-4 flex justify-end gap-4 border-zinc-200 border-t pt-6">
-            <Button variant="ghost" onClick={onClose} disabled={isSubmitting}>
-              Cancelar
+          <footer className="flex w-full justify-end gap-4 pt-6">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="font-bold hover:cursor-pointer"
+            >
+              Voltar
             </Button>
             <Button
               onClick={handleSaveProfile}
               disabled={isSubmitting}
-              className="min-w-[120px]"
+              className="min-w-[120px] font-bold "
             >
               {isSubmitting ? 'Salvando...' : 'Salvar'}
             </Button>

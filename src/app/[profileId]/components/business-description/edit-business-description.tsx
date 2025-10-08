@@ -90,7 +90,7 @@ export function EditBusinessDescription({ data }: Props) {
             </div>
           </div>
 
-          <footer className="flex justify-end gap-4">
+          <footer className="flex w-full justify-end gap-4 pt-6">
             <button
               type="button"
               className="font-bold hover:cursor-pointer"
@@ -101,7 +101,7 @@ export function EditBusinessDescription({ data }: Props) {
             <Button
               onClick={handleSaveOpeningHours}
               disabled={isSubmitting}
-              className="w-32"
+              className="min-w-[120px] font-bold "
             >
               Salvar
             </Button>
