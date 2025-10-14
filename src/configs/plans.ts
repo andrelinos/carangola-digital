@@ -51,10 +51,10 @@ export const plansConfig = {
       email: true,
     },
     businessPhones: {
-      quantity: 5,
+      quantity: 15,
     },
     addresses: {
-      quantity: 3,
+      quantity: 5,
     },
   },
   pro: {
@@ -81,7 +81,7 @@ export const plansConfig = {
     },
 
     businessPhones: {
-      quantity: 10,
+      quantity: 30,
     },
     addresses: {
       quantity: 10,

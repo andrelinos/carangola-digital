@@ -1,3 +1,4 @@
+import { PricingPlans } from '@/components/commons/plan-section'
 import { auth } from '@/lib/auth'
 import { PurchaseButtons } from './components/purchase-buttons'
 
@@ -15,7 +16,8 @@ export default async function Compre({ params }: Props) {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <PurchaseButtons profileId={profileId} user={user} />
+      <PricingPlans />
+      {/* <PurchaseButtons profileId={profileId} user={user} /> */}
     </div>
   )
 }

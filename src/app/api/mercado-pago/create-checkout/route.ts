@@ -1,8 +1,9 @@
+import { Preference } from 'mercadopago'
+import { type NextRequest, NextResponse } from 'next/server'
+
 import type { PlanProps } from '@/_types/plan'
 import { auth } from '@/lib/auth'
 import mpClient from '@/lib/mercado-pago'
-import { Preference } from 'mercadopago'
-import { type NextRequest, NextResponse } from 'next/server'
 
 interface RequestProps {
   profileId: string
@@ -17,6 +18,8 @@ export async function POST(req: NextRequest) {
   if (!session || !profileId || !userEmail || !plan) {
     return NextResponse.error()
   }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
   const userId = session.user.id
 
@@ -58,30 +61,13 @@ export async function POST(req: NextRequest) {
           },
         ],
         payment_methods: {
-          // Des-comente para desativar métodos de pagamento
-          //   excluded_payment_methods: [
-          //     {
-          //       id: "bolbradesco",
-          //     },
-          //     {
-          //       id: "pec",
-          //     },
-          //   ],
-          //   excluded_payment_types: [
-          //     {
-          //       id: "debit_card",
-          //     },
-          //     {
-          //       id: "credit_card",
-          //     },
-          //   ],
-          installments: 12, // Número máximo de parcelas permitidas - calculo feito automaticamente
+          installments: 3,
         },
         auto_return: 'approved',
         back_urls: {
-          success: `${req.headers.get('origin')}/compra?status=sucesso`,
-          failure: `${req.headers.get('origin')}/compra?status=falha`,
-          pending: `${req.headers.get('origin')}/api/mercado-pago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
+          success: `${siteUrl}/compra?status=sucesso`,
+          failure: `${siteUrl}/compra?status=falha`,
+          pending: `${siteUrl}/compra?status=pendente`,
         },
       },
     })
@@ -95,7 +81,7 @@ export async function POST(req: NextRequest) {
       initPoint: createdPreference.init_point,
     })
   } catch (err) {
-    console.error(err)
+    console.error('ERROR :: ', err)
     return NextResponse.error()
   }
 }

@@ -32,14 +32,9 @@ export function PurchaseButtons({
         </Link>
       ) : (
         <Button
-          className={`w-full ${
-            plan.name === 'Grátis'
-              ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-800'
-              : plan.name === 'Pro'
-                ? 'bg-white text-gray-900 hover:bg-gray-100'
-                : 'bg-primary text-white hover:bg-blue-700'
-          }`}
+          className={'w-full'}
           disabled={
+            // plan.disable
             !['andrelinodev@gmail.com', 'andrelinoclientes@gmail.com'].includes(
               user?.email ?? ''
             )
@@ -53,7 +48,7 @@ export function PurchaseButtons({
             })
           }
         >
-          {plan.name === 'Grátis' ? plan.buttonText : 'Em breve...'}
+          {plan.name === 'Grátis' ? plan.buttonText : plan?.buttonText}
         </Button>
       )}
     </div>

@@ -8,6 +8,7 @@ import { Check } from 'lucide-react'
 
 export async function PricingPlans() {
   const session = await auth()
+
   const plans = [
     {
       id: 'free',
@@ -15,23 +16,45 @@ export async function PricingPlans() {
       price: 0,
       period: 'Para sempre',
       popular: false,
+      disable: false,
       features: [
         'Perfil básico do estabelecimento',
         'Informações de contato',
         'Horário de funcionamento',
         'Links para 2 redes sociais',
+        '2 Telefones/Whatsapp',
+        'Rota de localização no Google Maps',
       ],
       buttonText: 'Começar Grátis',
       buttonVariant: 'outline' as const,
       cardClass: 'bg-gray-50 border-gray-200',
     },
-
+    {
+      id: 'basic',
+      name: 'Básico',
+      price: 25,
+      period: 'por mês',
+      popular: true,
+      disable: false,
+      features: [
+        'Tudo do plano Grátis',
+        'Links para todas as redes sociais',
+        'Até 15 telefones/whatsapp',
+        'Botão de compartilhamento',
+        'Suporte técnico',
+      ],
+      buttonText: 'Escolher Básico',
+      buttonVariant: 'default' as const,
+      cardClass:
+        'bg-gradient-to-br from-gray-900  shadow-3xl to-gray-800 text-white',
+    },
     {
       id: 'pro',
       name: 'Pro',
       price: 49.99,
       period: 'por ano',
       popular: false,
+      disable: false,
       features: [
         'Tudo do plano Básico',
         'Galeria com até 15 fotos',
@@ -40,26 +63,8 @@ export async function PricingPlans() {
         'Analytics e relatórios',
         'Prioridade no suporte',
       ],
-      buttonText: 'Escolher Pro',
-      buttonVariant: 'default' as const,
-      cardClass:
-        'bg-gradient-to-br from-gray-900  shadow-3xl to-gray-800 text-white',
-    },
-    {
-      id: 'basic',
-      name: 'Básico',
-      price: 4.99,
-      period: 'por mês',
-      popular: false,
-      features: [
-        'Tudo do plano Grátis',
-        'Galeria com até 5 fotos',
-        'Sistema de avaliações',
-        'Links para todas as redes sociais',
-        'Botão de compartilhamento',
-      ],
-      buttonText: 'Escolher Básico',
-      buttonVariant: 'default' as const,
+      buttonText: 'Em breve...',
+      buttonVariant: 'secondary' as const,
       cardClass: 'bg-white border-2 border-primary shadow-lg',
     },
   ]
@@ -86,7 +91,7 @@ export async function PricingPlans() {
             >
               {plan.popular && (
                 <div className="-top-4 -translate-x-1/2 absolute left-1/2 transform">
-                  <span className="rounded-full bg-primary px-4 py-1 font-semibold text-sm text-white">
+                  <span className="rounded-full bg-primary px-4 py-1 font-semibold text-sm">
                     Mais Popular
                   </span>
                 </div>
@@ -94,42 +99,18 @@ export async function PricingPlans() {
 
               <CardContent className="p-8">
                 <div className="mb-8 text-center">
-                  <h3
-                    className={`mb-2 font-bold text-2xl ${plan.name === 'Pro' ? 'text-white' : 'text-gray-900'}`}
-                  >
-                    {plan.name}
-                  </h3>
-                  <div
-                    className={`mb-1 font-bold text-4xl ${
-                      plan.name === 'Pro'
-                        ? 'text-white'
-                        : plan.name === 'Basic'
-                          ? 'text-primary'
-                          : 'text-gray-900'
-                    }`}
-                  >
+                  <h3 className={'mb-2 font-bold text-2xl'}>{plan.name}</h3>
+                  <div className={'mb-1 font-bold text-4xl'}>
                     {formatPrice(plan.price)}
                   </div>
-                  <p
-                    className={
-                      plan.name === 'Pro' ? 'text-gray-300' : 'text-gray-600'
-                    }
-                  >
-                    {plan.period}
-                  </p>
+                  <p>{plan.period}</p>
                 </div>
 
                 <ul className="mb-8 space-y-4">
                   {plan.features.map(feature => (
                     <li key={feature} className="flex items-center">
-                      <Check className="mr-3 h-5 w-5 flex-shrink-0 text-secondary" />
-                      <span
-                        className={
-                          plan.name === 'Pro' ? 'text-white' : 'text-gray-700'
-                        }
-                      >
-                        {feature}
-                      </span>
+                      <Check className="mr-3 h-5 w-5 flex-shrink-0 text-current" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
