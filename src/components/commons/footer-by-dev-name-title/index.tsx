@@ -8,6 +8,7 @@ export function FooterByDevNameTitle() {
         variant="footer"
         href="https://andrelino.dev/"
         target="_blank"
+        rel="noopener noreferrer"
         className="ml-1 p-0"
       >
         Andrelino Silva

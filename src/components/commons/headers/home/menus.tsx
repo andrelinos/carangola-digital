@@ -53,27 +53,38 @@ export function Menus({ session }: Props) {
               href="/"
               title="Página inicial"
               variant="primary"
-              className="flex text-xl"
+              className="flex text-3xl"
             >
               <Home size={24} className="text-blue-400" />
               Página inicial
             </Link>
+            {session && hasProfileLink && (
+            <Link
+              variant="primary"
+              href={`/${session?.user?.myProfileLink}/dashboard`}
+              title="Painel de controle"
+              className="flex text-3xl"
+            >
+              <LayoutPanelLeft className="text-orange-500" />
+              Painel de controle
+            </Link>
+          )}
 
             <Link
               href="/business"
               title="Estabelecimentos comerciais"
               variant="primary"
-              className="flex text-xl"
+              className="flex text-3xl"
             >
               <Store size={24} className="text-blue-500" />
-              Estabelecimentos comerciais
+              Encontrar na cidade
             </Link>
 
             <Link
               variant="primary"
               href="/achados-e-perdidos"
               title="Achados e Perdidos"
-              className="flex text-xl"
+              className="flex text-3xl"
             >
               <Search size={24} className="text-green-500" />
               Achados e Perdidos
@@ -83,7 +94,7 @@ export function Menus({ session }: Props) {
               variant="primary"
               href="/como-funciona"
               title="Como funciona"
-              className="flex text-xl"
+              className="flex text-3xl"
             >
               <ChatBubbleQuestion className="text-purple-500" />
               Como funciona
@@ -92,29 +103,19 @@ export function Menus({ session }: Props) {
               variant="primary"
               href="/telefones-uteis"
               title="Telefones úteis"
-              className="flex text-xl"
+              className="flex text-3xl"
             >
               <PhoneCall className="text-blue-600" />
               Telefones úteis
             </Link>
           </ul>
 
-          {session && hasProfileLink && (
-            <Link
-              variant="primary"
-              href={`/${session?.user?.myProfileLink}/dashboard`}
-              title="Painel de controle"
-              className="flex text-xl"
-            >
-              <LayoutPanelLeft className="text-orange-500" />
-              Painel de controle
-            </Link>
-          )}
+
           {session && !hasProfileLink && (
             <Link
               variant="primary"
               href="/criar"
-              className="text-xl md:text-base"
+              className="text-3xl md:text-base"
             >
               Criar perfil
             </Link>

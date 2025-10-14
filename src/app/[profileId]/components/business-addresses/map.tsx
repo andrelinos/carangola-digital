@@ -70,6 +70,7 @@ const LocationButton = ({ onLocate }: { onLocate: () => void }) => {
 
 export const MapPage = ({ coordinates, setCoordinates }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
+
   const [selectedPosition, setSelectedPosition] =
     useState<[number, number]>(coordinates)
 

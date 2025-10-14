@@ -13,7 +13,7 @@ export function Description({ profileData, isOwner, isUserAuth }: Props) {
   const businessDescription = profileData?.businessDescription || ''
 
   return (
-    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
+    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-16 rounded-b-xl">
       <div className="relative flex">
         <h2 className="flex items-center gap-2 text-center font-bold text-xl">
           <InfoCircle className="size-6" /> Descrição

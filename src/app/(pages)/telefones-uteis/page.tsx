@@ -79,7 +79,7 @@ export default function UtilsPhonesPage() {
                           {tel.isWhatsApp ? (
                             <Link
                               href={`https://wa.me/+55${tel.phone}`}
-                              rel="noreferrer"
+                              rel="noopener noreferrer"
                               className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 text-white sm:w-64"
                             >
                               <Whatsapp className="h-5 w-5" />
@@ -88,7 +88,7 @@ export default function UtilsPhonesPage() {
                           ) : (
                             <Link
                               href={`tel:${tel.phone}`}
-                              rel="noreferrer"
+                              rel="noopener noreferrer"
                               className="flex w-full flex-1 items-center justify-center gap-1 px-6 text-white sm:w-64"
                             >
                               <Phone className="h-5 w-5" />

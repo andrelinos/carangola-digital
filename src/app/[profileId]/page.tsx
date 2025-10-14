@@ -80,7 +80,7 @@ export default async function BusinessId({ params }: Props) {
             </Button>
           </Link>
         </div>
-        <Card className="overflow-hidden rounded-2xl bg-white shadow-xl">
+        <Card className="overflow-hidden border-0 rounded-0 bg-white">
           <CardContent className="flex flex-col p-0">
             <BusinessHero
               profileData={profileData}

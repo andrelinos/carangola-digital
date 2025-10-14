@@ -2,7 +2,7 @@
 
 import { Plus, Trash } from 'iconoir-react'
 import { useParams, useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { startTransition, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 const MapPage = dynamic(() => import('./map'), {
@@ -29,6 +29,8 @@ export function EditBusinessAddresses({ data }: Props) {
 
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+   const [isGettingAddress, setIsGettingAddress] = useState(false)
+
 
   const [formValues, setFormValues] = useState<BusinessAddressProps[] | null>(
     data || [
@@ -42,6 +44,10 @@ export function EditBusinessAddresses({ data }: Props) {
       },
     ]
   )
+
+  const [addressFromMap, setAddressFromMap] = useState({ address: '', postcode: '' })
+
+
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -125,6 +131,43 @@ export function EditBusinessAddresses({ data }: Props) {
     const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
     setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
   }
+
+  const handleGetAddressFromCoords = async (latlng: [number, number], index: number) => {
+
+      if (typeof setAddressFromMap !== 'function') return
+
+      setIsGettingAddress(true)
+      try {
+
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${latlng[0]}&lon=${latlng[1]}&format=json`
+        )
+        const data = await response.json()
+
+        console.log(data)
+
+        if (data?.address) {
+          setFormValues(prevState => {
+                            if (!prevState) return prevState
+                            const updatedAddresses = [...prevState]
+                            updatedAddresses[index] = {
+                              ...updatedAddresses[index],
+                              address: data.address.road,
+                              cep: data.address.postcode
+                            }
+                            return updatedAddresses
+                          })
+                        }
+
+
+      } catch  {
+        console.error('Failed to fetch address')
+      } finally {
+        setIsGettingAddress(false)
+      }
+    }
+
+
 
   const defaultLatitude = -20.73385181091924
   const defaultLongitude = -42.03013264654137
@@ -218,8 +261,9 @@ export function EditBusinessAddresses({ data }: Props) {
 
                       <MapPage
                         coordinates={coordinates}
-                        // setCoordinates={setSelectedPosition}
                         setCoordinates={(newCoords: [number, number]) => {
+                          handleGetAddressFromCoords(newCoords, index)
+
                           setFormValues(prevState => {
                             if (!prevState) return prevState
                             const updatedAddresses = [...prevState]
@@ -227,6 +271,8 @@ export function EditBusinessAddresses({ data }: Props) {
                               ...updatedAddresses[index],
                               latitude: newCoords[0],
                               longitude: newCoords[1],
+                              address: addressFromMap.address,
+                              cep: addressFromMap.postcode
                             }
                             return updatedAddresses
                           })
@@ -282,6 +328,7 @@ export function EditBusinessAddresses({ data }: Props) {
       </Modal>
 
       {isSubmitting && <Loading />}
+         {isGettingAddress && <Loading title="Carregando dados do endereço..." />}
     </>
   )
 }

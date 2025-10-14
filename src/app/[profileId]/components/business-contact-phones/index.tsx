@@ -1,10 +1,11 @@
 'use client'
 
-import { Phone, Whatsapp } from 'iconoir-react'
-
 import type { BusinessPhoneProps } from '@/_types/profile-data'
 import { Link } from '@/components/ui/link'
+import { SafeImage } from '@/components/ui/safe-image'
 import { formatPhoneNumber } from '@/lib/utils'
+import clsx from 'clsx'
+import { Phone, Whatsapp } from 'iconoir-react'
 import { PhoneCall } from 'lucide-react'
 import Image from 'next/image'
 import { EditContactPhones } from './edit-business-contact-phones'
@@ -18,83 +19,92 @@ interface Props {
 export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
   const businessPhones = profileData?.businessPhones || []
 
-  const businessPhone = businessPhones?.filter(
+  // Sua lógica original de filtros, que está correta para esta abordagem.
+  const phoneContacts = businessPhones?.filter(
     (item: BusinessPhoneProps) => !item?.isOnlyWhatsapp
   )
-
-  const businessWhatsapp = businessPhones?.filter(
+  const whatsappContacts = businessPhones?.filter(
     (item: BusinessPhoneProps) => item?.isWhatsapp
   )
 
   return (
-    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-24 shadow-lg">
-      <div className="relative flex">
-        <h2 className="flex max-w-lg items-center gap-2 text-center font-bold text-xl">
-          <PhoneCall className="size-6" /> Telefones de contato
+    <div className="my-6 flex w-full flex-col items-center gap-6 rounded-xl p-6 pb-16">
+      <div className="relative flex w-full justify-center">
+        <h2 className="flex items-center gap-2 text-center font-bold text-slate-800 text-xl">
+          <PhoneCall className="size-6" />
+          Telefones de contato
         </h2>
         {(isOwner || isUserAuth) && (
-          <div className="-top-5 absolute right-0 h-6 rounded-full bg-white/70">
+          <div className="-top-3 -right-3 absolute">
             <EditContactPhones profileData={profileData} />
           </div>
         )}
       </div>
-      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
-        {businessPhones?.length >= 1 && (
-          <>
-            <h2 className="mt-6 max-w-lg text-center font-bold text-lg">
-              Telefones
-            </h2>
-            {businessPhone?.map(
-              (item: BusinessPhoneProps | undefined, index: number) =>
-                item?.phone && (
-                  <Link
-                    key={String(index)}
-                    href={`tel:${item.phone}`}
-                    className="flex w-full flex-1 items-center justify-center gap-1 px-6 text-white sm:w-64"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <p className="">{formatPhoneNumber(item.phone)}</p>
-                  </Link>
-                )
-            )}
-          </>
-        )}
-        {(!businessPhone || businessPhone.length === 0) && (
-          <p>Nenhum telefone para contato</p>
-        )}
-      </div>
-      <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-1">
-        {!!businessWhatsapp?.length && (
-          <h2 className=" mt-8 max-w-lg text-center font-bold text-lg">
-            WhatsApp
-          </h2>
-        )}
-        {businessWhatsapp?.map(
-          (item: BusinessPhoneProps | undefined, index: number) =>
-            item?.phone &&
-            item.isWhatsapp && (
-              <Link
-                key={String(index)}
-                href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}
-                target="_blank"
-                className="flex w-full flex-1 items-center justify-center gap-1 bg-accent-green px-6 text-white sm:w-64"
+
+      {phoneContacts && phoneContacts.length > 0 && (
+        <div className="flex w-full flex-col items-center gap-3">
+          <h3 className="font-semibold text-slate-600">Telefones</h3>
+          {phoneContacts.map((item: BusinessPhoneProps, index: number) => (
+            <Link
+              key={`phone-${String(index)}`}
+              href={`tel:${item.phone}`}
+              className="hover:-translate-y-1 flex w-full max-w-xs transform items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 text-white shadow-md transition-transform duration-200 hover:shadow-xl"
+            >
+              <Phone className="h-5 w-5" />
+              <span className="font-medium tracking-wider">
+                {formatPhoneNumber(item.phone)}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {whatsappContacts && whatsappContacts.length > 0 && (
+        <div className="flex w-full flex-col items-center gap-3">
+          <h3 className="font-semibold text-slate-600">WhatsApp</h3>
+          {whatsappContacts.map((item: BusinessPhoneProps, index: number) => (
+            <Link
+              key={`whatsapp-${String(index)}`}
+              href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={clsx(
+                'hover:-translate-y-1 flex w-full max-w-xs transform items-center gap-3 rounded-lg bg-green-600 p-2.5 text-white shadow-md transition-transform duration-200 hover:shadow-xl',
+                {
+                  'justify-center': !item?.imageProfileWhatsApp,
+                  'justify-start': item?.imageProfileWhatsApp,
+                }
+              )}
+            >
+              {item?.imageProfileWhatsApp && (
+                <SafeImage
+                  width={40}
+                  height={40}
+                  src={item?.imageProfileWhatsApp || '/default-image.png'}
+                  alt={`Foto de ${item.nameContact}`}
+                  className="h-10 w-10 rounded-full border-2 border-white/80 object-cover"
+                />
+              )}
+
+              <div
+                className={clsx('flex flex-1 items-center gap-2', {
+                  'justify-center': !item?.imageProfileWhatsApp,
+                  'justify-start': item?.imageProfileWhatsApp,
+                })}
               >
-                {item?.imageProfileWhatsApp && (
-                  <span>
-                    <Image
-                      width={24}
-                      height={24}
-                      src={item?.imageProfileWhatsApp || ''}
-                      alt=""
-                    />
-                  </span>
-                )}
-                <Whatsapp className="h-5 w-5" />
-                <p className="">{item.nameContact}</p>
-              </Link>
-            )
-        )}
-      </div>
+                <Whatsapp className="h-5 w-5 flex-shrink-0" />
+                <span className="font-medium">{item.nameContact}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {businessPhones.length === 0 && (
+        <p className="pt-4 text-center text-slate-500">
+          Nenhum telefone de contato cadastrado.
+        </p>
+      )}
     </div>
   )
 }

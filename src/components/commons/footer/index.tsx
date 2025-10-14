@@ -53,6 +53,7 @@ export function Footer() {
                 variant="footer"
                 href="https://instagram.com/carangoladigital"
                 className="flex gap-2"
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 <Instagram /> Instagram

@@ -1,15 +1,17 @@
-export function generateGoogleMapsLink({
+export function generateGoogleMapsLinkByAddress(address: string): string {
+  if (!address) return '';
+
+  const encodedAddress = encodeURIComponent(address);
+  return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+}
+
+export function generateGoogleMapsLinkByCoords({
   latitude,
   longitude,
 }: {
-  latitude: number
-  longitude: number
+  latitude: number;
+  longitude: number;
 }): string {
-  try {
-    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
-
-    return mapsUrl
-  } catch (error) {
-    return ''
-  }
+  return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
 }
+

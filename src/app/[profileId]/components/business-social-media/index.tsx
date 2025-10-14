@@ -18,6 +18,8 @@ import { Link } from '@/components/ui/link'
 import { Mail } from 'lucide-react'
 import { EmailIcon } from 'react-share'
 import { EditBusinessSocialMedias } from './edit-business-social-medias'
+import { SOCIAL_MEDIA_CONFIG } from '@/components/social-icons'
+
 
 interface Props {
   profileData: ProfileDataProps
@@ -25,22 +27,13 @@ interface Props {
   isUserAuth?: boolean
 }
 
-const SOCIAL_MEDIA_CONFIG = [
-  { key: 'facebook', Icon: Facebook },
-  { key: 'instagram', Icon: Instagram },
-  { key: 'linkedin', Icon: Linkedin },
-  { key: 'threads', Icon: Threads },
-  { key: 'tiktok', Icon: Tiktok },
-  { key: 'kwai', Icon: CinemaOld },
-  { key: 'site', Icon: Globe },
-  { key: 'email', Icon: Mail },
-]
+
 
 export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
   const socialMedias = profileData?.socialMedias as SocialMediasProps | any
 
   return (
-    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-12 shadow-lg">
+    <div className="mt-6 flex w-full flex-col items-center gap-1 px-4 pt-6 pb-16">
       <div className="relative flex">
         <h2 className="flex items-center gap-2 text-center font-bold text-xl">
           <Network className="size-6" /> Redes sociais
@@ -64,7 +57,7 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
           const url = socialMedias?.[key]
           const type = url?.includes('@') ? 'email' : ''
 
-          console.log('URL :: ', url, type)
+
           return url ? (
             <Link
               key={key}
@@ -72,6 +65,7 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
               href={url}
               variant="outline"
               target="_blank"
+              rel="noopener noreferrer"
               className="group relative"
             >
               <Icon />
