@@ -20,8 +20,12 @@ export default async function Dashboard({ params }: Props) {
   console.log('session?.user?.id', session?.user?.id)
 
   const isOwner = profileData?.userId === session?.user?.id
+  const isUserAuth = !!(
+    session?.user?.id &&
+    profileData?.admins?.some(admin => admin.userId === session.user.id)
+  )
 
-  if (!isOwner) {
+  if (!isOwner && !isUserAuth) {
     redirect('/')
   }
 

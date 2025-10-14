@@ -2,10 +2,13 @@ import { MapPin } from 'iconoir-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 
-import {  generateGoogleMapsLinkByAddress, generateGoogleMapsLinkByCoords } from '@/utils/generate-link-route-google-maps'
+import { Link } from '@/components/ui/link'
+import {
+  generateGoogleMapsLinkByAddress,
+  generateGoogleMapsLinkByCoords,
+} from '@/utils/generate-link-route-google-maps'
 import { Car } from 'lucide-react'
 import { EditBusinessAddresses } from './edit-business-addresses'
-import { Link } from '@/components/ui/link'
 
 // Opcional, mas limpa a interface de props
 interface AddressItemProps {
@@ -44,14 +47,15 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
 
       <div className="mx-auto flex w-full max-w-full flex-col items-center justify-center gap-1">
         {businessAddresses?.map((item, index) => {
-          const fullAddress = `${item.address}, ${item.neighborhood}, Carangola - MG, ${item.cep}`;
+          const fullAddress = `${item.address}, ${item.neighborhood}, Carangola - MG, ${item.cep}`
 
-          const itemMapsLink = (item.latitude && item.longitude)
-  ? generateGoogleMapsLinkByCoords({
-      latitude: Number(item.latitude),
-      longitude: Number(item.longitude),
-    })
-  : generateGoogleMapsLinkByAddress(fullAddress);
+          const itemMapsLink =
+            item.latitude && item.longitude
+              ? generateGoogleMapsLinkByCoords({
+                  latitude: Number(item.latitude),
+                  longitude: Number(item.longitude),
+                })
+              : generateGoogleMapsLinkByAddress(fullAddress)
 
           return (
             item.address && (
@@ -68,19 +72,17 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
                   </div>
                 </div>
 
-
-                {Number(item.latitude) && Number(item.longitude) || (item.address) ? (
+                {(Number(item.latitude) && Number(item.longitude)) ||
+                item.address ? (
                   <div className="flex w-full justify-end">
                     <Link
                       variant="default"
                       className="group relative h-8 w-fit bg-blue-600 px-4 py-1 font-semibold text-white text-xs"
-
                       href={itemMapsLink}
                       target="_blank"
                       rel="noopener noreferrer"
-
                     >
-                      <span className="-top-4 pointer-events-none -left-2 absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-20">
+                      <span className="-top-4 -left-2 pointer-events-none absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-20">
                         <Car className="size-4 stroke-2" />
                       </span>
                       <span className="-top-4 -left-2 absolute flex h-6 w-6 scale-100 transform items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 opacity-50 transition-all duration-300 ease-linear group-hover:scale-150 group-hover:opacity-0" />
