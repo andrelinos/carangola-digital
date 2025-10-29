@@ -31,7 +31,7 @@
     "mercadopago": "^2.9.0",
     "mixpanel": "^0.18.1",
     "next": "15.2.3",
-    "next-auth": "5.0.0-beta.27",
+    "next-auth": "5.0.0-beta.30",
     "radix-ui": "^1.4.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
