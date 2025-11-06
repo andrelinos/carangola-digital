@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import type { Session } from 'next-auth'
 
 import { Button } from '@/components/ui/button'
+import { DoorOpen } from 'lucide-react'
 
 interface Props {
   session: Session | null
@@ -12,13 +13,13 @@ export function ManageAuthButton({ session }: Props) {
     <Button
       variant="outline"
       className={clsx(
-        'w-full max-w-xs text-base text-zinc-700 transition-colors duration-300 ease-in-out hover:cursor-pointer ',
+        'w-full px-4 transition-colors duration-300 ease-in-out hover:cursor-pointer ',
         {
           ' hover:border-rose-400 hover:bg-rose-400 hover:text-white': session,
         }
       )}
     >
-      {session ? 'Sair' : 'Entrar'}
+      {session ? <DoorOpen /> : 'Entrar'}
     </Button>
   )
 }

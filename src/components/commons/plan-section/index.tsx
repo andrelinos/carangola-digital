@@ -1,13 +1,15 @@
-import { PurchaseButtons } from '@/app/[profileId]/compre/components/purchase-buttons'
+import { PurchaseButtons } from '@/app/business/[slug]/compre/components/purchase-buttons'
 import { Card, CardContent } from '@/components/ui/card'
-import { auth } from '@/lib/auth'
+import { authOptions } from '@/lib/auth'
 import { formatPrice } from '@/utils/format-price'
 import clsx from 'clsx'
 
 import { Check } from 'lucide-react'
+import { getServerSession } from 'next-auth/next'
 
 export async function PricingPlans() {
-  const session = await auth()
+  const session = await getServerSession(authOptions)
+  const user = session?.user
 
   const plans = [
     {

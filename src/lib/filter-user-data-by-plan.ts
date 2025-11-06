@@ -1,6 +1,8 @@
 import type { typeProps } from '@/_types/user'
-import type { PlanConfigProps } from '@/configs/plans'
-import { plansConfig } from '@/configs/plans'
+import {
+  type PlanConfigProps,
+  plansBusinessConfig,
+} from '@/configs/plans-business'
 
 type Profile = {
   socialMedias?: Record<string, any> | Array<{ platform: string; value: any }>
@@ -19,12 +21,12 @@ interface FilterUserDataByPlanProps {
 
 export function filterUserDataByPlan({
   itemsToFilter,
-  planConfig = plansConfig.free,
+  planConfig = plansBusinessConfig.free,
   planActive,
 }: FilterUserDataByPlanProps) {
   const isPlanActive = planActive ? planActive.expiresAt > Date.now() : false
 
-  const planConfigToUse = isPlanActive ? planConfig : plansConfig.free
+  const planConfigToUse = isPlanActive ? planConfig : plansBusinessConfig.free
 
   const allowedInfosInPlanList = Object.entries(planConfigToUse.socialMedias)
     .filter(([, allowed]) => allowed)

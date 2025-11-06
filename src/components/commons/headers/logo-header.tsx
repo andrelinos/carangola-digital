@@ -12,7 +12,7 @@ export function LogoHeader() {
         alt="Logo Carangola Digital"
         priority
       />
-      <h2 className="max-w-[112px] font-bold text-sm opacity-90">
+      <h2 className="max-w-[112px] font-bold text-muted-foreground text-sm opacity-90 ">
         Carangola Digital
       </h2>
     </Link>

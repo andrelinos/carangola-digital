@@ -1,9 +1,19 @@
-export function generateKeywords(name: string): string[] {
-  const normalizedString = name
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .toLowerCase()
-    .trim()
+export function generateKeywords(text: string): string[] {
+  try {
+    if (!text || !text.trim()) return []
 
-  return normalizedString.split(/\s+/)
+    const normalized = text
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()
+
+    const terms = normalized
+      .split(/[^\p{L}\p{N}]+/u)
+      .map(t => t.replace(/^_+|_+$/g, ''))
+      .filter(t => t.length > 2 && !/^\d+$/u.test(t))
+
+    return Array.from(new Set(terms))
+  } catch {
+    return []
+  }
 }

@@ -6,15 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
 
 export function HeroSection() {
-  const scrollToPricing = () => {
-    const pricingSection = document.getElementById('pricing')
-    if (pricingSection) {
-      pricingSection.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
-    <section className="bg-gradient-to-br from-primary to-blue-700 py-20 text-white">
+    <section className="bg-linear-to-br from-blue-900 to-blue-700 py-20 text-white">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <h1 className="mb-6 font-bold text-4xl md:text-5xl">
           Conecte seu negócio com{' '}
@@ -35,7 +28,7 @@ export function HeroSection() {
           </NextLink>
           <Link
             variant="outline"
-            href="/andrelino"
+            href="/business/andrelino"
             size="lg"
             className="h-11 border-2 border-white px-8 font-semibold text-white hover:bg-white hover:text-primary"
           >

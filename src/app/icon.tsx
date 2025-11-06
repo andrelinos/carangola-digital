@@ -5,8 +5,8 @@ export const runtime = 'edge'
 
 // Image metadata
 export const size = {
-  width: 56,
-  height: 56,
+  width: 32,
+  height: 32,
 }
 export const contentType = 'image/svg+xml'
 

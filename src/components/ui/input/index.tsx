@@ -1,3 +1,5 @@
+'use client'
+
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
@@ -10,15 +12,14 @@ import { cn } from '@/lib/utils'
 import { Link } from '../link'
 
 const inputVariants = cva(
-  'w-full whitespace-nowrap rounded-xl border border-transparent p-3 placeholder:text-content-placeholder hover:border-border-secondary hover:opacity-95 active:border-border-tertiary disabled:opacity-70',
+  'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
   {
     variants: {
       variant: {
         default:
-          'border-border-primary bg-white font-medium placeholder:text-content-placeholder',
+          'border-border-primary font-medium placeholder:text-content-placeholder',
         secondary: 'bg-background-tertiary',
-        ghost:
-          'border-border-primary bg-white font-medium placeholder:text-zinc-300',
+        ghost: 'border-border-primary font-medium placeholder:text-zinc-300',
       },
     },
     defaultVariants: {
@@ -77,7 +78,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               </div>
               {requiredfield && (
                 <span
-                  className="pl-[2px] text-red-400"
+                  className="pl-0.5 text-red-400"
                   title="Campo obrigatório"
                   aria-label={props?.title}
                 >

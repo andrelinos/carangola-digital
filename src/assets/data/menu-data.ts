@@ -1,15 +1,22 @@
 export const menus = [
   {
-    title: 'Explorar',
+    title: 'Estabelecimentos',
     href: '/business',
   },
-
   {
-    title: 'Suporte',
-    href: '/fale-conosco',
+    title: 'Imóveis',
+    href: '/imoveis',
   },
   {
     title: 'Telefones úteis',
     href: '/telefones-uteis',
+  },
+  {
+    title: 'Como funciona',
+    href: '/como-funciona',
+  },
+  {
+    title: 'Suporte',
+    href: '/fale-conosco',
   },
 ]

@@ -42,7 +42,7 @@
   --color-secondary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
 
   /* Cores de destaque */
-  --color-accent: hsl(0, 84%, 60%); /* #ff564d */
+  --color-accent: hsl(0, 100%, 69.44%); /* #ff564d */
   --color-accent-foreground: hsl(60, 9.1%, 97.8%); /* #f7f7df */
 
   /* Cores destrutivas */
@@ -82,7 +82,7 @@
   --color-secondary-foreground: hsl(211, 100%, 99%); /* #f9fcff */
 
   /* Cores de destaque */
-  --color-accent: hsl(0, 84%, 60%); /* #ff564d */
+  --color-accent: hsl(349.65°, 100%, 69.44%); /* #ff564d */
   --color-accent-foreground: hsl(60, 9.1%, 97.8%); /* #f7f7df */
 
   /* Cores destrutivas */

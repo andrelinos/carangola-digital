@@ -3,7 +3,7 @@
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
 
-import { plansConfig } from '@/configs/plans'
+import { plansBusinessConfig } from '@/configs/plans'
 import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
@@ -31,7 +31,7 @@ export async function getProfileData(profileId: string) {
       businessPhones,
       businessAddresses,
     },
-    planConfig: plansConfig[profileData?.planActive?.type] || plansConfig.free,
+    planConfig: plansBusinessConfig[profileData?.planActive?.type] || plansBusinessConfig.free,
     planActive,
   })
 

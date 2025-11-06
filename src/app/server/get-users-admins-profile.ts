@@ -1,24 +1,31 @@
 'use server'
 
-import type { ProfileDataProps } from '@/_types/profile-data'
-
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
-export async function getUsersAdminsProfile(profileId: string) {
-  const snapshot = await db.collection('profiles').doc(profileId).get()
+export async function getUsersAdminsProfile(userId: string) {
+  const profilesRef = db.collection('profiles')
 
-  if (!snapshot.exists) {
+  const q = profilesRef.where('userId', '==', userId)
+
+  const snapshot = await q.get()
+
+  if (snapshot.empty) {
     return null
   }
 
-  const data = snapshot.data() as ProfileDataProps
+  const profilePromises = snapshot.docs.map(async doc => {
+    const data = doc.data()
 
-  const imageUrl = await getDownloadURLFromPath(data.imagePath)
+    const logoUrl = await getDownloadURLFromPath(data.logoImagePath)
 
-  const formattedData = {
-    ...data,
-    imagePath: imageUrl,
-  }
+    return {
+      id: doc.id,
+      ...data,
+      logoUrl,
+    }
+  })
 
-  return formattedData
+  const profiles = await Promise.all(profilePromises)
+
+  return profiles
 }

@@ -2,25 +2,31 @@
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import type { UserProps } from '@/_types/user'
+import { plansBusinessConfig } from '@/configs/plans-business'
 
-import { plansConfig } from '@/configs/plans'
 import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function getProfileData(
-  profileId: string
+  slug: string
 ): Promise<ProfileDataProps | null> {
-  if (!profileId) {
+  if (!slug) {
     return null
   }
 
-  const snapshot = await db.collection('profiles').doc(profileId).get()
+  const snapshot = await db
+    .collection('profiles')
+    .where('slug', '==', slug)
+    .get()
 
-  if (!snapshot.exists) {
+  if (snapshot.empty) {
     return null
   }
 
-  const profileData = snapshot.data() as ProfileDataProps
+  const profileDoc = snapshot.docs[0]
+  const profileDocId = profileDoc.id
+
+  const profileData = profileDoc.data() as ProfileDataProps
 
   const coverPath = profileData.coverImagePath || profileData.imagePath
   const logoPath = profileData.logoImagePath
@@ -39,12 +45,15 @@ export async function getProfileData(
       businessPhones,
       businessAddresses,
     },
-    planConfig: plansConfig[profileData?.planActive?.type] || plansConfig.free,
+    planConfig:
+      plansBusinessConfig[profileData?.planActive?.type] ||
+      plansBusinessConfig.free,
     planActive,
   })
 
   const formattedData: ProfileDataProps = {
     ...profileData,
+    id: profileDocId,
     coverImageUrl: coverImageUrl,
     logoImageUrl: logoImageUrl,
 
@@ -86,7 +95,7 @@ export async function getProfileId(userId?: string) {
     const snapshot = await db
       .collection('profiles')
       .where('userId', '==', userId)
-      .where('isPrimary', '==', true)
+      // .where('isPrimary', '==', true)
       .limit(1)
       .get()
 
@@ -96,6 +105,6 @@ export async function getProfileId(userId?: string) {
 
     return snapshot.docs.map(doc => doc.id)
   } catch (error) {
-    return
+    return null
   }
 }

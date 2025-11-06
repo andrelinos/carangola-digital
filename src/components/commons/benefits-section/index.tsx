@@ -4,13 +4,13 @@ import { Flash, MapPin, ProfileCircle } from 'iconoir-react'
 
 export function BenefitsSection() {
   return (
-    <section className="bg-gradient-to-br from-zinc-50 to-white py-20 ">
+    <section className="bg-white py-20 dark:bg-linear-to-br dark:from-zinc-900 dark:to-black">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 font-bold text-3xl text-gray-900 md:text-4xl">
+          <h2 className="mb-4 font-bold text-3xl md:text-4xl">
             Por que escolher o Carangola Digital?
           </h2>
-          <p className="mx-auto max-w-2xl text-gray-600 text-lg">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Ferramentas profissionais para destacar seu negócio e atrair mais
             clientes
           </p>

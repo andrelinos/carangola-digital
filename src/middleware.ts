@@ -34,5 +34,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/:path*',
+  /*
+   * Corresponde a todos os caminhos de solicitação, exceto aqueles que começam com:
+   * - api (rotas de API)
+   * - _next/static (arquivos estáticos)
+   * - _next/image (arquivos de otimização de imagem)
+   * - favicon.ico (arquivo de favicon)
+   */
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }

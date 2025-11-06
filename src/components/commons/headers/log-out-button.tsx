@@ -2,10 +2,12 @@ import { LogOut } from 'iconoir-react'
 
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
-import { auth } from '@/lib/auth'
+import { authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth/next'
 
 export async function LogInOutButton() {
-  const session = await auth()
+  const session = await getServerSession(authOptions)
+  const user = session?.user
 
   return (
     <div className="flex w-full items-center justify-end gap-2">

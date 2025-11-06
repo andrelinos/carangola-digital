@@ -1,7 +1,7 @@
-import { auth } from '@/lib/auth'
+import { getServerSession } from 'next-auth/next'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
-
+import { authOptions } from '@/lib/auth'
 import { HeaderPageContainer } from '..'
 import { LogoHeader } from '../logo-header'
 import { Menus } from './menus'
@@ -17,7 +17,8 @@ export async function HeaderProfile({
   isOwner,
   isUserAuth,
 }: Props) {
-  const session = await auth()
+  const session = await getServerSession(authOptions)
+  const user = session?.user
 
   const hasProfileLink = session?.user?.hasProfileLink || false
 

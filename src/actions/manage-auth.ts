@@ -1,15 +1,13 @@
 'use server'
 
-import { auth, signIn, signOut } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
-export async function manageAuth() {
-  const session = await auth()
+export async function manageAuth(formData: FormData) {
+  const mode = String(formData.get('mode') || 'signin')
 
-  if (!session) {
-    return await signIn('google', { redirectTo: '/criar' })
+  if (mode === 'signout') {
+    return redirect('/api/auth/signout?callbackUrl=/')
   }
 
-  return await signOut({
-    redirectTo: '/',
-  })
+  return redirect('/acesso')
 }

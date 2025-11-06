@@ -8,6 +8,16 @@ declare module 'next-auth' {
     myProfileLink?: string
     accountVerified?: boolean
     role?: 'admin' | 'user' | 'moderator'
+    planActive?: {
+      expiresAt: number | null
+      type: string
+      status: string
+      planDetails: {
+        name: string
+        period: string
+        price: number
+      }
+    }
   }
 
   interface Session {

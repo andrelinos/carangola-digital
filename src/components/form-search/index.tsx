@@ -5,10 +5,10 @@ import { useState } from 'react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Loading } from '@/components/commons/loading'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { getOperatingStatus } from '@/utils/get-status-from-day'
 import Image from 'next/image'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
 
 interface SearchProps extends ProfileDataProps {
   profileId: string
@@ -62,7 +62,7 @@ export default function SearchFormBusiness() {
             value={searchTerms}
             onChange={onChangeSearchTerms}
             placeholder="Quem você deseja encontrar?"
-            className="flex-1 rounded-lg border border-gray-300 px-6 text-xl shadow-sm"
+            className="h-14 flex-1 rounded-lg border border-gray-300 px-6 text-xl shadow-sm"
           />
           <Button
             type="submit"
@@ -82,7 +82,7 @@ export default function SearchFormBusiness() {
               {resultsSearch?.map((profile, index) => (
                 <Link
                   key={profile?.userId + String(index)}
-                  href={`/${profile.profileId}`}
+                  href={`/business/${profile.profileId}`}
                   className="group h-[300px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 py-4 font-medium text-zinc-700 transition-all duration-300 ease-in-out hover:bg-blue-100"
                   target="_blank"
                 >

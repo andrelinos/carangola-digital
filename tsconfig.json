@@ -34,7 +34,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "tailwind.config.js",
-    "src/app/[profileId]/layout.tsx_old"
+    "src/app/business/[slug]/layout.tsx_old",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

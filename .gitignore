@@ -39,3 +39,8 @@ _old
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#others
+*copy*.ts*
+copy/
+*.txt

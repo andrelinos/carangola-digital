@@ -1,4 +1,4 @@
-import type { PlanTypeProps } from '@/configs/plans'
+import type { PlanTypeProps } from '@/configs/plans-business'
 
 export type WeekDayProps =
   | 'Segunda-feira'
@@ -55,7 +55,9 @@ export type AdminsProfileProps = {
 }
 
 export type ProfileDataProps = {
+  id?: string
   userId: string
+  slug: string
   totalVisits: number
   createdAt: number
   name: string

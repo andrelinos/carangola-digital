@@ -1,3 +1,5 @@
+'use client'
+
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 import NextLink from 'next/link'
@@ -7,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 const linkVariants = cva(
   // 'whitespace-nowrap rounded-lg p-3 text-center font-bold text-zinc-700 hover:opacity-95 disabled:opacity-70',
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -20,10 +22,11 @@ const linkVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         tertiary: 'font-semibold underline-offset-4 hover:brightness-95',
+        scale: 'font-normal hover:scale-115',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         footer:
-          'justify-start text-left font-normal text-white transition-all duration-300 ease-in-out hover:cursor-pointer hover:underline hover:underline-offset-4',
+          'justify-center text-center font-normal text-white transition-all duration-300 ease-in-out hover:cursor-pointer hover:underline hover:underline-offset-4',
       },
       size: {
         default: 'h-10 px-4 py-2',

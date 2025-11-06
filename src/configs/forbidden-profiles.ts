@@ -49,12 +49,15 @@ export const forbiddenProfiles = [
   'blog',
 
   // Outros caminhos específicos que você quer reservar
+  'anuncios',
+  'servicos',
   'feed',
   'search',
   'explore',
   'notification',
   'notifications',
   'messages',
+  'imoveis',
   'inbox',
   'checkout',
   'cart',

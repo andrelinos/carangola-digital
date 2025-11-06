@@ -1,20 +1,19 @@
 import 'server-only'
 
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+import { authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth/next'
 
 export async function verifyAdmin() {
   try {
-    const session = await auth()
+    const session = await getServerSession(authOptions)
+    const user = session?.user
 
-    if (!session || session?.user?.email !== 'andrelinodev@gmail.com') {
-      throw new Error(
-        'Acesso negado. Apenas administradores podem executar esta ação.'
-      )
+    if (!user || session?.user?.email !== 'andrelinodev@gmail.com') {
+      throw Error
     }
 
-    return session
+    return !!session // true
   } catch (error) {
-    redirect('/')
+    return false
   }
 }
