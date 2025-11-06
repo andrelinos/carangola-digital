@@ -14,7 +14,7 @@ const mockListings = [
     title: 'André Assistência Técnica',
     tags: ['Assistência Técnica', 'Serviços'],
     imageUrl:
-      'http://localhost:3000/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcarangola-digital.firebasestorage.app%2Fprofiles-images%2Fandrelino%2Flogo-images%2Ff72be423-d2e7-4ec6-b049-9d3d20379dc4%3FGoogleAccessId%3Dfirebase-adminsdk-fbsvc%2540carangola-digital.iam.gserviceaccount.com%26Expires%3D16725236400%26Signature%3DVsxW8vXfBgzMtcl4%252Bg0Co%252BFliXBITiJQMIajqsJIjlbmuS1Q%252F0ciXHgUjB8QmZwLkR%252Bqe61tVQPdtb%252Ff4P5D0v0fRW5LcFnROd98U5FTIQkR4TsgeiTc%252BOd%252BBDkja6N2w1S1%252FYesctcasqAANhrlv58YHG%252FXwRCoHA1ZUNfNg2x1AANpAI29i1INkXyFpGanQXlTbglF%252FKoRkGlU33qLdacUUc3KKYdLPW%252FlVkns1cV2wvK3gU0NQvYdCMQiqdSvsrnbOZygP9fPxqEf5E9sdZoa1SAxjYFt7FUI6qHLDe3zETCHcetl45Tc7Ky%252BUhBE2VMaCRlxCUqcNmmrj8b5Wg%253D%253D&w=1080&q=75',
+      'https://carangoladigital.com.br/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcarangola-digital.firebasestorage.app%2Fprofiles-images%2Fandrelino%2Flogo-images%2Ff72be423-d2e7-4ec6-b049-9d3d20379dc4%3FGoogleAccessId%3Dfirebase-adminsdk-fbsvc%2540carangola-digital.iam.gserviceaccount.com%26Expires%3D16725225600%26Signature%3DCgYQfHcESHAVIqIrwD38SOXC8w3TNyTTD9MWQx%252FZmS8A7vDbd297T%252B4rju3JthAqmH3sy0jhjONzL4u%252F3kXHdOQ1c2xWFYxSxF63DmNjYbDY17gsrQaApK1QWmC%252Bf%252FGxSsnLRE7OO7TrcaRTkUtdVOrKhA%252F2ffX%252BOIRh%252FGDCMQgSgBPdCSQ3M21%252B1A7l%252Fv%252ByJfLbxRslmpWXT%252BCVFD1%252FuxFSKrnkKs8546P977lGdjnl3bCdF%252Byuj6XuD3c%252BLhZGdZk5t3cVUwtK7nZfWXkBi5CCtwwVncqC7PEC%252F%252B9rqfRMHaeOJDldS9Q2L4v5RVIc2ZiJcVTs2v4PLIsAsWBUQQ%253D%253D&w=1920&q=75',
     href: '/business/andrelino',
     listingType: '',
     price: 0,
