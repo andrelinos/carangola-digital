@@ -1,4 +1,3 @@
-import type { PropertyProps } from '@/_types/property'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 import { type NextRequest, NextResponse } from 'next/server'
 
@@ -50,6 +49,7 @@ export async function POST(req: NextRequest) {
           data.address?.street || data.address?.neighborhood || null
 
         return {
+          ...data,
           id: doc.id,
           title: data.title || 'Título não informado',
           mainImageUrl: imageUrl,

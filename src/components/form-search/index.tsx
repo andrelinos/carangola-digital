@@ -111,6 +111,7 @@ export default function SearchFormBusiness() {
                         className="absolute z-0 size-full object-cover object-center opacity-90 blur-md"
                         alt={profile?.name || ''}
                         quality={10}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         fill
                         unoptimized
                         priority

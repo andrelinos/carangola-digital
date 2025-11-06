@@ -6,6 +6,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 import { slugify } from '@/utils/generate-slug'
+import { revalidatePath } from 'next/cache'
 
 export async function createNewProperty(formData: FormData) {
   const session = await getServerSession(authOptions)
@@ -76,6 +77,10 @@ export async function createNewProperty(formData: FormData) {
     await docRef.update({
       id: docRef.id,
     })
+
+    revalidatePath(`/imoveis/${slug}`)
+    revalidatePath('/imoveis')
+
     return { success: true, message: 'Propriedade criada com sucesso!' }
   } catch (error) {
     console.error('Erro ao criar propriedade:', error)

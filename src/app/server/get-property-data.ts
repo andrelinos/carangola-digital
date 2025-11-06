@@ -23,8 +23,6 @@ export async function getPropertyData(
     return null
   }
 
-  console.log('SLUG', slug)
-
   const snapshot = await db
     .collectionGroup('user_properties')
     .where('slug', '==', slug)
@@ -38,15 +36,16 @@ export async function getPropertyData(
 
   const propertyDoc = snapshot.docs[0]
   const propertyData = propertyDoc.data() as PropertyProps
-
-  const userDocRef = propertyDoc.ref.parent.parent
   const docPath = propertyDoc.ref.path
 
-  if (!userDocRef) {
+  const ownerId = propertyData.ownerId
+
+  if (!ownerId) {
     console.warn('Impossível encontrar o usuário pai para o imóvel:', slug)
     return null
   }
 
+  const userDocRef = db.collection('users').doc(ownerId)
   const userSnapshot = await userDocRef.get()
 
   if (!userSnapshot?.exists) {

@@ -65,17 +65,18 @@ export async function BusinessHero({
           className="object-cover shadow-md"
           fill
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-black/10" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-black/10" />
       </div>
 
       <div className="-mt-20 container px-4">
         <div className="relative rounded-2xl bg-background/80 p-6 shadow-lg">
           <div className="flex flex-col items-center gap-4 border-slate-200 border-b pb-6 text-center sm:flex-row sm:text-left">
-            <div className="relative h-28 w-28 flex-shrink-0">
+            <div className="relative h-28 w-28 shrink-0">
               <SafeImage
                 src={profileData?.logoImageUrl || '/default-image.png'}
                 alt={`Banner de ${profileData?.name}`}
-                className="rounded-full border-4 border-white object-cover shadow-md"
+                className="size-full rounded-full border-4 border-white object-cover shadow-md"
+                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
               />
             </div>

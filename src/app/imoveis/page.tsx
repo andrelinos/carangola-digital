@@ -37,7 +37,6 @@ const latestPublicProperties = await getLatestPublicProperties()
 
 export default async function PropertiesPage() {
   const session = await getServerSession(authOptions)
-  const user = session?.user
 
   trackServerEvent('page_view', {
     page: 'properties',

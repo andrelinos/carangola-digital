@@ -27,6 +27,7 @@ export function SafeImage({
       onError={() => {
         setImgSrc(fallbackSrc)
       }}
+      priority
     />
   )
 }

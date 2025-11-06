@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
 import Image from 'next/image'
 
-// Usa o mesmo tipo da action
 interface SearchProps extends PropertyProps {}
 
 export default function SearchFormProperties() {
@@ -39,7 +38,7 @@ export default function SearchFormProperties() {
         body: formData,
       })
 
-      const json = await response.json()
+      const json = await response?.json()
       setResultsSearch(json.data || [])
     } catch (error) {
       console.error('Erro na busca de imóveis:', error)
@@ -82,8 +81,8 @@ export default function SearchFormProperties() {
               {resultsSearch?.map(property => (
                 <Link
                   key={property.id}
-                  href={`/imoveis/${property.id}`} // Rota de detalhe
-                  className="group h-[320px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 pb-4 font-medium text-zinc-700 shadow-md transition-all duration-300 ease-in-out hover:bg-blue-100"
+                  href={`/imoveis/${property.slug}`} // Rota de detalhe
+                  className="group h-80 w-[332px] overflow-hidden rounded-lg bg-zinc-50 pb-4 font-medium text-zinc-700 shadow-md transition-all duration-300 ease-in-out hover:bg-blue-100"
                   target="_blank"
                 >
                   <div className="flex h-full w-full flex-col gap-2">

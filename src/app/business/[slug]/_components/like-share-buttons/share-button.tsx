@@ -8,7 +8,7 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-import { Copy, ShareAndroid } from 'iconoir-react'
+import { Check, Copy, ShareAndroid } from 'iconoir-react'
 import { useState } from 'react'
 
 import { FooterEditModal } from '@/components/commons/footer-edit-modal'
@@ -19,15 +19,44 @@ export function ShareButton() {
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const [isCopied, setIsCopied] = useState(false)
+
   function handleOpenModal() {
     setIsOpen(!isOpen)
   }
 
   function onClose() {
     setIsOpen(false)
+
+    setIsCopied(false)
   }
 
-  const shareUrl = `https://carangoladigital.com.br/${path}`
+  const shareUrl = `https://carangoladigital.com.br${path}`
+
+  function handleCopy() {
+    const textArea = document.createElement('textarea')
+    textArea.value = shareUrl
+    textArea.style.position = 'fixed'
+    textArea.style.top = '0'
+    textArea.style.left = '0'
+    textArea.style.opacity = '0'
+
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+
+      setIsCopied(true)
+
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error('Falha ao copiar o texto: ', err)
+    }
+
+    document.body.removeChild(textArea)
+  }
 
   return (
     <div className="flex items-center gap-1">
@@ -55,11 +84,19 @@ export function ShareButton() {
             <WhatsappShareButton url={shareUrl} className="">
               <WhatsappIcon size={44} round />
             </WhatsappShareButton>
+
             <button
               type="button"
-              className="flex size-11 items-center justify-center rounded-full bg-orange-500 text-white transition-colors duration-300 hover:cursor-pointer"
+              onClick={handleCopy}
+              className={`flex size-11 items-center justify-center rounded-full text-white transition-colors duration-300 hover:cursor-pointer ${
+                isCopied ? 'bg-green-500' : 'bg-orange-500'
+              }`}
             >
-              <Copy className="size-8" />
+              {isCopied ? (
+                <Check className="size-8" />
+              ) : (
+                <Copy className="size-8" />
+              )}
             </button>
           </div>
         </div>
