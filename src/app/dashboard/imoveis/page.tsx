@@ -1,5 +1,3 @@
-'use server'
-
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 
@@ -11,8 +9,8 @@ export default async function PropertiesPage() {
   const session = await getServerSession(authOptions)
   const user = session?.user
 
-  if (!user?.id) {
-    redirect('/')
+  if (!user) {
+    redirect('/acesso')
   }
 
   const userId = user.id

@@ -80,9 +80,9 @@ export function DashboardSidebar() {
             {isSuper && (
               <>
                 <Link
-                  href="/dashboard/perfis"
+                  href="/dashboard/business"
                   className={`justify-start ${baseClasses} ${
-                    pathname.startsWith('/dashboard/perfis')
+                    pathname.startsWith('/dashboard/business')
                       ? activeClasses
                       : inactiveClasses
                   }`}

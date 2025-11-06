@@ -5,6 +5,7 @@ import { trackServerEvent } from '@/lib/mixpanel'
 
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
+import { redirect } from 'next/navigation'
 import { CreateLinkForm } from './create-link-form'
 
 export const metadata: Metadata = {
@@ -13,16 +14,19 @@ export const metadata: Metadata = {
 }
 
 export default async function CreatePage() {
-  const session = await getServerSession(authOptions)
-  const user = session?.user
-
   trackServerEvent('create_page', {
     page: 'create',
   })
 
+  const session = await getServerSession(authOptions)
+  const user = session?.user
+
+  if (!user) {
+    redirect('/acesso')
+  }
+
   return (
     <div>
-      {/* <Header /> */}
       <div className="mx-auto flex h-screen max-w-xl flex-col items-center justify-center gap-4">
         <div className="flex items-center gap-4">
           <h1 className="font-bold text-4xl ">Escolha seu link</h1>

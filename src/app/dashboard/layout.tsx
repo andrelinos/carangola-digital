@@ -1,4 +1,7 @@
+import { authOptions } from '@/lib/auth'
 import type { Metadata } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { redirect } from 'next/navigation'
 import { DashboardSidebar } from './_components/dashboard-sidebar'
 
 export const metadata: Metadata = {
@@ -9,11 +12,18 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await getServerSession(authOptions)
+  const user = session?.user
+
+  if (!user) {
+    redirect('/acesso')
+  }
+
   return (
     <div className="flex w-full bg-background font-sans text-foreground antialiased">
       <DashboardSidebar />
