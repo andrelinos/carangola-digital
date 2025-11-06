@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -8,14 +9,13 @@ import {
 } from 'react-share'
 
 import { Copy, ShareAndroid } from 'iconoir-react'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { FooterEditModal } from '@/components/commons/footer-edit-modal'
 import { Modal } from '@/components/ui/custom-modal'
 
 export function ShareButton() {
-  const profileId = useParams().profileId as string
+  const path = usePathname()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -27,7 +27,7 @@ export function ShareButton() {
     setIsOpen(false)
   }
 
-  const shareUrl = `https://carangoladigital.com.br/${profileId}`
+  const shareUrl = `https://carangoladigital.com.br/${path}`
 
   return (
     <div className="flex items-center gap-1">
