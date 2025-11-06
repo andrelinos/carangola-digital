@@ -18,6 +18,7 @@ export default async function ProfilesPage() {
 
   if (isAdmin) {
     const profiles = await getAllProfiles()
+
     const profilesAdmins = await getUsersAdminsProfile(userId)
     return (
       <>

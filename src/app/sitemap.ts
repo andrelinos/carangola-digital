@@ -14,13 +14,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const properties = await getAllPropertiesData()
 
   const allowedProfiles = profiles?.filter(profile => {
-    const profileIdNormalized = profile.profileId.toLowerCase()
+    const profileIdNormalized = profile.slug
     return !forbiddenProfiles.includes(profileIdNormalized)
   })
 
   const dynamicProfilesEntries: MetadataRoute.Sitemap[number][] =
     allowedProfiles?.map(profile => ({
-      url: `${siteUrl}/business/${profile.profileId}`,
+      url: `${siteUrl}/business/${profile.slug}`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 1,
@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dynamicPropertiesEntries: MetadataRoute.Sitemap[number][] =
     properties?.map(property => ({
-      url: `${siteUrl}/imoveis/${property.id}`,
+      url: `${siteUrl}/imoveis/${property.slug}`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 1,

@@ -90,18 +90,16 @@ export function FormManage({ session, profiles }: Props) {
     <div className="flex min-h-[600px] flex-col items-center overflow-y-auto">
       <h1 className="my-8 font-bold text-3xl">Negócios cadastrados</h1>
       <section className="mb-8 flex w-full flex-col gap-6 rounded">
-        {listProfiles?.length && listProfiles?.length >= 5 && (
-          <div className="flex-1">
-            <Label htmlFor="search">Pesquisar</Label>
-            <Input
-              id="search"
-              type="search"
-              className="h-10"
-              value={searchTerms}
-              onChange={e => setSearchTerms(e.target.value)}
-            />
-          </div>
-        )}
+        <div className="flex-1">
+          <Label htmlFor="search">Pesquisar</Label>
+          <Input
+            id="search"
+            type="search"
+            className="h-10"
+            value={searchTerms}
+            onChange={e => setSearchTerms(e.target.value)}
+          />
+        </div>
 
         <div className="flex flex-col gap-6">
           {listProfiles?.map((profile, index) => (
@@ -120,7 +118,7 @@ export function FormManage({ session, profiles }: Props) {
                 />
                 <label htmlFor={profile?.id} className="flex flex-1 flex-col">
                   <p>
-                    <strong>Link do perfil</strong>:{' '}
+                    <strong>Perfil</strong>:{' '}
                     <Link
                       href={`/business/${profile?.slug}` || '#'}
                       target="_blank"
@@ -129,7 +127,10 @@ export function FormManage({ session, profiles }: Props) {
                     </Link>
                   </p>
                   <p>
-                    <strong>ID</strong>: {profile.userId}
+                    <strong>ID</strong>: {profile.id}
+                  </p>
+                  <p>
+                    <strong>Dono</strong>: {profile.userId}
                   </p>
                   <p>
                     <strong>Plano</strong>:{' '}

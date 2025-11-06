@@ -129,9 +129,10 @@ export function AllProfilesTable({
           <Table className="w-full rounded-md border">
             <TableHeader>
               <TableRow>
-                <TableHead>Link (ID)</TableHead>
+                <TableHead>Slug</TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>Dono (User ID)</TableHead>
+                <TableHead>Dono</TableHead>
+                <TableHead>Perfil</TableHead>
                 <TableHead>Data de Criação</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
               </TableRow>
@@ -146,6 +147,7 @@ export function AllProfilesTable({
                   </TableCell>
                   <TableCell>{profile.name}</TableCell>
                   <TableCell>{profile.userId}</TableCell>
+                  <TableCell>{profile.id}</TableCell>
                   <TableCell>
                     {new Date(profile.createdAt).toLocaleDateString()}
                   </TableCell>

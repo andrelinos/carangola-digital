@@ -82,7 +82,7 @@ export default function SearchFormBusiness() {
               {resultsSearch?.map((profile, index) => (
                 <Link
                   key={profile?.userId + String(index)}
-                  href={`/business/${profile.profileId}`}
+                  href={`/business/${profile.slug}`}
                   className="group h-[300px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 py-4 font-medium text-zinc-700 transition-all duration-300 ease-in-out hover:bg-blue-100"
                   target="_blank"
                 >
