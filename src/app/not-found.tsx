@@ -2,22 +2,18 @@ import { Compass } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NotFound() {
-  const themeColor = 'indigo'
-
   return (
     // Container principal centralizado com um fundo 'slate' suave
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-slate-100 px-4 py-12 font-sans dark:bg-slate-900">
       <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-lg transition-colors duration-300 md:p-12 dark:border-slate-700 dark:bg-slate-800">
         {/* Ícone: Compass (Bússola) - mais semântico para "perdido" */}
         <Compass
-          className={`mx-auto h-16 w-16 text-${themeColor}-600 dark:text-${themeColor}-400`}
+          className="mx-auto h-16 w-16 text-indigo-600 dark:text-indigo-400"
           strokeWidth={1.5}
         />
 
         {/* O '404' com gradiente elegante */}
-        <h1
-          className={`mt-6 bg-linear-to-r from-${themeColor}-500 to-blue-500 bg-clip-text font-black text-9xl text-transparent`}
-        >
+        <h1 className="mt-6 bg-linear-to-r from-indigo-500 to-blue-500 bg-clip-text font-black text-9xl text-transparent">
           404
         </h1>
 
@@ -41,7 +37,7 @@ export default function NotFound() {
           {/* Ação Primária: Voltar à Home */}
           <Link
             href="/"
-            className={`inline-block rounded-lg bg-${themeColor}-600 hover:-translate-y-0.5 px-6 py-3 font-medium text-lg text-white shadow-md transition-all duration-200 hover:bg-${themeColor}-700 focus:outline-none focus:ring-2 focus:ring-${themeColor}-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800`}
+            className="hover:-translate-y-0.5 inline-block rounded-lg bg-${themeColor}-600 px-6 py-3 font-medium text-lg text-white shadow-md transition-all duration-200 hover:bg-${themeColor}-700 focus:outline-none focus:ring-${themeColor}-500 focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
           >
             Página Inicial
           </Link>
@@ -49,7 +45,7 @@ export default function NotFound() {
           {/* Ação Secundária 1 */}
           <Link
             href="/business"
-            className={`inline-block rounded-lg border border-${themeColor}-300 px-6 py-3 font-medium text-lg text-${themeColor}-700 hover:-translate-y-0.5 transition-all duration-200 hover:bg-${themeColor}-50 dark:border-${themeColor}-700 dark:text-${themeColor}-300 focus:outline-none focus:ring-2 dark:hover:bg-slate-700 focus:ring-${themeColor}-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800`}
+            className="hover:-translate-y-0.5 inline-block rounded-lg border border-${themeColor}-300 px-6 py-3 font-medium text-${themeColor}-700 text-lg transition-all duration-200 hover:bg-${themeColor}-50 focus:outline-none focus:ring-${themeColor}-500 focus:ring-2 focus:ring-offset-2 dark:border-${themeColor}-700 dark:text-${themeColor}-300 dark:focus:ring-offset-slate-800 dark:hover:bg-slate-700"
           >
             Estabelecimentos
           </Link>
