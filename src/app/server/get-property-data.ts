@@ -10,83 +10,86 @@ import {
   type PlanTypeProps,
   plansRealEstateConfig,
 } from '@/configs/plans-real-estate'
+import { cache } from 'react'
 
 export type PropertyDataWithConfig = {
   property: PropertyProps
   config: PlanConfigProps
 }
 
-export async function getPropertyData(
-  slug: string
-): Promise<PropertyProps | null> {
-  if (!slug) {
-    return null
+export const getPropertyData = cache(
+  async (slug: string): Promise<PropertyProps | null> => {
+    if (!slug) {
+      return null
+    }
+
+    const snapshot = await db
+      .collectionGroup('user_properties')
+      .where('slug', '==', slug)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get()
+
+    if (snapshot.empty) {
+      return null
+    }
+
+    const propertyDoc = snapshot.docs[0]
+    const propertyData = propertyDoc.data() as PropertyProps
+    const docPath = propertyDoc.ref.path
+
+    const ownerId = propertyData.ownerId
+
+    if (!ownerId) {
+      console.warn('Impossível encontrar o usuário pai para o imóvel:', slug)
+      return null
+    }
+
+    const userDocRef = db.collection('users').doc(ownerId)
+    const userSnapshot = await userDocRef.get()
+
+    if (!userSnapshot?.exists) {
+      console.error('O documento do usuário proprietário não existe.')
+      return null
+    }
+
+    const userData = userSnapshot.data() as UserProps
+
+    const userPlan = (userData?.plan || 'free') as PlanTypeProps
+
+    const planConfig: PlanConfigProps =
+      plansRealEstateConfig[userPlan] || plansRealEstateConfig.free
+
+    const imagePaths: (string | undefined)[] = Array.isArray(
+      propertyData.images
+    )
+      ? propertyData.images.map(img =>
+          typeof img === 'string' ? img : (img as PropertyImage)?.path
+        )
+      : []
+
+    const validPaths = imagePaths.filter((p): p is string => Boolean(p))
+
+    const tempImages = await Promise.all(
+      validPaths.map(async path => {
+        const url = await getDownloadURLFromPath(path)
+        return url ? { path, url } : null
+      })
+    )
+    const images: PropertyImage[] = tempImages.filter(
+      (img): img is PropertyImage => img !== null
+    )
+
+    const formattedData: PropertyProps = {
+      ...propertyData,
+      images,
+      planConfig,
+      docPath,
+    }
+
+    return formattedData
   }
-
-  const snapshot = await db
-    .collectionGroup('user_properties')
-    .where('slug', '==', slug)
-    .orderBy('createdAt', 'desc')
-    .limit(1)
-    .get()
-
-  if (snapshot.empty) {
-    return null
-  }
-
-  const propertyDoc = snapshot.docs[0]
-  const propertyData = propertyDoc.data() as PropertyProps
-  const docPath = propertyDoc.ref.path
-
-  const ownerId = propertyData.ownerId
-
-  if (!ownerId) {
-    console.warn('Impossível encontrar o usuário pai para o imóvel:', slug)
-    return null
-  }
-
-  const userDocRef = db.collection('users').doc(ownerId)
-  const userSnapshot = await userDocRef.get()
-
-  if (!userSnapshot?.exists) {
-    console.error('O documento do usuário proprietário não existe.')
-    return null
-  }
-
-  const userData = userSnapshot.data() as UserProps
-
-  const userPlan = (userData?.plan || 'free') as PlanTypeProps
-
-  const planConfig: PlanConfigProps =
-    plansRealEstateConfig[userPlan] || plansRealEstateConfig.free
-
-  const imagePaths: (string | undefined)[] = Array.isArray(propertyData.images)
-    ? propertyData.images.map(img =>
-        typeof img === 'string' ? img : (img as PropertyImage)?.path
-      )
-    : []
-
-  const validPaths = imagePaths.filter((p): p is string => Boolean(p))
-
-  const tempImages = await Promise.all(
-    validPaths.map(async path => {
-      const url = await getDownloadURLFromPath(path)
-      return url ? { path, url } : null
-    })
-  )
-  const images: PropertyImage[] = tempImages.filter(
-    (img): img is PropertyImage => img !== null
-  )
-
-  const formattedData: PropertyProps = {
-    ...propertyData,
-    images,
-    planConfig,
-    docPath,
-  }
-
-  return formattedData
-}
+)
 
 export async function getUsersData(userId: string) {
   if (!userId) {

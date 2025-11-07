@@ -7,6 +7,7 @@ import { authOptions } from '@/lib/auth'
 
 import { PropertyDescription } from './_components/property-description'
 
+import type { Metadata } from 'next'
 import {
   PropertyAction,
   PropertyAddress,
@@ -19,6 +20,40 @@ import {
 } from './_components'
 import { PropertyImageGallery } from './_components/property-image-gallery'
 import { ContentProperty } from './content'
+
+interface Props {
+  params: Promise<{
+    slug: string
+  }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const profileData = await getPropertyData(slug)
+
+  if (!profileData) {
+    return {
+      title: 'Perfil não encontrado | Carangola Digital',
+      description:
+        'O perfil que você está procurando não existe ou foi movido.',
+    }
+  }
+
+  const propertyTitle = profileData.title || 'Perfil'
+
+  return {
+    title: `${propertyTitle} | Carangola Digital`,
+    description:
+      profileData.description ||
+      'Carangola Digital é uma plataforma para divulgar negócios locais.',
+
+    openGraph: {
+      title: `${propertyTitle} | Carangola Digital`,
+      description: profileData.description,
+      images: [profileData?.images[0]?.url || ''],
+    },
+  }
+}
 
 export default async function PropertyDetailPage({
   params,
