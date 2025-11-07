@@ -48,10 +48,10 @@ export function EditBusinessAddresses({ data }: Props) {
     ]
   )
 
-  const [addressFromMap, setAddressFromMap] = useState({
-    address: '',
-    postcode: '',
-  })
+  // const [addressFromMap, setAddressFromMap] = useState({
+  //   address: '',
+  //   postcode: '',
+  // })
 
   function handleOpenModal() {
     setIsOpen(!isOpen)
@@ -140,30 +140,61 @@ export function EditBusinessAddresses({ data }: Props) {
     latlng: [number, number],
     index: number
   ) => {
-    if (typeof setAddressFromMap !== 'function') return
-
     setIsGettingAddress(true)
+    let apiAddress = ''
+    let apiCep = ''
+
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?lat=${latlng[0]}&lon=${latlng[1]}&format=json`
       )
-      const data = await response.json()
 
-      if (data?.address) {
-        setFormValues(prevState => {
-          if (!prevState) return prevState
-          const updatedAddresses = [...prevState]
-          updatedAddresses[index] = {
-            ...updatedAddresses[index],
-            address: data.address.road,
-            cep: data.address.postcode,
-          }
-          return updatedAddresses
-        })
+      if (response.ok) {
+        const data = await response.json()
+
+        if (data) {
+          apiAddress = data.address.road ?? ''
+          apiCep = data.address.postcode ?? ''
+        }
+        //   if (data?.address) {
+        //     setFormValues(prevState => {
+        //       if (!prevState) return prevState
+        //       const updatedAddresses = [...prevState]
+        //       updatedAddresses[index] = {
+        //         ...updatedAddresses[index],
+        //         address: data.address.road ?? '',
+        //         cep: data.address.postcode ?? '',
+        //       }
+        //       return updatedAddresses
+        //     })
+        //   }
+        // }
+        // return true
       }
     } catch {
-      console.error('Failed to fetch address')
+      return true
     } finally {
+      setFormValues(prevState => {
+        if (!prevState) return prevState
+        const updatedAddresses = [...prevState]
+        const currentData = updatedAddresses[index]
+
+        updatedAddresses[index] = {
+          ...currentData,
+          // 1. Atualiza as coordenadas
+          latitude: latlng[0],
+          longitude: latlng[1],
+
+          // 2. A LÓGICA QUE VOCÊ PEDIU:
+          // Se 'currentData.address' tiver valor ("truthy"), use-o.
+          // Senão (se for ''), use o 'apiAddress'.
+          address: currentData.address || apiAddress,
+
+          // O mesmo para o CEP
+          cep: currentData.cep || apiCep,
+        }
+        return updatedAddresses
+      })
       setIsGettingAddress(false)
     }
   }
@@ -211,7 +242,7 @@ export function EditBusinessAddresses({ data }: Props) {
                           variant="ghost"
                           title="Endereço"
                           placeholder="Rua Pedro de Oliveira, 9999"
-                          value={item.address}
+                          value={item?.address ?? ''}
                           onChange={e => handleChange(e, index, 'address')}
                         />
                         <div className="flex gap-4">
@@ -220,7 +251,7 @@ export function EditBusinessAddresses({ data }: Props) {
                             variant="ghost"
                             title="Bairro"
                             placeholder="Centro"
-                            value={item.neighborhood}
+                            value={item?.neighborhood ?? ''}
                             onChange={e =>
                               handleChange(e, index, 'neighborhood')
                             }
@@ -231,7 +262,7 @@ export function EditBusinessAddresses({ data }: Props) {
                               variant="ghost"
                               title="cep"
                               placeholder="36800-000"
-                              value={item.cep}
+                              value={item?.cep ?? ''}
                               onChange={e => handleChange(e, index, 'cep')}
                             />
                           </div>
@@ -244,7 +275,7 @@ export function EditBusinessAddresses({ data }: Props) {
                           variant="ghost"
                           title="Latitude"
                           placeholder="-20.73370461095738"
-                          value={item.latitude}
+                          value={item?.latitude ?? ''}
                           onChange={e => handleChange(e, index, 'latitude')}
                         />
                         <Input
@@ -253,7 +284,7 @@ export function EditBusinessAddresses({ data }: Props) {
                           variant="ghost"
                           title="Longitude"
                           placeholder="-42.0299412669833"
-                          value={item.longitude}
+                          value={item?.longitude ?? ''}
                           onChange={e => handleChange(e, index, 'longitude')}
                         />
                       </div>
@@ -263,18 +294,18 @@ export function EditBusinessAddresses({ data }: Props) {
                         setCoordinates={(newCoords: [number, number]) => {
                           handleGetAddressFromCoords(newCoords, index)
 
-                          setFormValues(prevState => {
-                            if (!prevState) return prevState
-                            const updatedAddresses = [...prevState]
-                            updatedAddresses[index] = {
-                              ...updatedAddresses[index],
-                              latitude: newCoords[0],
-                              longitude: newCoords[1],
-                              address: addressFromMap.address,
-                              cep: addressFromMap.postcode,
-                            }
-                            return updatedAddresses
-                          })
+                          // setFormValues(prevState => {
+                          //   if (!prevState) return prevState
+                          //   const updatedAddresses = [...prevState]
+                          //   updatedAddresses[index] = {
+                          //     ...updatedAddresses[index],
+                          //     latitude: newCoords[0],
+                          //     longitude: newCoords[1],
+                          //     address: addressFromMap.address,
+                          //     cep: addressFromMap.postcode,
+                          //   }
+                          //   return updatedAddresses
+                          // })
                         }}
                       />
                     </div>

@@ -1,5 +1,3 @@
-'use client'
-
 export * from './property-action'
 export * from './property-description'
 export * from './property-details'
