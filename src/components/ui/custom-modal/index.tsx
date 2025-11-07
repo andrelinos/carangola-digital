@@ -24,8 +24,6 @@ export function Modal({
 }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null)
 
-  // useOnClickOutside(ref, () => setIsOpen(false))
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       setIsOpen(false)

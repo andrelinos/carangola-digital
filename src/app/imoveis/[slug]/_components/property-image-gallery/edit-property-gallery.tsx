@@ -1,5 +1,7 @@
 'use client'
 
+import 'react-image-crop/dist/ReactCrop.css'
+
 import clsx from 'clsx'
 import { Camera, Trash2 } from 'lucide-react'
 import Image from 'next/image'
@@ -18,12 +20,11 @@ import ReactCrop, {
   centerCrop,
   makeAspectCrop,
 } from 'react-image-crop'
-import 'react-image-crop/dist/ReactCrop.css'
 import { toast } from 'sonner'
 
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
-import { Button } from '@/components/ui/button/index'
+import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
 
 import type { PropertyProps } from '@/_types/property'
@@ -264,8 +265,12 @@ export function EditPropertyGallery({
     propertyData?.planConfig ?? ({} as PropertyProps['planConfig'])
 
   const onClose = () => {
-    for (const img of newImages) {
-      URL.revokeObjectURL(img.previewUrl)
+    try {
+      for (const img of newImages) {
+        URL.revokeObjectURL(img.previewUrl)
+      }
+    } catch (error) {
+      console.log('Erro ao recarregar imagem...')
     }
     setNewImages([])
     setIsOpen(false)
@@ -316,15 +321,15 @@ export function EditPropertyGallery({
       }
 
       toast.success('Galeria atualizada com sucesso!')
-      startTransition(() => {
-        router.refresh()
-        onClose()
-      })
     } catch (error) {
       toast.error('Erro ao salvar galeria.')
       console.error(error)
     } finally {
       setIsSubmitting(false)
+      startTransition(async () => {
+        await router.refresh()
+        onClose()
+      })
     }
   }
 

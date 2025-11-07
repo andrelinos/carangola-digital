@@ -164,12 +164,12 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
             <div className="space-y-2">
               <Label htmlFor="price">Valor (R$)</Label>
               <Input
-                type="value"
+                type="number"
                 id="price"
                 name="price"
                 value={newProperty.price}
                 onChange={handleFormChange}
-                placeholder="Ex: R$ R$ 35.000"
+                placeholder="Ex: 35000"
                 required
               />
             </div>

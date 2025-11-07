@@ -22,7 +22,6 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [termsToSearch, setTermsToSearch] = useState('')
 
-  // 2. Adicionar estados para o modal de exclusão
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [propertyToDelete, setPropertyToDelete] =
@@ -35,8 +34,6 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const handleEdit = (id: string) => {
     router.push(`/imoveis/${id}/editar`)
   }
-
-  // 3. Criar as funções de controle do modal de exclusão
 
   /**
    * Abre o modal de confirmação de exclusão
@@ -59,31 +56,26 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
   const handleConfirmDelete = async () => {
     if (propertyToDelete) {
-      setIsDeleting(true) // Ativa o loading
+      setIsDeleting(true)
 
       try {
-        // 4. Chame a server action
         const result = await deleteProperty({
           propertyId: propertyToDelete.id,
         })
 
         if (result.success) {
-          // 5. Se tiver sucesso, atualize o estado da UI
           setProperties(prevProperties =>
             prevProperties.filter(p => p.id !== propertyToDelete.id)
           )
-          // (Opcional) Adicione uma notificação "toast" de sucesso aqui
 
-          handleCloseDeleteModal() // Fecha o modal
+          handleCloseDeleteModal()
         } else {
-          // (Opcional) Adicione uma notificação "toast" de erro aqui
           console.error(result.error)
         }
       } catch (error) {
-        // (Opcional) Adicione uma notificação "toast" de erro aqui
         console.error('Falha ao tentar excluir:', error)
       } finally {
-        setIsDeleting(false) // Desativa o loading
+        setIsDeleting(false)
       }
     }
   }
@@ -112,7 +104,6 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   }, [data, termsToSearch])
 
   const getStatusColor = (status: string) => {
-    // ... (código sem alteração)
     switch (status) {
       case 'Disponível':
         return 'bg-green-100 text-green-800'
@@ -129,7 +120,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
     <>
       <div className="mx-auto my-8 px-4 pt-8 md:pt-0">
         <div className="mb-8 flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex flex-wrap">
+          <div className="flex flex-1 flex-wrap">
             <h1 className="flex items-center gap-3 font-bold text-3xl">
               <Home className="h-8 w-8" />
               Seus Imóveis
@@ -141,7 +132,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
           <Button
             variant="ghost"
             onClick={handleNew}
-            className="flex w-full items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 hover:text-white hover:shadow-lg"
+            className="flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 hover:text-white hover:shadow-lg"
           >
             <Plus className="h-5 w-5" />
             Novo Imóvel

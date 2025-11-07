@@ -12,12 +12,12 @@ import {
   PropertyAddress,
   PropertyDetails,
   PropertyFeatures,
-  PropertyImageGallery,
   PropertyInfo,
   PropertyPrice,
   PropertyStatus,
   PropertyTitle,
 } from './_components'
+import { PropertyImageGallery } from './_components/property-image-gallery'
 import { ContentProperty } from './content'
 
 export default async function PropertyDetailPage({

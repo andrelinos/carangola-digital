@@ -3,15 +3,12 @@
 import { getServerSession } from 'next-auth/next'
 
 import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/firebase'
+import { db, storage } from '@/lib/firebase'
 
 interface DeleteProps {
   propertyId: string
 }
 
-/**
- * Remove uma propriedade do usuário autenticado.
- */
 export async function deleteProperty({ propertyId }: DeleteProps) {
   const session = await getServerSession(authOptions)
   const user = session?.user
@@ -32,11 +29,43 @@ export async function deleteProperty({ propertyId }: DeleteProps) {
       .collection('user_properties')
       .doc(propertyId)
 
+    const docSnap = await propertyRef.get()
+
+    if (!docSnap.exists) {
+      throw new Error('Propriedade não encontrada.')
+    }
+
+    const propertyData = docSnap.data()
+
+    const imagesToDelete: { path: string; url: string }[] = propertyData?.images
+
+    if (imagesToDelete && imagesToDelete.length > 0) {
+      const deletePromises = imagesToDelete.map(image => {
+        if (typeof image !== 'string' || !image) return null
+
+        const file = storage.file(image)
+
+        return file.delete().catch(err => {
+          if (err.code === 404 || err.message.includes('No such object')) {
+            console.warn(`Imagem não encontrada no storage: ${image}`)
+          } else {
+            console.error(`Falha ao excluir imagem: ${image}`, err)
+          }
+          return null
+        })
+      })
+
+      await Promise.all(deletePromises)
+    }
+
     await propertyRef.delete()
 
     return { success: true }
   } catch (error) {
     console.error('Erro ao excluir propriedade', error)
-    return { success: false, error: 'Falha ao excluir a propriedade.' }
+    const errorMessage =
+      error instanceof Error ? error.message : 'Falha ao excluir a propriedade.'
+
+    return { success: false, error: errorMessage }
   }
 }
