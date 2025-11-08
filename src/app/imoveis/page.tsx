@@ -1,37 +1,58 @@
 import type { Metadata } from 'next'
-
-import { manageAuth } from '@/actions/manage-auth'
-import { Button } from '@/components/ui/button'
-
-import { trackServerEvent } from '@/lib/mixpanel'
-import { getSEOTags } from '@/lib/seo'
-
-import { getLatestPublicProperties } from '@/actions/properties/get-latest-public-properties'
-
-import { authOptions } from '@/lib/auth'
-import { formatPrice } from '@/utils/format-price'
 import { getServerSession } from 'next-auth/next'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { manageAuth } from '@/actions/manage-auth'
+import { getLatestPublicProperties } from '@/actions/properties/get-latest-public-properties'
+import { Button } from '@/components/ui/button'
+import { authOptions } from '@/lib/auth'
+import { trackServerEvent } from '@/lib/mixpanel'
+import { formatPrice } from '@/utils/format-price'
+
 import SearchFormProperties from './_components/form-search-properties'
 
-// Metadados atualizados para Imóveis
-export const metadata: Metadata = getSEOTags({
-  appName: 'Carangola Digital - Imóveis',
-  appDescription: 'Encontre imóveis para alugar ou vender em Carangola.',
-  locale: 'pt-BR',
+export const metadata: Metadata = {
+  metadataBase: new URL('https://carangoladigital.com.br'),
+
+  title: 'Carangola Digital | Guia Comercial e Imóveis',
+  description:
+    'Encontre lojas, serviços, imóveis para aluguel e venda em Carangola. O Carangola Digital é o guia comercial completo da cidade. Cadastre seu negócio!',
   keywords: [
     'Carangola',
     'Carangola Digital',
-    'imóveis',
-    'aluguel',
-    'venda',
-    'casa',
-    'apartamento',
+    'Guia Comercial',
+    'Negócios Locais',
+    'Imóveis',
+    'Lojas',
+    'Serviços',
+    'Empresas',
+    'Aluguel de Imóveis',
+    'Venda de Imóveis',
+    'Comércio Local',
+    'Diretório de Empresas',
   ],
-  appDomain: 'https://carangoladigital.com.br/',
-  canonicalUrlRelative: '/properties',
-})
+
+  openGraph: {
+    title: 'Carangola Digital | Guia Comercial e Imóveis',
+    description: 'Encontre lojas, serviços e imóveis em Carangola.',
+    url: 'https://carangoladigital.com.br/',
+    siteName: 'Carangola Digital',
+    images: [
+      {
+        url: 'https://carangoladigital.com.br/images/og-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'pt-BR',
+    type: 'website',
+  },
+
+  alternates: {
+    canonical: '/',
+  },
+}
 
 const latestPublicProperties = await getLatestPublicProperties()
 

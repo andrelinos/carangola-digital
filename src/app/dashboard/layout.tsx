@@ -1,16 +1,7 @@
 import { authOptions } from '@/lib/auth'
-import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 import { DashboardSidebar } from './_components/dashboard-sidebar'
-
-export const metadata: Metadata = {
-  title: 'Carangola Digital',
-  description: 'Tenha a cidade ao seu alcance!',
-  icons: {
-    icon: '/favicon.svg',
-  },
-}
 
 export default async function RootLayout({
   children,

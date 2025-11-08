@@ -33,9 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!profileData) {
     return {
-      title: 'Perfil não encontrado | Carangola Digital',
+      title: 'Carangola Digital | Guia Comercial e Imóveis',
       description:
-        'O perfil que você está procurando não existe ou foi movido.',
+        'Encontre lojas, serviços, imóveis para aluguel e venda em Carangola. O Carangola Digital é o guia comercial completo da cidade. Cadastre seu negócio!',
     }
   }
 
