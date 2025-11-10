@@ -10,13 +10,12 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+
+  if (!session) {
+    redirect('/acesso')
+  }
 
   const profileId = await getProfileId(session?.user?.id)
-
-  if (!session?.user?.id) {
-    redirect('/')
-  }
 
   if (profileId?.length) {
     redirect('/dashboard')

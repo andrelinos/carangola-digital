@@ -9,9 +9,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
 
-  if (!user) {
+  if (!session) {
     redirect('/acesso')
   }
 

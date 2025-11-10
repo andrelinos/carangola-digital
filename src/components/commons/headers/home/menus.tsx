@@ -72,11 +72,16 @@ export function Menus({ session }: Props) {
   }
 
   return (
-    <>
-      {/* =================================================================== */}
-      {/* 1. MENU MOBILE (Seu código original, agora dentro de um wrapper)   */}
-      {/* Este bloco inteiro só será visível em telas pequenas (md:hidden) */}
-      {/* =================================================================== */}
+    <div className="flex w-fit items-center gap-2">
+      {session ? (
+        <Button variant="ghost" onClick={handleLogOut}>
+          Sair
+        </Button>
+      ) : (
+        <Link variant="ghost" href="/acesso" className="w-full">
+          Entrar
+        </Link>
+      )}
       <div className="">
         {/* O botão "Hambúrguer" para abrir o menu mobile */}
         <button type="button" className=" p-0" onClick={handleOpen}>
@@ -218,6 +223,6 @@ export function Menus({ session }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
