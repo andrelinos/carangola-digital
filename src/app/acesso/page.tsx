@@ -1,9 +1,10 @@
-import { Loading } from '@/components/commons/loading'
-
-import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 import { Fragment, Suspense } from 'react'
+
+import { Loading } from '@/components/commons/loading'
+import { authOptions } from '@/lib/auth'
+
 import SignIn from '../auth/signin/page'
 
 export default async function Login() {

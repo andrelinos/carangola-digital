@@ -1,6 +1,8 @@
-import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
+
+import { authOptions } from '@/lib/auth'
+
 import { DashboardSidebar } from './_components/dashboard-sidebar'
 
 export default async function RootLayout({

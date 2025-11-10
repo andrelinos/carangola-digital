@@ -74,11 +74,15 @@ export function Menus({ session }: Props) {
   return (
     <div className="flex w-fit items-center gap-2">
       {session ? (
-        <Button variant="ghost" onClick={handleLogOut}>
+        <Button
+          variant="ghost"
+          onClick={handleLogOut}
+          className="hover:cursor-pointer hover:text-rose-400"
+        >
           Sair
         </Button>
       ) : (
-        <Link variant="ghost" href="/acesso" className="w-full">
+        <Link variant="ghost" href="/acesso">
           Entrar
         </Link>
       )}

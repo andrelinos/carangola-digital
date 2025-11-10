@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 
 import { Loading } from '@/components/commons/loading'
-
 import { authOptions } from '@/lib/auth'
+
 import { ButtonProvider } from './components/button-provider'
 
 export default async function SignIn() {

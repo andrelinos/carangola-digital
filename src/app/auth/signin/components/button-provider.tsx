@@ -1,10 +1,10 @@
 'use client'
 
+import { LoaderCircleIcon } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { LoaderCircleIcon } from 'lucide-react'
-import { useState } from 'react'
 
 interface componentsProps {
   title: string
@@ -19,7 +19,6 @@ export function ButtonProvider({ provider, title, ...rest }: componentsProps) {
       setIsLoading(true)
       await signIn(provider)
     } catch (error) {
-    } finally {
       setIsLoading(false)
     }
   }
