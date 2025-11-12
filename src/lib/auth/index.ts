@@ -26,7 +26,9 @@ export const authOptions: NextAuthOptions = {
           .doc(user.id)
           .set({
             name: user.name,
+            email: user.email,
             accountVerified: false,
+            image: user.image,
             planActive: {
               expiresAt: null,
               type: 'free',
@@ -52,6 +54,12 @@ export const authOptions: NextAuthOptions = {
 
         if (userDoc.exists) {
           const userData = userDoc.data()
+
+          if (user?.email) {
+            await db.collection('users').doc(user.id).set({
+              email: user.email,
+            })
+          }
 
           session.user.id = userDoc.id
           session.user.planActive = userData?.planActive

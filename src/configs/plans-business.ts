@@ -1,5 +1,7 @@
 export const plansBusinessConfig = {
   free: {
+    title: 'GRÁTIS',
+    popular: false,
     socialMedias: {
       linkedin: false,
       kwai: false,
@@ -29,6 +31,8 @@ export const plansBusinessConfig = {
     },
   },
   basic: {
+    title: 'BÁSICO',
+    popular: true,
     socialMedias: {
       linkedin: true,
       kwai: false,
@@ -58,6 +62,8 @@ export const plansBusinessConfig = {
     },
   },
   pro: {
+    title: 'PRO',
+    popular: false,
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -88,6 +94,8 @@ export const plansBusinessConfig = {
     },
   },
   master: {
+    title: 'MASTER',
+    popular: false,
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -121,3 +129,10 @@ export const plansBusinessConfig = {
 
 export type PlanTypeProps = keyof typeof plansBusinessConfig
 export type PlanConfigProps = (typeof plansBusinessConfig)[PlanTypeProps]
+
+export type PlanItemProps = PlanConfigProps & {
+  name: Exclude<PlanTypeProps, 'master'>
+  activeSocialMedias: number
+}
+
+export type PlansProps = PlanItemProps[]

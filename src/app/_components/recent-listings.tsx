@@ -19,6 +19,16 @@ const mockListings = [
     listingType: '',
     price: 0,
   },
+  {
+    type: 'business',
+    title: 'Rodrigo Celulares',
+    tags: ['Assistência Técnica', 'Serviços', 'Celulares e Acessórios'],
+    imageUrl:
+      'https://carangoladigital.com.br/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcarangola-digital.firebasestorage.app%2Fprofiles-images%2FBJlnJ6fDD91woXkKPUZA%2Flogo-images%2Fc1e1b360-28bb-4885-8b47-3eee094fb9f4%3FGoogleAccessId%3Dfirebase-adminsdk-fbsvc%2540carangola-digital.iam.gserviceaccount.com%26Expires%3D16725225600%26Signature%3DaH0hVT5z01JMCTefMEjJD%252BRaYKz9g4FTaP6jwayhaAvRXyU0eiVSmEqsj9Mb%252BTeOoMuKomAkHQtSbc0YydxznRxORp34%252BNPSKss2d3m0QZX%252BexGoTAFNBC1orXSbQlwB1HMSkaY6eYSxFP8DbDI%252BW%252B4Ng1%252BSkfrpRW6qnhmmutaq9EixAvTHY%252F9Q3g0QLQrRAPysPoUT2n23WkKE5McJmb4iB9i3axonrWSBtzWqB0WgsWZREB9YcueTOhQ7TPddOdfLaCVSJW4%252BIJ1x222PCEP6i1d%252Fb2rNEruGL0EI3aefRSkvcarrEBGvMOjy3CcaG611nZlzukq7uc9XmovQJg%253D%253D&w=1920&q=75',
+    href: '/business/rodrigo-celulares',
+    listingType: '',
+    price: 0,
+  },
   // {
   //   type: 'property',
   //   title: 'Casa 3 Quartos (Venda)',
