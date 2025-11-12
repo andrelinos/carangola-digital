@@ -36,7 +36,7 @@ export function EditPropertyPrice({ data }: Props) {
       }
 
       await propertyUpdatePrice({
-        price: String(formValues.price),
+        price: formValues.price,
         propertyId: data.id,
       })
     } catch {

@@ -7,7 +7,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 
 interface Props {
-  price: string
+  price: number
   propertyId: string
 }
 

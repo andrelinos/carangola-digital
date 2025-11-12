@@ -34,7 +34,7 @@ export default function PropertyDetailPage({
     type: 'Apartamento',
     listingType: 'Venda',
     status: 'Disponível',
-    price: 'R$ 350.000',
+    price: 350000,
     address: 'Rua Principal, 123 - Centro',
     city: 'Carangola',
     state: 'MG',
@@ -109,7 +109,7 @@ export default function PropertyDetailPage({
         <div className="space-y-6 lg:col-span-2">
           {/* Images */}
           <div className="overflow-hidden rounded-lg bg-gray-200 shadow-lg">
-            <div className="aspect-video bg-gradient-to-br from-blue-400 to-blue-600">
+            <div className="aspect-video bg-linear-to-br from-blue-400 to-blue-600">
               {/* Substitua por componente de galeria de imagens real */}
               <div className="flex h-full items-center justify-center text-white">
                 <p className="font-medium text-lg">Galeria de Imagens</p>

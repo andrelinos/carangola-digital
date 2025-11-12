@@ -9,7 +9,7 @@ import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 import { ManagePlans } from './components/manage-plans'
 
-export const plansArray: PlanItemProps[] = Object.entries(plansBusinessConfig)
+const plansArray: PlanItemProps[] = Object.entries(plansBusinessConfig)
   .filter(([name]) => name !== 'master')
   .map(([name, config]) => ({
     name: name as Exclude<PlanTypeProps, 'master'>,
@@ -33,14 +33,14 @@ export default async function Plans() {
     return (
       <div className="mb-auto flex size-full">
         teste
-        <ManagePlans plans={plansArray as any} />
+        <ManagePlans plans={plansArray} />
       </div>
     )
   }
 
   return (
     <div className="mb-auto flex size-full">
-      <ManagePlans plans={plansArray as any} />
+      <ManagePlans plans={plansArray} />
     </div>
   )
 }

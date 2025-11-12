@@ -17,17 +17,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+// Importe o tipo do seu array de planos
+import type { PlanItemProps } from '@/configs/plans-business'
 import clsx from 'clsx'
 import { useState } from 'react'
-// Importe o tipo do seu array de planos
-import type { plansArray } from '../../page'
-
-// Define o tipo de um único plano
-export type PlanItemProps = (typeof plansArray)[number] & {
-  price: string
-  frequency: string
-  features: string[]
-}
 
 interface ManagePlansProps {
   plans: PlanItemProps[]
@@ -173,7 +166,7 @@ export function ManagePlans({ plans }: ManagePlansProps) {
               <p className="mt-2 font-bold text-3xl text-blue-600 dark:text-blue-400">
                 {selectedPlan.price}
                 <span className="font-medium text-lg text-muted-foreground">
-                  {selectedPlan.frequency}
+                  {selectedPlan?.frequency}
                 </span>
               </p>
 
