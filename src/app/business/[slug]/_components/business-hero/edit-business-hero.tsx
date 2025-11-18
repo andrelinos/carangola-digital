@@ -1,9 +1,11 @@
 'use client'
 
+import 'react-image-crop/dist/ReactCrop.css'
+
+import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { startTransition, useEffect, useRef, useState } from 'react'
-
-import 'react-image-crop/dist/ReactCrop.css'
+import { toast } from 'sonner'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 
@@ -15,8 +17,7 @@ import { Button } from '@/components/ui/button/index'
 import { Modal } from '@/components/ui/custom-modal'
 import { Input } from '@/components/ui/input'
 
-import { X } from 'lucide-react'
-import { toast } from 'sonner'
+import { normalizeText } from '@/utils/sanitize-text'
 import { ImageUploader } from './image-uploader'
 
 interface Props {
@@ -77,10 +78,12 @@ export function EditBusinessHero({ data }: Props) {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const wrapperRef = useRef<HTMLDivElement>(null)
 
+    const normalizedSearchTerm = normalizeText(searchTerm)
+
     const availableCategories = categories.filter(
       c =>
         !selectedCategories.includes(c) &&
-        c.toLowerCase().includes(searchTerm.toLowerCase())
+        normalizeText(c).includes(normalizedSearchTerm)
     )
 
     const addCategory = (category: string) => {

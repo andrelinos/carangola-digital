@@ -19,6 +19,7 @@ export async function getLatestPublicProfiles(): Promise<
     const profilesSnapshot = await db
       .collection('profiles')
       .where('isPublished', '==', true)
+      .orderBy('isTopCompanies', 'desc')
       .orderBy('createdAt', 'desc')
       .limit(12)
       .get()

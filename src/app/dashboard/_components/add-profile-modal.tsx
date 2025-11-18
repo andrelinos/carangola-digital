@@ -51,9 +51,10 @@ export function AddProfileModal({ userId }: Props) {
         throw new Error('O campo name é obrigatório')
       }
 
+      console.log('DOIS :: ', name, link, id)
+
       await createBusinessLink({ name, link, userId: id })
     } catch (err) {
-      // tratar erro conforme sua estratégia (toast, console, etc.)
       console.error(err)
       throw err
     } finally {

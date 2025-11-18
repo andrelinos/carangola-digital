@@ -57,6 +57,7 @@ export async function createNewProperty(formData: FormData) {
       keywords: keywords,
       isPublished: true,
       totalVisits: 0,
+
       createdAt: Timestamp.now().toMillis(),
       updatedAt: Timestamp.now().toMillis(),
     }

@@ -1,12 +1,7 @@
+import { Link } from '@/components/ui/link'
 import { InfoCircle } from 'iconoir-react'
 import { Phone, Search } from 'lucide-react'
-import Link from 'next/link'
 
-/*
-================================================================================
-COMPONENTE 4: Seção de Utilidade Pública
-================================================================================
-*/
 const communityFeatures = [
   {
     title: 'Telefones Úteis',
@@ -41,9 +36,11 @@ export function CommunityFeatures() {
         </h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {communityFeatures.map(feature => (
-            <div
+            <Link
               key={feature.title}
-              className="rounded-lg bg-white p-6 text-center shadow-md dark:bg-slate-800"
+              variant="unstyled"
+              href={feature.href}
+              className="hover:-translate-y-2 rounded-lg bg-white p-6 text-center shadow-md transition-transform duration-300 ease-in-out dark:bg-slate-800"
             >
               <feature.icon
                 className={`mx-auto mb-4 h-12 w-12 ${feature.color}`}
@@ -54,13 +51,7 @@ export function CommunityFeatures() {
               <p className="mb-6 text-slate-600 dark:text-slate-400">
                 {feature.description}
               </p>
-              <Link
-                href={feature.href}
-                className="font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Acessar Agora &rarr;
-              </Link>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

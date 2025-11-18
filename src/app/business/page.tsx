@@ -80,7 +80,7 @@ export default async function Home() {
 
           <SearchFormBusiness />
           <h2 className="mt-6 w-full py-2 text-center text-2xl">
-            Últimos adicionados
+            Empresas Destaque
           </h2>
           <div className="mt-6 flex w-full max-w-5xl flex-wrap justify-around gap-6">
             {latestPublicProfiles?.map((profile, index) => (

@@ -59,6 +59,7 @@ export type ProfileDataProps = {
   userId: string
   slug: string
   totalVisits: number
+  hasOwner?: boolean
   createdAt: number
   name: string
   admins: AdminsProfileProps[]

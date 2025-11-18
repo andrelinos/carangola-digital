@@ -22,15 +22,17 @@ export async function createBusinessLink({ link, name, userId }: Props) {
   const session = await getServerSession(authOptions)
   const user = session?.user
 
-  const isAdmin = session?.user.role === 'admin'
+  if (!user) return
 
-  if (!session) return
+  const isAdmin = user?.role === 'admin'
 
   const isSlugTaken = await checkIfSlugExists(link)
 
   if (isSlugTaken) {
     return { success: false, error: 'Este perfil já está em uso.' }
   }
+
+  console.log('LINK: ', link)
 
   const linkText = kebabToPhrase(link)
   let keywords = [] as string[]
@@ -54,7 +56,7 @@ export async function createBusinessLink({ link, name, userId }: Props) {
         name: name ?? userName,
         nameLower: normalizedName,
         isPublished: true,
-        keywords: keywords,
+        keywords,
         totalVisits: 0,
         createdAt: Timestamp.now().toMillis(),
         updatedAt: Timestamp.now().toMillis(),
@@ -68,6 +70,7 @@ export async function createBusinessLink({ link, name, userId }: Props) {
         .update({
           hasProfileLink: isAdmin ? undefined : true,
           isPrimary: isAdmin ? undefined : true,
+          hasOwner: !isAdmin,
           myProfileLink: isAdmin ? undefined : link,
           accountVerified: false,
           updatedAt: Timestamp.now().toMillis(),

@@ -4,7 +4,7 @@ export function kebabToPhrase(input: string) {
     .split('-')
     .map(token => {
       const lower = token.toLowerCase()
-      return token
+      return lower
     })
     .join(' ')
 }

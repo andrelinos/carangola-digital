@@ -9,13 +9,25 @@ declare module 'next-auth' {
     accountVerified?: boolean
     role?: 'admin' | 'user' | 'moderator'
     planActive?: {
-      expiresAt: number | null
-      type: string
-      status: string
-      planDetails: {
-        name: string
-        period: string
-        price: number
+      profiles?: {
+        expiresAt: number | null
+        type: string
+        status: string
+        planDetails: {
+          name: string
+          period: string
+          price: number
+        }
+      }
+      properties?: {
+        expiresAt: number | null
+        type: string
+        status: string
+        planDetails: {
+          name: string
+          period: string
+          price: number
+        }
       }
     }
   }

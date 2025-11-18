@@ -71,6 +71,7 @@ export const categories = [
   'Serviços de Eventos',
   'Serviços de Limpeza',
   'Serviços e Manutenção',
+  'Sorveteria',
   'Tecnologia e Comunicação',
   'Tecnologia e Inovação',
   'Transporte e Logística',

@@ -30,13 +30,25 @@ export const authOptions: NextAuthOptions = {
             accountVerified: false,
             image: user.image,
             planActive: {
-              expiresAt: null,
-              type: 'free',
-              status: 'active',
-              planDetails: {
-                name: 'free',
-                period: 'indeterminado',
-                price: 0,
+              profiles: {
+                expiresAt: null,
+                type: 'free',
+                status: 'active',
+                planDetails: {
+                  name: 'free',
+                  period: 'indeterminado',
+                  price: 0,
+                },
+              },
+              properties: {
+                expiresAt: null,
+                type: 'free',
+                status: 'active',
+                planDetails: {
+                  name: 'free',
+                  period: 'indeterminado',
+                  price: 0,
+                },
               },
             },
             createdAt: Timestamp.now().toMillis(),

@@ -13,6 +13,7 @@ import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
 
 import { FooterProfile } from '@/components/commons/footer-profile'
 import { authOptions } from '@/lib/auth'
+import { ShieldCheck } from 'iconoir-react'
 import { getServerSession } from 'next-auth/next'
 import { ContentProfile } from './content'
 
@@ -100,6 +101,18 @@ export default async function BusinessId({ params }: Props) {
             isOwner={isOwner}
             isUserAuth={isUserAuth}
           />
+          {!profileData.hasOwner && (
+            <div className="p-4">
+              <Link
+                href={`/reivindicar-empresa?slug=${profileData.slug}&businessId=${profileData.id}`}
+                className="group flex items-center gap-1 p-4 text-xs hover:font-bold"
+                target="_blank"
+              >
+                <ShieldCheck className="transition-all duration-300 ease-in-out group-hover:scale-110 " />
+                Reivindicar esta empresa
+              </Link>
+            </div>
+          )}
         </div>
       </ContentProfile>
 

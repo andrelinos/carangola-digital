@@ -8,8 +8,8 @@ import { type AnchorHTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 const linkVariants = cva(
-  // 'whitespace-nowrap rounded-lg p-3 text-center font-bold text-zinc-700 hover:opacity-95 disabled:opacity-70',
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  // Estilos base que transformam o link em "botão"
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -25,6 +25,7 @@ const linkVariants = cva(
         scale: 'font-normal hover:scale-115',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        unstyled: '', // Não precisa de classes aqui, pois ignoraremos a função
         footer:
           'justify-center text-center font-normal text-white transition-all duration-300 ease-in-out hover:cursor-pointer hover:underline hover:underline-offset-4',
       },
@@ -51,7 +52,11 @@ export interface LinkProps
 }
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, variant, asChild = false, href, type, ...props }, ref) => {
+  // 1. Adicionei 'size' na desestruturação das props
+  (
+    { className, variant, size, asChild = false, href, type, ...props },
+    ref
+  ) => {
     const isSpecialLink = type === 'email' || type === 'phone'
     const Comp = asChild ? Slot : isSpecialLink ? 'a' : NextLink
 
@@ -66,9 +71,17 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       }
     })()
 
+    // 2. LÓGICA CORRIGIDA:
+    // Se a variante for 'unstyled', usamos apenas o className passado via props (cn(className)).
+    // Caso contrário, usamos o linkVariants completo (que traz os estilos de botão + tamanho).
+    const resolvedClassName =
+      variant === 'unstyled'
+        ? cn(className)
+        : cn(linkVariants({ variant, size, className }))
+
     return (
       <Comp
-        className={cn(linkVariants({ variant, className }))}
+        className={resolvedClassName}
         ref={ref}
         href={processedHref}
         {...props}
