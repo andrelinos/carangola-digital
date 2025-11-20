@@ -32,6 +32,7 @@ export const categories = [
   'Entretenimento e Lazer',
   'Entrega de Gás e Água',
   'Escolas e Universidades',
+  'Esportes',
   'Eventos e Shows',
   'Fábricas de Óculos',
   'Finanças e Seguros',
@@ -59,6 +60,7 @@ export const categories = [
   'Pet e Agro',
   'Presentes',
   'Psicologia e Terapias',
+  'Recreação',
   'Religião e Espiritualidade',
   'Roupas e Calçados',
   'Saúde e Beleza',
@@ -78,6 +80,7 @@ export const categories = [
   'Turismo e Hospedagem',
   'Veículos',
   'Veículos e Transportes',
+  'Vestuário',
   'Veterinário',
   'Outros',
 ]

@@ -9,6 +9,36 @@ export type WeekDayProps =
   | 'Sábado'
   | 'Domingo'
 
+export type ScheduleInterval = {
+  opening: string
+  closing: string
+}
+
+export interface HolidayException {
+  date: string // YYYY-MM-DD
+  description: string
+  closed: boolean
+  isAppointmentOnly: boolean
+  intervals: ScheduleInterval[]
+}
+
+export type ScheduleDay = {
+  isAppointmentOnly: boolean
+  closed: boolean
+  intervals: ScheduleInterval[]
+}
+
+export type Schedule = {
+  Monday: ScheduleDay
+  Tuesday: ScheduleDay
+  Wednesday: ScheduleDay
+  Thursday: ScheduleDay
+  Friday: ScheduleDay
+  Saturday: ScheduleDay
+  Sunday: ScheduleDay
+  [key: string]: ScheduleDay
+}
+
 export type TimeRangeProps = {
   start: string
   end: string
@@ -74,7 +104,7 @@ export type ProfileDataProps = {
     type: PlanTypeProps
     expiresAt: number
   }
-
+  holidayExceptions: HolidayException[]
   planType: string
   rating: string
   isActive: boolean
@@ -83,7 +113,7 @@ export type ProfileDataProps = {
   reviewCount: number
 
   favorites: BusinessFavoritesProps[]
-  openingHours: Record<WeekDayProps, TimeRangeProps[]>
+  openingHours: Schedule
   socialMedias: SocialMediasProps
   businessDescription: string
   businessAddresses: BusinessAddressProps[]

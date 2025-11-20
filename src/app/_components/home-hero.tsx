@@ -17,7 +17,7 @@ export function HomeHero() {
         <div className="mx-auto flex max-w-3xl flex-col justify-center gap-4 sm:flex-row">
           <Link
             href="/business"
-            className="flex h-44 flex-1 flex-col items-center bg-white p-6 font-semibold text-primary hover:cursor-pointer hover:bg-gray-100"
+            className="flex min-h-44 flex-1 flex-col items-center bg-white p-6 font-semibold text-primary hover:cursor-pointer hover:bg-gray-100"
           >
             <StoreIcon className="size-16 stroke-1" />
             <span className="text-2xl">Estabelecimentos</span>
@@ -26,7 +26,7 @@ export function HomeHero() {
             variant="outline"
             href="/imoveis"
             size="lg"
-            className="flex h-44 flex-1 flex-col items-center border-2 border-white px-8 font-semibold text-white hover:bg-white hover:text-primary"
+            className="flex min-h-44 flex-1 flex-col items-center border-2 border-white px-8 font-semibold text-white hover:bg-white hover:text-primary"
           >
             <Building className="size-16 stroke-1" />
             <span className="text-2xl">Imóveis</span>

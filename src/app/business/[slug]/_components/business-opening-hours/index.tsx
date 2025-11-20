@@ -1,15 +1,14 @@
 'use client'
 
 import clsx from 'clsx'
+import { Clock } from 'iconoir-react'
 import { useState } from 'react'
 
-import type { ProfileDataProps } from '@/_types/profile-data'
+import type { ProfileDataProps, ScheduleDay } from '@/_types/profile-data'
 
 import { cn } from '@/lib/utils'
-import { getOperatingStatus } from '@/utils/get-status-from-day' // ATENÇÃO: Esta função precisa ser atualizada
-
+import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
 import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
-import { Clock } from 'iconoir-react'
 import { EditBusinessOpeningHours } from './edit-business-opening-hours'
 
 interface Props {
@@ -26,6 +25,7 @@ export function ContainerOpeningHours({
   const [isOpen, setIsOpen] = useState(false)
 
   const schedule = profileData.openingHours
+  const holidayExceptions = (profileData as any).holidayExceptions || []
 
   function handleOpen() {
     setIsOpen(!isOpen)
@@ -48,6 +48,19 @@ export function ContainerOpeningHours({
     return order[day as keyof typeof order] ?? 99
   }
 
+  const getJsDayIndex = (day: string): number => {
+    const map: Record<string, number> = {
+      Sunday: 0,
+      Monday: 1,
+      Tuesday: 2,
+      Wednesday: 3,
+      Thursday: 4,
+      Friday: 5,
+      Saturday: 6,
+    }
+    return map[day] ?? 0
+  }
+
   const sortedSchedule =
     schedule &&
     Object.entries(schedule).sort((a, b) => {
@@ -57,7 +70,7 @@ export function ContainerOpeningHours({
     })
 
   const todayDate = new Date()
-  const todayIndex = (todayDate.getDay() + 6) % 7 // Ajuste para Monday=0, Sunday=6
+  const todayIndex = (todayDate.getDay() + 6) % 7
 
   return (
     <div className="relative flex w-full max-w-md flex-col items-center gap-1 rounded-t-lg p-2 [data-state=open]:rounded-none">
@@ -84,9 +97,9 @@ export function ContainerOpeningHours({
             <div className="flex w-full items-center justify-center">
               <div className="flex h-10 flex-1 items-center justify-center">
                 {getOperatingStatus({
-                  schedule: profileData?.openingHours as any,
+                  schedule: profileData?.openingHours,
                   currentTime: todayDate,
-                  openingHours: profileData?.openingHours,
+                  holidayExceptions,
                 })}
               </div>
             </div>
@@ -104,11 +117,64 @@ export function ContainerOpeningHours({
           )}
         >
           {sortedSchedule?.map(
-            ([day, { opening, closing, closed, intervals }]: any, index) => {
-              // 1. LÓGICA PARA EXIBIR MÚLTIPLOS HORÁRIOS
+            ([day, standardDayObj]: [string, ScheduleDay], index) => {
+              const targetDayIndex = getJsDayIndex(day)
+              const currentDayIndex = todayDate.getDay()
+
+              const diff = targetDayIndex - currentDayIndex
+
+              const rowDate = new Date(todayDate)
+              rowDate.setDate(todayDate.getDate() + diff)
+
+              const rowDateString = rowDate.toLocaleDateString('fr-CA', {
+                timeZone: 'America/Sao_Paulo',
+              })
+
+              // 2. Verifica se é feriado
+              const holiday = holidayExceptions.find(
+                (h: any) => h.date === rowDateString
+              )
+
+              // 3. Define qual objeto usar (o padrão ou o do feriado)
+              const effectiveDayObj = holiday
+                ? { ...standardDayObj, ...holiday }
+                : standardDayObj
+
+              const { closed, intervals, isAppointmentOnly, description } =
+                effectiveDayObj
+
               const displayTime = () => {
-                if (closed) return 'Fechado'
-                // Se tivermos o array de intervalos, usamos ele
+                if (closed) {
+                  if (holiday && description) {
+                    return (
+                      <div className="flex items-center gap-1 text-rose-400">
+                        Fechado
+                        <span className="font-normal">- {description}</span>
+                      </div>
+                    )
+                  }
+
+                  if (holiday) {
+                    return (
+                      <div className="flex items-center gap-1 text-rose-400">
+                        Fechado <span className="font-normal">- feriado</span>
+                      </div>
+                    )
+                  }
+
+                  return (
+                    <div
+                      className={index === todayIndex ? 'text-rose-400' : ''}
+                    >
+                      Fechado
+                    </div>
+                  )
+                }
+
+                if (isAppointmentOnly) {
+                  return 'horário por agendamento'
+                }
+
                 if (intervals && intervals.length > 0) {
                   return intervals
                     .map(
@@ -117,8 +183,15 @@ export function ContainerOpeningHours({
                     )
                     .join(' / ')
                 }
-                // Caso contrário, usamos os campos antigos para retrocompatibilidade
-                return `${opening} às ${closing}`
+
+                // if (opening && closing) {
+                //   if (opening === '' || closing === '') {
+                //     return 'Horário não definido'
+                //   }
+                //   return `${opening} às ${closing}`
+                // }
+
+                return 'Horário não definido'
               }
 
               return (

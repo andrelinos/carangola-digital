@@ -23,11 +23,16 @@ export async function createBusinessOpeningHours(formData: FormData) {
     if (error) return error
 
     const openingHoursData = formData.get('openingHours') as string
+    const holidayExceptionsData = formData.get('holidayExceptions') as string
 
     const openingHours = JSON.parse(openingHoursData) as OpeningHours[]
+    const holidayExceptions = JSON.parse(
+      holidayExceptionsData
+    ) as OpeningHours[]
 
     await profileRef.update({
       openingHours,
+      holidayExceptions,
       updatedAt: Timestamp.now().toMillis(),
     })
 

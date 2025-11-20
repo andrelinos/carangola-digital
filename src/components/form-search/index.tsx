@@ -7,7 +7,8 @@ import type { ProfileDataProps } from '@/_types/profile-data'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { getOperatingStatus } from '@/utils/get-status-from-day'
+
+import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
 import Image from 'next/image'
 
 interface SearchProps extends ProfileDataProps {
@@ -91,7 +92,6 @@ export default function SearchFormBusiness() {
                       {getOperatingStatus({
                         schedule: profile.openingHours as any,
                         currentTime: new Date(),
-                        openingHours: profile.openingHours,
                       })}
                     </div>
                     <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">

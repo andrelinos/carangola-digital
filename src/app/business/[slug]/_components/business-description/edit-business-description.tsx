@@ -77,14 +77,14 @@ export function EditBusinessDescription({ data }: Props) {
         classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
-          <div className="flex w-full flex-col gap-4 ">
-            <div className="flex w-full flex-1 flex-col gap-4 text-zinc-700">
+          <div className="flex w-full flex-col gap-4">
+            <div className="flex w-full flex-1 flex-col gap-4 px-1 text-zinc-700">
               <TextArea
                 name="businessDescription"
                 variant="ghost"
-                title="Endereço"
+                title="Descrição"
                 placeholder="Fale um pouco sobre você"
-                className="h-64"
+                className="h-64 border-gray-200"
                 value={businessDescription}
                 onChange={e => setBusinessDescription(e.target.value)}
                 autoFocus

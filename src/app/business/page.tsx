@@ -10,7 +10,7 @@ import { getLatestPublicProfiles } from '@/actions/business/get-latest-public-pr
 import SearchFormBusiness from '@/components/form-search'
 import { authOptions } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
-import { getOperatingStatus } from '@/utils/get-status-from-day'
+import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://carangoladigital.com.br'),
@@ -95,7 +95,6 @@ export default async function Home() {
                     {getOperatingStatus({
                       schedule: profile.openingHours as any,
                       currentTime: new Date(),
-                      openingHours: profile.openingHours,
                     })}
                   </div>
                   <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">
