@@ -217,7 +217,7 @@ export function getOperatingStatus({
       ) : (
         <ContainerStatus status="closed">
           Fechado - Abre{' '}
-          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> por
+          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong>{' '}por
           agendamento
         </ContainerStatus>
       )
@@ -229,8 +229,8 @@ export function getOperatingStatus({
       </ContainerStatus>
     ) : (
       <ContainerStatus status="closed">
-        Fechado - Abre 2222
-        <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às2{' '}
+        Fechado - Abre {' '}
+        <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às {' '}
         {next.opening}
       </ContainerStatus>
     )
