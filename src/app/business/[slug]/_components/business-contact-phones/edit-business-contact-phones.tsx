@@ -116,13 +116,13 @@ export function EditContactPhones({ data }: Props) {
       setFormValues(prev =>
         prev
           ? prev.map((item, i) =>
-              i === index
-                ? {
-                    ...item,
-                    [field]: sanitizedValue,
-                  }
-                : item
-            )
+            i === index
+              ? {
+                ...item,
+                [field]: sanitizedValue,
+              }
+              : item
+          )
           : prev
       )
       return
@@ -131,13 +131,13 @@ export function EditContactPhones({ data }: Props) {
     setFormValues(prev =>
       prev
         ? prev.map((item, i) =>
-            i === index
-              ? {
-                  ...item,
-                  [field]: type === 'checkbox' ? checked : value,
-                }
-              : item
-          )
+          i === index
+            ? {
+              ...item,
+              [field]: type === 'checkbox' ? checked : value,
+            }
+            : item
+        )
         : prev
     )
   }
@@ -291,7 +291,7 @@ export function EditContactPhones({ data }: Props) {
                             onChange={handleChange}
                           />
                           <div className="flex justify-center gap-2">
-                            <span className="flex flex-col items-center justify-end gap-2 text-xs">
+                            <Label className="flex flex-col items-center justify-end gap-2 text-xs">
                               <input
                                 type="checkbox"
                                 name={`phone${index}.isWhatsapp`}
@@ -299,8 +299,8 @@ export function EditContactPhones({ data }: Props) {
                                 onChange={handleChange}
                               />
                               Também WhatsApp
-                            </span>
-                            <span className="flex flex-col items-center justify-end gap-2 text-xs">
+                            </Label>
+                            <Label className="flex flex-col items-center justify-end gap-2 text-xs">
                               <input
                                 type="checkbox"
                                 name={`phone${index}.isOnlyWhatsapp`}
@@ -308,7 +308,7 @@ export function EditContactPhones({ data }: Props) {
                                 onChange={handleChange}
                               />
                               Apenas WhatsApp
-                            </span>
+                            </Label>
                           </div>
                         </div>
                       </div>

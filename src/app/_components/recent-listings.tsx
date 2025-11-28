@@ -7,7 +7,7 @@ const mockListings = [
     tags: ['Assistência Técnica', 'Serviços'],
     imageUrl:
       'https://carangoladigital.com.br/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcarangola-digital.firebasestorage.app%2Fprofiles-images%2Fandrelino%2Flogo-images%2Ff72be423-d2e7-4ec6-b049-9d3d20379dc4%3FGoogleAccessId%3Dfirebase-adminsdk-fbsvc%2540carangola-digital.iam.gserviceaccount.com%26Expires%3D16725225600%26Signature%3DCgYQfHcESHAVIqIrwD38SOXC8w3TNyTTD9MWQx%252FZmS8A7vDbd297T%252B4rju3JthAqmH3sy0jhjONzL4u%252F3kXHdOQ1c2xWFYxSxF63DmNjYbDY17gsrQaApK1QWmC%252Bf%252FGxSsnLRE7OO7TrcaRTkUtdVOrKhA%252F2ffX%252BOIRh%252FGDCMQgSgBPdCSQ3M21%252B1A7l%252Fv%252ByJfLbxRslmpWXT%252BCVFD1%252FuxFSKrnkKs8546P977lGdjnl3bCdF%252Byuj6XuD3c%252BLhZGdZk5t3cVUwtK7nZfWXkBi5CCtwwVncqC7PEC%252F%252B9rqfRMHaeOJDldS9Q2L4v5RVIc2ZiJcVTs2v4PLIsAsWBUQQ%253D%253D&w=1920&q=75',
-    href: '/business/andrelino',
+    href: '/business/andre',
   },
   {
     type: 'business',

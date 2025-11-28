@@ -1,8 +1,10 @@
 import type { MetadataRoute } from 'next'
 
+import { forbiddenPaths } from '@/configs/forbidden-paths'
 import { forbiddenProfiles } from '@/configs/forbidden-profiles'
 import { pathsSitemap } from '@/configs/paths-to-sitemap'
 
+import { forbiddenProperties } from '@/configs/forbidden-properties'
 import { getAllProfileData } from './server/get-all-profile-data'
 import { getAllPropertiesData } from './server/get-all-properties-data'
 
@@ -26,15 +28,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     })) || []
 
+  const allowedProperties = properties?.filter(property => {
+    return !forbiddenProperties.includes(property.slug)
+  })
+
   const dynamicPropertiesEntries: MetadataRoute.Sitemap[number][] =
-    properties?.map(property => ({
+    allowedProperties?.map(property => ({
       url: `${siteUrl}/imoveis/${property.slug}`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 1,
     })) || []
 
-  const staticEntries: MetadataRoute.Sitemap[number][] = pathsSitemap.map(
+  const allowedPaths = pathsSitemap.filter(path => {
+    return !forbiddenPaths.includes(path)
+  })
+
+  const staticEntries: MetadataRoute.Sitemap[number][] = allowedPaths.map(
     path => ({
       url: `${siteUrl}${path}`,
       lastModified,

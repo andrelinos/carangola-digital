@@ -76,7 +76,7 @@ const exampleSchedule: WeeklySchedule = {
   Saturday: {
     closed: false,
     isAppointmentOnly: false,
-    intervals: [{ opening: '08:00', closing: '13:00' }],
+    intervals: [{ opening: '08:00', closing: '12:00' }],
   },
   Sunday: { closed: true, isAppointmentOnly: false, intervals: [] },
 }

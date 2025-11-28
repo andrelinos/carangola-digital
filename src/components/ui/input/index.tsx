@@ -3,13 +3,14 @@
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 import clsx from 'clsx'
+import Link from 'next/link'
 
 import { type InputHTMLAttributes, forwardRef } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { Link } from '../link'
+
 
 const inputVariants = cva(
   'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
@@ -30,9 +31,9 @@ const inputVariants = cva(
 
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+  VariantProps<typeof inputVariants> {
   asChild?: boolean
-  isPremium?: boolean
+  isOnlyPremium?: boolean
   title?: string
   error?: FieldError | undefined
   requiredfield?: boolean
@@ -47,7 +48,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type,
       requiredfield = false,
       literalerror,
-      isPremium = false,
+      isOnlyPremium = false,
       asChild = false,
       ...props
     },
@@ -60,14 +61,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {props?.title && (
           <Label className="flex flex-row gap-2" htmlFor={props?.title}>
             <div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <span className="font-bold">{props?.title}</span>
-                <div>
-                  {isPremium ? (
+                <div className='flex'>
+                  {isOnlyPremium ? (
                     <Link
-                      variant="primary"
+
                       href="/#plan"
-                      className="text-blue-500 hover:text-blue-600"
+                      className='p-0 text-blue-500 text-xs hover:text-blue-600'
                     >
                       upgrade
                     </Link>

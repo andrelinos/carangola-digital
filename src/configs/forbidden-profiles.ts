@@ -1,5 +1,6 @@
 export const forbiddenProfiles = [
   // Autenticação e administração
+  'acesso',
   'admin',
   'login',
   'root',

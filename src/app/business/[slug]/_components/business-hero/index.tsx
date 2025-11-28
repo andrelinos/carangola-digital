@@ -132,12 +132,12 @@ export async function BusinessHero({
                 )}
 
                 {(isOwner || isUserAuth) && (
-                  <Badge
-                    variant="secondary"
-                    className="bg-green-100 text-green-800"
-                  >
-                    {profileData?.planType?.toUpperCase() || 'GRÁTIS'}
-                  </Badge>
+                  <div className='flex flex-col items-center rounded-md bg-white/20 px-2 py-1 text-xs'>
+                    <span>PLANO</span>
+                    <span className="font-semibold">
+                      {profileData?.planType?.toUpperCase() || 'GRÁTIS'}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
+import { toast } from 'sonner'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 
@@ -11,7 +12,6 @@ import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
 import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
 
 interface FormValuesProps {
   instagram?: string
@@ -88,7 +88,9 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
     onClose()
   }
 
-  const isPremium = profileData?.isPremium ?? true
+  const isOnlyPremium = !profileData?.isPremium
+
+
 
   return (
     <>
@@ -105,7 +107,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
           <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:items-center ">
-            <div className="flex w-full flex-1 flex-col items-end gap-4 text-zinc-700">
+            <div className='flex w-full flex-1 flex-col items-end gap-4 p-1 text-zinc-700'>
               <Input
                 variant="ghost"
                 name="instagram"
@@ -128,8 +130,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Threads"
                 placeholder="https://www.threads.com/@andrelinossilva"
                 defaultValue={socialMedias?.threads || ''}
-                isPremium={isPremium}
-                disabled={isPremium}
+                isOnlyPremium={isOnlyPremium}
+                disabled={isOnlyPremium}
                 onChange={handleChange}
               />
               <Input
@@ -138,8 +140,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Linkedin"
                 placeholder="https://www.linkedin.com/in/andrelinosilva"
                 defaultValue={socialMedias?.linkedin || ''}
-                isPremium={isPremium}
-                disabled={isPremium}
+                isOnlyPremium={isOnlyPremium}
+                disabled={isOnlyPremium}
                 onChange={handleChange}
               />
               <Input
@@ -148,8 +150,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link TikTok"
                 placeholder="https://www.tiktok.com/@rocketseat"
                 defaultValue={socialMedias?.tiktok || ''}
-                isPremium={isPremium}
-                disabled={isPremium}
+                isOnlyPremium={isOnlyPremium}
+                disabled={isOnlyPremium}
                 onChange={handleChange}
               />
               <Input
@@ -158,8 +160,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Kwai"
                 placeholder="https://www.kwai.com/@KwaiBrasilOficial"
                 defaultValue={socialMedias?.kwai || ''}
-                isPremium={isPremium}
-                disabled={isPremium}
+                isOnlyPremium={isOnlyPremium}
+                disabled={isOnlyPremium}
                 onChange={handleChange}
               />
               <Input
@@ -168,8 +170,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
                 title="Link Site"
                 placeholder="https://andrelinosilva.com.br"
                 defaultValue={socialMedias?.site || ''}
-                isPremium={isPremium}
-                disabled={isPremium}
+                isOnlyPremium={isOnlyPremium}
+                disabled={isOnlyPremium}
                 onChange={handleChange}
               />
               <Input
