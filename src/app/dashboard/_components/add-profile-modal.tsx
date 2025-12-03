@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { sanitizeLink } from '@/utils/sanitize-link'
+import Link from 'next/link'
 
 import { useState, useTransition } from 'react'
 
@@ -92,7 +93,9 @@ export function AddProfileModal({ userId }: Props) {
               </div>
               <div className="flex w-full flex-col items-start gap-2">
                 <Label htmlFor="link" className="mt-4 font-semibold">
-                  Link para o negócio
+                  <span className='flex gap-2'>Link para o negócio
+                    {link && <Link href={`/business/${link}`} target='_blank'>link</Link>}
+                  </span>
                 </Label>
                 <Input
                   literalerror={!!error}
