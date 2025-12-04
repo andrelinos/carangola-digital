@@ -1,7 +1,5 @@
-import type { JSX } from 'react'
-
 import type { HolidayException, ScheduleDay } from '@/_types/profile-data'
-import { getNextOpenDay } from '.'
+import type { JSX } from 'react'
 import { ContainerStatus } from './container-status'
 
 export type WeeklySchedule = Record<string, ScheduleDay>
@@ -22,9 +20,8 @@ const dayTranslations: Record<string, string> = {
   Saturday: 'Sábado',
 }
 
-// Helper: Formata data para YYYY-MM-DD de forma segura
+// Helper: Formata data para YYYY-MM-DD (compatível com seus dados)
 const getFormattedDate = (date: Date, timeZone: string) => {
-  // O locale 'fr-CA' retorna nativamente no formato YYYY-MM-DD
   return date.toLocaleDateString('fr-CA', {
     timeZone,
     year: 'numeric',
@@ -33,33 +30,11 @@ const getFormattedDate = (date: Date, timeZone: string) => {
   })
 }
 
-// Helper: Converte horário "HH:MM" para minutos
+// Helper: Converte "HH:MM" para minutos
 const timeToMinutes = (time: string): number => {
   if (!time || !time.includes(':')) return 0
   const [hours, minutes] = time.split(':').map(Number)
   return hours * 60 + minutes
-}
-
-// Helper: Pega a regra efetiva do dia (Feriado ou Dia da Semana)
-function getEffectiveDaySchedule(
-  date: Date,
-  schedule: WeeklySchedule,
-  holidayExceptions: HolidayException[],
-  timeZone: string
-): ScheduleDay | HolidayException | null {
-  // 1. Verifica se é feriado
-  const dateString = getFormattedDate(date, timeZone)
-
-  const holiday = holidayExceptions.find(h => h.date === dateString)
-  if (holiday) return holiday
-
-  // 2. Se não for feriado, pega o dia da semana
-  const dayName = date.toLocaleDateString('en-US', {
-    timeZone,
-    weekday: 'long',
-  })
-
-  return schedule[dayName] || null
 }
 
 export function getOperatingStatus({
@@ -67,175 +42,148 @@ export function getOperatingStatus({
   currentTime,
   holidayExceptions = [],
 }: GetOperatingStatusProps): JSX.Element | string {
-  const daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ]
-
-  if (!schedule || Object?.keys(schedule)?.length === 0) {
+  if (!schedule || Object.keys(schedule).length === 0) {
     return 'Nenhum horário cadastrado'
   }
 
+  const timeZone = 'America/Sao_Paulo'
+
   try {
-    const timeZone = 'America/Sao_Paulo'
-
-    const todayName = currentTime.toLocaleDateString('en-US', {
-      timeZone,
-      weekday: 'long',
-    })
-
+    // 1. Obter minutos atuais de HOJE
     const timeStringInBrazil = currentTime.toLocaleTimeString('pt-BR', {
       timeZone,
       hour: '2-digit',
       minute: '2-digit',
       hourCycle: 'h23',
     })
-
-    const [currentHour, currentMinute] = timeStringInBrazil
-      .split(':')
-      .map(Number)
+    const [currentHour, currentMinute] = timeStringInBrazil.split(':').map(Number)
     const nowMinutes = currentHour * 60 + currentMinute
 
-    // const todaySchedule = schedule[todayName]
+    // 2. Loop para encontrar o próximo momento de abertura (começando de hoje = 0 até 14 dias)
+    for (let daysToAdd = 0; daysToAdd < 14; daysToAdd++) {
+      // Cria a data alvo (Hoje + daysToAdd)
+      const targetDate = new Date(currentTime)
+      targetDate.setDate(currentTime.getDate() + daysToAdd)
 
-    const todaySchedule = getEffectiveDaySchedule(
-      currentTime,
-      schedule,
-      holidayExceptions,
-      timeZone
-    )
+      const targetDateString = getFormattedDate(targetDate, timeZone)
 
-    if (!todaySchedule) {
-      return 'Horário indefinido'
-    }
-
-    if (todaySchedule.isAppointmentOnly) {
-      return (
-        <ContainerStatus status="open">Aberto por Agendamento</ContainerStatus>
-      )
-    }
-
-    const timeToMinutes = (time: string): number => {
-      if (!time || !time.includes(':')) return 0
-      const [hours, minutes] = time.split(':').map(Number)
-      return hours * 60 + minutes
-    }
-
-    const intervals = todaySchedule.intervals || []
-
-    if (todaySchedule.closed || intervals.length === 0) {
-      const next = getNextOpenDay(
-        schedule,
-        currentTime,
-        daysOfWeek,
+      const targetDayName = targetDate.toLocaleDateString('en-US', {
         timeZone,
-        holidayExceptions
-      )
+        weekday: 'long',
+      })
 
-      if (!next) {
-        return <ContainerStatus status="closed">Fechado</ContainerStatus>
+      // --- LÓGICA DE PRIORIDADE: Feriado > Dia Normal ---
+
+      // A: Verifica se existe exceção (feriado) para esta data específica
+      const holiday = holidayExceptions.find(h => h.date === targetDateString)
+
+      // B: Pega o agendamento base do dia da semana
+      const baseSchedule = schedule[targetDayName]
+
+      // C: Define o agendamento efetivo (Feriado sobrescreve base)
+      // Se holiday existir, usamos as regras dele. Se não, usamos as do dia da semana.
+      const effectiveSchedule: ScheduleDay | HolidayException | undefined = holiday
+        ? { ...baseSchedule, ...holiday } // Merge para garantir campos
+        : baseSchedule
+
+      // Se não tiver agendamento para este dia (ex: erro de config), pula
+      if (!effectiveSchedule) continue
+
+      // Se estiver marcado como FECHADO neste dia específico, pula para o próximo dia do loop
+      if (effectiveSchedule.closed) continue
+
+      // Se não tem intervalos definidos e não é "apenas agendamento", considera fechado e pula
+      const intervals = effectiveSchedule.intervals || []
+      if (!effectiveSchedule.isAppointmentOnly && intervals.length === 0) continue
+
+      // --- VERIFICAÇÃO DE HORÁRIO ---
+
+      // Cenário 1: É HOJE (daysToAdd === 0)
+      if (daysToAdd === 0) {
+        // Se é apenas agendamento hoje
+        if (effectiveSchedule.isAppointmentOnly) {
+          return <ContainerStatus status="open">Aberto por Agendamento</ContainerStatus>
+        }
+
+        // Verifica os intervalos de hoje
+        let isOpenNow = false
+        let nextClosing = ''
+        let nextOpeningToday = ''
+
+        for (const interval of intervals) {
+          if (!interval.opening || !interval.closing) continue
+          const start = timeToMinutes(interval.opening)
+          const end = timeToMinutes(interval.closing)
+
+          // Está aberto AGORA?
+          if (nowMinutes >= start && nowMinutes < end) {
+            isOpenNow = true
+            nextClosing = interval.closing
+            break // Achou, sai do loop de intervalos
+          }
+
+          // Vai abrir ainda HOJE mais tarde?
+          if (nowMinutes < start) {
+            if (!nextOpeningToday) nextOpeningToday = interval.opening // Pega o primeiro horário futuro
+          }
+        }
+
+        if (isOpenNow) {
+          return (
+            <ContainerStatus status="open">
+              {`Aberto - Fecha às ${nextClosing}`}
+            </ContainerStatus>
+          )
+        }
+
+        if (nextOpeningToday) {
+          return (
+            <ContainerStatus status="closed">
+              {`Fechado - Abre às ${nextOpeningToday}`}
+            </ContainerStatus>
+          )
+        }
+
+        // Se chegou aqui, é hoje mas o horário já passou.
+        // O loop 'continue' vai rodar e verificar amanhã (daysToAdd = 1)
+        continue
       }
 
-      if (next.isAppointmentOnly) {
-        return next.daysFromNow === 1 ? (
-          <ContainerStatus status="closed">
-            Fechado - Abre amanhã por agendamento
-          </ContainerStatus>
-        ) : (
-          <ContainerStatus status="closed">
-            Fechado - Abre{' '}
-            <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> por
-            agendamento
-          </ContainerStatus>
-        )
-      }
+      // Cenário 2: É UM DIA FUTURO (Amanhã ou depois)
+      // Se chegamos aqui, encontramos o primeiro dia aberto válido.
 
-      return next.daysFromNow === 1 ? (
-        <ContainerStatus status="closed">
-          {`Fechado - Abre amanhã às ${next.opening}`}
-        </ContainerStatus>
-      ) : (
-        <ContainerStatus status="closed">
-          Fechado - Abre{' '}
-          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às{' '}
-          {next.opening}
-        </ContainerStatus>
-      )
-    }
+      const isTomorrow = daysToAdd === 1
+      const dayLabel = isTomorrow
+        ? 'amanhã'
+        : dayTranslations[targetDayName] || targetDayName
 
-    for (const interval of intervals) {
-      if (!interval.opening || !interval.closing) continue
+      const formattedLabel = isTomorrow
+        ? dayLabel
+        : <strong>{dayLabel.toLowerCase()}</strong>
 
-      const openMinutes = timeToMinutes(interval.opening)
-      const closeMinutes = timeToMinutes(interval.closing)
-
-      if (nowMinutes >= openMinutes && nowMinutes < closeMinutes) {
+      // Se for apenas por agendamento
+      if (effectiveSchedule.isAppointmentOnly) {
         return (
-          <ContainerStatus status="open">
-            {`Aberto - Fecha às ${interval.closing}`}
-          </ContainerStatus>
-        )
-      }
-    }
-
-    for (const interval of intervals) {
-      if (!interval.opening) continue
-
-      const openMinutes = timeToMinutes(interval.opening)
-
-      if (nowMinutes < openMinutes) {
-        return (
           <ContainerStatus status="closed">
-            {`Fechado - Abre às ${interval.opening}`}
+            Fechado - Abre {formattedLabel} por agendamento
           </ContainerStatus>
         )
       }
-    }
 
-    const next = getNextOpenDay(
-      schedule,
-      currentTime,
-      daysOfWeek,
-      timeZone,
-      holidayExceptions
-    )
+      // Pega o primeiro horário de abertura do dia encontrado
+      const firstOpening = intervals[0]?.opening
 
-    if (!next) {
-      return <ContainerStatus status="closed">Fechado</ContainerStatus>
-    }
-
-    if (next.isAppointmentOnly) {
-      return next.daysFromNow === 1 ? (
+      return (
         <ContainerStatus status="closed">
-          Fechado - Abre amanhã por agendamento
-        </ContainerStatus>
-      ) : (
-        <ContainerStatus status="closed">
-          Fechado - Abre{' '}
-          <strong>{dayTranslations[next.dayName].toLowerCase()}</strong>{' '}por
-          agendamento
+          Fechado - Abre {formattedLabel} às {firstOpening}
         </ContainerStatus>
       )
     }
 
-    return next.daysFromNow === 1 ? (
-      <ContainerStatus status="closed">
-        {`Fechado - Abre amanhã às ${next.opening}`}
-      </ContainerStatus>
-    ) : (
-      <ContainerStatus status="closed">
-        Fechado - Abre {' '}
-        <strong>{dayTranslations[next.dayName].toLowerCase()}</strong> às {' '}
-        {next.opening}
-      </ContainerStatus>
-    )
+    return <ContainerStatus status="closed">Fechado temporariamente</ContainerStatus>
+
   } catch (error) {
-    console.error('Erro ao processar horários:', error)
-    return 'Erro ao processar horários'
+    console.error('Erro ao processar status:', error)
+    return 'Indisponível'
   }
 }

@@ -164,7 +164,7 @@ export function ContainerOpeningHours({
 
                   return (
                     <div
-                      className={index === todayIndex ? 'text-rose-400' : ''}
+                      className={'text-rose-400'}
                     >
                       Fechado
                     </div>
