@@ -157,7 +157,7 @@ export function ContainerOpeningHours({
                   if (holiday) {
                     return (
                       <div className="flex items-center gap-1 text-rose-400">
-                        Fechado <span className="font-normal">- feriado</span>
+                        Fechado
                       </div>
                     )
                   }
