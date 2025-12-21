@@ -16,8 +16,8 @@ export function PropertyDescription({
 }: Props) {
   return (
     <div className="rounded-lg bg-white p-6 shadow">
-      <div className=" mb-4 flex w-fit gap-1 font-bold text-gray-900 text-xl">
-        Descrição
+      <div className=' mb-4 flex w-fit gap-1 text-gray-900 text-xl'>
+        <span className="font-bold">Descrição</span>
         {(isOwner || isUserAuth) && (
           <EditPropertyDescription data={propertyData} />
         )}

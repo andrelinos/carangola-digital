@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 import { deleteProperty } from '@/actions/properties/delete-property'
 import { formatPrice } from '@/utils/format-price'
-import { Edit, Eye, Home, Plus, Search, Trash2 } from 'lucide-react'
+import { Eye, Home, Plus, Search, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AddPropertyModal } from './add-property-modal'
@@ -283,19 +283,13 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
               <div className="flex gap-2">
                 <Button
-                  onClick={() => handleView(property.id)}
+                  onClick={() => handleView(property.slug)}
                   className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-50 px-4 py-2 font-medium text-blue-600 transition hover:bg-blue-100"
                 >
                   <Eye className="h-4 w-4" />
                   Ver
                 </Button>
-                <Button
-                  onClick={() => handleEdit(property.id)}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-50 px-4 py-2 font-medium text-green-600 transition hover:bg-green-100"
-                >
-                  <Edit className="h-4 w-4" />
-                  Editar
-                </Button>
+
 
                 <Button
                   onClick={() => handleOpenDeleteModal(property.id)}

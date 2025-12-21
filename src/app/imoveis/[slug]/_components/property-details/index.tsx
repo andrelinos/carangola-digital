@@ -11,6 +11,10 @@ interface Props {
 }
 
 export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
+
+  if (!propertyData?.characteristics) {
+    return <div />
+  }
   return (
     <div className="rounded-lg bg-white p-6 shadow">
       <div className="relative mb-4 flex w-fit items-center font-bold text-gray-900 text-xl">

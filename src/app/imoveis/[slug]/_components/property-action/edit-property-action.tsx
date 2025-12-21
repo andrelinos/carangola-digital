@@ -136,11 +136,14 @@ export function EditPropertyActionCard({ data }: Props) {
           onChange={handleChange}
           className="w-full"
         />
-        <Label htmlFor="actionDescription">Descrição</Label>
+        <Label htmlFor="actionDescription" className='font-bold'>
+          Descrição
+        </Label>
         <Textarea
           id="actionDescription"
+          className='font-normal'
           name="actionDescription"
-          title="Dê mais informações para contato"
+          placeholder="Dê mais informações para contato"
           maxLength={300}
         />
         <FooterEditModal
