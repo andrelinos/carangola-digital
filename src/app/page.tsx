@@ -9,6 +9,16 @@ import { PopularCategories } from './_components/popular-categories'
 import { PropertiesCTA } from './_components/properties-cta'
 import { RecentListings } from './_components/recent-listings'
 
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Carangola Digital | Guia Comercial, Empresas e Imóveis em Carangola/MG',
+  description: 'O portal oficial de Carangola/MG para encontrar serviços, lojas, profissionais e imóveis para aluguel e venda. Cadastre seu negócio gratuitamente no Carangola Digital!',
+  alternates: {
+    canonical: 'https://carangoladigital.com.br',
+  },
+}
+
 export default async function Home() {
   trackServerEvent('page_view', {
     page: 'home_portal',

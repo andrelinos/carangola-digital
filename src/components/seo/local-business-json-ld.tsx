@@ -65,7 +65,7 @@ export default function LocalBusinessJsonLd({
     name: data.name,
     image: data.coverImagePath || data.logoImagePath,
     telephone: data.businessPhones?.[0]?.phone || '',
-    url: `https://carangoladigital.com.br/${data.slug}`,
+    url: `https://carangoladigital.com.br/business/${data.slug}`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: firstAddress?.address || '',
@@ -76,6 +76,15 @@ export default function LocalBusinessJsonLd({
     },
     openingHoursSpecification: formatOpeningHours(data.openingHours),
     sameAs: sameAs,
+  }
+
+  if (data.rating && data.reviewCount > 0) {
+    // @ts-ignore
+    jsonLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: data.rating,
+      reviewCount: data.reviewCount,
+    }
   }
 
   return (

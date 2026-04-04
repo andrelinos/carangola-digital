@@ -7,7 +7,7 @@ import { db, getDownloadURLFromPath } from '@/lib/firebase'
 export async function getAllProfileData() {
   const snapshot = await db
     .collection('profiles')
-    // .where('isPublished', '==', true)
+    .where('isPublished', '==', true)
     .orderBy('createdAt', 'desc')
     .get()
 

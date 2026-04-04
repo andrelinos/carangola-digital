@@ -1,5 +1,5 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
-
 import { BusinessAddresses } from './_components/business-addresses'
 import { ContactPhones } from './_components/business-contact-phones'
 import { Description } from './_components/business-description'
@@ -10,6 +10,52 @@ import { LikeShareButtons } from './_components/like-share-buttons'
 
 import { increaseBusinessVisits } from '@/actions/business/increase-business-visits'
 import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const profileData = await getProfileData(slug)
+
+  if (!profileData) {
+    return {
+      title: 'Carangola Digital | Perfil não encontrado',
+    }
+  }
+
+  const title = `${profileData.name} | Carangola Digital`
+  const description = profileData.businessDescription || `Veja informações de ${profileData.name}, contatos, endereço e horários de funcionamento em Carangola/MG.`
+  const url = `https://carangoladigital.com.br/business/${slug}`
+
+  return {
+    title,
+    description,
+    keywords: profileData.categories?.join(', '),
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'Carangola Digital',
+      images: [
+        {
+          url: profileData.coverImageUrl || profileData.logoImageUrl || 'https://carangoladigital.com.br/images/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: profileData.name,
+        },
+      ],
+      locale: 'pt-BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [profileData.coverImageUrl || profileData.logoImageUrl || ''],
+    },
+  }
+}
 
 import { FooterProfile } from '@/components/commons/footer-profile'
 import { authOptions } from '@/lib/auth'
