@@ -27,12 +27,26 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const [propertyToDelete, setPropertyToDelete] =
     useState<PropertyProps | null>(null)
 
+  // NOVO: useEffect ajustado com delay para evitar conflito de hidratação/rotas
+  useEffect(() => {
+    const checkHash = setTimeout(() => {
+      if (typeof window !== 'undefined' && window.location.hash === '#anunciar') {
+        setIsModalOpen(true)
+
+        // Limpa a hash da URL sem disparar eventos de navegação que fecham o modal
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        )
+      }
+    }, 150) // 150ms é o suficiente para a DOM estar pronta
+
+    return () => clearTimeout(checkHash)
+  }, [])
+
   const handleView = (id: string) => {
     router.push(`/imoveis/${id}`)
-  }
-
-  const handleEdit = (id: string) => {
-    router.push(`/imoveis/${id}/editar`)
   }
 
   /**
@@ -70,10 +84,10 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
           handleCloseDeleteModal()
         } else {
-          console.error(result.error)
+          console.error('Erro no processo')
         }
       } catch (error) {
-        console.error('Falha ao tentar excluir:', error)
+        console.error('Falha ao tentar excluir:')
       } finally {
         setIsDeleting(false)
       }

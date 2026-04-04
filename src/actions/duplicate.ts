@@ -86,7 +86,6 @@ export async function duplicateProfile({
 
     return { success: true, newProfile: newProfileData }
   } catch (error: any) {
-    console.error('Erro inesperado ao duplicar perfil:', error)
     return {
       success: false,
       error: 'Ocorreu um erro no servidor. Tente novamente.',

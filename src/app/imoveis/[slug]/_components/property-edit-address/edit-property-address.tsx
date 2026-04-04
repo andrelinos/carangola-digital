@@ -112,7 +112,6 @@ export function EditPropertyAddresses({ data }: Props) {
         }))
       }
     } catch {
-      console.error('Failed to fetch address')
     } finally {
       setIsGettingAddress(false)
     }

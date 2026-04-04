@@ -1,7 +1,7 @@
 import { EditBusinessDescription } from './edit-business-description'
-
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { InfoCircle } from 'iconoir-react'
+import { ProfileSection } from '../profile-section'
 
 interface Props {
   profileData: ProfileDataProps
@@ -14,26 +14,28 @@ export function Description({ profileData, isOwner, isUserAuth }: Props) {
   const profileId = profileData?.id || ''
 
   return (
-    <div className="mt-6 flex w-full flex-col items-center gap-1 rounded-b-xl px-4 pt-6 pb-16">
-      <div className="relative flex">
-        <h2 className="flex items-center gap-2 text-center font-bold text-xl">
-          <InfoCircle className="size-6" /> Descrição
-        </h2>
+    <ProfileSection 
+      title="Sobre a Empresa" 
+      icon={<InfoCircle className="size-6" />}
+      delay={0.1}
+    >
+      <div className="relative">
         {(isOwner || isUserAuth) && (
-          <div className="-top-5 absolute right-0 h-6 rounded-full ">
+          <div className="absolute -top-12 right-0">
             <EditBusinessDescription
               data={{ businessDescription, profileId }}
             />
           </div>
         )}
+        
+        <div className="prose prose-slate dark:prose-invert max-w-none">
+          <p className="font-medium text-muted-foreground/90 text-xl leading-relaxed">
+            {profileData.businessDescription
+              ? profileData.businessDescription
+              : 'Esta empresa ainda não forneceu uma descrição detalhada sobre seus serviços e história.'}
+          </p>
+        </div>
       </div>
-      <div className="mx-auto flex w-full max-w-[1080px] flex-col items-center gap-4">
-        <p className="w-full">
-          {profileData.businessDescription
-            ? profileData.businessDescription
-            : 'Nenhuma descrição cadastrada'}
-        </p>
-      </div>
-    </div>
+    </ProfileSection>
   )
 }

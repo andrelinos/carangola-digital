@@ -1,34 +1,76 @@
-import { Link } from '@/components/ui/link'
+'use client'
+
+import { motion } from 'framer-motion'
+import { Rocket, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export function BusinessCTA() {
   return (
-    <section className="mb-4 bg-linear-to-br from-blue-700 to-blue-800 py-16 text-white dark:from-blue-800 dark:to-blue-900">
-      <div className="container mx-auto max-w-5xl px-4 text-center">
-        <h2 className="mb-4 font-bold text-3xl md:text-4xl">
-          Seu negócio merece ser visto
-        </h2>
-        <p className="mx-auto mb-8 max-w-2xl text-blue-100 text-lg">
-          Aumente sua presença digital. Cadastre sua empresa e conecte-se
-          facilmente com quem procura seus serviços.
-        </p>
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Link
-            href="/dashboard/business?action=anunciar"
-            size="lg"
-            className="bg-white font-semibold text-blue-700 shadow-md transition-transform hover:scale-105 hover:bg-gray-100 dark:bg-slate-100 dark:text-blue-800 dark:hover:bg-slate-200"
-          >
-            Anunciar grátis
-          </Link>
+    <section className="relative overflow-hidden bg-linear-to-br from-blue-600 to-indigo-800 py-20 text-white dark:from-blue-900 dark:to-slate-950">
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[40px_40px]" />
+      
+      <div className="container relative z-10 mx-auto max-w-5xl px-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-8 flex justify-center"
+        >
+          <div className="flex size-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md">
+            <Rocket className="size-8" />
+          </div>
+        </motion.div>
 
-          <Link
-            href="/como-funciona"
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mb-6 font-bold text-3xl md:text-5xl"
+        >
+          Seu Negócio Merece <br className="hidden md:block" /> ser <span className="text-blue-200">Destaque</span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mx-auto mb-10 max-w-2xl text-blue-100/80 text-lg md:text-xl"
+        >
+          Aumente sua visibilidade e atraia mais clientes em Carangola. 
+          Junte-se às centenas de empresas que já transformam sua presença digital conosco.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col justify-center gap-4 sm:flex-row"
+        >
+          <Button
+            asChild
             size="lg"
-            variant="outline"
-            className="border-2 border-white bg-transparent font-semibold text-white shadow-md transition-transform hover:scale-105 hover:bg-white hover:text-blue-700 dark:border-slate-300 dark:text-slate-100 dark:hover:bg-slate-100 dark:hover:text-blue-800"
+            className="bg-white px-8 font-bold text-blue-700 shadow-xl hover:bg-blue-50 dark:bg-white dark:text-blue-900"
           >
-            Saber Mais
-          </Link>
-        </div>
+            <Link href="/dashboard/business?action=anunciar">
+              Começar agora grátis
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="border-white/30 bg-white/5 px-8 font-bold text-white backdrop-blur-sm hover:bg-white/10"
+          >
+            <Link href="/como-funciona" className="inline-flex items-center gap-2">
+              Ver benefícios <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   )

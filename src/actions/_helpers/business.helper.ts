@@ -37,7 +37,6 @@ export async function authorizeProfileUpdate(
   const user = session?.user
 
   if (!user || !user.id) {
-    console.error('Usuário não autenticado.')
     return { error: { success: false, error: 'Não autorizado' } }
   }
   const currentUserId = user.id
@@ -47,7 +46,6 @@ export async function authorizeProfileUpdate(
   const profileDoc = await profileRef.get()
 
   if (!profileDoc.exists) {
-    console.error('Perfil não encontrado:', profileId)
     return { error: { success: false, error: 'Perfil não encontrado' } }
   }
 

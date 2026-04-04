@@ -56,8 +56,6 @@ export async function createOrUpdatePropertyAddress(formData: FormData) {
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao atualizar título', error)
-
     return false
   }
 }

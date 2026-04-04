@@ -49,7 +49,7 @@ export async function deleteProperty({ propertyId }: DeleteProps) {
           if (err.code === 404 || err.message.includes('No such object')) {
             console.warn(`Imagem não encontrada no storage: ${image}`)
           } else {
-            console.error(`Falha ao excluir imagem: ${image}`, err)
+            console.error(`Falha ao excluir imagem: ${image}`)
           }
           return null
         })
@@ -62,7 +62,6 @@ export async function deleteProperty({ propertyId }: DeleteProps) {
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao excluir propriedade', error)
     const errorMessage =
       error instanceof Error ? error.message : 'Falha ao excluir a propriedade.'
 

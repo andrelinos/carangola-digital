@@ -182,8 +182,7 @@ export function getOperatingStatus({
 
     return <ContainerStatus status="closed">Fechado temporariamente</ContainerStatus>
 
-  } catch (error) {
-    console.error('Erro ao processar status:', error)
+  } catch {
     return 'Indisponível'
   }
 }

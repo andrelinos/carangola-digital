@@ -18,7 +18,6 @@ export async function increasePropertyVisits({
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao incrementar visitas:', docPath, error)
     return null
   }
 }

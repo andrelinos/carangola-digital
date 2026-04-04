@@ -105,7 +105,6 @@ export async function saveProfile(formData: FormData) {
 
     return true
   } catch (error) {
-    console.error('Erro ao salvar perfil:', error)
     return false
   }
 }

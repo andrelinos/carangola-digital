@@ -49,7 +49,6 @@ export const getPropertyData = cache(
     const userSnapshot = await userDocRef.get()
 
     if (!userSnapshot?.exists) {
-      console.error('O documento do usuário proprietário não existe.')
       return null
     }
 
@@ -64,8 +63,8 @@ export const getPropertyData = cache(
       propertyData.images
     )
       ? propertyData.images.map(img =>
-          typeof img === 'string' ? img : (img as PropertyImage)?.path
-        )
+        typeof img === 'string' ? img : (img as PropertyImage)?.path
+      )
       : []
 
     const validPaths = imagePaths.filter((p): p is string => Boolean(p))

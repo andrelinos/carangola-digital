@@ -270,7 +270,7 @@ export function EditPropertyGallery({
         URL.revokeObjectURL(img.previewUrl)
       }
     } catch (error) {
-      console.log('Erro ao recarregar imagem...')
+      console.info('Erro ao recarregar imagem...')
     }
     setNewImages([])
     setIsOpen(false)
@@ -323,7 +323,6 @@ export function EditPropertyGallery({
       toast.success('Galeria atualizada com sucesso!')
     } catch (error) {
       toast.error('Erro ao salvar galeria.')
-      console.error(error)
     } finally {
       setIsSubmitting(false)
       startTransition(async () => {
@@ -428,9 +427,8 @@ export function EditPropertyGallery({
                 label="Adicionar Imagem(ns)"
                 aspectRatio={aspectRatio}
                 onFileProcessed={handleAddFile}
-                recommendation={`Recomendado: ${
-                  aspectRatio === 16 / 9 ? '1280x720' : '800x600'
-                }`}
+                recommendation={`Recomendado: ${aspectRatio === 16 / 9 ? '1280x720' : '800x600'
+                  }`}
                 className="min-h-[120px]"
               />
             )}

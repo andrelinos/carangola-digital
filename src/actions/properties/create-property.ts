@@ -84,7 +84,6 @@ export async function createNewProperty(formData: FormData) {
 
     return { success: true, message: 'Propriedade criada com sucesso!' }
   } catch (error) {
-    console.error('Erro ao criar propriedade:', error)
     return { success: false, error: (error as Error).message }
   }
 }

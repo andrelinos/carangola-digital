@@ -113,13 +113,7 @@ export async function updatePropertyGallery(formData: FormData) {
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao atualizar galeria:', error)
-
     if (newImagePaths.length > 0) {
-      console.warn(
-        'Erro na transação. Revertendo uploads de imagens...',
-        newImagePaths
-      )
       await deleteOldImages(newImagePaths)
     }
 

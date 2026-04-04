@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
 import Image from 'next/image'
 
-interface SearchProps extends PropertyProps {}
+interface SearchProps extends PropertyProps { }
 
 export default function SearchFormProperties() {
   const [searchTerms, setSearchTerms] = useState('')
@@ -41,7 +41,7 @@ export default function SearchFormProperties() {
       const json = await response?.json()
       setResultsSearch(json.data || [])
     } catch (error) {
-      console.error('Erro na busca de imóveis:', error)
+      console.error('Erro na busca de imóveis:')
     } finally {
       setHasSearched(true)
       setIsLoadingProperties(false)

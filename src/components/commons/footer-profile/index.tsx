@@ -22,7 +22,7 @@ export function FooterProfile({ profileData, isOwner }: Props) {
             fill
           />
         </div>
-        <div className="flex flex-1 items-center justify-center gap-4 px-4">
+        <div className="flex flex-1 items-center flex-wrap justify-center gap-4 px-4">
           {SOCIAL_MEDIA_CONFIG?.map(({ key, Icon }) => {
             const url = profileData?.socialMedias?.[key]
             const type = url?.includes('@') ? 'email' : ''

@@ -1,16 +1,12 @@
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth/next'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import { manageAuth } from '@/actions/manage-auth'
-import { Button } from '@/components/ui/button'
 
 import { getLatestPublicProfiles } from '@/actions/business/get-latest-public-profiles'
-import SearchFormBusiness from '@/components/form-search'
 import { authOptions } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
-import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
+import { ClientHero } from '@/components/business/client-hero'
+import { ClientFeaturedGrid } from '@/components/business/client-featured-grid'
+import { RegistrationCTA } from '@/components/business/registration-cta'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://carangoladigital.com.br'),
@@ -54,92 +50,51 @@ export const metadata: Metadata = {
   },
 }
 
-const latestPublicProfiles = await getLatestPublicProfiles()
-
-export default async function Home() {
+export default async function BusinessLandingPage() {
   const session = await getServerSession(authOptions)
-
+  const latestPublicProfiles = await getLatestPublicProfiles()
+  
   const hasProfileLink = session?.user?.hasProfileLink || false
 
   trackServerEvent('page_view', {
-    page: 'home',
+    page: 'business_home',
   })
 
   return (
-    <>
-      <div className="size-full px-4 py-36">
-        <div className="flex size-full flex-1 flex-col items-center justify-center">
-          <h1 className=" max-w-2xl text-center font-bold text-3xl lg:text-5xl">
-            Encontre e compartilhe estabelecimentos e serviços
-          </h1>
-          <p className="my-4 max-w-2xl text-center">
-            Estamos aqui para facilitar a sua vida em Carangola — conectando
-            você com o que precisa e ajudando a compartilhar de forma simples e
-            rápida.
-          </p>
+    <div className="flex min-h-screen flex-col bg-background">
+      {/* Hero Section */}
+      <ClientHero />
 
-          <SearchFormBusiness />
-          <h2 className="mt-6 w-full py-2 text-center text-2xl">
-            Empresas Destaque
-          </h2>
-          <div className="mt-6 flex w-full max-w-5xl flex-wrap justify-around gap-6">
-            {latestPublicProfiles?.map((profile, index) => (
-              <Link
-                key={profile?.id + String(index)}
-                href={`/business/${profile.slug}`}
-                className="group h-[300px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 py-4 font-medium text-zinc-700 transition-all duration-300 ease-in-out hover:bg-blue-100"
-                // target="_blank"
-              >
-                <div className="flex w-full flex-col gap-2">
-                  <div className="flex h-14 w-full items-center justify-center">
-                    {getOperatingStatus({
-                      schedule: profile.openingHours as any,
-                      currentTime: new Date(),
-                    })}
-                  </div>
-                  <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">
-                    <div className="z-10 h-full max-h-24 w-auto max-w-24 shadow-md lg:max-h-24">
-                      <Image
-                        width={100}
-                        height={100}
-                        className="size-full object-cover"
-                        src={profile.logoImageUrl || '/default-image.png'}
-                        alt={profile.name}
-                        priority
-                      />
-                    </div>
+      {/* Featured Companies Grid */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="mb-12 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
+          <div className="text-center md:text-left">
+            <h2 className="font-bold text-3xl tracking-tight lg:text-4xl">Empresas em Destaque</h2>
+            <p className="mt-2 text-muted-foreground">Os negócios que movem a nossa cidade em um só lugar.</p>
+          </div>
+          <div className="h-1 w-20 bg-primary/20 rounded-full md:hidden" />
+        </div>
 
-                    <Image
-                      id="background-image"
-                      loading="eager"
-                      src={profile?.logoImageUrl || '/default-image.png'}
-                      className="absolute z-0 size-full object-cover object-center opacity-90 blur-md"
-                      alt={profile?.name || ''}
-                      quality={10}
-                      fill
-                      unoptimized
-                      priority
-                    />
-                  </div>
-                  <div className="flex-1 px-4">
-                    <h2 className="text-center font-semibold text-xl">
-                      {profile.name}
-                    </h2>
-                  </div>
-                </div>
-              </Link>
+        {latestPublicProfiles && latestPublicProfiles.length > 0 ? (
+          <ClientFeaturedGrid profiles={latestPublicProfiles} />
+        ) : (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[400px] w-full rounded-2xl bg-muted animate-pulse" />
             ))}
           </div>
+        )}
+      </section>
 
-          {!hasProfileLink && (
-            <form action={manageAuth} className="w-full max-w-xs pt-16">
-              <Button className="w-full bg-orange-500">
-                Anunciar seu negócio
-              </Button>
-            </form>
-          )}
+      {/* Call to Action Section */}
+      {!hasProfileLink && <RegistrationCTA />}
+      
+      {/* Footer / Info Section */}
+      <footer className="mt-auto border-t py-12">
+        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
+          <p>© {new Date().getFullYear()} Carangola Digital. Todos os direitos reservados.</p>
         </div>
-      </div>
-    </>
+      </footer>
+    </div>
   )
 }

@@ -10,7 +10,7 @@ import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export const getProfileData = cache(
-  async (slug: string): Promise<ProfileDataProps | null> => {
+  async (slug: string, userId?: string): Promise<ProfileDataProps | null> => {
     if (!slug) {
       return null
     }
@@ -28,6 +28,19 @@ export const getProfileData = cache(
     const profileDocId = profileDoc.id
 
     const profileData = profileDoc.data() as ProfileDataProps
+
+    let currentUserRating: number | null = null
+
+    if (userId) {
+      const ratingDoc = await db
+        .collection('ratings')
+        .doc(`${userId}_${profileDocId}`)
+        .get()
+
+      if (ratingDoc.exists) {
+        currentUserRating = ratingDoc.data()?.score || null
+      }
+    }
 
     const coverPath = profileData.coverImagePath || profileData.imagePath
     const logoPath = profileData.logoImagePath
@@ -57,6 +70,7 @@ export const getProfileData = cache(
       id: profileDocId,
       coverImageUrl: coverImageUrl,
       logoImageUrl: logoImageUrl,
+      currentUserRating,
 
       imagePath: coverImageUrl,
       socialMedias: { ...allowedInformationByFilterDataPlan.socialMedias },

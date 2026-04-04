@@ -10,6 +10,10 @@ export type PublicProfileCardData = {
   logoImageUrl: string | null
   category: string | null
   openingHours: ProfileDataProps['openingHours']
+  holidayExceptions: ProfileDataProps['holidayExceptions']
+  isPremium?: boolean
+  isVerified?: boolean
+  businessAddresses?: ProfileDataProps['businessAddresses']
 }
 
 export async function getLatestPublicProfiles(): Promise<
@@ -49,7 +53,6 @@ export async function getLatestPublicProfiles(): Promise<
 
     return profiles
   } catch (error: any) {
-    console.error('Error :: ', error)
     throw new Error('Error:: ', error)
   }
 }

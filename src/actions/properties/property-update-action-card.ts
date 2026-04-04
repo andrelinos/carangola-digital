@@ -53,8 +53,6 @@ export async function propertyUpdateActionCard({
 
       return { success: true }
     } catch (error) {
-      console.error('Erro ao atualizar dados', error)
-
       return null
     }
   }

@@ -41,8 +41,6 @@ export async function propertyUpdateInfoDetails({
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao atualizar descrição', error)
-
     return false
   }
 }

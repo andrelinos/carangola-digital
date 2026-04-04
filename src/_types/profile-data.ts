@@ -106,11 +106,13 @@ export type ProfileDataProps = {
   }
   holidayExceptions: HolidayException[]
   planType: string
-  rating: string
+  rating?: number
   isActive: boolean
   isPremium: boolean
   isVerified: boolean
   reviewCount: number
+  totalScoreSum?: number
+  currentUserRating?: number | null
 
   favorites: BusinessFavoritesProps[]
   openingHours: Schedule

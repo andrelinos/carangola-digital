@@ -46,7 +46,6 @@ export async function getLatestPublicProperties(): Promise<
 
     return properties
   } catch (error: any) {
-    console.error('Erro ao carregar as últimas propriedades :: ', error)
     throw new Error('Erro ao carregar as últimas propriedades')
   }
 }

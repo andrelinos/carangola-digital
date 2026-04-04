@@ -57,8 +57,7 @@ export function formatPrice(
   // 5. Formata o valor válido
   try {
     return brlFormatter.format(numericValue)
-  } catch (error) {
-    console.error('Erro ao formatar preço:', error, 'Input:', price)
+  } catch {
     return defaultOnInvalid
   }
 }

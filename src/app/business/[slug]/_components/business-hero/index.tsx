@@ -1,9 +1,10 @@
-import { MessageText, Star } from 'iconoir-react'
+import { MessageText, Star, ShieldCheck } from 'iconoir-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Badge } from '@/components/ui/badge'
 import { SafeImage } from '@/components/ui/safe-image'
 import { EditBusinessHero } from './edit-business-hero'
+import { RatingStars } from './rating-stars'
 
 interface Props {
   profileData: ProfileDataProps
@@ -18,135 +19,100 @@ export async function BusinessHero({
 }: Props) {
   const businessHeroInfo = profileData || []
   const profileId = profileData?.id || ''
-
-  const currentRating = profileData.isPremium
-    ? '4.9'
-    : profileData.rating || '0.0'
-  const currentReviewCount = profileData.isPremium
-    ? 19
-    : profileData.reviewCount || 0
-
-  const renderStars = (ratingValue: string) => {
-    const ratingNum = Number.parseFloat(ratingValue)
-    const stars = []
-    for (let i = 1; i <= 5; i++) {
-      if (i <= ratingNum) {
-        stars.push(
-          <Star
-            key={i}
-            className="h-5 w-5 text-yellow-400"
-            fill="currentColor"
-          />
-        )
-      } else if (i === Math.ceil(ratingNum) && !Number.isInteger(ratingNum)) {
-        stars.push(
-          <div key={i} className="relative">
-            <Star className="h-5 w-5 text-zinc-300" fill="currentColor" />
-            <div className="absolute top-0 left-0 h-full w-1/2 overflow-hidden">
-              <Star className="h-5 w-5 text-yellow-400" fill="currentColor" />
-            </div>
-          </div>
-        )
-      } else {
-        stars.push(
-          <Star key={i} className="h-5 w-5 text-zinc-300" fill="currentColor" />
-        )
-      }
-    }
-    return stars
-  }
+  
+  const currentRating = typeof profileData.rating === 'number' ? profileData.rating : 0
+  const currentReviewCount = profileData.reviewCount || 0
 
   return (
-    <section className="w-full pb-12">
-      <div className="relative h-48 w-full md:h-64">
+    <section className="relative w-full overflow-hidden lg:rounded-b-[3rem] bg-slate-900 pb-24 text-white">
+      {/* Immersive Cover Image */}
+      <div className="absolute inset-0 opacity-40">
         <SafeImage
-          src={profileData?.coverImageUrl || '/default-image.png'}
+          src={profileData?.coverImageUrl || '/default-image-png'}
           alt={`Banner de ${profileData?.name}`}
-          className="object-cover shadow-md"
+          className="size-full object-cover"
           fill
         />
-        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-black/10" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
       </div>
 
-      <div className="-mt-20 container px-4">
-        <div className="relative rounded-2xl bg-background/80 p-6 shadow-lg">
-          <div className="flex flex-col items-center gap-4 border-slate-200 border-b pb-6 text-center sm:flex-row sm:text-left">
-            <div className="relative h-28 w-28 shrink-0">
+      <div className="container relative z-10 mx-auto px-4 pt-32 lg:pt-48">
+        <div className="flex flex-col items-center gap-8 md:flex-row md:items-end md:gap-12">
+          {/* Logo Frame */}
+          <div className="relative group shrink-0">
+            <div className="relative size-40 overflow-hidden rounded-4xl bg-white p-1.5 shadow-2xl ring-8 ring-white/10 transition-transform duration-500 group-hover:scale-105">
               <SafeImage
                 src={profileData?.logoImageUrl || '/default-image.png'}
-                alt={`Banner de ${profileData?.name}`}
-                className="size-full rounded-full border-4 border-white object-cover shadow-md"
-                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                alt={`Logo de ${profileData?.name}`}
+                className="size-full rounded-4xl object-contain p-2"
                 fill
               />
             </div>
-
-            <div className="flex w-full flex-col items-center justify-between sm:flex-row sm:items-start">
-              <h1 className="font-bold text-3xl">{profileData?.name}</h1>
-              {(isOwner || isUserAuth) && (
-                <div className="mt-2 sm:mt-0 sm:ml-4">
-                  <EditBusinessHero data={{ businessHeroInfo, profileId }} />
-                </div>
-              )}
-            </div>
+            {profileData?.isPremium && (
+              <div className="absolute -right-2 -top-2 z-20 flex size-10 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xl ring-4 ring-slate-950">
+                <Star className="size-6 fill-current" />
+              </div>
+            )}
           </div>
 
-          <div className="pt-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center justify-center gap-3 sm:justify-start">
-                <div className="flex">{renderStars(currentRating)}</div>
-                <div className="text-sm">
-                  <span className="font-bold text-zinc-800">
-                    {currentRating}
-                  </span>
-                  <span className="text-zinc-500"> / 5</span>
-                </div>
-                <div className="h-4 w-px bg-slate-200" />
-                <a
-                  href="#avaliacoes"
-                  className="flex items-center gap-1.5 text-sm text-zinc-600 hover:text-blue-600"
-                >
-                  <MessageText className="h-4 w-4" />
-                  <span>{currentReviewCount} avaliações</span>
-                </a>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                {profileData?.categories?.length ? (
-                  profileData?.categories?.slice(0, 3).map(category => (
-                    <Badge
-                      key={category}
-                      variant="secondary"
-                      className="bg-blue-100 text-blue-800"
-                    >
-                      {category}
-                    </Badge>
-                  ))
-                ) : (
-                  <Badge
-                    variant="secondary"
-                    className="bg-blue-100 text-blue-800"
-                  >
-                    Geral
+          {/* Business Info Layer */}
+          <div className="flex-1 text-center md:pb-4 md:text-left">
+            <div className="mb-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+              {profileData?.isVerified && (
+                <Badge variant="default" className="gap-1 bg-blue-500 text-white border-none px-3 py-1 font-bold tracking-tight">
+                  <ShieldCheck className="size-3.5" />
+                  Verificado
+                </Badge>
+              )}
+              {profileData?.categories?.length ? (
+                profileData.categories.slice(0, 2).map((category) => (
+                  <Badge key={category} variant="secondary" className="bg-slate-800/80 text-white/90 border-slate-700/50 backdrop-blur-sm">
+                    {category}
                   </Badge>
-                )}
-
-                {(isOwner || isUserAuth) && (
-                  <div className='flex flex-col items-center rounded-md bg-white/20 px-2 py-1 text-xs'>
-                    <span>PLANO</span>
-                    <span className="font-semibold">
-                      {profileData?.planType?.toUpperCase() || 'GRÁTIS'}
-                    </span>
-                  </div>
-                )}
-              </div>
+                ))
+              ) : (
+                <Badge variant="secondary" className="bg-slate-800/80 text-white/90 backdrop-blur-sm">
+                  Geral
+                </Badge>
+              )}
             </div>
 
-            {profileData?.businessDescription && (
-              <p className="mt-6 text-center text-base text-muted-foreground sm:text-left">
-                {profileData?.businessDescription}
-              </p>
-            )}
+            <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
+              <h1 className="font-extrabold text-4xl leading-tight md:text-6xl tracking-tight">
+                {profileData?.name}
+              </h1>
+              {(isOwner || isUserAuth) && (
+                <EditBusinessHero data={{ businessHeroInfo, profileId }} />
+              )}
+            </div>
+
+            <div className="mt-8 flex flex-col md:flex-row md:items-center gap-6">
+              {/* Rating Component Integration */}
+              <RatingStars 
+                profileId={profileId}
+                slug={profileData.slug}
+                initialRating={currentRating}
+                totalReviews={currentReviewCount}
+                userRating={profileData.currentUserRating}
+                isLoggedIn={!!isUserAuth || !!isOwner}
+                isOwner={isOwner}
+              />
+
+              <div className="hidden h-8 w-px bg-white/20 md:block" />
+
+              <a
+                href="#avaliacoes"
+                className="group flex items-center justify-center gap-3 text-sm font-semibold text-white/60 transition-colors hover:text-white md:justify-start"
+              >
+                <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 group-hover:bg-amber-500 transition-colors group-hover:text-white">
+                  <MessageText className="size-5" />
+                </div>
+                <div className="flex flex-col items-start leading-tight">
+                   <span className="text-white font-bold text-base">{currentReviewCount}</span>
+                   <span className="text-[10px] uppercase tracking-wider opacity-60">Avaliações reais</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>

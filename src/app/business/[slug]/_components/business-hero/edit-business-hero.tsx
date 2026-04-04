@@ -67,7 +67,6 @@ export function EditBusinessHero({ data }: Props) {
       })
     } catch (error) {
       toast.error('Erro ao salvar perfil.')
-      console.error(error)
     } finally {
       setIsSubmitting(false)
     }

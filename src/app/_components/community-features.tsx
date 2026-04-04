@@ -1,57 +1,75 @@
-import { Link } from '@/components/ui/link'
-import { InfoCircle } from 'iconoir-react'
-import { Phone, Search } from 'lucide-react'
+'use client'
+
+import { motion } from 'framer-motion'
+import { PhoneCall, PackageSearch, HelpCircle, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 const communityFeatures = [
   {
     title: 'Telefones Úteis',
-    description:
-      'Acesse rapidamente telefones de emergência, saúde e serviços públicos.',
+    description: 'Acesse rapidamente telefones de emergência, saúde e serviços públicos essenciais.',
     href: '/telefones-uteis',
-    icon: Phone,
-    color: 'text-blue-600 dark:text-blue-400',
+    icon: PhoneCall,
+    color: 'text-blue-500 bg-blue-500/10',
   },
   {
     title: 'Achados e Perdidos',
-    description: 'Perdeu ou encontrou algo? Ajude a comunidade local.',
+    description: 'Perdeu ou encontrou algo em Carangola? Ajude a nossa comunidade local.',
     href: '/achados-e-perdidos',
-    icon: Search,
-    color: 'text-green-600 dark:text-green-400',
+    icon: PackageSearch,
+    color: 'text-emerald-500 bg-emerald-500/10',
   },
   {
     title: 'Como Funciona',
-    description: 'Veja como é fácil encontrar ou anunciar em nossa plataforma.',
+    description: 'Veja como é fácil encontrar o que precisa ou anunciar sua empresa e imóveis.',
     href: '/como-funciona',
-    icon: InfoCircle,
-    color: 'text-yellow-600 dark:text-yellow-400',
+    icon: HelpCircle,
+    color: 'text-amber-500 bg-amber-500/10',
   },
 ]
 
 export function CommunityFeatures() {
   return (
-    <section className="py-16 md:py-20">
+    <section className="bg-white py-16 dark:bg-slate-900 md:py-24">
       <div className="container mx-auto max-w-6xl px-4">
-        <h2 className="mb-8 text-center font-bold text-3xl text-slate-900 dark:text-slate-100">
-          Sua Central de Utilidade
-        </h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {communityFeatures.map(feature => (
-            <Link
+        <div className="mb-16 text-center">
+          <h2 className="font-bold text-3xl tracking-tight text-slate-900 lg:text-4xl dark:text-slate-100">
+            Sua Central de Utilidade
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+            Serviços e informações úteis para facilitar o dia a dia de quem vive em Carangola.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {communityFeatures.map((feature, index) => (
+            <motion.div
               key={feature.title}
-              variant="unstyled"
-              href={feature.href}
-              className="hover:-translate-y-2 rounded-lg bg-white p-6 text-center shadow-md transition-transform duration-300 ease-in-out dark:bg-slate-800"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <feature.icon
-                className={`mx-auto mb-4 h-12 w-12 ${feature.color}`}
-              />
-              <h3 className="mb-2 font-semibold text-slate-900 text-xl dark:text-slate-100">
-                {feature.title}
-              </h3>
-              <p className="mb-6 text-slate-600 dark:text-slate-400">
-                {feature.description}
-              </p>
-            </Link>
+              <Link
+                href={feature.href}
+                className="group flex h-full flex-col items-center rounded-3xl border border-transparent bg-slate-50 p-8 text-center transition-all hover:border-primary/20 hover:bg-white hover:shadow-xl dark:bg-slate-800 dark:hover:bg-slate-700"
+              >
+                <div
+                  className={`mb-6 flex size-20 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 group-hover:-rotate-3 ${feature.color}`}
+                >
+                  <feature.icon className="size-10" />
+                </div>
+                <h3 className="mb-3 font-bold text-slate-900 text-xl dark:text-slate-100">
+                  {feature.title}
+                </h3>
+                <p className="mb-8 text-sm leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </p>
+                <div className="mt-auto flex items-center gap-2 font-semibold text-primary text-sm">
+                  Acessar agora <ArrowRight className="size-4" />
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>

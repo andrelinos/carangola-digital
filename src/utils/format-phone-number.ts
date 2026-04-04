@@ -47,9 +47,9 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
     // Retorna a string original (como recebida) para não perder dados.
     // Ex: "Ramal 123", "12345" ou um número internacional "18005551234"
     return phone
-  } catch (error) {
+  } catch {
     // 5. Lidar com erro inesperado (ex: falha no .replace())
-    console.error('Erro ao formatar telefone:', error)
+    console.error('Erro ao formatar telefone')
     return phone // Retorna o original em caso de falha
   }
 }

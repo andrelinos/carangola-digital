@@ -49,7 +49,6 @@ export async function getUserProperties(
 
     return properties
   } catch (error) {
-    console.error('Erro ao listar propriedades:', error)
     return []
   }
 }

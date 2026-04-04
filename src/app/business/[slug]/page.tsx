@@ -16,6 +16,7 @@ import { authOptions } from '@/lib/auth'
 import { ShieldCheck } from 'iconoir-react'
 import { getServerSession } from 'next-auth/next'
 import { ContentProfile } from './content'
+import LocalBusinessJsonLd from '@/components/seo/local-business-json-ld'
 
 interface Props {
   params: Promise<{
@@ -28,7 +29,7 @@ export default async function BusinessId({ params }: Props) {
 
   const { slug } = await params
 
-  const profileData = await getProfileData(slug)
+  const profileData = await getProfileData(slug, session?.user?.id)
 
   const userData = await getUsersData(session?.user?.id || '')
 
@@ -57,6 +58,7 @@ export default async function BusinessId({ params }: Props) {
 
   return (
     <>
+    <LocalBusinessJsonLd data={profileData} />
       <ContentProfile totalVisits={profileData?.totalVisits}>
         <BusinessHero
           profileData={profileData}
@@ -64,55 +66,74 @@ export default async function BusinessId({ params }: Props) {
           isUserAuth={isUserAuth}
         />
 
-        <div className="flex w-full flex-col items-center gap-8 pt-8">
-          <ContainerOpeningHours
-            profileData={profileData}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            {/* Main Content Column (70%) */}
+            <div className="space-y-8 lg:col-span-2">
+              <Description
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
 
-          <ContactPhones
-            profileData={profileData}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
-
-          <BusinessAddresses
-            profileData={profileData}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
-
-          <Description
-            profileData={profileData}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
-
-          <SocialMedia
-            profileData={profileData}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
-          <LikeShareButtons
-            profileData={profileData}
-            userInfo={session?.user}
-            isFavorite={isFavorite}
-            isOwner={isOwner}
-            isUserAuth={isUserAuth}
-          />
-          {!profileData.hasOwner && (
-            <div className="p-4">
-              <Link
-                href={`/reivindicar-empresa?slug=${profileData.slug}&businessId=${profileData.id}`}
-                className="group flex items-center gap-1 p-4 text-xs hover:font-bold"
-                target="_blank"
-              >
-                <ShieldCheck className="transition-all duration-300 ease-in-out group-hover:scale-110 " />
-                Reivindicar esta empresa
-              </Link>
+              <BusinessAddresses
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
+              
+              {/* Future addition: Gallery or Services could go here */}
             </div>
-          )}
+
+            {/* Sidebar Column (30%) */}
+            <div className="space-y-8">
+              <ContainerOpeningHours
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
+
+              <ContactPhones
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
+
+              <SocialMedia
+                profileData={profileData}
+                isOwner={isOwner}
+                isUserAuth={isUserAuth}
+              />
+
+              <div className="pt-4">
+                <LikeShareButtons
+                  profileData={profileData}
+                  userInfo={session?.user}
+                  isFavorite={isFavorite}
+                  isOwner={isOwner}
+                  isUserAuth={isUserAuth}
+                />
+              </div>
+
+              {!profileData.hasOwner && (
+                <div className="rounded-2xl bg-blue-50 p-6 dark:bg-blue-900/20">
+                  <Link
+                    href={`/reivindicar-empresa?slug=${profileData.slug}&businessId=${profileData.id}`}
+                    className="group flex flex-col items-center gap-2 text-center text-sm"
+                    target="_blank"
+                  >
+                    <ShieldCheck className="size-8 text-blue-500 transition-transform group-hover:scale-110" />
+                    <span className="font-bold text-blue-900 dark:text-blue-100">
+                      Reivindicar esta empresa
+                    </span>
+                    <p className="text-blue-800/70 text-xs dark:text-blue-200/60">
+                      Você é o dono deste negócio? Verifique e gerencie suas informações.
+                    </p>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </ContentProfile>
 

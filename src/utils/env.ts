@@ -36,7 +36,6 @@ const _env = serverEnvSchema.safeParse({
 })
 
 if (!_env.success) {
-  console.error('Erro nas variáveis de ambiente:', _env.error.format())
   throw new Error('Variáveis de ambiente inválidas.')
 }
 

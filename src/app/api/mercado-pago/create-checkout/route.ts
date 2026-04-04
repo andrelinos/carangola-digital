@@ -83,7 +83,6 @@ export async function POST(req: NextRequest) {
       initPoint: createdPreference.init_point,
     })
   } catch (err) {
-    console.error('ERROR :: ', err)
     return NextResponse.error()
   }
 }

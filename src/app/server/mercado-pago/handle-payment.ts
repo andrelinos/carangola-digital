@@ -15,10 +15,9 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
         profileId = paymentData.external_reference
         planType = paymentData.metadata.plan.type
         userId = paymentData.metadata.user_id
-      } catch (error) {
+      } catch {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.'
-          // error
         )
       }
     }
@@ -68,8 +67,8 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
       )
       return false
     }
-  } catch (error) {
-    console.error('Erro ao processar pagamento:', error)
+  } catch {
+    console.error('Erro ao processar pagamento')
     return false
   }
 

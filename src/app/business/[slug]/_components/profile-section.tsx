@@ -1,0 +1,44 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { cn } from '@/lib/utils'
+import type { ReactNode } from 'react'
+
+interface ProfileSectionProps {
+  children: ReactNode
+  title?: string
+  icon?: ReactNode
+  className?: string
+  delay?: number
+}
+
+export function ProfileSection({ 
+  children, 
+  title, 
+  icon, 
+  className,
+  delay = 0 
+}: ProfileSectionProps) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay }}
+      className={cn(
+        "w-full overflow-hidden rounded-3xl border bg-card p-6 shadow-sm shadow-black/3 dark:shadow-none sm:p-8",
+        className
+      )}
+    >
+      {title && (
+        <div className="mb-6 flex items-center gap-3">
+          {icon && <div className="text-primary">{icon}</div>}
+          <h2 className="font-bold text-xl text-foreground tracking-tight">
+            {title}
+          </h2>
+        </div>
+      )}
+      {children}
+    </motion.section>
+  )
+}

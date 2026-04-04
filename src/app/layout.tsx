@@ -74,6 +74,7 @@ export default function RootLayout({
           quicksand.className
         )}
       >
+        <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
         <ThemeProvider>
           <StairTransition />
           <PageTransition>
@@ -86,7 +87,6 @@ export default function RootLayout({
         <Toaster richColors position="top-right" />
         <Footer />
       </body>
-      <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
     </html>
   )
 }

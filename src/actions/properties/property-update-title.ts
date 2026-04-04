@@ -46,8 +46,6 @@ export async function propertyUpdateTitle({ title, propertyId }: Props) {
 
     return { success: true }
   } catch (error) {
-    console.error('Erro ao atualizar título', error)
-
     return false
   }
 }

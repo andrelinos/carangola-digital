@@ -60,7 +60,6 @@ async function getCroppedImg(
   })
 
   if (!blob) {
-    console.error('Canvas está vazio após o recorte.')
     return null
   }
 

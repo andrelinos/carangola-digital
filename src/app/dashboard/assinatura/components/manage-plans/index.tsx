@@ -37,7 +37,6 @@ export function ManagePlans({ plans }: ManagePlansProps) {
   function handleConfirmPlan() {
     if (selectedPlan) {
       // Lógica para confirmar o plano (ex: redirecionar para pagamento, API call)
-      console.log(`Plano ${selectedPlan.title} confirmado!`)
       alert(`Você escolheu o plano: ${selectedPlan.title}! 🎉`)
       handleCloseModal() // Fecha o modal após a confirmação
     }

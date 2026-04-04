@@ -62,7 +62,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ data: properties })
   } catch (error) {
-    console.error('Erro na busca de imóveis (API):', error)
     return NextResponse.json(
       { error: 'Erro ao buscar imóveis' },
       { status: 500 }

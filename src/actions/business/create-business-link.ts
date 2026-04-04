@@ -32,7 +32,7 @@ export async function createBusinessLink({ link, name, userId }: Props) {
     return { success: false, error: 'Este perfil já está em uso.' }
   }
 
-  console.log('LINK: ', link)
+
 
   const linkText = kebabToPhrase(link)
   let keywords = [] as string[]
@@ -87,7 +87,6 @@ export async function createBusinessLink({ link, name, userId }: Props) {
 
     return { success: true }
   } catch (error: any) {
-    console.error('Erro inesperado ao criar perfil:', error)
     return {
       success: false,
       error: 'Ocorreu um erro no servidor. Tente novamente.',
