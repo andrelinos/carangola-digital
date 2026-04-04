@@ -69,7 +69,7 @@ export function PopularCategories() {
             <p className="mt-2 text-muted-foreground">Explore as categorias mais acessadas em Carangola.</p>
           </div>
           <Link 
-            href="/business" 
+            href="/explorar" 
             className="flex items-center gap-2 font-semibold text-primary text-sm hover:underline"
           >
             Ver todas as categorias <ArrowRight className="size-4" />
