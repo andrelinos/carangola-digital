@@ -12,6 +12,7 @@ import { HeaderHome } from '@/components/commons/headers'
 import { PageTransition, StairTransition } from '@/components/effects'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/providers/theme-provider'
+import { AuthProvider } from '@/providers/session-provider'
 import { serverEnv } from '@/utils/env'
 
 const quicksand = Quicksand({
@@ -75,14 +76,16 @@ export default function RootLayout({
         )}
       >
         <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
-        <ThemeProvider>
-          <StairTransition />
-          <PageTransition>
-            <HeaderHome />
-            {children}
-            <CookieBanner />
-          </PageTransition>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <StairTransition />
+            <PageTransition>
+              <HeaderHome />
+              {children}
+              <CookieBanner />
+            </PageTransition>
+          </ThemeProvider>
+        </AuthProvider>
 
         <Toaster richColors position="top-right" />
         <Footer />

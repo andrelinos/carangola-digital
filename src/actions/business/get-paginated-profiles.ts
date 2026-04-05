@@ -56,24 +56,34 @@ export async function getPaginatedProfiles(
     const profiles = await Promise.all(
       snapshot.docs.map(async doc => {
         const data = doc.data()
-        const imagePath = data.logoImagePath || data.coverImagePath || data.imagePath
-        const imageUrl = await getDownloadURLFromPath(imagePath)
+        
+        // Proteção contra caminhos de imagem indefinidos
+        const imagePath = data.logoImagePath || data.coverImagePath || data.imagePath || null
+        
+        let imageUrl = null
+        if (imagePath) {
+          try {
+            imageUrl = await getDownloadURLFromPath(imagePath)
+          } catch (e) {
+            console.warn(`Could not get image URL for ${doc.id}:`, imagePath)
+          }
+        }
 
         return {
           id: doc.id,
           name: data.name || 'Nome não informado',
-          slug: data.slug,
+          slug: data.slug || doc.id,
           logoImageUrl: imageUrl,
-          openingHours: data.openingHours,
-          holidayExceptions: data.holidayExceptions,
-          isPremium: data.isPremium,
-          isVerified: data.isVerified,
-          businessAddresses: data.businessAddresses,
+          openingHours: data.openingHours || {},
+          holidayExceptions: data.holidayExceptions || [],
+          isPremium: !!data.isPremium,
+          isVerified: !!data.isVerified,
+          businessAddresses: data.businessAddresses || [],
           reviewCount: data.reviewCount || 0,
-          rating: data.rating,
+          rating: data.rating || 0,
           category: Array.isArray(data.categories) && data.categories.length > 0
             ? data.categories[0]
-            : data.category || null,
+            : data.category || 'Outros',
         } as PublicProfileCardData
       })
     )
@@ -86,7 +96,9 @@ export async function getPaginatedProfiles(
       hasMore: snapshot.docs.length === limitNum
     }
   } catch (error: any) {
-    console.error('Error fetching paginated profiles:', error)
-    throw new Error('Erro ao carregar empresas')
+    // Retornamos o erro real para que você possa ver no log do terminal (ou console do Next.js)
+    // Se for falta de índice, o Firebase retornará um link para criar o índice composto.
+    console.error('FIREBASE_QUERY_ERROR:', error.message || error)
+    throw new Error(`Erro ao carregar empresas: ${error.message || 'Erro desconhecido'}`)
   }
 }

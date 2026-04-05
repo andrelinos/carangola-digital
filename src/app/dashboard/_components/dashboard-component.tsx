@@ -1,60 +1,36 @@
 'use client'
 
-import { DashboardCard } from './dashboard-card'
+import { WelcomeHeader } from './welcome-header'
+import { DashboardStats } from './dashboard-stats'
+import { ProUpgradeBanner } from './pro-upgrade-banner'
+import { DashboardProfilesTable } from './dashboard-profiles-sum-table'
+import { PropertiesTable } from './dashboard-properties-table'
 
 export function DashboardComponent() {
-  const kpiData = [] as any
-  // const kpiData = [
-  //   {
-  //     title: 'Anúncios Ativos',
-  //     value: '75',
-  //     change: '+5% vs. mês passado',
-  //     icon: <LayoutList className="h-5 w-5" />,
-  //     iconClass: 'text-chart-1',
-  //   },
-  //   {
-  //     title: 'Visualizações',
-  //     value: '12.430',
-  //     change: '+12.2% vs. mês passado',
-  //     icon: <Eye className="h-5 w-5" />,
-  //     iconClass: 'text-chart-2',
-  //   },
-  //   {
-  //     title: 'Novas Mensagens',
-  //     value: '142',
-  //     change: '+8 novos hoje',
-  //     icon: <MessageSquare className="h-5 w-5" />,
-  //     iconClass: 'text-chart-4',
-  //   },
-  //   {
-  //     title: 'Taxa de Contato',
-  //     value: '11.4%',
-  //     change: '-0.5% vs. mês passado',
-  //     icon: <Percent className="h-5 w-5" />,
-  //     iconClass: 'text-chart-5',
-  //   },
-  // ]
-
   return (
-    <main className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-3 xl:grid-cols-4">
-      <div className="flex size-full flex-col items-center justify-center py-[25vh]">
-        <h1 className="font-bold">Painel de controle</h1>
-        <p className="nt-4 text-gray-400">Estamos trabalhando nisto</p>
+    <div className="flex flex-col">
+      {/* 👋 Personalized Greeting */}
+      <WelcomeHeader />
+
+      {/* 📊 Key Statistics */}
+      <DashboardStats />
+
+      {/* 🚀 Monetization CTA */}
+      <ProUpgradeBanner />
+
+      {/* 📋 Listings Summary */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        <div className="xl:col-span-2">
+          <DashboardProfilesTable />
+        </div>
+        <div className="xl:col-span-2">
+          <PropertiesTable />
+        </div>
       </div>
-      {kpiData.map((data: any, index: any) => (
-        <DashboardCard
-          key={String(index)}
-          title={data.title}
-          value={data.value}
-          change={data.change}
-          icon={data.icon as any}
-          iconClass={data.iconClass}
-        />
-      ))}
 
-      {/* <PropertiesTable />
-
-      <DashboardProfilesTable /> */}
-    </main>
+      <div className="mt-8 flex flex-col items-center justify-center py-12 border border-dashed rounded-3xl bg-muted/20 text-muted-foreground opacity-50">
+        <p className="text-sm font-medium italic">Mais métricas detalhadas em breve...</p>
+      </div>
+    </div>
   )
 }

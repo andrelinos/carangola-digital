@@ -26,12 +26,11 @@ export async function getPaginatedProperties(
     }
 
     if (lastDocId) {
-      // Since it's a collection group, we need to find the specific doc first
-      // Or we can pass the snapshot, but server actions only support serializable data.
-      // Firebase Admin SDK allows fetching by ID, but for collection group, we need to be careful.
-      // Usually, passing the doc reference is better if it were a normal collection.
-      // For collectionGroup, we might need a workaround or just fetch and skip (not efficient).
-      // Actually, we can fetch the doc by full path if we have it, or just use the ID if unique.
+      // For collectionGroup, we use the absolute path to fetch the document snapshot
+      const lastDoc = await db.doc(lastDocId).get()
+      if (lastDoc.exists) {
+        queryItems = queryItems.startAfter(lastDoc)
+      }
     }
 
     const snapshot = await queryItems.limit(limitNum).get()
@@ -43,17 +42,33 @@ export async function getPaginatedProperties(
     const properties = await Promise.all(
       snapshot.docs.map(async doc => {
         const data = doc.data()
-        const firstImage = Array.isArray(data.images) ? data.images[0] : undefined
+        const firstImage = Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : undefined
+        
         const firstPath: string | undefined = firstImage
           ? typeof firstImage === 'string' ? firstImage : (firstImage as PropertyImage)?.path
           : undefined
 
-        const imageUrl = await getDownloadURLFromPath(firstPath)
+        let imageUrl = null
+        if (firstPath) {
+          try {
+            imageUrl = await getDownloadURLFromPath(firstPath)
+          } catch (e) {
+            console.warn(`Could not get image URL for property ${doc.id}:`, firstPath)
+          }
+        }
 
         return {
           ...data,
           id: doc.id,
           thumbnail: imageUrl,
+          characteristics: data.characteristics || { area: 0, bedrooms: 0, bathrooms: 0, garageSpots: 0 },
+          images: data.images || [],
+          features: data.features || [],
+          isPublished: !!data.isPublished,
+          price: data.price || 0,
+          type: data.type || 'Imóvel',
+          listingType: data.listingType || 'Venda',
+          slug: data.slug || doc.id,
         } as PropertyProps
       })
     )
@@ -62,11 +77,11 @@ export async function getPaginatedProperties(
 
     return {
       properties,
-      lastDocId: lastVisible.id,
+      lastDocId: lastVisible.ref.path, // Use path for easier fetching in the next call
       hasMore: snapshot.docs.length === limitNum
     }
   } catch (error: any) {
-    console.error('Error fetching paginated properties:', error)
-    throw new Error('Erro ao carregar imóveis')
+    console.error('FIREBASE_QUERY_ERROR (Properties):', error.message || error)
+    throw new Error(`Erro ao carregar imóveis: ${error.message || 'Erro desconhecido'}`)
   }
 }
