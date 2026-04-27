@@ -15,13 +15,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Building2, 
-  ExternalLink, 
-  MoreVertical, 
-  Search, 
-  Trash2, 
-  UserPlus, 
+import {
+  Building2,
+  ExternalLink,
+  MoreVertical,
+  Search,
+  Trash2,
+  UserPlus,
   Calendar,
   Users,
   Eye,
@@ -140,87 +140,87 @@ export function AllProfilesTable({
       {/* Grid of Profile Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {listProfiles?.map(profile => (
-          <Card 
-            key={profile.id} 
+          <Card
+            key={profile.id}
             className="group relative overflow-hidden rounded-[2.5rem] border-slate-100 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] hover:border-primary/20"
           >
             <CardContent className="p-0">
               {/* Card Header Background */}
               <div className="h-24 bg-linear-to-r from-primary/10 to-blue-50 group-hover:from-primary group-hover:to-blue-600 transition-all duration-500" />
-              
+
               <div className="px-8 pb-8 -mt-12">
                 {/* Logo / Avatar */}
                 <div className="relative mb-6">
-                   <div className="size-20 rounded-[1.5rem] bg-white p-1 shadow-xl border border-slate-50 relative z-10 overflow-hidden">
-                      {profile.logoImageUrl ? (
-                        <img 
-                          src={profile.logoImageUrl} 
-                          alt={profile.name} 
-                          className="size-full object-cover rounded-[1.2rem]" 
-                        />
-                      ) : (
-                        <div className="size-full bg-slate-100 flex items-center justify-center">
-                           <Building2 className="size-8 text-slate-400" />
-                        </div>
-                      )}
-                   </div>
-                   
-                   <div className="absolute top-14 right-0 z-20">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline" size="icon" className="size-8 rounded-full bg-white border-slate-100 shadow-sm hover:bg-slate-50">
-                            <MoreVertical className="size-4 text-slate-600" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-100 shadow-xl">
-                          <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-widest text-slate-400 px-3">Opções de Gestão</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem asChild className="rounded-xl cursor-not-allowed opacity-50">
-                             <div className="flex items-center gap-2 p-2">
-                                <Settings2 className="size-4" />
-                                <span className="font-bold text-xs uppercase">Configurações</span>
-                             </div>
-                          </DropdownMenuItem>
-                          
-                          {isAdmin && (
-                            <>
-                              <DropdownMenuItem 
-                                onClick={() => {
-                                  setSelectedProfile(profile)
-                                  setTransferModalOpen(true)
-                                }}
-                                className="rounded-xl text-blue-600 focus:text-blue-700 focus:bg-blue-50"
-                              >
-                                <div className="flex items-center gap-2 p-2">
-                                  <UserPlus className="size-4" />
-                                  <span className="font-bold text-xs uppercase">Transferir Dono</span>
-                                </div>
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem 
-                                onClick={() => {
-                                  setSelectedProfile(profile)
-                                  setDeleteModalOpen(true)
-                                }}
-                                className="rounded-xl text-destructive focus:text-destructive focus:bg-destructive/10"
-                              >
-                                <div className="flex items-center gap-2 p-2">
-                                  <Trash2 className="size-4" />
-                                  <span className="font-bold text-xs uppercase">Apagar Registro</span>
-                                </div>
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                   </div>
+                  <div className="size-20 rounded-[1.5rem] bg-white p-1 shadow-xl border border-slate-50 relative z-10 overflow-hidden">
+                    {profile.logoImageUrl ? (
+                      <img
+                        src={profile.logoImageUrl}
+                        alt={profile.name}
+                        className="size-full object-cover rounded-[1.2rem]"
+                      />
+                    ) : (
+                      <div className="size-full bg-slate-100 flex items-center justify-center">
+                        <Building2 className="size-8 text-slate-400" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="absolute top-14 right-0 z-20">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon" className="size-8 rounded-full bg-white border-slate-100 shadow-sm hover:bg-slate-50">
+                          <MoreVertical className="size-4 text-slate-600" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-100 shadow-xl">
+                        <DropdownMenuLabel className="font-black text-[10px] uppercase tracking-widest text-slate-400 px-3">Opções de Gestão</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild className="rounded-xl cursor-not-allowed opacity-50">
+                          <div className="flex items-center gap-2 p-2">
+                            <Settings2 className="size-4" />
+                            <span className="font-bold text-xs uppercase">Configurações</span>
+                          </div>
+                        </DropdownMenuItem>
+
+                        {isAdmin && (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedProfile(profile)
+                                setTransferModalOpen(true)
+                              }}
+                              className="rounded-xl text-blue-600 focus:text-blue-700 focus:bg-blue-50"
+                            >
+                              <div className="flex items-center gap-2 p-2">
+                                <UserPlus className="size-4" />
+                                <span className="font-bold text-xs uppercase">Transferir Dono</span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedProfile(profile)
+                                setDeleteModalOpen(true)
+                              }}
+                              className="rounded-xl text-destructive focus:text-destructive focus:bg-destructive/10"
+                            >
+                              <div className="flex items-center gap-2 p-2">
+                                <Trash2 className="size-4" />
+                                <span className="font-bold text-xs uppercase">Apagar Registro</span>
+                              </div>
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-black text-xl text-slate-900 tracking-tight leading-tight line-clamp-1">{profile.name}</h3>
-                    <Link 
-                      href={`/business/${profile.slug}`} 
+                    <Link
+                      href={`/business/${profile.slug}`}
                       target="_blank"
                       className="text-xs font-bold text-primary hover:underline flex items-center gap-1 mt-1 uppercase tracking-wider"
                     >
@@ -231,57 +231,57 @@ export function AllProfilesTable({
 
                   {/* Stats Grid */}
                   <div className="grid grid-cols-2 gap-4 py-4 border-y border-slate-50">
-                     <div className="space-y-1">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-                           <Eye className="size-3" /> Cliques
-                        </span>
-                        <p className="font-black text-slate-900">{profile.totalVisits || 0}</p>
-                     </div>
-                     <div className="space-y-1">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-                           <Users className="size-3" /> Admins
-                        </span>
-                        <p className="font-black text-slate-900">{profile.admins?.length || 0}</p>
-                     </div>
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                        <Eye className="size-3" /> Cliques
+                      </span>
+                      <p className="font-black text-slate-900">{profile.totalVisits || 0}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                        <Users className="size-3" /> Admins
+                      </span>
+                      <p className="font-black text-slate-900">{profile.admins?.length || 0}</p>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-2">
-                     <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-                           <Calendar className="size-3" /> Criado em
-                        </span>
-                        <span className="text-xs font-bold text-slate-700 italic">
-                          {new Date(profile.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
-                        </span>
-                     </div>
-                     
-                     <Badge 
-                        variant="secondary" 
-                        className={cn(
-                          "rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-[0.1em]",
-                          profile.planActive?.type === 'free' ? "bg-slate-100 text-slate-500" : "bg-primary/10 text-primary"
-                        )}
-                      >
-                        {profile.planActive?.type || 'Grátis'}
-                     </Badge>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                        <Calendar className="size-3" /> Criado em
+                      </span>
+                      <span className="text-xs font-bold text-slate-700 italic">
+                        {new Date(profile.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      </span>
+                    </div>
+
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-[0.1em]",
+                        profile.planActive?.type === 'free' ? "bg-slate-100 text-slate-500" : "bg-primary/10 text-primary"
+                      )}
+                    >
+                      {profile.planActive?.type || 'Grátis'}
+                    </Badge>
                   </div>
                 </div>
               </div>
             </CardContent>
-            
+
             {/* Quick Actions Footer */}
             <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID: {profile.id?.slice(0, 8)}...</span>
-               <Button 
-                variant="ghost" 
-                size="sm" 
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID: {profile.id?.slice(0, 8)}...</span>
+              <Button
+                variant="ghost"
+                size="sm"
                 className="text-xs font-bold text-primary gap-2 hover:bg-primary/10 rounded-xl"
                 asChild
-               >
-                 <Link href={`/dashboard/business/gerenciadores/${profile.id}`}>
-                    Gerenciar <ChevronRight className="size-3" />
-                 </Link>
-               </Button>
+              >
+                <Link href={`/business/${profile.slug}`} target='_blank'>
+                  Gerenciar <ChevronRight className="size-3" />
+                </Link>
+              </Button>
             </div>
           </Card>
         ))}
@@ -289,9 +289,9 @@ export function AllProfilesTable({
 
       {listProfiles?.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[3rem] border border-dashed border-slate-200">
-           <Building2 className="size-16 text-slate-200 mb-6" />
-           <h3 className="text-xl font-black text-slate-400 uppercase tracking-tighter italic">Nenhum negócio encontrado</h3>
-           <p className="text-slate-400 font-medium text-sm mt-2">Tente ajustar sua pesquisa ou adicione um novo perfil.</p>
+          <Building2 className="size-16 text-slate-200 mb-6" />
+          <h3 className="text-xl font-black text-slate-400 uppercase tracking-tighter italic">Nenhum negócio encontrado</h3>
+          <p className="text-slate-400 font-medium text-sm mt-2">Tente ajustar sua pesquisa ou adicione um novo perfil.</p>
         </div>
       )}
 
@@ -300,14 +300,14 @@ export function AllProfilesTable({
         <DialogContent className="overflow-y-auto py-8 rounded-[3rem] p-10 max-w-lg">
           <DialogHeader className="space-y-4">
             <div className="bg-blue-50 size-16 rounded-full flex items-center justify-center mx-auto">
-               <UserPlus className="size-8 text-blue-600" />
+              <UserPlus className="size-8 text-blue-600" />
             </div>
             <div className="text-center">
               <DialogTitle className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Transferir Propriedade</DialogTitle>
               <p className="text-slate-500 text-sm font-medium mt-1">O perfil passará a ser gerenciado por outro usuário.</p>
             </div>
           </DialogHeader>
-          
+
           <div className="py-8 space-y-6">
             <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Dono Atual (ID)</p>
@@ -351,17 +351,17 @@ export function AllProfilesTable({
         <DialogContent className="rounded-[3rem] p-10 max-w-lg">
           <DialogHeader className="space-y-4">
             <div className="bg-destructive/10 size-16 rounded-full flex items-center justify-center mx-auto">
-               <Trash2 className="size-8 text-destructive" />
+              <Trash2 className="size-8 text-destructive" />
             </div>
             <div className="text-center">
               <DialogTitle className="text-2xl font-black text-slate-900 tracking-tighter uppercase text-destructive">APAGAR REGISTRO?</DialogTitle>
               <p className="text-slate-500 text-sm font-medium mt-1">Esta ação é <span className="text-destructive font-black underline italic">irreversível</span> e removerá todos os dados.</p>
             </div>
           </DialogHeader>
-          
+
           <div className="py-6 bg-slate-50 rounded-2xl p-6 border border-slate-100 text-center mb-6">
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Perfil Selecionado</p>
-             <h4 className="text-lg font-black text-slate-900 italic">"{selectedProfile?.name}"</h4>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Perfil Selecionado</p>
+            <h4 className="text-lg font-black text-slate-900 italic">"{selectedProfile?.name}"</h4>
           </div>
 
           <DialogFooter className="flex flex-col sm:flex-col gap-3">

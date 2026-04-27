@@ -13,7 +13,7 @@ interface contentProps {
 
 export function ContentProperty({ children, totalVisits }: contentProps) {
   return (
-    <main className="container mx-auto w-full py-6 sm:px-6 lg:px-8">
+    <main className="container mx-auto w-full pt-12 pb-6 sm:px-6 lg:px-8 md:pt-16">
       <div className="mb-3 flex items-center justify-between">
         <GoBackButton fallbackHref="/" />
         <div

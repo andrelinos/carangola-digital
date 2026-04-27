@@ -33,7 +33,7 @@ export function DashboardSidebar() {
     <>
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black/50 md:hidden"
+          className="fixed top-[72px] inset-x-0 bottom-0 z-20 bg-black/50 md:hidden"
           onClick={toggleSidebar}
         />
       )}
@@ -43,7 +43,7 @@ export function DashboardSidebar() {
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-6 left-6 z-40 md:hidden rounded-full shadow-md bg-white"
+          className="fixed top-[84px] left-6 z-40 md:hidden rounded-full shadow-md bg-white"
         >
           <PanelLeft className="size-5 opacity-70" />
         </Button>
@@ -51,7 +51,7 @@ export function DashboardSidebar() {
       
       <aside
         className={cn(
-          "fixed top-0 left-0 z-30 h-full w-64 transform border-slate-100 border-r bg-white text-slate-900 transition-transform duration-500 ease-in-out px-4 py-8",
+          "fixed top-[72px] left-0 z-30 h-[calc(100vh-72px)] w-64 transform border-slate-100 border-r bg-white text-slate-900 transition-transform duration-500 ease-in-out px-4 py-8",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full",
           "md:translate-x-0"
         )}

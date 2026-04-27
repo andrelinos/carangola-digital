@@ -132,7 +132,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
   return (
     <>
-      <div className="mx-auto my-8 px-4 pt-8 md:pt-0">
+      <div className="mx-auto my-8 px-4 pt-12 md:pt-16">
         <div className="mb-8 flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex flex-1 flex-col flex-wrap">
             <h1 className="flex items-center gap-3 font-bold text-3xl">
