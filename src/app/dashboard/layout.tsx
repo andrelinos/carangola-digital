@@ -18,9 +18,11 @@ export default async function RootLayout({
 
   return (
     <div className="flex w-full bg-background font-sans text-foreground antialiased">
-      <DashboardSidebar />
-      <main className="h-full flex-1 overflow-y-auto transition-all duration-300 ease-in-out md:ml-64">
-        <div className="p-4 md:p-8">{children}</div>
+      <div className="print:hidden">
+        <DashboardSidebar />
+      </div>
+      <main className="h-full flex-1 overflow-y-auto transition-all duration-300 ease-in-out md:ml-64 print:ml-0 print:overflow-visible">
+        <div className="p-4 md:p-8 print:p-0">{children}</div>
       </main>
     </div>
   )

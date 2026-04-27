@@ -5,13 +5,10 @@ const brlFormatter = new Intl.NumberFormat('pt-BR', {
 })
 
 /**
- * Formata um valor (número, string, null, ou undefined) para moeda BRL (R$)
- * de forma segura e performática.
+ * Formata um valor em centavos para moeda BRL (R$).
+ * Exemplo: 5990 -> "R$ 59,90"
  *
- * Lida com strings formatadas em BRL (ex: "1.000,00") e
- * strings em formato americano (ex: "1000.00").
- *
- * @param price O valor a ser formatado.
+ * @param price O valor em centavos a ser formatado.
  * @param options Opções de formatação.
  * @param options.defaultOnInvalid O valor a ser retornado se o input for
  * inválido (null, undefined, "abc", NaN). Padrão é uma string vazia: "".
@@ -28,35 +25,36 @@ export function formatPrice(
     return defaultOnInvalid
   }
 
-  // --- INÍCIO DA CORREÇÃO ---
   let valueToConvert: number | string
 
   if (typeof price === 'string') {
-    // Se for string, limpamos ela para um formato numérico válido
+    // Limpa a string mantendo apenas números (e possível sinal de negativo)
+    // Se a string recebida for "5990", o replace a mantém intacta.
     const cleanedPrice = price
-      .replace(/R\$\s*/g, '') // Remove "R$ " (opcional)
-      .replace(/\./g, '') // Remove o ponto de milhar (ex: 1.000 -> 1000)
-      .replace(/,/g, '.') // Substitui a vírgula decimal por ponto (ex: 1000,00 -> 1000.00)
+      .replace(/R\$\s*/g, '')
+      .replace(/\./g, '')
+      .replace(/,/g, '.')
 
     valueToConvert = cleanedPrice
   } else {
     // Se já for 'number', apenas usamos
     valueToConvert = price
   }
-  // --- FIM DA CORREÇÃO ---
 
-  // 3. Converte o input (agora limpo) para número
-  // Number("1000000.00") se torna 1000000 (corretamente)
+  // 2. Converte o input para número base (neste momento, ainda em centavos)
   const numericValue = Number(valueToConvert)
 
-  // 4. Lida com inputs que não são numéricos (ex: "abc", NaN)
+  // 3. Lida com inputs que não são numéricos (ex: "abc", NaN)
   if (Number.isNaN(numericValue)) {
     return defaultOnInvalid
   }
 
+  // 4. CONVERSÃO: Transforma os centavos em Reais (ex: 5990 / 100 = 59.90)
+  const valueInReais = numericValue / 100
+
   // 5. Formata o valor válido
   try {
-    return brlFormatter.format(numericValue)
+    return brlFormatter.format(valueInReais)
   } catch {
     return defaultOnInvalid
   }

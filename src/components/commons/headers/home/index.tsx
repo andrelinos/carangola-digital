@@ -22,7 +22,7 @@ export async function HeaderHome({ profileData, headerShow = true }: Props) {
     <Suspense fallback={<p>Carregando...</p>}>
       <HeaderPageContainer>
         {headerShow && (
-          <div className="flex w-full items-center justify-between">
+          <div className="print:hidden flex w-full items-center justify-between">
             <LogoHeader />
             <Menus hasProfileLink={hasProfileLink} session={session} />
           </div>

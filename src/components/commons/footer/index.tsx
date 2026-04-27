@@ -7,7 +7,7 @@ import { FooterByDevNameTitle } from '../footer-by-dev-name-title'
 export function Footer() {
   return (
     <>
-      <div className="mt-16 flex w-full flex-col items-center bg-blue-950">
+      <div className="mt-16 print:hidden flex w-full flex-col items-center bg-blue-950">
         <div className="w-full max-w-7xl px-4 py-10 lg:px-8">
           {/* Estrutura principal: Logo | Seção de Links */}
           <div className="flex flex-col gap-10 md:flex-row md:justify-between">

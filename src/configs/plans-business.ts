@@ -3,7 +3,7 @@ export const plansBusinessConfig = {
     title: 'GRÁTIS',
     popular: false,
     price: 0,
-    frequency: 'undefined',
+    frequency: '/mês',
     socialMedias: {
       linkedin: false,
       kwai: false,
@@ -36,7 +36,7 @@ export const plansBusinessConfig = {
     title: 'BÁSICO',
     popular: true,
     price: 2990,
-    frequency: 'annual',
+    frequency: '/ano',
     socialMedias: {
       linkedin: true,
       kwai: false,
@@ -69,7 +69,7 @@ export const plansBusinessConfig = {
     title: 'PRO',
     popular: false,
     price: 5990,
-    frequency: 'annual',
+    frequency: '/ano',
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -103,7 +103,7 @@ export const plansBusinessConfig = {
     title: 'MASTER',
     popular: false,
     price: 9990,
-    frequency: 'annual',
+    frequency: '/ano',
     socialMedias: {
       linkedin: true,
       kwai: true,

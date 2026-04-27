@@ -40,15 +40,21 @@ export async function POST(request: NextRequest) {
 
     const dataResponse = await Promise.all(
       snapshot.docs.map(async doc => {
-        const profileId = doc.id
         const data = doc.data() as ProfileDataProps
-        const imageUrl = await getDownloadURLFromPath(data.imagePath)
+        const imagePath = data.logoImagePath || data.coverImagePath || data.imagePath
+        const imageUrl = await getDownloadURLFromPath(imagePath)
 
         return {
-          profileId,
           ...data,
+          id: doc.id,
+          profileId: doc.id,
           imagePath: imageUrl,
-        } as ProfileDataProps
+          logoImageUrl: imageUrl,
+          category:
+            Array.isArray(data.categories) && data.categories.length > 0
+              ? data.categories[0]
+              : data.category || 'Serviços',
+        }
       })
     )
 

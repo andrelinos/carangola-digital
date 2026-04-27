@@ -5,27 +5,39 @@ import { DashboardStats } from './dashboard-stats'
 import { ProUpgradeBanner } from './pro-upgrade-banner'
 import { DashboardProfilesTable } from './dashboard-profiles-sum-table'
 import { PropertiesTable } from './dashboard-properties-table'
+import { ProfileCompletenessCard } from './profile-completeness-card'
+import { MarketingKit } from './marketing-kit'
 
-export function DashboardComponent() {
+export function DashboardComponent({ stats, profiles, properties }: { stats: any, profiles: any[], properties: any[] }) {
   return (
     <div className="flex flex-col">
       {/* 👋 Personalized Greeting */}
       <WelcomeHeader />
 
       {/* 📊 Key Statistics */}
-      <DashboardStats />
+      <DashboardStats stats={stats} />
 
-      {/* 🚀 Monetization CTA */}
-      <ProUpgradeBanner />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2">
+          <ProfileCompletenessCard />
+        </div>
+        <div className="lg:col-span-1">
+          <ProUpgradeBanner />
+        </div>
+      </div>
 
       {/* 📋 Listings Summary */}
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         <div className="xl:col-span-2">
-          <DashboardProfilesTable />
+          <DashboardProfilesTable profiles={profiles} />
         </div>
         <div className="xl:col-span-2">
-          <PropertiesTable />
+          <MarketingKit profiles={profiles} />
         </div>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 xl:cols-4">
+        <PropertiesTable properties={properties} />
       </div>
 
       <div className="mt-8 flex flex-col items-center justify-center py-12 border border-dashed rounded-3xl bg-muted/20 text-muted-foreground opacity-50">

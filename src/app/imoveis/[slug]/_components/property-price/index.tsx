@@ -12,11 +12,15 @@ interface Props {
 
 export function PropertyPrice({ propertyData, isOwner, isUserAuth }: Props) {
   return (
-    <div className="w-fit pt-4">
-      <p className="mb-1 text-gray-600 text-sm">Valor</p>
-      <div className="relative flex items-center font-bold text-3xl text-blue-600 dark:text-blue-400">
+    <div className="w-fit">
+      <p className="mb-0.5 text-slate-500 font-medium text-sm">Valor de venda</p>
+      <div className="relative flex w-fit items-center font-extrabold text-3xl sm:text-4xl text-blue-600 tracking-tight">
         {formatPrice(Number(propertyData.price))}
-        {(isOwner || isUserAuth) && <EditPropertyPrice data={propertyData} />}
+        {(isOwner || isUserAuth) && (
+          <div className="-right-8 absolute top-0">
+            <EditPropertyPrice data={propertyData} />
+          </div>
+        )}
       </div>
     </div>
   )

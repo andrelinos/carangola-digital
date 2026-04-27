@@ -7,11 +7,9 @@ import {
   Clock,
   Download,
   ExternalLink,
-  Facebook,
   Gift,
   Globe,
   Images,
-  Instagram,
   Mail,
   MapPin,
   MessageCircle,
@@ -20,6 +18,7 @@ import {
   Star,
   StarHalf,
 } from 'lucide-react'
+import { Facebook, Instagram } from 'iconoir-react'
 import Link from 'next/link'
 
 export function BusinessProfileDemo() {
@@ -68,7 +67,7 @@ export function BusinessProfileDemo() {
 
         <Card className="overflow-hidden rounded-2xl bg-white shadow-xl">
           {/* Cover Photo */}
-          <div className="relative h-64 bg-gradient-to-r from-blue-500 to-purple-600">
+          <div className="relative h-64 bg-linear-to-r from-blue-500 to-purple-600">
             <img
               src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=600"
               alt="Modern coffee shop interior"
@@ -222,7 +221,7 @@ export function BusinessProfileDemo() {
             </div>
 
             {/* Special Offer */}
-            <Card className="mb-8 border border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50">
+            <Card className="mb-8 border border-yellow-200 bg-linear-to-r from-yellow-50 to-orange-50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>

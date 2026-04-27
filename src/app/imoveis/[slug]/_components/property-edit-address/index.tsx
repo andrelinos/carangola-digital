@@ -18,14 +18,6 @@ interface Props {
 }
 
 export function PropertyAddress({ propertyData, isOwner, isUserAuth }: Props) {
-  const [tempValue, setTempValue] = useState<any>('')
-  const [editingField, setEditingField] = useState<string | null>(null)
-
-  const openModal = (field: string, currentValue: any) => {
-    setEditingField(field)
-    setTempValue(currentValue)
-  }
-
   const fullAddress = `${propertyData?.address}, ${propertyData?.neighborhood}, Carangola - MG, ${propertyData?.cep}`
 
   const itemMapsLink =
@@ -37,48 +29,47 @@ export function PropertyAddress({ propertyData, isOwner, isUserAuth }: Props) {
       : generateGoogleMapsLinkByAddress(fullAddress)
 
   return (
-    <div className="w-full rounded-lg p-6 shadow">
-      <div className="mb-4 flex items-start justify-between">
+    <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div className="flex items-start justify-between">
         <div className="w-full">
-          <div className="flex w-full flex-col gap-2">
-            <div className="relative mt-4 w-fit font-bold text-xl">
+          <div className="flex w-full flex-col gap-4">
+            <div className="relative mb-2 w-fit font-bold text-xl tracking-tight text-slate-900">
               Endereço
               {(isOwner || isUserAuth) && (
-                <div className="-right-7 absolute top-0 h-6 rounded-full">
+                <div className="-right-8 absolute top-0 h-6">
                   <EditPropertyAddresses data={propertyData} />
                 </div>
               )}
             </div>
             {propertyData?.address ? (
-              <div className="flex w-full flex-col gap-2 p-4 hover:bg-accent">
-                <div className="flex items-center gap-1">
-                  <MapPin className="size-4" />
-                  <div className="flex flex-1 flex-col">
-                    <p>{propertyData?.address}</p>
-                    <p>{propertyData.neighborhood}, Carangola/MG</p>
-                    <p>{propertyData.cep}</p>
+              <div className="flex w-full flex-col gap-4 rounded-xl bg-slate-50 border border-slate-100 p-5 transition-colors hover:bg-slate-100/80">
+                <div className="flex items-start gap-3">
+                  <div className="flex mt-0.5 h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                    <MapPin className="size-4" />
+                  </div>
+                  <div className="flex flex-1 flex-col text-slate-700">
+                    <p className="font-semibold text-slate-900">{propertyData?.address}</p>
+                    <p className="mt-1 text-sm">{propertyData.neighborhood}, Carangola/MG</p>
+                    <p className="text-sm">{propertyData.cep}</p>
                   </div>
                 </div>
 
-                <div className="flex w-full justify-end">
+                <div className="flex w-full justify-end mt-2">
                   <Link
                     variant="default"
-                    className="group relative h-8 w-fit bg-blue-600 px-4 py-1 font-semibold text-white text-xs"
+                    className="group relative h-9 w-fit bg-blue-600 px-5 py-2 font-semibold text-white text-sm rounded-lg hover:bg-blue-700 transition"
                     href={itemMapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span className="-top-4 -left-2 pointer-events-none absolute flex h-6 w-6 items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 shadow-lg transition-all duration-500 ease-out group-hover:left-20">
+                    <span className="-top-4 -left-2 pointer-events-none absolute flex h-7 w-7 items-center justify-center rounded-full border-2 border-blue-100 bg-white text-blue-600 shadow-md transition-all duration-500 ease-out group-hover:left-[80%]">
                       <Car className="size-4 stroke-2" />
                     </span>
-                    <span className="-top-4 -left-2 absolute flex h-6 w-6 scale-100 transform items-center justify-center rounded-full border border-blue-500 bg-white text-blue-500 opacity-50 transition-all duration-300 ease-linear group-hover:scale-150 group-hover:opacity-0" />
                     Como chegar
                   </Link>
                 </div>
               </div>
-            ) : (
-              <div />
-            )}
+            ) : null}
           </div>
         </div>
       </div>

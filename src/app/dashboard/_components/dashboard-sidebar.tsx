@@ -1,11 +1,12 @@
 'use client'
 
-import { Building2, Home, PanelLeft, StoreIcon } from 'lucide-react'
+import { Building2, Home, PanelLeft, StoreIcon, CreditCard, LayoutDashboard } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export function DashboardSidebar() {
   const pathname = usePathname()
@@ -24,72 +25,91 @@ export function DashboardSidebar() {
     router.push(path)
   }
 
-  const baseClasses = 'flex items-center gap-3 rounded-lg px-4 py-2.5'
-  const inactiveClasses =
-    'bg-sidebar-accent text-sidebar-accent-foreground font-medium hover:text-white'
-  const activeClasses =
-    'transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+  const baseClasses = 'flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300'
+  const activeClasses = 'bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90'
+  const inactiveClasses = 'bg-slate-100/50 text-slate-500 font-medium hover:bg-slate-100 hover:text-slate-900 border border-transparent'
 
   return (
     <>
       {isSidebarOpen && (
-        // biome-ignore lint/a11y/useKeyWithClickEvents: ignore
         <div
           className="fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={toggleSidebar}
         />
       )}
-      <Button
-        variant="ghost"
-        onClick={toggleSidebar}
-        className="fixed top-18 left-0"
-      >
-        <PanelLeft className="opacity-70" /> Menu
-      </Button>
+      
+      {!isSidebarOpen && (
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleSidebar}
+          className="fixed top-6 left-6 z-40 md:hidden rounded-full shadow-md bg-white"
+        >
+          <PanelLeft className="size-5 opacity-70" />
+        </Button>
+      )}
+      
       <aside
-        className={`fixed top-0 left-0 z-30 h-full w-64 transform border-sidebar-border border-r bg-sidebar text-sidebar-foreground transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0`}
+        className={cn(
+          "fixed top-0 left-0 z-30 h-full w-64 transform border-slate-100 border-r bg-white text-slate-900 transition-transform duration-500 ease-in-out px-4 py-8",
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "md:translate-x-0"
+        )}
       >
-        <div className="flex h-full flex-col pt-16">
-          <nav className="flex-1 space-y-2 overflow-y-auto px-4 py-6">
+        <div className="flex flex-col h-full">
+          {/* Logo Area */}
+          <div className="flex items-center gap-3 px-2 mb-10">
+             <div className="bg-primary/10 p-2 rounded-2xl">
+                <LayoutDashboard className="size-6 text-primary" />
+             </div>
+             <div>
+                <h2 className="font-black text-slate-900 tracking-tighter leading-none">PAINEL</h2>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Controle Geral</p>
+             </div>
+          </div>
+
+          <nav className="flex-1 space-y-3">
             <Button
-              className={`h-12 w-full justify-start hover:cursor-pointer ${baseClasses} ${pathname === '/dashboard' ? activeClasses : inactiveClasses
-                }`}
+              className={cn(baseClasses, pathname === '/dashboard' ? activeClasses : inactiveClasses)}
               onClick={() => goToPath('/dashboard')}
+              variant="ghost"
             >
-              <Home className="h-5 w-5" />
-              <span>Dashboard</span>
+              <Home className="size-5" />
+              <span>Visão Geral</span>
             </Button>
 
             <Button
-              className={`h-12 w-full justify-start hover:cursor-pointer ${baseClasses} ${pathname.startsWith('/dashboard/business')
-                ? activeClasses
-                : inactiveClasses
-                }`}
+              className={cn(baseClasses, pathname.startsWith('/dashboard/business') ? activeClasses : inactiveClasses)}
               onClick={() => goToPath('/dashboard/business')}
+              variant="ghost"
             >
-              <StoreIcon className="h-5 w-5" />
-              <span>Menus negócios</span>
+              <StoreIcon className="size-5" />
+              <span>Meus Negócios</span>
             </Button>
 
             <Button
-              className={`h-12 w-full justify-start hover:cursor-pointer ${baseClasses} ${pathname.startsWith('/dashboard/imoveis')
-                ? activeClasses
-                : inactiveClasses
-                }`}
+              className={cn(baseClasses, pathname.startsWith('/dashboard/imoveis') ? activeClasses : inactiveClasses)}
               onClick={() => goToPath('/dashboard/imoveis')}
+              variant="ghost"
             >
-              <Building2 className="h-5 w-5" />
-              <span>Meus imóveis</span>
+              <Building2 className="size-5" />
+              <span>Meus Imóveis</span>
+            </Button>
+
+            <Button
+              className={cn(baseClasses, pathname.startsWith('/dashboard/assinatura') ? activeClasses : inactiveClasses)}
+              onClick={() => goToPath('/dashboard/assinatura')}
+              variant="ghost"
+            >
+              <CreditCard className="size-5" />
+              <span>Assinatura</span>
             </Button>
           </nav>
 
-          <footer className="mt-auto space-y-2 border-sidebar-border border-t px-4 py-6">
-            <div className="flex w-full flex-col items-end gap-2">
-              <p className="w-full text-center">Painel de controle</p>
-              <span className="mt-6 w-full text-right font-bold text-xs">
-                Versão: 1.25.11
-              </span>
+          <footer className="mt-auto pt-6 border-t border-slate-100">
+            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/50">
+               <p className="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-1">Versão do Sistema</p>
+               <p className="text-center font-bold text-slate-900 text-sm">v1.25.11</p>
             </div>
           </footer>
         </div>

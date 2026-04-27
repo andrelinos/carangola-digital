@@ -25,62 +25,46 @@ export const authOptions: NextAuthOptions = {
           .collection('users')
           .doc(user.id)
           .set({
-            name: user.name,
-            email: user.email,
             accountVerified: false,
-            image: user.image,
             planActive: {
               profiles: {
                 expiresAt: null,
                 type: 'free',
                 status: 'active',
-                planDetails: {
-                  name: 'free',
-                  period: 'indeterminado',
-                  price: 0,
-                },
+                planDetails: { name: 'free', period: 'indeterminado', price: 0 },
               },
               properties: {
                 expiresAt: null,
                 type: 'free',
                 status: 'active',
-                planDetails: {
-                  name: 'free',
-                  period: 'indeterminado',
-                  price: 0,
-                },
+                planDetails: { name: 'free', period: 'indeterminado', price: 0 },
               },
             },
             createdAt: Timestamp.now().toMillis(),
             updatedAt: Timestamp.now().toMillis(),
-          })
+          }, { merge: true }) // <--- ESSENCIAL para não apagar o nome/imagem
       }
     },
   },
 
   callbacks: {
     async session({ session, user }) {
-      if (session.user && user.id) {
-        const userDocRef = db.collection('users').doc(user.id)
-        const userDoc = await userDocRef.get()
+      // No modo "database", o parâmetro 'user' já vem do Firestore via Adapter
+      if (session.user && user) {
+        session.user.id = user.id
+        session.user.name = user.name
+        session.user.image = user.image
 
-        if (userDoc.exists) {
-          const userData = userDoc.data()
+        // Atribui os campos extras que o Adapter buscou automaticamente
+        // (Recomendo tipar o user como 'any' ou criar um next-auth.d.ts se der erro de TS)
+        const dbUser = user as any;
 
-          if (user?.email) {
-            await db.collection('users').doc(user.id).set({
-              email: user.email,
-            })
-          }
-
-          session.user.id = userDoc.id
-          session.user.planActive = userData?.planActive
-          session.user.accountVerified = userData?.accountVerified
-          session.user.hasProfileLink = userData?.hasProfileLink
-          session.user.role = userData?.role
-          session.user.myProfileLink = userData?.myProfileLink
-          session.user.favorites = userData?.favorites
-        }
+        session.user.planActive = dbUser.planActive
+        session.user.accountVerified = dbUser.accountVerified
+        session.user.hasProfileLink = dbUser.hasProfileLink
+        session.user.role = dbUser.role
+        session.user.myProfileLink = dbUser.myProfileLink
+        session.user.favorites = dbUser.favorites
       }
 
       return session

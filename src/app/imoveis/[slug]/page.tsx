@@ -112,25 +112,27 @@ export default async function PropertyDetailPage({
     <>
       <RealEstateListingJsonLd data={propertyData} />
       <ContentProperty totalVisits={propertyData?.totalVisits}>
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="relative space-y-6 lg:col-span-2">
+        <div className="grid items-start gap-8 lg:grid-cols-3">
+          <div className="relative space-y-8 lg:col-span-2">
             <PropertyImageGallery
               propertyData={propertyData}
               title={propertyData?.title}
               propertyId={propertyData?.id}
               isOwner={isOwner || isUserAuth}
             />
-            <div className="w-full rounded-lg p-6 shadow">
+            <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
               <PropertyTitle
                 propertyData={propertyData}
                 isOwner={isOwner}
                 isUserAuth={isUserAuth}
               />
-              <PropertyPrice
-                propertyData={propertyData}
-                isOwner={isOwner}
-                isUserAuth={isUserAuth}
-              />
+              <div className="mt-4 border-t border-slate-100 pt-4">
+                <PropertyPrice
+                  propertyData={propertyData}
+                  isOwner={isOwner}
+                  isUserAuth={isUserAuth}
+                />
+              </div>
             </div>
 
             {/* Address */}
@@ -161,7 +163,7 @@ export default async function PropertyDetailPage({
               isUserAuth={isUserAuth}
             />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="sticky top-24 flex flex-col gap-6">
             {/* Status */}
             <PropertyStatus
               propertyData={propertyData}

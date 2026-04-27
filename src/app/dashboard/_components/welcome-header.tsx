@@ -8,7 +8,7 @@ import Link from 'next/link'
 export function WelcomeHeader() {
   const { data: session } = useSession()
   const firstName = session?.user?.name?.split(' ')[0] || 'Visitante'
-  
+
   const today = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'long',
     day: 'numeric',

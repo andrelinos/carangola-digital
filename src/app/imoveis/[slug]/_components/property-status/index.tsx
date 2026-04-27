@@ -15,41 +15,45 @@ interface Props {
 const statusConfig = {
   Disponível: {
     dot: 'bg-green-500',
-    bgStatus: 'bg-green-500/20',
+    bgStatus: 'bg-green-50 border-green-100',
     text: 'text-green-700',
+    iconArea: 'bg-green-100 text-green-600',
   },
   Vendido: {
-    dot: 'bg-red-500',
-    bgStatus: 'bg-red-500/20',
-    text: 'text-red-700',
+    dot: 'bg-rose-500',
+    bgStatus: 'bg-rose-50 border-rose-100',
+    text: 'text-rose-700',
+    iconArea: 'bg-rose-100 text-rose-600',
   },
   Alugado: {
     dot: 'bg-blue-500',
-    bgStatus: 'bg-blue-500/20',
+    bgStatus: 'bg-blue-50 border-blue-100',
     text: 'text-blue-700',
+    iconArea: 'bg-blue-100 text-blue-600',
   },
   Pendente: {
-    dot: 'bg-yellow-500',
-    bgStatus: 'bg-yellow-500/20',
-    text: 'text-yellow-700',
+    dot: 'bg-amber-500',
+    bgStatus: 'bg-amber-50 border-amber-100',
+    text: 'text-amber-700',
+    iconArea: 'bg-amber-100 text-amber-600',
   },
 }
 
 export function PropertyStatus({ propertyData, isOwner, isUserAuth }: Props) {
-  const status = propertyData?.status || 'Indefinido'
+  const status = propertyData?.status || 'Pendente'
   const config =
     statusConfig[status as keyof typeof statusConfig] || statusConfig.Pendente
 
   return (
-    <div className={`rounded-lg ${config.bgStatus} p-6 shadow`}>
-      <div className="relative mb-4 flex w-fit flex-col gap-1 font-bold text-gray-900 text-xl">
-        <span className="text-white">Status</span>
-        <div className="flex items-center gap-2 py-2">
-          <span
-            className={`h-2.5 w-2.5 rounded-full ${config.dot}`}
-            aria-hidden="true"
-          />
-          <span className={`font-semibold ${config.text}`}>{status}</span>
+    <div className={`w-full rounded-2xl border ${config.bgStatus} p-6 shadow-sm`}>
+      <div className="relative flex flex-col gap-1 font-bold text-gray-900 text-xl tracking-tight">
+        <span className="text-slate-800">Situação do imóvel</span>
+        <div className="mt-2 flex items-center gap-2">
+          <span className="relative flex h-3 w-3">
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${config.dot}`}></span>
+            <span className={`relative inline-flex rounded-full h-3 w-3 ${config.dot}`}></span>
+          </span>
+          <span className={`font-semibold ${config.text} text-lg`}>{status}</span>
           {(isOwner || isUserAuth) && (
             <EditPropertyStatus data={propertyData} />
           )}

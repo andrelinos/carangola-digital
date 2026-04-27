@@ -111,7 +111,7 @@ export async function PricingPlans() {
                 <ul className="mb-8 space-y-4">
                   {plan.features.map(feature => (
                     <li key={feature} className="flex items-center">
-                      <Check className="mr-3 h-5 w-5 flex-shrink-0 text-current" />
+                      <Check className="mr-3 h-5 w-5 shrink-0 text-current" />
                       <span>{feature}</span>
                     </li>
                   ))}

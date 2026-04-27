@@ -73,6 +73,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
   const router = useRouter()
   const [newProperty, setNewProperty] = useState(initialPropertyState)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [displayPrice, setDisplayPrice] = useState('')
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,6 +82,28 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
     setNewProperty(prev => ({
       ...prev,
       [name]: type === 'number' ? Number(value) : value,
+    }))
+  }
+
+  function handlePriceChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const onlyDigits = event.target.value.replace(/\D/g, '')
+
+    if (!onlyDigits) {
+      setDisplayPrice('')
+      setNewProperty(prev => ({ ...prev, price: '' }))
+      return
+    }
+
+    const numericValue = Number(onlyDigits) / 100
+    const formatted = numericValue.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+
+    setDisplayPrice(formatted)
+    setNewProperty(prev => ({
+      ...prev,
+      price: Number(onlyDigits) as any, // initial model price is string but it should technically be number representing cents
     }))
   }
 
@@ -113,7 +136,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
     setIsSubmitting(true)
     try {
       const { title, price, address, zipCode } = newProperty
-      if (!title || !price || !address || !zipCode) {
+      if (!title || price === '' || !address || !zipCode) {
         toast.warning('Campos obrigatórios')
         return
       }
@@ -125,6 +148,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
       toast.success('Imóvel cadastrado com sucesso!')
       onClose()
       setNewProperty(initialPropertyState)
+      setDisplayPrice('')
     } catch (error) {
       console.error('Erro ao criar imóvel:', error)
       toast.error('Falha ao cadastrar imóvel.')
@@ -164,12 +188,12 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
             <div className="space-y-2">
               <Label htmlFor="price">Valor (R$)</Label>
               <Input
-                type="number"
+                type="text"
                 id="price"
                 name="price"
-                value={newProperty.price}
-                onChange={handleFormChange}
-                placeholder="Ex: 35000"
+                value={displayPrice}
+                onChange={handlePriceChange}
+                placeholder="Ex: 35.000,00"
                 required
               />
             </div>

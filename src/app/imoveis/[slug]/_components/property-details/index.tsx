@@ -16,46 +16,46 @@ export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
     return <div />
   }
   return (
-    <div className="rounded-lg bg-white p-6 shadow">
-      <div className="relative mb-4 flex w-fit items-center font-bold text-gray-900 text-xl">
+    <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div className="relative mb-6 flex w-fit items-center font-bold text-gray-900 text-xl tracking-tight">
         Características
         {(isOwner || isUserAuth) && <EditPropertyDetails data={propertyData} />}
       </div>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <div className="flex items-center gap-3">
-          <Square className="h-8 w-8 text-blue-600" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <Square className="h-6 w-6" />
+          </div>
           <div>
-            <p className="text-gray-600 text-sm">Área</p>
-            <p className="font-semibold text-gray-900">
-              {propertyData?.characteristics?.area} m²
-            </p>
+            <p className="text-gray-500 font-medium text-sm">Área</p>
+            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.area} m²</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <Bed className="h-8 w-8 text-blue-600" />
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <Bed className="h-6 w-6" />
+          </div>
           <div>
-            <p className="text-gray-600 text-sm">Quartos</p>
-            <p className="font-semibold text-gray-900">
-              {propertyData?.characteristics?.bedrooms}
-            </p>
+            <p className="text-gray-500 font-medium text-sm">Quartos</p>
+            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.bedrooms}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <Bath className="h-8 w-8 text-blue-600" />
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <Bath className="h-6 w-6" />
+          </div>
           <div>
-            <p className="text-gray-600 text-sm">Banheiros</p>
-            <p className="font-semibold text-gray-900">
-              {propertyData?.characteristics?.bathrooms}
-            </p>
+            <p className="text-gray-500 font-medium text-sm">Banheiros</p>
+            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.bathrooms}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <Car className="h-8 w-8 text-blue-600" />
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <Car className="h-6 w-6" />
+          </div>
           <div>
-            <p className="text-gray-600 text-sm">Vagas</p>
-            <p className="font-semibold text-gray-900">
-              {propertyData?.characteristics?.garageSpots}
-            </p>
+            <p className="text-gray-500 font-medium text-sm">Vagas</p>
+            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.garageSpots}</p>
           </div>
         </div>
       </div>

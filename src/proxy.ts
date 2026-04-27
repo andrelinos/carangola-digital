@@ -12,7 +12,7 @@ const protectedRoutes = [
   '/reivindicar-empresa'
 ]
 
-const authRoute = '/login'
+const authRoute = '/acesso'
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl

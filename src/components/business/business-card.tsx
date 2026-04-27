@@ -49,7 +49,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
         {/* Subtle decorative elements */}
         <div className="absolute -right-4 -top-4 size-24 rounded-full bg-primary/5 blur-2xl" />
         <div className="absolute -left-4 -bottom-4 size-24 rounded-full bg-secondary/5 blur-2xl" />
-        
+
         {/* Logo Container */}
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <div className="relative size-20 overflow-hidden rounded-xl border-2 border-white bg-white shadow-md ring-4 ring-primary/5 transition-transform group-hover:scale-105">
@@ -77,7 +77,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
               <ShieldCheck className="ml-1 inline-block size-4 text-blue-500" />
             )}
           </h3>
-          
+
           <div className="mt-1 flex items-center gap-1 text-muted-foreground text-xs">
             <Badge variant="secondary" className="px-1.5 py-0 text-[10px] font-normal uppercase">
               {profile.category || "Serviços"}

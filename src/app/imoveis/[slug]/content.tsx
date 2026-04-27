@@ -23,9 +23,7 @@ export function ContentProperty({ children, totalVisits }: contentProps) {
           <TrendingUpIcon size={32} className="stroke-1" /> {totalVisits}
         </div>
       </div>
-      <Card className=" rounded-0 border-0">
-        <CardContent className="flex flex-col p-0">{children}</CardContent>
-      </Card>
+      <div className="flex flex-col">{children}</div>
     </main>
   )
 }

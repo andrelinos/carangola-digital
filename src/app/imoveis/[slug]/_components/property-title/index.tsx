@@ -11,12 +11,12 @@ interface Props {
 
 export function PropertyTitle({ propertyData, isOwner, isUserAuth }: Props) {
   return (
-    <div className="mb-4 flex w-full items-start justify-between">
+    <div className="mb-2 flex w-full items-start justify-between">
       <div className="w-full">
-        <div className="mr-4 flex items-center font-bold text-3xl text-muted-foreground">
-          <span>{propertyData?.title}</span>
+        <h1 className="mr-4 flex w-fit items-center font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight leading-tight">
+          <span className="break-words">{propertyData?.title}</span>
           {(isOwner || isUserAuth) && <EditPropertyTitle data={propertyData} />}
-        </div>
+        </h1>
       </div>
     </div>
   )
