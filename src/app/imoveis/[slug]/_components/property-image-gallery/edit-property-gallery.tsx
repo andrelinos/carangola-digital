@@ -16,20 +16,17 @@ import {
 } from 'react'
 import ReactCrop, {
   type Crop,
-  type PixelCrop,
   centerCrop,
   makeAspectCrop,
+  type PixelCrop,
 } from 'react-image-crop'
 import { toast } from 'sonner'
-
+import type { PropertyProps } from '@/_types/property'
+import { updatePropertyGallery } from '@/actions/properties/save-image-gallery-property'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
-
-import type { PropertyProps } from '@/_types/property'
-
-import { updatePropertyGallery } from '@/actions/properties/save-image-gallery-property'
 
 import { compressImage } from '@/utils/compress-image'
 
@@ -269,7 +266,7 @@ export function EditPropertyGallery({
       for (const img of newImages) {
         URL.revokeObjectURL(img.previewUrl)
       }
-    } catch (error) {
+    } catch (_error) {
       console.info('Erro ao recarregar imagem...')
     }
     setNewImages([])
@@ -321,7 +318,7 @@ export function EditPropertyGallery({
       }
 
       toast.success('Galeria atualizada com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar galeria.')
     } finally {
       setIsSubmitting(false)
@@ -427,8 +424,9 @@ export function EditPropertyGallery({
                 label="Adicionar Imagem(ns)"
                 aspectRatio={aspectRatio}
                 onFileProcessed={handleAddFile}
-                recommendation={`Recomendado: ${aspectRatio === 16 / 9 ? '1280x720' : '800x600'
-                  }`}
+                recommendation={`Recomendado: ${
+                  aspectRatio === 16 / 9 ? '1280x720' : '800x600'
+                }`}
                 className="min-h-[120px]"
               />
             )}

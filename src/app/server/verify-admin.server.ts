@@ -1,7 +1,7 @@
 import 'server-only'
 
-import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 
 export async function verifyAdmin() {
   try {
@@ -13,7 +13,7 @@ export async function verifyAdmin() {
     }
 
     return !!session // true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

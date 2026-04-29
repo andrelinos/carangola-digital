@@ -7,8 +7,14 @@ export default async function AdminDashboardPage() {
   const [stats, profiles, properties] = await Promise.all([
     getDashboardStats(),
     getUserProfilesForDashboard(),
-    getUserPropertiesForDashboard()
+    getUserPropertiesForDashboard(),
   ])
-  
-  return <DashboardComponent stats={stats} profiles={profiles} properties={properties} />
+
+  return (
+    <DashboardComponent
+      stats={stats}
+      profiles={profiles}
+      properties={properties}
+    />
+  )
 }

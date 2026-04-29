@@ -1,8 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { BusinessCard } from './business-card'
 import type { PublicProfileCardData } from '@/actions/business/get-latest-public-profiles'
+import { BusinessCard } from './business-card'
 
 interface ClientFeaturedGridProps {
   profiles: PublicProfileCardData[]

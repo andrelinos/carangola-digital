@@ -1,5 +1,5 @@
-import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth/next'
 
 import { getUserProperties } from '@/actions/properties/get-all-properties-from-user'
 import { PropertyComponentAdmin } from '@/app/imoveis/_components/manage-properties'

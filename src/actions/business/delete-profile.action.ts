@@ -1,8 +1,8 @@
 'use server'
 
-import { db } from '@/lib/firebase'
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 import { revalidatePath } from 'next/cache'
+import { db } from '@/lib/firebase'
 
 export async function deleteProfile(profileId: string, ownerId: string) {
   try {

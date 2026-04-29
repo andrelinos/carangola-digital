@@ -23,11 +23,12 @@ export function PropertyAction({ propertyData, isOwner, isUserAuth }: Props) {
         </div>
 
         <p className="mb-6 text-slate-600 text-sm leading-relaxed">
-          Entre em contato diretamente e garanta a melhor negociação para este imóvel.
+          Entre em contato diretamente e garanta a melhor negociação para este
+          imóvel.
         </p>
         <PropertyContactModal property={propertyData} />
       </div>
-      <div className="flex w-full justify-center mt-2">
+      <div className="mt-2 flex w-full justify-center">
         <ShareButton />
       </div>
     </div>

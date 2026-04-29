@@ -23,7 +23,7 @@ export async function createBusinessAddress(formData: FormData) {
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return { success: false, error: 'Erro interno do servidor' }
   }
 }

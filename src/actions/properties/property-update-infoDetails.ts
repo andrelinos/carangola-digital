@@ -1,10 +1,9 @@
 'use server'
 
 import { Timestamp } from 'firebase-admin/firestore'
-
+import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
-import { getServerSession } from 'next-auth/next'
 
 interface Props {
   infoDetails: Record<string, string>
@@ -40,7 +39,7 @@ export async function propertyUpdateInfoDetails({
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

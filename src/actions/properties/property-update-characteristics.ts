@@ -41,7 +41,7 @@ export async function propertyUpdateCharacteristics({
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

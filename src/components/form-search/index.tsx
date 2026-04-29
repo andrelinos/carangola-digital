@@ -1,14 +1,14 @@
 'use client'
 
+import { Loader2, Search } from 'lucide-react'
 import { useState } from 'react'
-import { Search, Loader2 } from 'lucide-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { searchBusinesses } from '@/actions/business/search-businesses'
+import { BusinessCard } from '@/components/business/business-card'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { BusinessCard } from '@/components/business/business-card'
 
 export default function SearchFormBusiness() {
   const [searchTerms, setSearchTerms] = useState('')
@@ -25,7 +25,7 @@ export default function SearchFormBusiness() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (searchTerms.trim().length < 3) return
-    
+
     setIsLoadingBusiness(true)
 
     try {
@@ -47,14 +47,14 @@ export default function SearchFormBusiness() {
           className="group relative mx-auto flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center"
         >
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+            <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <Input
               type="search"
               name="searchTerms"
               value={searchTerms}
               onChange={onChangeSearchTerms}
               placeholder="Ex: Restaurante, Mecânica, Advogado..."
-              className="h-14 w-full rounded-2xl border-border bg-background pl-12 pr-6 text-lg shadow-sm ring-offset-background transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
+              className="h-14 w-full rounded-2xl border-border bg-background pr-6 pl-12 text-lg shadow-sm ring-offset-background transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
             />
           </div>
           <Button
@@ -79,13 +79,19 @@ export default function SearchFormBusiness() {
                 Resultados da sua busca
               </h2>
               <span className="text-muted-foreground text-sm">
-                {resultsSearch.length} {resultsSearch.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
+                {resultsSearch.length}{' '}
+                {resultsSearch.length === 1
+                  ? 'resultado encontrado'
+                  : 'resultados encontrados'}
               </span>
             </div>
-            
+
             <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {resultsSearch.map((profile, index) => (
-                <div key={profile?.id || profile?.userId + String(index)} className="flex justify-center">
+                <div
+                  key={profile?.id || profile?.userId + String(index)}
+                  className="flex justify-center"
+                >
                   <BusinessCard profile={profile} />
                 </div>
               ))}
@@ -104,8 +110,9 @@ export default function SearchFormBusiness() {
               <h2 className="font-bold text-2xl">
                 Nenhum resultado encontrado
               </h2>
-              <p className="mt-2 text-muted-foreground max-w-md">
-                Não encontramos o que você procurava. Tente usar termos mais genéricos ou verifique a ortografia.
+              <p className="mt-2 max-w-md text-muted-foreground">
+                Não encontramos o que você procurava. Tente usar termos mais
+                genéricos ou verifique a ortografia.
               </p>
             </div>
           )}

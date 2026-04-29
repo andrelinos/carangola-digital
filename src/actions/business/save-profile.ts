@@ -1,12 +1,11 @@
 'use server'
 
-import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 import { randomUUID } from 'node:crypto'
-
+import { FieldValue, Timestamp } from 'firebase-admin/firestore'
+import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
 import { generateKeywords } from '@/utils/generate-keywords'
-import { getServerSession } from 'next-auth/next'
 
 async function handleImageUpload(
   file: File | null,
@@ -39,7 +38,7 @@ async function handleImageUpload(
 
 export async function saveProfile(formData: FormData) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   if (!session) {
     throw new Error('Não autorizado')
@@ -104,7 +103,7 @@ export async function saveProfile(formData: FormData) {
     await profileRef.update(updateData)
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

@@ -1,8 +1,7 @@
 import { redirect } from 'next/navigation'
-
+import { getServerSession } from 'next-auth/next'
 import { getProfileId } from '@/app/server/get-profile-data'
 import { authOptions } from '@/lib/auth'
-import { getServerSession } from 'next-auth/next'
 
 export default async function RootLayout({
   children,

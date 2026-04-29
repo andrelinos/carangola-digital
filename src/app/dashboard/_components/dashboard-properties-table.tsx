@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Home } from 'lucide-react'
+import { Home, Pencil, Trash2 } from 'lucide-react'
 import type { UserPropertyTableData } from '@/actions/dashboard/get-user-properties.action'
 
 interface PropertiesTableProps {
@@ -6,7 +6,6 @@ interface PropertiesTableProps {
 }
 
 export function PropertiesTable({ properties }: PropertiesTableProps) {
-
   type StatusColor = 'chart-2' | 'chart-1' | 'destructive' | (string & {})
 
   const getStatusClass = (color: StatusColor): string => {
@@ -54,14 +53,14 @@ export function PropertiesTable({ properties }: PropertiesTableProps) {
           </thead>
           <tbody className="divide-y divide-border">
             {properties.length > 0 ? (
-              properties.map((item) => (
+              properties.map(item => (
                 <tr
                   key={item.id}
                   className="text-foreground text-sm transition-colors hover:bg-accent/10"
                 >
                   <td className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-16 rounded-md border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+                      <div className="flex h-10 w-16 items-center justify-center overflow-hidden rounded-md border border-border bg-muted/30">
                         {item.image ? (
                           <img
                             src={item.image}
@@ -111,7 +110,10 @@ export function PropertiesTable({ properties }: PropertiesTableProps) {
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="py-8 text-center text-muted-foreground italic text-sm">
+                <td
+                  colSpan={4}
+                  className="py-8 text-center text-muted-foreground text-sm italic"
+                >
                   Nenhuma propriedade encontrada.
                 </td>
               </tr>

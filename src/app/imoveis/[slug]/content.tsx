@@ -1,10 +1,8 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
-import { GoBackButton } from '@/components/ui/go-back-button'
 import { TrendingUpIcon } from 'lucide-react'
-
 import type { ReactNode } from 'react'
+import { GoBackButton } from '@/components/ui/go-back-button'
 
 interface contentProps {
   children: ReactNode
@@ -13,7 +11,7 @@ interface contentProps {
 
 export function ContentProperty({ children, totalVisits }: contentProps) {
   return (
-    <main className="container mx-auto w-full pt-12 pb-6 sm:px-6 lg:px-8 md:pt-16">
+    <main className="container mx-auto w-full pt-12 pb-6 sm:px-6 md:pt-16 lg:px-8">
       <div className="mb-3 flex items-center justify-between">
         <GoBackButton fallbackHref="/" />
         <div

@@ -1,12 +1,12 @@
 import 'server-only'
 
-import type { NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
 import { FirestoreAdapter } from '@auth/firebase-adapter'
 import { Timestamp } from 'firebase-admin/firestore'
+import type { NextAuthOptions } from 'next-auth'
+import type { AdapterUser } from 'next-auth/adapters'
+import GoogleProvider from 'next-auth/providers/google'
 import { firebaseCert } from '../firebase'
 import { getGoogleCredentials } from './utils/get-google-credentials'
-import type { AdapterUser } from 'next-auth/adapters'
 
 // 1. Instancie o adapter
 const firestoreAdapter = FirestoreAdapter({
@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         updatedAt: Timestamp.now().toMillis(),
       }
       // Delega a criação final pro FirestoreAdapter com os dados completos
-      return await firestoreAdapter.createUser!(customUser as any)
+      return await firestoreAdapter.createUser?.(customUser as any)
     },
   },
   providers: [

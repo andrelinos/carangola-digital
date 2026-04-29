@@ -1,7 +1,7 @@
 'use server'
 
-import { db, getDownloadURLFromPath } from '@/lib/firebase'
 import type { ProfileDataProps } from '@/_types/profile-data'
+import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function searchBusinesses(
   searchValue: string
@@ -40,7 +40,7 @@ export async function searchBusinesses(
         if (imagePath) {
           try {
             imageUrl = await getDownloadURLFromPath(imagePath)
-          } catch (e) {
+          } catch (_e) {
             console.warn(`Could not get image URL for ${doc.id}:`, imagePath)
           }
         }

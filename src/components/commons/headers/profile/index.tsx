@@ -18,7 +18,7 @@ export async function HeaderProfile({
   isUserAuth,
 }: Props) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   const hasProfileLink = session?.user?.hasProfileLink || false
 

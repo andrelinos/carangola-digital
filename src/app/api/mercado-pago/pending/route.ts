@@ -1,6 +1,6 @@
-import mpClient from '@/lib/mercado-pago'
 import { Payment } from 'mercadopago'
 import { NextResponse } from 'next/server'
+import mpClient from '@/lib/mercado-pago'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)

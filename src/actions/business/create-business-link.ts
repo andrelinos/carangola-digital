@@ -1,16 +1,14 @@
 'use server'
 
 import { Timestamp } from 'firebase-admin/firestore'
-
+import { getServerSession } from 'next-auth/next'
 import { checkIfSlugExists } from '@/app/server/check-if-slug-exists'
 import { generateJsonFile } from '@/app/server/generate-json-file'
-
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 import { generateKeywords } from '@/utils/generate-keywords'
 import { kebabToPhrase } from '@/utils/kebab-to-phrase'
 import { normalizeText } from '@/utils/sanitize-text'
-import { getServerSession } from 'next-auth/next'
 
 type Props = {
   link: string
@@ -31,8 +29,6 @@ export async function createBusinessLink({ link, name, userId }: Props) {
   if (isSlugTaken) {
     return { success: false, error: 'Este perfil já está em uso.' }
   }
-
-
 
   const linkText = kebabToPhrase(link)
   let keywords = [] as string[]
@@ -86,7 +82,7 @@ export async function createBusinessLink({ link, name, userId }: Props) {
     }
 
     return { success: true }
-  } catch (error: any) {
+  } catch (_error: any) {
     return {
       success: false,
       error: 'Ocorreu um erro no servidor. Tente novamente.',

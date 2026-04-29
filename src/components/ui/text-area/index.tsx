@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
-import { type VariantProps, cva } from 'class-variance-authority'
-import { type TextareaHTMLAttributes, forwardRef } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { forwardRef, type TextareaHTMLAttributes } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'

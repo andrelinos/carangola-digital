@@ -1,9 +1,8 @@
 'use client'
 
-import { GoBackButton } from '@/components/ui/go-back-button'
 import { TrendingUpIcon } from 'lucide-react'
-
 import type { ReactNode } from 'react'
+import { GoBackButton } from '@/components/ui/go-back-button'
 
 interface contentProps {
   children: ReactNode
@@ -20,7 +19,9 @@ export function ContentProfile({ children, totalVisits }: contentProps) {
           title="Número de visitas"
         >
           <TrendingUpIcon size={20} className="stroke-2" />
-          <span className="text-sm">{totalVisits?.toLocaleString() || 0} visitas</span>
+          <span className="text-sm">
+            {totalVisits?.toLocaleString() || 0} visitas
+          </span>
         </div>
       </div>
       <div className="flex flex-col gap-0 overflow-hidden rounded-3xl bg-background shadow-2xl shadow-black/5 dark:shadow-none">

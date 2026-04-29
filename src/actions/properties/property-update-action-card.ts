@@ -52,7 +52,7 @@ export async function propertyUpdateActionCard({
       })
 
       return { success: true }
-    } catch (error) {
+    } catch (_error) {
       return null
     }
   }

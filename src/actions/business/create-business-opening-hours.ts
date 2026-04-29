@@ -37,7 +37,7 @@ export async function createBusinessOpeningHours(formData: FormData) {
     })
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

@@ -40,7 +40,7 @@ export async function propertyUpdateDescription({
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

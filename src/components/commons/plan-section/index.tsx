@@ -1,15 +1,14 @@
+import clsx from 'clsx'
+import { Check } from 'lucide-react'
+import { getServerSession } from 'next-auth/next'
 import { PurchaseButtons } from '@/app/business/[slug]/compre/components/purchase-buttons'
 import { Card, CardContent } from '@/components/ui/card'
 import { authOptions } from '@/lib/auth'
 import { formatPrice } from '@/utils/format-price'
-import clsx from 'clsx'
-
-import { Check } from 'lucide-react'
-import { getServerSession } from 'next-auth/next'
 
 export async function PricingPlans() {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   const plans = [
     {
@@ -84,7 +83,7 @@ export async function PricingPlans() {
         </div>
 
         <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
-          {plans.map((plan, index) => (
+          {plans.map((plan, _index) => (
             <Card
               key={plan.name}
               className={clsx(`relative ${plan.cardClass}`, {
@@ -92,7 +91,7 @@ export async function PricingPlans() {
               })}
             >
               {plan.popular && (
-                <div className="-top-4 -translate-x-1/2 absolute left-1/2 transform">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 transform">
                   <span className="rounded-full bg-primary px-4 py-1 font-semibold text-sm">
                     Mais Popular
                   </span>

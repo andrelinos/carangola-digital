@@ -38,7 +38,7 @@ export async function propertyUpdateFeatures({ features, propertyId }: Props) {
     })
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

@@ -1,17 +1,16 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-
 import type { PropertyProps } from '@/_types/property'
 import { searchProperties } from '@/actions/properties/search-properties'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
-import Image from 'next/image'
 
-interface SearchProps extends PropertyProps { }
+interface SearchProps extends PropertyProps {}
 
 export default function SearchFormProperties() {
   const [searchTerms, setSearchTerms] = useState('')
@@ -32,7 +31,7 @@ export default function SearchFormProperties() {
     try {
       const results = await searchProperties(searchTerms)
       setResultsSearch(results as unknown as SearchProps[])
-    } catch (error) {
+    } catch (_error) {
       console.error('Erro na busca de imóveis:')
     } finally {
       setHasSearched(true)
@@ -66,7 +65,7 @@ export default function SearchFormProperties() {
 
         {resultsSearch && resultsSearch?.length > 0 && (
           <div className="flex size-full flex-col gap-2 py-8">
-            <h2 className=" py-6 text-center font-bold text-2xl">
+            <h2 className="py-6 text-center font-bold text-2xl">
               Resultados da sua busca
             </h2>
             <div className="flex w-full max-w-5xl flex-wrap justify-around gap-6">

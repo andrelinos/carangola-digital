@@ -1,7 +1,7 @@
 'use server'
 
-import { db, getDownloadURLFromPath } from '@/lib/firebase'
 import type { PropertyProps } from '@/_types/property'
+import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export async function searchProperties(
   searchTerms: string

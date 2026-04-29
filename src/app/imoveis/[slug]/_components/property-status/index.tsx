@@ -2,6 +2,7 @@
 
 import type { PropertyProps } from '@/_types/property'
 import { EditPropertyStatus } from './edit-property-status'
+
 // O EditPropertyStatus não é usado nesta versão simples
 // import { EditPropertyStatus } from './edit-property-status'
 
@@ -45,15 +46,23 @@ export function PropertyStatus({ propertyData, isOwner, isUserAuth }: Props) {
     statusConfig[status as keyof typeof statusConfig] || statusConfig.Pendente
 
   return (
-    <div className={`w-full rounded-2xl border ${config.bgStatus} p-6 shadow-sm`}>
+    <div
+      className={`w-full rounded-2xl border ${config.bgStatus} p-6 shadow-sm`}
+    >
       <div className="relative flex flex-col gap-1 font-bold text-gray-900 text-xl tracking-tight">
         <span className="text-slate-800">Situação do imóvel</span>
         <div className="mt-2 flex items-center gap-2">
           <span className="relative flex h-3 w-3">
-            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${config.dot}`}></span>
-            <span className={`relative inline-flex rounded-full h-3 w-3 ${config.dot}`}></span>
+            <span
+              className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${config.dot}`}
+            ></span>
+            <span
+              className={`relative inline-flex h-3 w-3 rounded-full ${config.dot}`}
+            ></span>
           </span>
-          <span className={`font-semibold ${config.text} text-lg`}>{status}</span>
+          <span className={`font-semibold ${config.text} text-lg`}>
+            {status}
+          </span>
           {(isOwner || isUserAuth) && (
             <EditPropertyStatus data={propertyData} />
           )}

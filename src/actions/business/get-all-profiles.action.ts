@@ -17,7 +17,7 @@ export async function getAllProfiles() {
     }))
 
     return profiles
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       message: 'Erro ocorrido ao buscar todos os perfis',

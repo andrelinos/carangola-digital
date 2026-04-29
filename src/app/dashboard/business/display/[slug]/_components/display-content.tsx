@@ -1,18 +1,21 @@
 'use client'
 
-import { QrCode, Smartphone, Sparkles, Printer, Copy, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Check, Copy, Printer, Smartphone, Sparkles } from 'lucide-react'
 import Link from 'next/link'
+import { QRCodeSVG } from 'qrcode.react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { QRCodeSVG } from 'qrcode.react'
+import { Button } from '@/components/ui/button'
 
 interface DisplayContentProps {
   slug: string
   establishmentName: string
 }
 
-export function DisplayContent({ slug, establishmentName }: DisplayContentProps) {
+export function DisplayContent({
+  slug,
+  establishmentName,
+}: DisplayContentProps) {
   const [copied, setCopied] = useState(false)
   const profileUrl = `https://carangoladigital.com.br/business/${slug}`
 
@@ -24,96 +27,109 @@ export function DisplayContent({ slug, establishmentName }: DisplayContentProps)
     try {
       navigator.clipboard.writeText(profileUrl)
       setCopied(true)
-      toast.success("Link copiado!")
+      toast.success('Link copiado!')
       setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      toast.error("Erro ao copiar link")
+    } catch (_err) {
+      toast.error('Erro ao copiar link')
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-8 font-sans antialiased text-slate-900 print:bg-white print:p-0">
-
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 p-4 font-sans text-slate-900 antialiased md:p-8 print:bg-white print:p-0">
       {/* Menu de Ações (Escondido na Impressão) */}
-      <div className="fixed top-6 right-6 flex gap-3 z-50 print:hidden">
-        <Button variant="outline" className="rounded-2xl bg-white/80 backdrop-blur-md shadow-sm border-slate-200" onClick={handleCopyLink}>
-          {copied ? <Check className="size-4 mr-2 text-green-600" /> : <Copy className="size-4 mr-2" />}
-          {copied ? "Copiado" : "Copiar Link"}
+      <div className="fixed top-6 right-6 z-50 flex gap-3 print:hidden">
+        <Button
+          variant="outline"
+          className="rounded-2xl border-slate-200 bg-white/80 shadow-sm backdrop-blur-md"
+          onClick={handleCopyLink}
+        >
+          {copied ? (
+            <Check className="mr-2 size-4 text-green-600" />
+          ) : (
+            <Copy className="mr-2 size-4" />
+          )}
+          {copied ? 'Copiado' : 'Copiar Link'}
         </Button>
-        <Button className="rounded-2xl shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90" onClick={handlePrint}>
-          <Printer className="size-4 mr-2" />
+        <Button
+          className="rounded-2xl bg-primary shadow-lg shadow-primary/20 hover:bg-primary/90"
+          onClick={handlePrint}
+        >
+          <Printer className="mr-2 size-4" />
           Imprimir
         </Button>
       </div>
 
-      <div className="w-full max-w-2xl flex flex-col items-center gap-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
-
+      <div className="fade-in slide-in-from-bottom-8 flex w-full max-w-2xl animate-in flex-col items-center gap-10 duration-700">
         {/* Cabeçalho */}
-        <header className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-wider mb-2">
+        <header className="space-y-4 text-center">
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 font-black text-primary text-xs uppercase tracking-wider">
             <Smartphone className="size-3" />
             Loja Oficial
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-950 uppercase leading-none">
+          <h1 className="font-black text-5xl text-slate-950 uppercase leading-none tracking-tighter md:text-7xl">
             {establishmentName}
           </h1>
-          <div className="flex items-center justify-center gap-3 text-slate-600 max-w-lg mx-auto">
-            <p className="text-lg md:text-xl font-semibold leading-tight opacity-70">
-              Escaneie o QR Code abaixo para ver nossas ofertas exclusivas ou chamar no WhatsApp!
+          <div className="mx-auto flex max-w-lg items-center justify-center gap-3 text-slate-600">
+            <p className="font-semibold text-lg leading-tight opacity-70 md:text-xl">
+              Escaneie o QR Code abaixo para ver nossas ofertas exclusivas ou
+              chamar no WhatsApp!
             </p>
           </div>
         </header>
 
         {/* Card Central (O Foco) */}
-        <main className="relative w-full aspect-square max-w-sm">
-          <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full opacity-30 animate-pulse"></div>
-          <div className="relative bg-white rounded-[3.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-slate-100 flex flex-col items-center justify-center gap-8 group">
-
+        <main className="relative aspect-square w-full max-w-sm">
+          <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20 opacity-30 blur-[100px]"></div>
+          <div className="group relative flex flex-col items-center justify-center gap-8 rounded-[3.5rem] border border-slate-100 bg-white p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
             {/* QR Code Real com Logo */}
-            <div className="w-full aspect-square bg-white rounded-3xl flex items-center justify-center p-2 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+            <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-3xl bg-white p-2 transition-transform duration-500 group-hover:scale-[1.02]">
               <QRCodeSVG
                 value={profileUrl}
                 size={512}
                 level="H"
                 includeMargin={false}
                 imageSettings={{
-                  src: "/logo-blue.svg",
+                  src: '/logo-blue.svg',
                   x: undefined,
                   y: undefined,
                   height: 80,
                   width: 80,
                   excavate: true,
                 }}
-                className="w-full h-full"
+                className="h-full w-full"
               />
             </div>
 
             <div className="flex flex-col items-center gap-2">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Aponte sua câmera</p>
-              <div className="h-1.5 w-12 bg-primary rounded-full"></div>
+              <p className="font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+                Aponte sua câmera
+              </p>
+              <div className="h-1.5 w-12 rounded-full bg-primary"></div>
             </div>
 
-            <Sparkles className="absolute -top-6 -right-6 size-16 text-yellow-400 animate-pulse" />
+            <Sparkles className="absolute -top-6 -right-6 size-16 animate-pulse text-yellow-400" />
           </div>
         </main>
 
         {/* Rodapé/Branding */}
-        <footer className="text-center space-y-6 pt-8">
+        <footer className="space-y-6 pt-8 text-center">
           <div className="flex items-center justify-center gap-4 opacity-40">
             <div className="h-px w-12 bg-slate-400"></div>
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+            <span className="font-bold text-slate-500 text-xs uppercase tracking-widest">
               Carangola Digital
             </span>
             <div className="h-px w-12 bg-slate-400"></div>
           </div>
 
           <div className="print:hidden">
-            <Link href="/dashboard" className="inline-flex items-center text-xs text-primary font-black hover:underline uppercase tracking-tight">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center font-black text-primary text-xs uppercase tracking-tight hover:underline"
+            >
               ← Voltar para o Dashboard
             </Link>
           </div>
         </footer>
-
       </div>
 
       <style jsx global>{`

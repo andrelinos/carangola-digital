@@ -1,29 +1,28 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-
-import LogoBlue from '@/assets/Logos/logo-blue.svg';
-import LogoOrange from '@/assets/Logos/logo-orange.svg';
-import Image from 'next/image';
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import LogoBlue from '@/assets/Logos/logo-blue.svg'
+import LogoOrange from '@/assets/Logos/logo-orange.svg'
 
 export function LogoOne() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
-  const theme =
-    typeof window !== 'undefined' && !!(localStorage.theme === 'dark');
+  const _theme =
+    typeof window !== 'undefined' && !!(localStorage.theme === 'dark')
 
   useEffect(() => {
     const themeMode = !!(
       localStorage.theme === 'dark' ||
       (!('theme' in localStorage) &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
-    );
-    setIsDarkMode(themeMode);
-  }, [theme]);
+    )
+    setIsDarkMode(themeMode)
+  }, [])
 
   if (isDarkMode) {
-    return <Image src={LogoOrange} alt="" priority />;
+    return <Image src={LogoOrange} alt="" priority />
   }
 
-  return <Image src={LogoBlue} alt="" priority />;
+  return <Image src={LogoBlue} alt="" priority />
 }

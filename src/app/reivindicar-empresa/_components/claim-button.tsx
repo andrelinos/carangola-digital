@@ -1,8 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 interface ClaimButtonProps {
   businessId?: string
@@ -62,14 +61,15 @@ Obrigado!`
       onClick={handleClaimClick}
       // Desabilita o botão durante o timeout
       disabled={isLoading}
-      className={`mt-8 w-full rounded-lg px-4 py-3 font-bold text-white transition-all duration-200 ${buttonText.includes('Copiada')
-        ? 'bg-green-600 hover:bg-green-700'
-        : 'bg-blue-600 hover:bg-blue-700'
-        }
+      className={`mt-8 w-full rounded-lg px-4 py-3 font-bold text-white transition-all duration-200 ${
+        buttonText.includes('Copiada')
+          ? 'bg-green-600 hover:bg-green-700'
+          : 'bg-blue-600 hover:bg-blue-700'
+      }
       ${
         // Adiciona estilo de desabilitado
         isLoading ? 'cursor-not-allowed opacity-50' : ''
-        }
+      }
       `}
     >
       {buttonText}

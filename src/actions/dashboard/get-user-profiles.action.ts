@@ -1,9 +1,9 @@
 'use server'
 
 import { getServerSession } from 'next-auth/next'
+import type { ProfileDataProps } from '@/_types/profile-data'
 import { authOptions } from '@/lib/auth'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
-import type { ProfileDataProps } from '@/_types/profile-data'
 
 export interface UserProfileTableData {
   id: string
@@ -15,7 +15,9 @@ export interface UserProfileTableData {
   image: string | null
 }
 
-export async function getUserProfilesForDashboard(): Promise<UserProfileTableData[]> {
+export async function getUserProfilesForDashboard(): Promise<
+  UserProfileTableData[]
+> {
   try {
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id
@@ -51,7 +53,8 @@ export async function getUserProfilesForDashboard(): Promise<UserProfileTableDat
         }
 
         // Resolver Imagem
-        const imagePath = data.logoImagePath || data.coverImagePath || data.imagePath || null
+        const imagePath =
+          data.logoImagePath || data.coverImagePath || data.imagePath || null
         let imageUrl = null
         if (imagePath) {
           imageUrl = await getDownloadURLFromPath(imagePath)
@@ -61,12 +64,13 @@ export async function getUserProfilesForDashboard(): Promise<UserProfileTableDat
           id: doc.id,
           name: data.name || 'Sem nome',
           slug: data.slug || doc.id,
-          category: Array.isArray(data.categories) && data.categories.length > 0
-            ? data.categories[0]
-            : (data.category || 'Outros'),
+          category:
+            Array.isArray(data.categories) && data.categories.length > 0
+              ? data.categories[0]
+              : data.category || 'Outros',
           status,
           statusColor,
-          image: imageUrl || null
+          image: imageUrl || null,
         }
       })
     )

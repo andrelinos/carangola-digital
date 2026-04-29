@@ -1,8 +1,6 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Facebook, Instagram } from 'iconoir-react'
 import {
   Clock,
   Download,
@@ -18,8 +16,10 @@ import {
   Star,
   StarHalf,
 } from 'lucide-react'
-import { Facebook, Instagram } from 'iconoir-react'
 import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function BusinessProfileDemo() {
   const businessHours = [
@@ -79,7 +79,7 @@ export function BusinessProfileDemo() {
           <CardContent className="p-8">
             {/* Business Header */}
             <div className="mb-8 flex items-start space-x-6">
-              <div className="-mt-16 relative z-10 h-24 w-24 rounded-2xl bg-white p-4 shadow-lg">
+              <div className="relative z-10 -mt-16 h-24 w-24 rounded-2xl bg-white p-4 shadow-lg">
                 <img
                   src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200"
                   alt="Coffee shop logo"

@@ -1,19 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Building2, Search, Store, ArrowRight, Map } from 'lucide-react'
+import { ArrowRight, Building2, Map, Search, Store } from 'lucide-react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 
 export function HomeHero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-blue-700 via-blue-800 to-indigo-950 py-24 text-white dark:from-slate-900 dark:via-blue-950 dark:to-slate-900 lg:py-40">
+    <section className="relative overflow-hidden bg-linear-to-br from-blue-700 via-blue-800 to-indigo-950 py-24 text-white lg:py-40 dark:from-slate-900 dark:via-blue-950 dark:to-slate-900">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute -left-20 -top-20 size-96 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute -right-20 top-1/4 size-80 rounded-full bg-indigo-500/10 blur-3xl" />
+        <div className="absolute -top-20 -left-20 size-96 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute top-1/4 -right-20 size-80 rounded-full bg-indigo-500/10 blur-3xl" />
         {/* Subtle Grid Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[20px_20px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.03]" />
       </div>
 
       <div className="container relative z-10 mx-auto max-w-6xl px-4">
@@ -22,19 +21,22 @@ export function HomeHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md shadow-lg"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 shadow-lg backdrop-blur-md"
           >
             <Map className="size-4 text-blue-300" />
-            <span className="text-sm font-medium tracking-wide">Tudo o que você precisa em Carangola</span>
+            <span className="font-medium text-sm tracking-wide">
+              Tudo o que você precisa em Carangola
+            </span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-6 max-w-4xl font-extrabold text-4xl leading-tight tracking-tight text-white md:text-6xl lg:text-7xl"
+            className="mb-6 max-w-4xl font-extrabold text-4xl text-white leading-tight tracking-tight md:text-6xl lg:text-7xl"
           >
-            O Guia Completo da Nossa <span className="text-blue-300">Cidade</span>
+            O Guia Completo da Nossa{' '}
+            <span className="text-blue-300">Cidade</span>
           </motion.h1>
 
           <motion.p
@@ -43,8 +45,9 @@ export function HomeHero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mx-auto mb-12 max-w-2xl text-blue-100/80 text-lg md:text-xl lg:leading-relaxed"
           >
-            Explore os melhores comércios, serviços locais e encontre o imóvel dos seus sonhos 
-            com agilidade e segurança no portal mais moderno da região.
+            Explore os melhores comércios, serviços locais e encontre o imóvel
+            dos seus sonhos com agilidade e segurança no portal mais moderno da
+            região.
           </motion.p>
 
           <motion.div
@@ -61,7 +64,9 @@ export function HomeHero() {
               <div className="mb-4 flex size-20 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-xl transition-transform group-hover:scale-110">
                 <Store className="size-10 stroke-[1.5]" />
               </div>
-              <h3 className="mb-2 text-2xl font-bold text-white">Guia Comercial</h3>
+              <h3 className="mb-2 font-bold text-2xl text-white">
+                Guia Comercial
+              </h3>
               <p className="mb-4 text-center text-blue-100/70 text-sm">
                 Encontre lojas, restaurantes e serviços locais.
               </p>
@@ -77,7 +82,9 @@ export function HomeHero() {
               <div className="mb-4 flex size-20 items-center justify-center rounded-2xl bg-white text-indigo-700 shadow-xl transition-transform group-hover:scale-110">
                 <Building2 className="size-10 stroke-[1.5]" />
               </div>
-              <h3 className="mb-2 text-2xl font-bold text-white">Mercado Imobiliário</h3>
+              <h3 className="mb-2 font-bold text-2xl text-white">
+                Mercado Imobiliário
+              </h3>
               <p className="mb-4 text-center text-blue-100/70 text-sm">
                 Encontre o imóvel perfeito para morar ou investir.
               </p>

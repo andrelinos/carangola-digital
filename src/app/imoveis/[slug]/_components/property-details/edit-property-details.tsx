@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { startTransition, useState } from 'react'
 import type { PropertyProps } from '@/_types/property'
 import { propertyUpdateCharacteristics } from '@/actions/properties/property-update-characteristics'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -7,8 +9,6 @@ import { FooterEditModal } from '@/components/commons/footer-edit-modal'
 import { Modal } from '@/components/ui/custom-modal'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
 
 interface Props {
   data: PropertyProps

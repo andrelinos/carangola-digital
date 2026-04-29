@@ -1,6 +1,6 @@
+import { getServerSession } from 'next-auth/next'
 import { PricingPlans } from '@/components/commons/plan-section'
 import { authOptions } from '@/lib/auth'
-import { getServerSession } from 'next-auth/next'
 
 interface Props {
   params: Promise<{
@@ -9,7 +9,7 @@ interface Props {
 }
 export default async function Compre({ params }: Props) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   const { profileId } = await params
 

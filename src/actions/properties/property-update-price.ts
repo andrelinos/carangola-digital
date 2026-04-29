@@ -37,7 +37,7 @@ export async function propertyUpdatePrice({ price, propertyId }: Props) {
     })
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

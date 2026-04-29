@@ -1,16 +1,15 @@
 'use client'
 
+import { Check, Copy, ShareAndroid } from 'iconoir-react'
+import { X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import {
   FacebookIcon,
   FacebookShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share'
-
-import { Check, Copy, ShareAndroid } from 'iconoir-react'
-import { X } from 'lucide-react'
-import { useState } from 'react'
 
 import { Modal } from '@/components/ui/custom-modal'
 import { cn } from '@/lib/utils'
@@ -20,9 +19,10 @@ export function ShareButton() {
   const [isOpen, setIsOpen] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
 
-  const shareUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}${path}` 
-    : `https://carangoladigital.com.br${path}`
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${path}`
+      : `https://carangoladigital.com.br${path}`
 
   function handleCopy() {
     navigator.clipboard.writeText(shareUrl).then(() => {
@@ -56,31 +56,39 @@ export function ShareButton() {
           {/* Close Button */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute right-6 top-6 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors dark:hover:bg-slate-800"
+            className="absolute top-6 right-6 rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
           >
             <X size={20} />
           </button>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Compartilhar Perfil</h2>
-            <p className="text-sm text-slate-500 font-medium mt-1 leading-relaxed">
+            <h2 className="font-bold text-2xl text-slate-900 tracking-tight dark:text-white">
+              Compartilhar Perfil
+            </h2>
+            <p className="mt-1 font-medium text-slate-500 text-sm leading-relaxed">
               Espalhe a novidade! Escolha como deseja compartilhar este negócio.
             </p>
           </div>
 
-          <div className="flex justify-center gap-6 mb-10">
+          <div className="mb-10 flex justify-center gap-6">
             <div onClick={handleShareClick}>
-              <FacebookShareButton url={shareUrl} className="transition-transform hover:scale-110 active:scale-95">
+              <FacebookShareButton
+                url={shareUrl}
+                className="transition-transform hover:scale-110 active:scale-95"
+              >
                 <FacebookIcon size={64} round />
               </FacebookShareButton>
             </div>
-            
+
             <div onClick={handleShareClick}>
-              <WhatsappShareButton url={shareUrl} className="transition-transform hover:scale-110 active:scale-95">
+              <WhatsappShareButton
+                url={shareUrl}
+                className="transition-transform hover:scale-110 active:scale-95"
+              >
                 <WhatsappIcon size={64} round />
               </WhatsappShareButton>
             </div>
-            
+
             <button
               type="button"
               onClick={() => {
@@ -88,25 +96,31 @@ export function ShareButton() {
                 // No fechamento automático para dar feedback do "Copiado!"
               }}
               className={cn(
-                "flex size-[64px] items-center justify-center rounded-full text-white transition-all hover:scale-110 active:scale-95 shadow-lg",
-                isCopied ? "bg-emerald-500 shadow-emerald-200" : "bg-slate-800 dark:bg-slate-700 shadow-slate-200"
+                'flex size-[64px] items-center justify-center rounded-full text-white shadow-lg transition-all hover:scale-110 active:scale-95',
+                isCopied
+                  ? 'bg-emerald-500 shadow-emerald-200'
+                  : 'bg-slate-800 shadow-slate-200 dark:bg-slate-700'
               )}
             >
-              {isCopied ? <Check className="size-7" /> : <Copy className="size-7" />}
+              {isCopied ? (
+                <Check className="size-7" />
+              ) : (
+                <Copy className="size-7" />
+              )}
             </button>
           </div>
 
           <div className="space-y-3">
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 px-1">
+            <label className="px-1 font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">
               Link Direto
             </label>
             <div className="flex items-center gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 dark:bg-slate-800/50 dark:ring-slate-800">
-               <span className="flex-1 truncate text-xs text-slate-600 dark:text-slate-400 font-bold">
+              <span className="flex-1 truncate font-bold text-slate-600 text-xs dark:text-slate-400">
                 {shareUrl}
               </span>
-              <button 
+              <button
                 onClick={handleCopy}
-                className="text-[11px] font-black uppercase tracking-tighter text-blue-600 hover:text-blue-700 dark:text-blue-400 whitespace-nowrap"
+                className="whitespace-nowrap font-black text-[11px] text-blue-600 uppercase tracking-tighter hover:text-blue-700 dark:text-blue-400"
               >
                 {isCopied ? 'Copiado!' : 'Copiar Link'}
               </button>
@@ -117,4 +131,3 @@ export function ShareButton() {
     </>
   )
 }
-

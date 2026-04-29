@@ -3,6 +3,7 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
+
 // Importe o Timestamp caso utilize o Firebase Admin SDK:
 // import { Timestamp } from 'firebase-admin/firestore'
 
@@ -32,31 +33,36 @@ export async function getDashboardStats() {
     // Executando as requisições em PARALELO usando Promise.allSettled
     // Usamos allSettled no lugar de Promise.all para que, se a query de "leads" falhar,
     // o usuário ainda consiga ver as estatísticas de imóveis e empresas.
-    const [businessesResult, propertiesResult, leadsResult] = await Promise.allSettled([
-      // 1. Empresas Ativas: Única query que precisa de .get() pois precisamos de doc.data() para somar visitas
-      db.collection('profiles')
-        .where('userId', '==', userId)
-        .where('isActive', '==', true)
-        .get(),
+    const [businessesResult, propertiesResult, leadsResult] =
+      await Promise.allSettled([
+        // 1. Empresas Ativas: Única query que precisa de .get() pois precisamos de doc.data() para somar visitas
+        db
+          .collection('profiles')
+          .where('userId', '==', userId)
+          .where('isActive', '==', true)
+          .get(),
 
-      // 2. Imóveis Anunciados: Usando agregação .count()
-      // O servidor do Firestore conta os docs lá e devolve apenas 1 número inteiro. (Requer Node SDK v11.3.0+)
-      db.collection('properties')
-        .doc(userId)
-        .collection('user_properties')
-        .count()
-        .get(),
+        // 2. Imóveis Anunciados: Usando agregação .count()
+        // O servidor do Firestore conta os docs lá e devolve apenas 1 número inteiro. (Requer Node SDK v11.3.0+)
+        db
+          .collection('properties')
+          .doc(userId)
+          .collection('user_properties')
+          .count()
+          .get(),
 
-      // 3. Novos Leads: Usando agregação .count()
-      db.collection('leads')
-        .where('ownerId', '==', userId)
-        .where('createdAt', '>=', thirtyDaysAgo)
-        .count()
-        .get()
-    ])
+        // 3. Novos Leads: Usando agregação .count()
+        db
+          .collection('leads')
+          .where('ownerId', '==', userId)
+          .where('createdAt', '>=', thirtyDaysAgo)
+          .count()
+          .get(),
+      ])
 
     // Inicialização das variáveis com os valores padrão
-    let { activeBusinesses, totalVisits, announcedProperties, newLeads } = DEFAULT_STATS
+    let { activeBusinesses, totalVisits, announcedProperties, newLeads } =
+      DEFAULT_STATS
 
     // Processamento seguro dos resultados
     if (businessesResult.status === 'fulfilled') {
@@ -86,7 +92,6 @@ export async function getDashboardStats() {
       totalVisits,
       newLeads,
     }
-
   } catch (error) {
     // Catch genérico para capturar falhas na autenticação ou rede
     // O log fica restrito ao servidor (seu terminal ou logs da Vercel)

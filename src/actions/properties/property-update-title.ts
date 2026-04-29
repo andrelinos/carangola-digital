@@ -45,7 +45,7 @@ export async function propertyUpdateTitle({ title, propertyId }: Props) {
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

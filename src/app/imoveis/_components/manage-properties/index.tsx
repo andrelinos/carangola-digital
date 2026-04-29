@@ -1,13 +1,12 @@
 'use client'
 
-import type { PropertyProps } from '@/_types/property'
-import { Button } from '@/components/ui/button'
-
-import { deleteProperty } from '@/actions/properties/delete-property'
-import { formatPrice } from '@/utils/format-price'
 import { Eye, Home, Plus, Search, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import type { PropertyProps } from '@/_types/property'
+import { deleteProperty } from '@/actions/properties/delete-property'
+import { Button } from '@/components/ui/button'
+import { formatPrice } from '@/utils/format-price'
 import { AddPropertyModal } from './add-property-modal'
 import { DeletePropertyModal } from './delete-property-modal'
 
@@ -23,14 +22,17 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const [termsToSearch, setTermsToSearch] = useState('')
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [_isDeleting, setIsDeleting] = useState(false)
   const [propertyToDelete, setPropertyToDelete] =
     useState<PropertyProps | null>(null)
 
   // NOVO: useEffect ajustado com delay para evitar conflito de hidratação/rotas
   useEffect(() => {
     const checkHash = setTimeout(() => {
-      if (typeof window !== 'undefined' && window.location.hash === '#anunciar') {
+      if (
+        typeof window !== 'undefined' &&
+        window.location.hash === '#anunciar'
+      ) {
         setIsModalOpen(true)
 
         // Limpa a hash da URL sem disparar eventos de navegação que fecham o modal
@@ -86,7 +88,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
         } else {
           console.error('Erro no processo')
         }
-      } catch (error) {
+      } catch (_error) {
         console.error('Falha ao tentar excluir:')
       } finally {
         setIsDeleting(false)
@@ -187,7 +189,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
             <input
               type="search"
               placeholder="Buscar por título ou endereço..."
-              className="w-full max-w-lg rounded-lg border border-slate-300 bg-white p-2.5 pl-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 "
+              className="w-full max-w-lg rounded-lg border border-slate-300 bg-white p-2.5 pl-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
               value={termsToSearch}
               onChange={e => setTermsToSearch(e.target.value)}
             />
@@ -303,7 +305,6 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                   <Eye className="h-4 w-4" />
                   Ver
                 </Button>
-
 
                 <Button
                   onClick={() => handleOpenDeleteModal(property.id)}

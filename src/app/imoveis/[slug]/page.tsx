@@ -1,13 +1,10 @@
-import { getServerSession } from 'next-auth/next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-
+import { getServerSession } from 'next-auth/next'
 import { increasePropertyVisits } from '@/actions/properties/increase-property-visits'
 import { getPropertyData } from '@/app/server/get-property-data'
+import RealEstateListingJsonLd from '@/components/seo/real-estate-json-ld'
 import { authOptions } from '@/lib/auth'
-
-import { PropertyDescription } from './_components/property-description'
-
-import type { Metadata } from 'next'
 import {
   PropertyAction,
   PropertyAddress,
@@ -18,10 +15,9 @@ import {
   PropertyStatus,
   PropertyTitle,
 } from './_components'
+import { PropertyDescription } from './_components/property-description'
 import { PropertyImageGallery } from './_components/property-image-gallery'
 import { ContentProperty } from './content'
-
-import RealEstateListingJsonLd from '@/components/seo/real-estate-json-ld'
 
 interface Props {
   params: Promise<{
@@ -36,18 +32,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!propertyData) {
     return {
       title: 'Carangola Digital | Imóvel não encontrado',
-      description: 'Encontre os melhores imóveis em Carangola no portal Carangola Digital.',
+      description:
+        'Encontre os melhores imóveis em Carangola no portal Carangola Digital.',
     }
   }
 
   const title = `${propertyData.title} | Carangola Digital`
-  const description = propertyData.description || `Confira este imóvel em Carangola: ${propertyData.title}. Veja preços, fotos e detalhes no Carangola Digital.`
+  const description =
+    propertyData.description ||
+    `Confira este imóvel em Carangola: ${propertyData.title}. Veja preços, fotos e detalhes no Carangola Digital.`
   const url = `https://carangoladigital.com.br/imoveis/${slug}`
 
   return {
     title,
     description,
-    keywords: propertyData.features?.join(', ') || propertyData.keywords?.join(', '),
+    keywords:
+      propertyData.features?.join(', ') || propertyData.keywords?.join(', '),
     alternates: {
       canonical: url,
     },
@@ -57,7 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url,
       images: [
         {
-          url: propertyData?.images?.[0]?.url || 'https://carangoladigital.com.br/images/og-image.png',
+          url:
+            propertyData?.images?.[0]?.url ||
+            'https://carangoladigital.com.br/images/og-image.png',
           width: 1200,
           height: 630,
           alt: propertyData.title,
@@ -89,7 +91,7 @@ export default async function PropertyDetailPage({
   if (!propertyData) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <h1 className="font-bold text-2xl ">Imóvel não encontrado</h1>
+        <h1 className="font-bold text-2xl">Imóvel não encontrado</h1>
         <Link href="/imoveis" className="text-accent-purple">
           Voltar para a página inicial
         </Link>
@@ -126,7 +128,7 @@ export default async function PropertyDetailPage({
                 isOwner={isOwner}
                 isUserAuth={isUserAuth}
               />
-              <div className="mt-4 border-t border-slate-100 pt-4">
+              <div className="mt-4 border-slate-100 border-t pt-4">
                 <PropertyPrice
                   propertyData={propertyData}
                   isOwner={isOwner}

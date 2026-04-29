@@ -1,9 +1,9 @@
 import 'server-only'
 
-import { serverEnv } from '@/utils/env'
 import { cert, getApps, initializeApp } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { getStorage } from 'firebase-admin/storage'
+import { serverEnv } from '@/utils/env'
 
 // Certificado Firebase
 cert({
@@ -45,7 +45,7 @@ export async function getDownloadURLFromPath(path?: string) {
     })
 
     return url
-  } catch (error) {
+  } catch (_error) {
     return
   }
 }

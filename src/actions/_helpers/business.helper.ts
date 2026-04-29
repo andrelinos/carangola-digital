@@ -1,7 +1,7 @@
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/firebase'
 import type { DocumentReference } from 'firebase-admin/firestore'
 import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
 
 // Tipos que você já definiu
 interface AdminUser {
@@ -36,7 +36,7 @@ export async function authorizeProfileUpdate(
   const session = await getServerSession(authOptions)
   const user = session?.user
 
-  if (!user || !user.id) {
+  if (!user?.id) {
     return { error: { success: false, error: 'Não autorizado' } }
   }
   const currentUserId = user.id

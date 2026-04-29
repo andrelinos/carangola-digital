@@ -1,14 +1,21 @@
 'use client'
 
-import { WelcomeHeader } from './welcome-header'
-import { DashboardStats } from './dashboard-stats'
-import { ProUpgradeBanner } from './pro-upgrade-banner'
 import { DashboardProfilesTable } from './dashboard-profiles-sum-table'
 import { PropertiesTable } from './dashboard-properties-table'
-
+import { DashboardStats } from './dashboard-stats'
 import { MarketingKit } from './marketing-kit'
+import { ProUpgradeBanner } from './pro-upgrade-banner'
+import { WelcomeHeader } from './welcome-header'
 
-export function DashboardComponent({ stats, profiles, properties }: { stats: any, profiles: any[], properties: any[] }) {
+export function DashboardComponent({
+  stats,
+  profiles,
+  properties,
+}: {
+  stats: any
+  profiles: any[]
+  properties: any[]
+}) {
   return (
     <div className="flex flex-col">
       {/* 👋 Personalized Greeting */}
@@ -22,7 +29,7 @@ export function DashboardComponent({ stats, profiles, properties }: { stats: any
       </div>
 
       {/* 📋 Listings Summary */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-4">
         <div className="xl:col-span-2">
           <DashboardProfilesTable profiles={profiles} />
         </div>
@@ -31,12 +38,14 @@ export function DashboardComponent({ stats, profiles, properties }: { stats: any
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 xl:cols-4">
+      <div className="xl:cols-4 mt-8 grid grid-cols-1">
         <PropertiesTable properties={properties} />
       </div>
 
-      <div className="mt-8 flex flex-col items-center justify-center py-12 border border-dashed rounded-3xl bg-muted/20 text-muted-foreground opacity-50">
-        <p className="text-sm font-medium italic">Mais métricas detalhadas em breve...</p>
+      <div className="mt-8 flex flex-col items-center justify-center rounded-3xl border border-dashed bg-muted/20 py-12 text-muted-foreground opacity-50">
+        <p className="font-medium text-sm italic">
+          Mais métricas detalhadas em breve...
+        </p>
       </div>
     </div>
   )

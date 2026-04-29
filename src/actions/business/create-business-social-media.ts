@@ -23,7 +23,7 @@ export async function createBusinessSocialMedia(formData: FormData) {
     })
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

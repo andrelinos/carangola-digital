@@ -97,7 +97,7 @@ export async function getUsersData(userId: string) {
     const docs = snapshot.data()
 
     return docs as UserProps
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }
@@ -120,7 +120,7 @@ export async function getProfileId(userId?: string) {
     }
 
     return snapshot.docs.map(doc => doc.id)
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }

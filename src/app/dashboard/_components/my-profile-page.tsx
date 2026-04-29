@@ -1,9 +1,10 @@
 'use client'
 
+import Link from 'next/link'
+import type { Session } from 'next-auth'
 import { useState, useTransition } from 'react'
-
+import { toast } from 'sonner'
 import { deleteProfile } from '@/actions/business/delete-profile.action'
-
 import { transferProfile } from '@/actions/business/transfer-profile.action'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,10 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-import type { Session } from 'next-auth'
-import Link from 'next/link'
-import { toast } from 'sonner'
 import { AddProfileModal } from './add-profile-modal'
 
 type Profile = {
@@ -46,7 +43,7 @@ interface Props {
 export function MyProfilePage({ session, profilesAdmins }: Props) {
   const [isPending, startTransition] = useTransition()
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [_isLoading, setIsLoading] = useState(false)
 
   const [isTransferModalOpen, setTransferModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -95,7 +92,7 @@ export function MyProfilePage({ session, profilesAdmins }: Props) {
 
   return (
     <div className="container">
-      <div className="w-full ">
+      <div className="w-full">
         <div className="flex items-end gap-4 py-4">
           <div className="flex-1">
             <Label htmlFor="search">Pesquisar</Label>

@@ -274,7 +274,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
 
       await createBusinessOpeningHours(formData)
       toast.success('Horário de funcionamento salvo com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar horário de funcionamento.')
     } finally {
       startTransition(() => {
@@ -400,7 +400,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
         description="Defina seu horário de funcionamento para cada dia, podendo adicionar mais de um período."
         classname="w-full max-w-[638px] max-h-[90vh] overflow-y-auto justify-center md:rounded-2xl border-[0.5px] border-blue-300 bg-white py-16 px-6 text-zinc-700"
       >
-        <div className="lg:fex-row flex w-full flex-col gap-4 ">
+        <div className="lg:fex-row flex w-full flex-col gap-4">
           {WEEK_DAYS.map(day => (
             <div
               key={day}
@@ -711,7 +711,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
             <Button
               onClick={handleSaveOpeningHours}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               {isSubmitting ? 'Salvando...' : 'Salvar'}
             </Button>

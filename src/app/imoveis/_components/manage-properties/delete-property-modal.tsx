@@ -1,8 +1,8 @@
 // ./delete-confirmation-modal.tsx
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { AlertTriangle, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface DeletePropertyModalProps {
   isOpen: boolean

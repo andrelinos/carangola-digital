@@ -1,4 +1,4 @@
-import { Store, ExternalLink } from 'lucide-react'
+import { ExternalLink, Store } from 'lucide-react'
 import Link from 'next/link'
 import type { UserProfileTableData } from '@/actions/dashboard/get-user-profiles.action'
 
@@ -6,8 +6,9 @@ interface DashboardProfilesTableProps {
   profiles: UserProfileTableData[]
 }
 
-export function DashboardProfilesTable({ profiles }: DashboardProfilesTableProps) {
-
+export function DashboardProfilesTable({
+  profiles,
+}: DashboardProfilesTableProps) {
   const getStatusClass = (color: StatusColor): string => {
     switch (color) {
       case 'chart-2':
@@ -63,14 +64,14 @@ export function DashboardProfilesTable({ profiles }: DashboardProfilesTableProps
           </thead>
           <tbody className="divide-y divide-border">
             {profiles.length > 0 ? (
-              profiles.map((item) => (
+              profiles.map(item => (
                 <tr
                   key={item.id}
                   className="text-foreground text-sm transition-colors hover:bg-accent/10"
                 >
                   <td className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-16 rounded-md border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+                      <div className="flex h-10 w-16 items-center justify-center overflow-hidden rounded-md border border-border bg-muted/30">
                         {item.image ? (
                           <img
                             src={item.image}
@@ -106,7 +107,7 @@ export function DashboardProfilesTable({ profiles }: DashboardProfilesTableProps
                     <Link
                       href={`/business/${item.slug}`}
                       target="_blank"
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 bg-primary/5 px-3 py-1.5 rounded-lg transition-colors border border-primary/10"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-primary/10 bg-primary/5 px-3 py-1.5 font-medium text-primary text-xs transition-colors hover:text-primary/80"
                     >
                       Visualizar/Editar
                       <ExternalLink className="size-3" />
@@ -116,7 +117,10 @@ export function DashboardProfilesTable({ profiles }: DashboardProfilesTableProps
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="py-8 text-center text-muted-foreground italic text-sm">
+                <td
+                  colSpan={4}
+                  className="py-8 text-center text-muted-foreground text-sm italic"
+                >
                   Nenhum perfil encontrado. Comece criando um novo negócio!
                 </td>
               </tr>

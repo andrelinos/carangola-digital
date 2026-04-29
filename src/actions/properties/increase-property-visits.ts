@@ -6,7 +6,9 @@ import { db } from '@/lib/firebase'
 
 export async function increasePropertyVisits({
   docPath,
-}: { docPath?: string }) {
+}: {
+  docPath?: string
+}) {
   if (!docPath) return null
 
   try {
@@ -17,7 +19,7 @@ export async function increasePropertyVisits({
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }

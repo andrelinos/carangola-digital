@@ -1,8 +1,8 @@
 'use server'
 
+import { Timestamp } from 'firebase-admin/firestore'
 import type { PaymentDataProps } from '@/_types/payment-data'
 import { db } from '@/lib/firebase'
-import { Timestamp } from 'firebase-admin/firestore'
 
 export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
   let profileId = ''

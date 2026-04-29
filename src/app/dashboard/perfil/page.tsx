@@ -1,6 +1,6 @@
-import { getServerSession } from 'next-auth/next'
-import { redirect } from 'next/navigation'
 import { UserCircle } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth/next'
 
 import { authOptions } from '@/lib/auth'
 import { ProfileForm } from './_components/profile-form'
@@ -18,18 +18,18 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
+        <h1 className="flex items-center gap-3 font-bold text-3xl text-foreground tracking-tight">
           <UserCircle className="size-8 text-primary" />
           Meu Perfil
         </h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="mt-2 text-muted-foreground">
           Gerencie suas informações pessoais e foto de perfil.
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 md:p-10 shadow-sm">
+      <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm md:p-10 dark:border-slate-800 dark:bg-slate-900">
         <ProfileForm
           initialName={session.user.name || ''}
           initialImage={session.user.image || '/images/user-no-image.png'}

@@ -1,7 +1,7 @@
 'use client'
 
-import type { PropertyProps } from '@/_types/property'
 import { Bath, Bed, Car, Square } from 'lucide-react'
+import type { PropertyProps } from '@/_types/property'
 import { EditPropertyDetails } from './edit-property-details'
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 }
 
 export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
-
   if (!propertyData?.characteristics) {
     return <div />
   }
@@ -21,14 +20,16 @@ export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
         Características
         {(isOwner || isUserAuth) && <EditPropertyDetails data={propertyData} />}
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
             <Square className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-gray-500 font-medium text-sm">Área</p>
-            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.area} m²</p>
+            <p className="font-medium text-gray-500 text-sm">Área</p>
+            <p className="font-semibold text-gray-900">
+              {propertyData?.characteristics?.area} m²
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -36,8 +37,10 @@ export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
             <Bed className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-gray-500 font-medium text-sm">Quartos</p>
-            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.bedrooms}</p>
+            <p className="font-medium text-gray-500 text-sm">Quartos</p>
+            <p className="font-semibold text-gray-900">
+              {propertyData?.characteristics?.bedrooms}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -45,8 +48,10 @@ export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
             <Bath className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-gray-500 font-medium text-sm">Banheiros</p>
-            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.bathrooms}</p>
+            <p className="font-medium text-gray-500 text-sm">Banheiros</p>
+            <p className="font-semibold text-gray-900">
+              {propertyData?.characteristics?.bathrooms}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -54,8 +59,10 @@ export function PropertyDetails({ propertyData, isOwner, isUserAuth }: Props) {
             <Car className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-gray-500 font-medium text-sm">Vagas</p>
-            <p className="font-semibold text-gray-900">{propertyData?.characteristics?.garageSpots}</p>
+            <p className="font-medium text-gray-500 text-sm">Vagas</p>
+            <p className="font-semibold text-gray-900">
+              {propertyData?.characteristics?.garageSpots}
+            </p>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
-import type { ProfileDataProps, Schedule, ScheduleDay } from '@/_types/profile-data'
-import React from 'react'
+import type { ProfileDataProps, Schedule } from '@/_types/profile-data'
 
 // Função auxiliar para agrupar dias com horários iguais
 const formatOpeningHours = (schedule: Schedule | undefined | null) => {
@@ -51,7 +50,9 @@ const formatOpeningHours = (schedule: Schedule | undefined | null) => {
 
 export default function LocalBusinessJsonLd({
   data,
-}: { data: ProfileDataProps }) {
+}: {
+  data: ProfileDataProps
+}) {
   // Converte socialMedias para o array sameAs do Schema.org
   const sameAs = data.socialMedias
     ? Object.values(data.socialMedias).filter(link => !!link)
@@ -79,7 +80,7 @@ export default function LocalBusinessJsonLd({
   }
 
   if (data.rating && data.reviewCount > 0) {
-    // @ts-ignore
+    // @ts-expect-error
     jsonLd.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: data.rating,

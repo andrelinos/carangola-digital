@@ -13,7 +13,9 @@ export interface UserPropertyTableData {
   image: string | null
 }
 
-export async function getUserPropertiesForDashboard(): Promise<UserPropertyTableData[]> {
+export async function getUserPropertiesForDashboard(): Promise<
+  UserPropertyTableData[]
+> {
   try {
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id
@@ -34,7 +36,7 @@ export async function getUserPropertiesForDashboard(): Promise<UserPropertyTable
     const properties = await Promise.all(
       snapshot.docs.map(async doc => {
         const data = doc.data()
-        
+
         // Determinar Status (Simplificado para o exemplo)
         let status: 'Ativo' | 'Pendente' | 'Expirado' = 'Ativo'
         let statusColor: 'chart-2' | 'chart-1' | 'destructive' = 'chart-2'
@@ -61,7 +63,7 @@ export async function getUserPropertiesForDashboard(): Promise<UserPropertyTable
           category: (data.category as string) || 'Imóvel',
           status,
           statusColor,
-          image: imageUrl
+          image: imageUrl,
         }
       })
     )

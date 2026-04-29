@@ -1,6 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
+import { ChatBubbleQuestion, Menu } from 'iconoir-react'
 import {
   Home,
   LayoutPanelLeft,
@@ -11,12 +12,10 @@ import {
 } from 'lucide-react'
 import type { Session } from 'next-auth'
 import { useState } from 'react'
-
 import { manageAuth } from '@/actions/manage-auth'
-import { Link } from '@/components/ui/link'
 
 import { ManageAuthButton } from '@/components/commons/manage-auth-button'
-import { ChatBubbleQuestion, Menu } from 'iconoir-react'
+import { Link } from '@/components/ui/link'
 
 interface MenusProps {
   hasProfileLink: boolean
@@ -46,11 +45,11 @@ export function Menus({
     return `/${session.user.myProfileLink}`
   }
 
-  const profileLink = getProfileLink()
+  const _profileLink = getProfileLink()
 
   return (
     <>
-      <button type="button" className=" p-0" onClick={handleOpen}>
+      <button type="button" className="p-0" onClick={handleOpen}>
         <Menu className="flex size-8 text-zinc-700" />
       </button>
       <div
@@ -64,7 +63,7 @@ export function Menus({
             <X className="size-8" />
           </button>
         </div>
-        <div className="flex h-[80vh] w-full flex-col items-center justify-center ">
+        <div className="flex h-[80vh] w-full flex-col items-center justify-center">
           <ul className="flex w-[380px] flex-col items-center gap-1 p-2">
             <Link
               href="/"

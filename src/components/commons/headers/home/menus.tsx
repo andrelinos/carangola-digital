@@ -13,9 +13,9 @@ import {
   Sun,
   X,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import type { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -88,7 +88,7 @@ export function Menus({ session }: Props) {
       )}
       <div className="">
         {/* O botão "Hambúrguer" para abrir o menu mobile */}
-        <button type="button" className=" p-0" onClick={handleOpen}>
+        <button type="button" className="p-0" onClick={handleOpen}>
           <Menu className="flex size-8 text-muted-foreground" />
         </button>
 
@@ -104,7 +104,7 @@ export function Menus({ session }: Props) {
               <X className="size-8" />
             </button>
           </div>
-          <div className="flex h-[80vh] w-full flex-col items-center justify-center ">
+          <div className="flex h-[80vh] w-full flex-col items-center justify-center">
             <ul className="flex w-[380px] flex-col items-center gap-4 p-2">
               <Link
                 href="/"
@@ -195,9 +195,9 @@ export function Menus({ session }: Props) {
                   onClick={handleLogOut}
                   variant="outline"
                   className={clsx(
-                    'w-full px-4 transition-colors duration-300 ease-in-out hover:cursor-pointer ',
+                    'w-full px-4 transition-colors duration-300 ease-in-out hover:cursor-pointer',
                     {
-                      ' hover:border-rose-400 hover:bg-rose-400 hover:text-white':
+                      'hover:border-rose-400 hover:bg-rose-400 hover:text-white':
                         session,
                     }
                   )}

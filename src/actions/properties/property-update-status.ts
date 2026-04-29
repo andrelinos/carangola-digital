@@ -37,7 +37,7 @@ export async function propertyUpdateStatus({ status, propertyId }: Props) {
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

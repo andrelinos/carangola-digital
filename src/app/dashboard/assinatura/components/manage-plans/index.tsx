@@ -1,5 +1,17 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import {
+  ArrowRight,
+  Check,
+  Crown,
+  ShieldCheck,
+  Sparkles,
+  X,
+} from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { setFreePlanAction } from '@/actions/user/set-free-plan'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -18,13 +30,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { PlanItemProps } from '@/configs/plans-business'
-import { formatPrice } from '@/utils/format-price'
-import { Check, Crown, Sparkles, X, ArrowRight, ShieldCheck } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { useState } from 'react'
 import { cn } from '@/lib/utils'
-import { setFreePlanAction } from '@/actions/user/set-free-plan'
-import { toast } from 'sonner'
+import { formatPrice } from '@/utils/format-price'
 
 interface ManagePlansProps {
   plans: PlanItemProps[]
@@ -36,14 +43,14 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15
-    }
-  }
+      staggerChildren: 0.15,
+    },
+  },
 }
 
 const item = {
   hidden: { y: 20, opacity: 0 },
-  show: { y: 0, opacity: 1 }
+  show: { y: 0, opacity: 1 },
 }
 
 export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
@@ -80,12 +87,14 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
   return (
     <>
       <div className="container mx-auto max-w-7xl px-4 py-16">
-        <header className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">
-            Escolha seu <span className="text-primary italic">Nível de Destaque</span>
+        <header className="mb-16 space-y-4 text-center">
+          <h2 className="font-black text-4xl text-slate-900 uppercase tracking-tighter md:text-5xl">
+            Escolha seu{' '}
+            <span className="text-primary italic">Nível de Destaque</span>
           </h2>
-          <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto italic">
-            Não importa o tamanho da sua empresa, temos o plano ideal para você brilhar em Carangola.
+          <p className="mx-auto max-w-2xl font-medium text-lg text-slate-500 italic">
+            Não importa o tamanho da sua empresa, temos o plano ideal para você
+            brilhar em Carangola.
           </p>
         </header>
 
@@ -99,39 +108,58 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
             <motion.div key={plan.name} variants={item}>
               <Card
                 className={cn(
-                  'relative flex flex-col h-full border-2 transition-all duration-500 overflow-hidden group hover:scale-[1.02] hover:shadow-2xl',
+                  'group relative flex h-full flex-col overflow-hidden border-2 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl',
                   plan?.popular
                     ? 'border-primary bg-slate-50'
-                    : 'border-slate-100 hover:border-slate-200'
+                    : plan?.name === 'pro'
+                      ? 'border-amber-500 bg-amber-50/30 hover:shadow-amber-500/20'
+                      : 'border-slate-100 hover:border-slate-200'
                 )}
               >
                 {plan?.popular && (
-                  <div className="absolute top-0 right-0 p-0 overflow-hidden size-32 pointer-events-none">
-                    <div className="absolute top-4 -right-8 w-32 rotate-45 bg-primary text-white text-[10px] font-black text-center py-1 uppercase tracking-widest shadow-lg">
+                  <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
+                    <div className="absolute top-4 -right-8 w-32 rotate-45 bg-primary py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
                       Popular
                     </div>
                   </div>
                 )}
 
-                <CardHeader className="pt-10 pb-6 relative">
-                  <div className="flex justify-between items-start mb-4">
-                    <CardTitle className="font-black text-3xl tracking-tight text-slate-900 uppercase">
+                {plan?.name === 'pro' && (
+                  <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
+                    <div className="absolute top-4 -right-8 w-32 rotate-45 bg-amber-500 py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
+                      Mais Vantajoso
+                    </div>
+                  </div>
+                )}
+
+                <CardHeader className="relative pt-10 pb-6">
+                  <div className="mb-4 flex items-start justify-between">
+                    <CardTitle className="font-black text-3xl text-slate-900 uppercase tracking-tight">
                       {plan.title}
                     </CardTitle>
                     {plan?.popular ? (
-                      <Crown className="size-6 text-primary animate-pulse" />
+                      <Crown className="size-6 animate-pulse text-primary" />
                     ) : plan.name !== 'free' ? (
                       <Sparkles className="size-6 text-amber-500" />
                     ) : null}
                   </div>
 
-                  <div className="flex items-baseline gap-1 pt-2">
-                    <span className="font-black text-5xl tracking-tighter text-slate-950">
-                      {formatPrice(plan.price)}
-                    </span>
-                    <span className="font-bold text-slate-400 text-sm uppercase tracking-wider">
-                      {plan.frequency}
-                    </span>
+                  <div className="flex flex-col pt-2">
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-black text-5xl text-slate-950 tracking-tighter">
+                        {plan.price > 0
+                          ? formatPrice(plan.price / 12)
+                          : formatPrice(0)}
+                      </span>
+                      <span className="font-bold text-slate-400 text-sm uppercase tracking-wider">
+                        /mês
+                      </span>
+                    </div>
+                    {plan.price > 0 && (
+                      <span className="mt-1 font-bold text-slate-400/80 text-xs uppercase tracking-widest">
+                        Faturado anualmente ({formatPrice(plan.price)})
+                      </span>
+                    )}
                   </div>
                   <CardDescription className="pt-2 font-medium text-slate-500 italic">
                     {plan.name === 'free'
@@ -144,41 +172,59 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
 
                 <CardContent className="grow space-y-6">
                   <div className="h-px w-full bg-slate-100" />
-                  <p className="font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">O que está incluso:</p>
+                  <p className="font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+                    O que está incluso:
+                  </p>
 
                   <ul className="space-y-4">
                     <li className="flex items-center gap-3">
-                      <div className="bg-green-50 p-1 rounded-full group-hover:scale-110 transition-transform">
-                        <Check className="size-4 text-green-600" strokeWidth={3} />
+                      <div className="rounded-full bg-green-50 p-1 transition-transform group-hover:scale-110">
+                        <Check
+                          className="size-4 text-green-600"
+                          strokeWidth={3}
+                        />
                       </div>
-                      <span className="text-slate-700 font-semibold text-sm">
-                        {plan.addresses.quantity === -1 ? 'Endereços Ilimitados' : `${plan.addresses.quantity} Endereços`}
+                      <span className="font-semibold text-slate-700 text-sm">
+                        {plan.addresses.quantity === -1
+                          ? 'Endereços Ilimitados'
+                          : `${plan.addresses.quantity} Endereços`}
                       </span>
                     </li>
                     <li className="flex items-center gap-3">
-                      <div className="bg-green-50 p-1 rounded-full group-hover:scale-110 transition-transform">
-                        <Check className="size-4 text-green-600" strokeWidth={3} />
+                      <div className="rounded-full bg-green-50 p-1 transition-transform group-hover:scale-110">
+                        <Check
+                          className="size-4 text-green-600"
+                          strokeWidth={3}
+                        />
                       </div>
-                      <span className="text-slate-700 font-semibold text-sm">
-                        {plan.businessPhones.quantity === -1 ? 'Telefones Ilimitados' : `${plan.businessPhones.quantity} Telefones`}
+                      <span className="font-semibold text-slate-700 text-sm">
+                        {plan.businessPhones.quantity === -1
+                          ? 'Telefones Ilimitados'
+                          : `${plan.businessPhones.quantity} Telefones`}
                       </span>
                     </li>
                     <li className="flex items-center gap-3">
                       {plan.activeSocialMedias > 0 ? (
                         <>
-                          <div className="bg-green-50 p-1 rounded-full group-hover:scale-110 transition-transform">
-                            <Check className="size-4 text-green-600" strokeWidth={3} />
+                          <div className="rounded-full bg-green-50 p-1 transition-transform group-hover:scale-110">
+                            <Check
+                              className="size-4 text-green-600"
+                              strokeWidth={3}
+                            />
                           </div>
-                          <span className="text-slate-700 font-semibold text-sm">
+                          <span className="font-semibold text-slate-700 text-sm">
                             {plan.activeSocialMedias} Links de Redes Sociais
                           </span>
                         </>
                       ) : (
                         <>
-                          <div className="bg-slate-50 p-1 rounded-full opacity-40">
-                            <X className="size-4 text-slate-400" strokeWidth={3} />
+                          <div className="rounded-full bg-slate-50 p-1 opacity-40">
+                            <X
+                              className="size-4 text-slate-400"
+                              strokeWidth={3}
+                            />
                           </div>
-                          <span className="text-slate-400 font-medium text-sm line-through">
+                          <span className="font-medium text-slate-400 text-sm line-through">
                             Redes Sociais
                           </span>
                         </>
@@ -187,17 +233,27 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
 
                     {plan?.name !== 'free' ? (
                       <li className="flex items-center gap-3">
-                        <div className="bg-green-50 p-1 rounded-full group-hover:scale-110 transition-transform">
-                          <Check className="size-4 text-green-600" strokeWidth={3} />
+                        <div className="rounded-full bg-green-50 p-1 transition-transform group-hover:scale-110">
+                          <Check
+                            className="size-4 text-green-600"
+                            strokeWidth={3}
+                          />
                         </div>
-                        <span className="text-slate-700 font-semibold text-sm">Galeria de Fotos Completa</span>
+                        <span className="font-semibold text-slate-700 text-sm">
+                          Galeria de Fotos Completa
+                        </span>
                       </li>
                     ) : (
                       <li className="flex items-center gap-3 opacity-40">
-                        <div className="bg-slate-50 p-1 rounded-full">
-                          <X className="size-4 text-slate-400" strokeWidth={3} />
+                        <div className="rounded-full bg-slate-50 p-1">
+                          <X
+                            className="size-4 text-slate-400"
+                            strokeWidth={3}
+                          />
                         </div>
-                        <span className="text-slate-400 font-medium text-sm line-through">Galeria de Fotos</span>
+                        <span className="font-medium text-slate-400 text-sm line-through">
+                          Galeria de Fotos
+                        </span>
                       </li>
                     )}
                   </ul>
@@ -206,20 +262,24 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
                 <CardFooter className="pt-8 pb-10">
                   <Button
                     onClick={() => setSelectedPlan(plan)}
-                    disabled={plan.name.toLowerCase() === currentPlan?.toLowerCase()}
-                    className={cn(
-                      "w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300",
+                    disabled={
                       plan.name.toLowerCase() === currentPlan?.toLowerCase()
-                        ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+                    }
+                    className={cn(
+                      'h-14 w-full rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-300',
+                      plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                        ? 'cursor-not-allowed bg-slate-100 text-slate-400'
                         : plan.popular
-                          ? "bg-primary text-white shadow-lg shadow-primary/30 hover:bg-primary/90 hover:scale-[1.02]"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          ? 'bg-primary text-white shadow-lg shadow-primary/30 hover:scale-[1.02] hover:bg-primary/90'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     )}
                     variant="ghost"
                   >
-                    {plan.name.toLowerCase() === currentPlan?.toLowerCase() ? 'Plano Atual' : `Escolher ${plan.title}`}
+                    {plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                      ? 'Plano Atual'
+                      : `Escolher ${plan.title}`}
                     {plan.name.toLowerCase() !== currentPlan?.toLowerCase() && (
-                      <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                     )}
                   </Button>
                 </CardFooter>
@@ -232,62 +292,74 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
       {console.log(plans)}
 
       <Dialog open={!!selectedPlan} onOpenChange={handleCloseModal}>
-        <DialogContent className="sm:max-w-[425px] rounded-[3rem] p-4 bg-slate-50 border-none overflow-hidden sm:rounded-[3rem]">
-          <div className="bg-white rounded-[2.5rem] p-8 space-y-6 shadow-sm border border-slate-100">
+        <DialogContent className="overflow-hidden rounded-[3rem] border-none bg-slate-50 p-4 sm:max-w-[425px] sm:rounded-[3rem]">
+          <div className="space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm">
             <DialogHeader className="space-y-4">
-              <div className="mx-auto bg-primary/10 size-16 rounded-full flex items-center justify-center">
+              <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10">
                 <ShieldCheck className="size-8 text-primary" />
               </div>
-              <div className="text-center space-y-1">
-                <DialogTitle className="text-2xl font-black text-slate-950 uppercase tracking-tighter">
+              <div className="space-y-1 text-center">
+                <DialogTitle className="font-black text-2xl text-slate-950 uppercase tracking-tighter">
                   Quase lá!
                 </DialogTitle>
                 <DialogDescription className="font-semibold text-slate-500">
-                  Você está selecionando o plano <span className="text-primary">{selectedPlan?.title}</span>
+                  Você está selecionando o plano{' '}
+                  <span className="text-primary">{selectedPlan?.title}</span>
                 </DialogDescription>
               </div>
             </DialogHeader>
 
             {selectedPlan && (
-              <div className="bg-slate-50 rounded-3xl p-6 text-center space-y-2 border border-dashed border-slate-200">
+              <div className="space-y-2 rounded-3xl border border-slate-200 border-dashed bg-slate-50 p-6 text-center">
                 {selectedPlan.price === 0 ? (
                   <>
-                    <p className="font-black text-4xl text-primary tracking-tighter uppercase">
+                    <p className="font-black text-4xl text-primary uppercase tracking-tighter">
                       100% Grátis
                     </p>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
+                    <p className="font-bold text-slate-400 text-xs uppercase tracking-[0.2em]">
                       Sem custos de manutenção
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="font-black text-4xl text-slate-950 tracking-tighter">
-                      {formatPrice(selectedPlan.price)}
+                    <div className="flex items-baseline justify-center gap-1">
+                      <p className="font-black text-4xl text-slate-950 tracking-tighter">
+                        {formatPrice(selectedPlan.price / 12)}
+                      </p>
+                      <p className="font-bold text-slate-400 text-sm uppercase tracking-wider">
+                        /mês
+                      </p>
+                    </div>
+                    <p className="mt-1 font-bold text-[11px] text-slate-400 uppercase tracking-[0.2em]">
+                      Cobrado {formatPrice(selectedPlan.price)} por ano
                     </p>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
-                      Pagamento anual
-                    </p>
-                    <p className="text-[10px] font-bold text-primary/50 uppercase tracking-widest mt-1">
-                      Apenas {formatPrice(selectedPlan.price / 12)} / mês
-                    </p>
+                    <div className="mt-3">
+                      <p className="inline-block rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-bold text-[10px] text-primary uppercase tracking-widest">
+                        Apenas {formatPrice(selectedPlan.price / 365)} por dia!
+                      </p>
+                    </div>
                   </>
                 )}
               </div>
             )}
 
-            <DialogFooter className="flex-col sm:flex-col gap-3 mt-4">
+            <DialogFooter className="mt-4 flex-col gap-3 sm:flex-col">
               <Button
                 onClick={handleConfirmPlan}
                 disabled={isPending}
-                className="w-full bg-primary h-14 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:bg-primary/90"
+                className="h-14 w-full rounded-2xl bg-primary font-black text-xs uppercase tracking-widest shadow-primary/20 shadow-xl hover:bg-primary/90"
               >
-                {isPending ? 'Processando...' : (selectedPlan?.price === 0 ? 'Ativar Plano Grátis' : 'Confirmar Assinatura')}
+                {isPending
+                  ? 'Processando...'
+                  : selectedPlan?.price === 0
+                    ? 'Ativar Plano Grátis'
+                    : 'Confirmar Assinatura'}
               </Button>
               <Button
                 variant="ghost"
                 onClick={handleCloseModal}
                 disabled={isPending}
-                className="w-full h-12 rounded-2xl font-bold text-slate-400 hover:text-slate-600 hover:bg-slate-100 uppercase text-[10px] tracking-widest"
+                className="h-12 w-full rounded-2xl font-bold text-[10px] text-slate-400 uppercase tracking-widest hover:bg-slate-100 hover:text-slate-600"
               >
                 Voltar e revisar
               </Button>

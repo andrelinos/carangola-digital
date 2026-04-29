@@ -1,7 +1,7 @@
 /**
  * Utilitário de log seguro para o projeto.
- * 
- * Silencia os logs em produção para evitar vazamento de dados 
+ *
+ * Silencia os logs em produção para evitar vazamento de dados
  * e melhora a experiência de depuração em desenvolvimento.
  */
 
@@ -24,7 +24,7 @@ export const logger = {
     }
   },
   error: (...args: any[]) => {
-    // Erros podem ser registrados mesmo em produção, 
+    // Erros podem ser registrados mesmo em produção,
     // mas de forma segura (sem stack traces verbosos se possível)
     if (isDev) {
       console.error(...args)

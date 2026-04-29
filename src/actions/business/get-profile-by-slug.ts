@@ -1,7 +1,7 @@
 'use server'
 
-import { getProfileData } from '@/app/server/get-profile-data'
 import { getServerSession } from 'next-auth/next'
+import { getProfileData } from '@/app/server/get-profile-data'
 import { authOptions } from '@/lib/auth'
 
 export async function getProfileBySlugAction(slug: string) {

@@ -1,22 +1,20 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
+import { Search, Settings, Shield, Store, User, UserPlus } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import type { Session } from 'next-auth'
 import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { motion, AnimatePresence } from 'framer-motion'
-
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { addAdminOnProfile } from '@/actions/business/manage-admin-on-profile'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { Session } from 'next-auth'
-import Link from 'next/link'
-import { RemoveAdmin } from './delete'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { ProfileCompletenessCard } from '../../_components/profile-completeness-card'
-
-import { Store, Shield, User, Settings, UserPlus, Search } from 'lucide-react'
+import { RemoveAdmin } from './delete'
 
 interface Props {
   session: Session
@@ -75,11 +73,13 @@ export function FormManage({ session, profiles }: Props) {
   }
 
   useEffect(() => {
-    const result = profiles?.filter(profile => {
-      const profileLowerCase = profile?.name?.toLowerCase() || profile?.slug?.toLowerCase() || ''
-      const termsLowerCase = searchTerms?.toLowerCase()
-      return profileLowerCase.includes(termsLowerCase)
-    }) || []
+    const result =
+      profiles?.filter(profile => {
+        const profileLowerCase =
+          profile?.name?.toLowerCase() || profile?.slug?.toLowerCase() || ''
+        const termsLowerCase = searchTerms?.toLowerCase()
+        return profileLowerCase.includes(termsLowerCase)
+      }) || []
 
     setListProfiles(result)
   }, [searchTerms, profiles])
@@ -87,85 +87,94 @@ export function FormManage({ session, profiles }: Props) {
   return (
     <div className="flex w-full flex-col gap-8 pb-10">
       {/* Header Area */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+      <div className="flex flex-col justify-between gap-4 border-slate-200 border-b pb-6 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">Meus Negócios</h1>
-          <p className="text-slate-500 font-medium mt-1">Gerencie o perfil, assinaturas e administradores das suas empresas.</p>
+          <h1 className="font-black text-3xl text-slate-900 tracking-tight">
+            Meus Negócios
+          </h1>
+          <p className="mt-1 font-medium text-slate-500">
+            Gerencie o perfil, assinaturas e administradores das suas empresas.
+          </p>
         </div>
       </div>
 
       {/* Search & Filters */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+        <Search className="absolute top-1/2 left-3 size-5 -translate-y-1/2 text-slate-400" />
         <Input
           type="search"
           placeholder="Buscar negócio por nome..."
-          className="pl-10 h-12 rounded-xl bg-white border-slate-200 shadow-sm focus:border-blue-500 focus:ring-blue-100 transition-all font-medium"
+          className="h-12 rounded-xl border-slate-200 bg-white pl-10 font-medium shadow-sm transition-all focus:border-blue-500 focus:ring-blue-100"
           value={searchTerms}
           onChange={e => setSearchTerms(e.target.value)}
         />
       </div>
 
       {/* Business Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
         {listProfiles?.map(profile => {
           const isExpanded = profileId === profile.id
           const isOwner = session?.user?.id === profile.userId
 
           return (
-            <Card 
-              key={profile.id} 
+            <Card
+              key={profile.id}
               className={`overflow-hidden transition-all duration-300 ${
-                isExpanded 
-                  ? 'ring-2 ring-blue-500 shadow-lg border-blue-200' 
-                  : 'hover:shadow-md border-slate-200 shadow-sm bg-white'
+                isExpanded
+                  ? 'border-blue-200 shadow-lg ring-2 ring-blue-500'
+                  : 'border-slate-200 bg-white shadow-sm hover:shadow-md'
               }`}
             >
               <CardContent className="p-0">
                 {/* Card Header & Summary */}
                 <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                  <div className="mb-4 flex items-start justify-between">
+                    <div className="rounded-2xl bg-blue-50 p-3 text-blue-600">
                       <Store className="size-6" />
                     </div>
-                    <Badge 
+                    <Badge
                       variant="outline"
-                      className={`uppercase font-bold text-[10px] ${
-                        profile.planActive?.type === 'pro' 
-                          ? 'bg-amber-100 text-amber-700 border-amber-200' 
-                          : 'bg-slate-100 text-slate-600 border-slate-200'
+                      className={`font-bold text-[10px] uppercase ${
+                        profile.planActive?.type === 'pro'
+                          ? 'border-amber-200 bg-amber-100 text-amber-700'
+                          : 'border-slate-200 bg-slate-100 text-slate-600'
                       }`}
                     >
                       {profile.planActive?.type || 'Grátis'}
                     </Badge>
                   </div>
-                  
+
                   <div className="mb-6">
-                    <h2 className="text-xl font-bold text-slate-900 truncate" title={profile.name || profile.slug}>
+                    <h2
+                      className="truncate font-bold text-slate-900 text-xl"
+                      title={profile.name || profile.slug}
+                    >
                       {profile.name || profile.slug}
                     </h2>
-                    <div className="flex flex-col gap-2 mt-3">
-                      <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <div className="mt-3 flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-slate-500 text-sm">
                         <Shield className="size-4" />
-                        <span className="font-medium">{isOwner ? 'Proprietário' : 'Administrador'}</span>
+                        <span className="font-medium">
+                          {isOwner ? 'Proprietário' : 'Administrador'}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-500 text-sm">
                         <User className="size-4" />
                         <span>{profile.admins?.length || 0} gerente(s)</span>
                       </div>
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     onClick={() => setProfileId(isExpanded ? '' : profile.id)}
-                    variant={isExpanded ? "secondary" : "default"}
-                    className={`w-full font-bold h-11 rounded-xl transition-all ${
-                      isExpanded 
-                        ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' 
-                        : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/20'
+                    variant={isExpanded ? 'secondary' : 'default'}
+                    className={`h-11 w-full rounded-xl font-bold transition-all ${
+                      isExpanded
+                        ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        : 'bg-blue-600 text-white shadow-blue-500/20 shadow-md hover:bg-blue-700'
                     }`}
                   >
-                    <Settings className="size-4 mr-2" />
+                    <Settings className="mr-2 size-4" />
                     {isExpanded ? 'Fechar Gerenciador' : 'Gerenciar Perfil'}
                   </Button>
                 </div>
@@ -177,73 +186,99 @@ export function FormManage({ session, profiles }: Props) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="border-t border-slate-100 bg-slate-50"
+                      className="border-slate-100 border-t bg-slate-50"
                     >
-                      <div className="p-6 space-y-8">
-                        
+                      <div className="space-y-8 p-6">
                         {/* Profile Completeness */}
                         <div>
                           <ProfileCompletenessCard profile={profile} />
                         </div>
 
                         {/* Managers List */}
-                        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                          <div className="flex flex-col gap-1 mb-5">
-                            <h3 className="text-lg font-bold text-slate-900">Equipe do Perfil</h3>
-                            <p className="text-sm text-slate-500 font-medium">Usuários com acesso para editar este negócio.</p>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                          <div className="mb-5 flex flex-col gap-1">
+                            <h3 className="font-bold text-lg text-slate-900">
+                              Equipe do Perfil
+                            </h3>
+                            <p className="font-medium text-slate-500 text-sm">
+                              Usuários com acesso para editar este negócio.
+                            </p>
                           </div>
 
                           <div className="space-y-3">
                             {profile.admins?.map((admin, idx) => (
-                              <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                              <div
+                                key={idx}
+                                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-3"
+                              >
                                 <div className="flex items-center gap-3">
-                                  <div className="size-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-sm">
+                                  <div className="flex size-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700 text-sm">
                                     {admin.name?.charAt(0).toUpperCase() || 'U'}
                                   </div>
                                   <div>
-                                    <p className="font-semibold text-slate-900 text-sm">{admin.name}</p>
-                                    <p className="text-xs text-slate-500">{admin.email}</p>
+                                    <p className="font-semibold text-slate-900 text-sm">
+                                      {admin.name}
+                                    </p>
+                                    <p className="text-slate-500 text-xs">
+                                      {admin.email}
+                                    </p>
                                   </div>
                                 </div>
                                 {admin.userId !== profile.userId && (
-                                  <RemoveAdmin admin={admin as any} profileId={profileId} />
+                                  <RemoveAdmin
+                                    admin={admin as any}
+                                    profileId={profileId}
+                                  />
                                 )}
                               </div>
                             ))}
                           </div>
 
                           {/* Add Manager Form */}
-                          <div className="mt-6 pt-5 border-t border-slate-100">
-                             <h4 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-                               <UserPlus className="size-4 text-blue-600" /> Adicionar Gerente
-                             </h4>
-                             <form onSubmit={handleAddAdmin} className="flex gap-2">
-                               <Input
-                                 type="email"
-                                 placeholder="Email do gerente..."
-                                 className="h-10 rounded-lg border-slate-200 bg-white shadow-sm flex-1 text-sm focus:border-blue-500 focus:ring-blue-100"
-                                 value={identifier}
-                                 onChange={e => setIdentifier(e.target.value)}
-                               />
-                               <Button 
-                                 type="submit" 
-                                 disabled={!identifier || isSubmitting} 
-                                 className="h-10 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800"
-                               >
-                                 {isSubmitting ? '...' : 'Convidar'}
-                               </Button>
-                             </form>
-                             <p className="text-[11px] text-slate-400 mt-2 font-medium">Nota: O e-mail já deve possuir conta cadastrada no portal.</p>
+                          <div className="mt-6 border-slate-100 border-t pt-5">
+                            <h4 className="mb-3 flex items-center gap-2 font-bold text-slate-900 text-sm">
+                              <UserPlus className="size-4 text-blue-600" />{' '}
+                              Adicionar Gerente
+                            </h4>
+                            <form
+                              onSubmit={handleAddAdmin}
+                              className="flex gap-2"
+                            >
+                              <Input
+                                type="email"
+                                placeholder="Email do gerente..."
+                                className="h-10 flex-1 rounded-lg border-slate-200 bg-white text-sm shadow-sm focus:border-blue-500 focus:ring-blue-100"
+                                value={identifier}
+                                onChange={e => setIdentifier(e.target.value)}
+                              />
+                              <Button
+                                type="submit"
+                                disabled={!identifier || isSubmitting}
+                                className="h-10 rounded-lg bg-slate-900 font-bold text-white hover:bg-slate-800"
+                              >
+                                {isSubmitting ? '...' : 'Convidar'}
+                              </Button>
+                            </form>
+                            <p className="mt-2 font-medium text-[11px] text-slate-400">
+                              Nota: O e-mail já deve possuir conta cadastrada no
+                              portal.
+                            </p>
                           </div>
                         </div>
 
                         {/* Footer Action */}
                         <div className="flex justify-end pt-2">
-                           <Link href={`/business/${profile.slug}`} target="_blank">
-                             <Button variant="outline" className="text-sm font-bold border-slate-200 text-slate-700 hover:bg-slate-100 rounded-xl shadow-sm">
-                               Visualizar Página Pública
-                             </Button>
-                           </Link>
+                          <Link
+                            href={`/business/${profile.slug}`}
+                            target="_blank"
+                          >
+                            <Button
+                              variant="outline"
+                              className="rounded-xl border-slate-200 font-bold text-slate-700 text-sm shadow-sm hover:bg-slate-100"
+                            >
+                              Visualizar Página Pública
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </motion.div>
@@ -257,12 +292,17 @@ export function FormManage({ session, profiles }: Props) {
 
       {/* Empty State */}
       {listProfiles?.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-24 text-center bg-white rounded-3xl border border-slate-200 border-dashed mt-4">
-          <div className="p-4 bg-slate-50 rounded-full mb-4">
+        <div className="mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center">
+          <div className="mb-4 rounded-full bg-slate-50 p-4">
             <Store className="size-10 text-slate-400" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Nenhum negócio encontrado</h2>
-          <p className="text-slate-500 mt-2 max-w-sm font-medium">Você ainda não gerencia nenhum negócio ou a busca não retornou resultados.</p>
+          <h2 className="font-bold text-slate-900 text-xl">
+            Nenhum negócio encontrado
+          </h2>
+          <p className="mt-2 max-w-sm font-medium text-slate-500">
+            Você ainda não gerencia nenhum negócio ou a busca não retornou
+            resultados.
+          </p>
         </div>
       )}
     </div>

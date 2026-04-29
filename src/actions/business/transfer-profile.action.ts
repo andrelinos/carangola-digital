@@ -21,7 +21,7 @@ export async function transferProfile(
       const newUserRef = db.collection('users').doc(newOwnerId)
 
       // Verificar se o novo dono já tem um perfil
-      const newUserDoc = await transaction.get(newUserRef)
+      const _newUserDoc = await transaction.get(newUserRef)
       // if (newUserDoc.data()?.hasProfileLink) {
       //   throw new Error(
       //     'O novo dono já possui um perfil. A transferência não é permitida.'
@@ -51,7 +51,7 @@ export async function transferProfile(
 
     revalidatePath('/admin/dashboard')
     return { success: true, message: 'Perfil transferido com sucesso!' }
-  } catch (error: any) {
+  } catch (_error: any) {
     return {
       success: false,
       message: 'Falha ao transferir o perfil',

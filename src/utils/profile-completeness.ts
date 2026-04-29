@@ -13,19 +13,25 @@ export interface CompletenessResult {
   items: CompletenessItem[]
 }
 
-export function calculateProfileCompleteness(profile: ProfileDataProps): CompletenessResult {
+export function calculateProfileCompleteness(
+  profile: ProfileDataProps
+): CompletenessResult {
   const items: CompletenessItem[] = [
     {
       id: 'description',
       label: 'Descrição da empresa',
       score: 20,
-      isComplete: !!profile.businessDescription && profile.businessDescription.length > 20,
+      isComplete:
+        !!profile.businessDescription &&
+        profile.businessDescription.length > 20,
     },
     {
       id: 'category',
       label: 'Categoria',
       score: 10,
-      isComplete: !!profile.category || (!!profile.categories && profile.categories.length > 0),
+      isComplete:
+        !!profile.category ||
+        (!!profile.categories && profile.categories.length > 0),
     },
     {
       id: 'logo',
@@ -49,23 +55,30 @@ export function calculateProfileCompleteness(profile: ProfileDataProps): Complet
       id: 'addresses',
       label: 'Endereços',
       score: 10,
-      isComplete: !!profile.businessAddresses && profile.businessAddresses.length > 0,
+      isComplete:
+        !!profile.businessAddresses && profile.businessAddresses.length > 0,
     },
     {
       id: 'social',
       label: 'Redes sociais',
       score: 5,
-      isComplete: !!profile.socialMedias && Object.values(profile.socialMedias).some(v => !!v),
+      isComplete:
+        !!profile.socialMedias &&
+        Object.values(profile.socialMedias).some(v => !!v),
     },
     {
       id: 'hours',
       label: 'Horário de funcionamento',
       score: 15,
-      isComplete: !!profile.openingHours && Object.keys(profile.openingHours).length > 0,
+      isComplete:
+        !!profile.openingHours && Object.keys(profile.openingHours).length > 0,
     },
   ]
 
-  const totalScore = items.reduce((acc, item) => (item.isComplete ? acc + item.score : acc), 0)
+  const totalScore = items.reduce(
+    (acc, item) => (item.isComplete ? acc + item.score : acc),
+    0
+  )
 
   return {
     totalScore,

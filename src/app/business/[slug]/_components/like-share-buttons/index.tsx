@@ -1,17 +1,15 @@
 'use client'
 
 import { Heart, HeartSolid } from 'iconoir-react'
-import type { Session } from 'next-auth'
 import { useRouter } from 'next/navigation'
+import type { Session } from 'next-auth'
 import { startTransition, useState } from 'react'
 import { toast } from 'sonner'
-
+import type { ProfileDataProps } from '@/_types/profile-data'
 import { toggleBusinessFavorite } from '@/actions/business/add-business-to-favorites'
 import { Loading } from '@/components/commons/loading'
-
-import type { ProfileDataProps } from '@/_types/profile-data'
-import { ShareButton } from './share-button'
 import { cn } from '@/lib/utils'
+import { ShareButton } from './share-button'
 
 interface Props {
   userInfo?: Session['user']
@@ -39,8 +37,8 @@ export function LikeShareButtons({
 
   async function handleAddToFavorites() {
     if (!userInfo?.id) {
-       toast.error('Você precisa estar logado para favoritar.')
-       return
+      toast.error('Você precisa estar logado para favoritar.')
+      return
     }
 
     setIsSubmitting(true)
@@ -50,11 +48,9 @@ export function LikeShareButtons({
     try {
       await toggleBusinessFavorite(userInfo?.id, profileId)
       toast.success(
-        originalState
-          ? 'Removido dos favoritos!'
-          : 'Adicionado aos favoritos!'
+        originalState ? 'Removido dos favoritos!' : 'Adicionado aos favoritos!'
       )
-    } catch (error) {
+    } catch (_error) {
       toast.error('Ocorreu um erro ao favoritar.')
       setIsCurrentlyFavorite(originalState)
     } finally {
@@ -72,10 +68,10 @@ export function LikeShareButtons({
           <button
             type="button"
             className={cn(
-              "flex flex-1 items-center justify-center gap-2 rounded-2xl p-4 font-bold transition-all active:scale-95",
-              isCurrentlyFavorite 
-                ? "bg-rose-50 text-rose-500 ring-1 ring-rose-200 dark:bg-rose-950/20 dark:ring-rose-900/50" 
-                : "bg-slate-50 text-slate-600 ring-1 ring-slate-200 transition-all hover:bg-slate-100 dark:bg-slate-900/40 dark:text-slate-400 dark:ring-slate-700"
+              'flex flex-1 items-center justify-center gap-2 rounded-2xl p-4 font-bold transition-all active:scale-95',
+              isCurrentlyFavorite
+                ? 'bg-rose-50 text-rose-500 ring-1 ring-rose-200 dark:bg-rose-950/20 dark:ring-rose-900/50'
+                : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 transition-all hover:bg-slate-100 dark:bg-slate-900/40 dark:text-slate-400 dark:ring-slate-700'
             )}
             onClick={handleAddToFavorites}
           >
@@ -87,8 +83,8 @@ export function LikeShareButtons({
             <span>{isCurrentlyFavorite ? 'Favoritado' : 'Favoritar'}</span>
           </button>
         )}
-        
-        <div className={cn(!isUserAuth && !isOwner ? "" : "col-span-2")}>
+
+        <div className={cn(!isUserAuth && !isOwner ? '' : 'col-span-2')}>
           <ShareButton />
         </div>
       </div>

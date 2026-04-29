@@ -1,15 +1,15 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Rocket, ArrowRight } from 'lucide-react'
+import { ArrowRight, Rocket } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export function BusinessCTA() {
   return (
     <section className="relative overflow-hidden bg-linear-to-br from-blue-600 to-indigo-800 py-20 text-white dark:from-blue-900 dark:to-slate-950">
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[40px_40px]" />
-      
+      <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[40px_40px] opacity-10" />
+
       <div className="container relative z-10 mx-auto max-w-5xl px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -29,7 +29,8 @@ export function BusinessCTA() {
           transition={{ delay: 0.1 }}
           className="mb-6 font-bold text-3xl md:text-5xl"
         >
-          Seu Negócio Merece <br className="hidden md:block" /> ser <span className="text-blue-200">Destaque</span>
+          Seu Negócio Merece <br className="hidden md:block" /> ser{' '}
+          <span className="text-blue-200">Destaque</span>
         </motion.h2>
 
         <motion.p
@@ -39,8 +40,9 @@ export function BusinessCTA() {
           transition={{ delay: 0.2 }}
           className="mx-auto mb-10 max-w-2xl text-blue-100/80 text-lg md:text-xl"
         >
-          Aumente sua visibilidade e atraia mais clientes em Carangola. 
-          Junte-se às centenas de empresas que já transformam sua presença digital conosco.
+          Aumente sua visibilidade e atraia mais clientes em Carangola. Junte-se
+          às centenas de empresas que já transformam sua presença digital
+          conosco.
         </motion.p>
 
         <motion.div
@@ -66,7 +68,10 @@ export function BusinessCTA() {
             size="lg"
             className="border-white/30 bg-white/5 px-8 font-bold text-white backdrop-blur-sm hover:bg-white/10"
           >
-            <Link href="/como-funciona" className="inline-flex items-center gap-2">
+            <Link
+              href="/como-funciona"
+              className="inline-flex items-center gap-2"
+            >
               Ver benefícios <ArrowRight className="size-4" />
             </Link>
           </Button>

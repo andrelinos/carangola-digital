@@ -1,5 +1,5 @@
-import type { HolidayException, ScheduleDay } from '@/_types/profile-data'
 import type { JSX } from 'react'
+import type { HolidayException, ScheduleDay } from '@/_types/profile-data'
 import { ContainerStatus } from './container-status'
 
 export type WeeklySchedule = Record<string, ScheduleDay>
@@ -32,7 +32,7 @@ const getFormattedDate = (date: Date, timeZone: string) => {
 
 // Helper: Converte "HH:MM" para minutos
 const timeToMinutes = (time: string): number => {
-  if (!time || !time.includes(':')) return 0
+  if (!time?.includes(':')) return 0
   const [hours, minutes] = time.split(':').map(Number)
   return hours * 60 + minutes
 }
@@ -56,7 +56,9 @@ export function getOperatingStatus({
       minute: '2-digit',
       hourCycle: 'h23',
     })
-    const [currentHour, currentMinute] = timeStringInBrazil.split(':').map(Number)
+    const [currentHour, currentMinute] = timeStringInBrazil
+      .split(':')
+      .map(Number)
     const nowMinutes = currentHour * 60 + currentMinute
 
     // 2. Loop para encontrar o próximo momento de abertura (começando de hoje = 0 até 14 dias)
@@ -82,9 +84,10 @@ export function getOperatingStatus({
 
       // C: Define o agendamento efetivo (Feriado sobrescreve base)
       // Se holiday existir, usamos as regras dele. Se não, usamos as do dia da semana.
-      const effectiveSchedule: ScheduleDay | HolidayException | undefined = holiday
-        ? { ...baseSchedule, ...holiday } // Merge para garantir campos
-        : baseSchedule
+      const effectiveSchedule: ScheduleDay | HolidayException | undefined =
+        holiday
+          ? { ...baseSchedule, ...holiday } // Merge para garantir campos
+          : baseSchedule
 
       // Se não tiver agendamento para este dia (ex: erro de config), pula
       if (!effectiveSchedule) continue
@@ -94,7 +97,8 @@ export function getOperatingStatus({
 
       // Se não tem intervalos definidos e não é "apenas agendamento", considera fechado e pula
       const intervals = effectiveSchedule.intervals || []
-      if (!effectiveSchedule.isAppointmentOnly && intervals.length === 0) continue
+      if (!effectiveSchedule.isAppointmentOnly && intervals.length === 0)
+        continue
 
       // --- VERIFICAÇÃO DE HORÁRIO ---
 
@@ -102,7 +106,11 @@ export function getOperatingStatus({
       if (daysToAdd === 0) {
         // Se é apenas agendamento hoje
         if (effectiveSchedule.isAppointmentOnly) {
-          return <ContainerStatus status="open">Aberto por Agendamento</ContainerStatus>
+          return (
+            <ContainerStatus status="open">
+              Aberto por Agendamento
+            </ContainerStatus>
+          )
         }
 
         // Verifica os intervalos de hoje
@@ -157,9 +165,11 @@ export function getOperatingStatus({
         ? 'amanhã'
         : dayTranslations[targetDayName] || targetDayName
 
-      const formattedLabel = isTomorrow
-        ? dayLabel
-        : <strong>{dayLabel.toLowerCase()}</strong>
+      const formattedLabel = isTomorrow ? (
+        dayLabel
+      ) : (
+        <strong>{dayLabel.toLowerCase()}</strong>
+      )
 
       // Se for apenas por agendamento
       if (effectiveSchedule.isAppointmentOnly) {
@@ -180,8 +190,9 @@ export function getOperatingStatus({
       )
     }
 
-    return <ContainerStatus status="closed">Fechado temporariamente</ContainerStatus>
-
+    return (
+      <ContainerStatus status="closed">Fechado temporariamente</ContainerStatus>
+    )
   } catch {
     return 'Indisponível'
   }

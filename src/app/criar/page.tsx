@@ -1,11 +1,9 @@
 import { Rocket } from 'lucide-react'
 import type { Metadata } from 'next'
-
-import { trackServerEvent } from '@/lib/mixpanel'
-
-import { authOptions } from '@/lib/auth'
-import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { trackServerEvent } from '@/lib/mixpanel'
 import { CreateLinkForm } from './create-link-form'
 
 export const metadata: Metadata = {
@@ -29,7 +27,7 @@ export default async function CreatePage() {
     <div>
       <div className="mx-auto flex h-screen max-w-xl flex-col items-center justify-center gap-4">
         <div className="flex items-center gap-4">
-          <h1 className="font-bold text-4xl ">Escolha seu link</h1>
+          <h1 className="font-bold text-4xl">Escolha seu link</h1>
           <Rocket className="size-10" />
         </div>
         <CreateLinkForm session={session} />

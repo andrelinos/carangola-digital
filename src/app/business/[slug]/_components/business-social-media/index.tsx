@@ -1,9 +1,9 @@
 import { Network } from 'iconoir-react'
 import type { ProfileDataProps, SocialMediasProps } from '@/_types/profile-data'
-import { Link } from '@/components/ui/link'
 import { SOCIAL_MEDIA_CONFIG } from '@/components/social-icons'
-import { EditBusinessSocialMedias } from './edit-business-social-medias'
+import { Link } from '@/components/ui/link'
 import { ProfileSection } from '../profile-section'
+import { EditBusinessSocialMedias } from './edit-business-social-medias'
 
 interface Props {
   profileData: ProfileDataProps
@@ -16,8 +16,8 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
   const hasSocial = SOCIAL_MEDIA_CONFIG.some(({ key }) => socialMedias?.[key])
 
   return (
-    <ProfileSection 
-      title="Redes Sociais" 
+    <ProfileSection
+      title="Redes Sociais"
       icon={<Network className="size-6" />}
       delay={0.5}
     >
@@ -30,7 +30,9 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           {!hasSocial ? (
-            <p className="text-muted-foreground text-sm italic">Nenhuma rede social cadastrada</p>
+            <p className="text-muted-foreground text-sm italic">
+              Nenhuma rede social cadastrada
+            </p>
           ) : (
             SOCIAL_MEDIA_CONFIG.map(({ key, Icon }) => {
               const url = socialMedias?.[key]

@@ -36,7 +36,7 @@ export default function NotFound() {
           {/* Ação Primária: Voltar à Home */}
           <Link
             href="/"
-            className="hover:-translate-y-0.5 inline-block rounded-lg bg-indigo-600 px-6 py-3 font-medium text-lg text-white shadow-md transition-all duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+            className="inline-block rounded-lg bg-indigo-600 px-6 py-3 font-medium text-lg text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
           >
             Página Inicial
           </Link>
@@ -44,7 +44,7 @@ export default function NotFound() {
           {/* Ação Secundária 1 */}
           <Link
             href="/business"
-            className="hover:-translate-y-0.5 inline-block rounded-lg border border-indigo-300 px-6 py-3 font-medium text-indigo-700 text-lg transition-all duration-200 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-indigo-700 dark:text-indigo-300 dark:focus:ring-offset-slate-800 dark:hover:bg-slate-700"
+            className="inline-block rounded-lg border border-indigo-300 px-6 py-3 font-medium text-indigo-700 text-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-indigo-700 dark:text-indigo-300 dark:focus:ring-offset-slate-800 dark:hover:bg-slate-700"
           >
             Estabelecimentos
           </Link>
@@ -52,7 +52,7 @@ export default function NotFound() {
           {/* Ação Secundária 2 */}
           <Link
             href="/imoveis"
-            className="hover:-translate-y-0.5 inline-block rounded-lg border border-blue-300 px-6 py-3 font-medium text-blue-700 text-lg transition-all duration-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-blue-700 dark:text-blue-300 dark:focus:ring-offset-slate-800 dark:hover:bg-slate-700"
+            className="inline-block rounded-lg border border-blue-300 px-6 py-3 font-medium text-blue-700 text-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-blue-700 dark:text-blue-300 dark:focus:ring-offset-slate-800 dark:hover:bg-slate-700"
           >
             Imóveis
           </Link>

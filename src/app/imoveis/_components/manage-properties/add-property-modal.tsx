@@ -1,5 +1,8 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { startTransition, useState } from 'react'
+import { toast } from 'sonner'
 import { createNewProperty } from '@/actions/properties/create-property'
 import { FooterEditModal } from '@/components/commons/footer-edit-modal'
 import { Loading } from '@/components/commons/loading'
@@ -20,9 +23,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
-import { toast } from 'sonner'
 
 interface Props {
   isOpen: boolean

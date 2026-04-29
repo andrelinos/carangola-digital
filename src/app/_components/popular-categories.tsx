@@ -1,14 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { 
-  Utensils, 
-  HeartPulse, 
-  Wrench, 
-  ShoppingBag, 
-  Key, 
-  Home, 
-  ArrowRight 
+import {
+  ArrowRight,
+  HeartPulse,
+  Home,
+  Key,
+  ShoppingBag,
+  Utensils,
+  Wrench,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -18,58 +18,60 @@ const popularCategories = [
     href: '/business?q=restaurante',
     icon: Utensils,
     color: 'text-red-500 bg-red-500/10',
-    description: 'Bares e lanchonetes'
+    description: 'Bares e lanchonetes',
   },
   {
     name: 'Saúde',
     href: '/business?q=saude',
     icon: HeartPulse,
     color: 'text-emerald-500 bg-emerald-500/10',
-    description: 'Clínicas e farmácias'
+    description: 'Clínicas e farmácias',
   },
   {
     name: 'Serviços',
     href: '/business?q=servicos',
     icon: Wrench,
     color: 'text-blue-500 bg-blue-500/10',
-    description: 'Profissionais locais'
+    description: 'Profissionais locais',
   },
   {
     name: 'Lojas',
     href: '/business?q=loja',
     icon: ShoppingBag,
     color: 'text-orange-500 bg-orange-500/10',
-    description: 'Comércio em geral'
+    description: 'Comércio em geral',
   },
   {
     name: 'Alugar Imóvel',
     href: '/imoveis?listingType=Aluguel',
     icon: Key,
     color: 'text-purple-500 bg-purple-500/10',
-    description: 'Casas e apartamentos'
+    description: 'Casas e apartamentos',
   },
   {
     name: 'Comprar Imóvel',
     href: '/imoveis?listingType=Venda',
     icon: Home,
     color: 'text-indigo-500 bg-indigo-500/10',
-    description: 'Invista no seu futuro'
+    description: 'Invista no seu futuro',
   },
 ]
 
 export function PopularCategories() {
   return (
-    <section className="bg-slate-50 py-16 dark:bg-slate-900/50 md:py-24">
+    <section className="bg-slate-50 py-16 md:py-24 dark:bg-slate-900/50">
       <div className="container mx-auto max-w-6xl px-4">
         <div className="mb-12 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
           <div className="text-center md:text-left">
-            <h2 className="font-bold text-3xl tracking-tight text-slate-900 lg:text-4xl dark:text-slate-100">
+            <h2 className="font-bold text-3xl text-slate-900 tracking-tight lg:text-4xl dark:text-slate-100">
               O que você procura?
             </h2>
-            <p className="mt-2 text-muted-foreground">Explore as categorias mais acessadas em Carangola.</p>
+            <p className="mt-2 text-muted-foreground">
+              Explore as categorias mais acessadas em Carangola.
+            </p>
           </div>
-          <Link 
-            href="/explorar" 
+          <Link
+            href="/explorar"
             className="flex items-center gap-2 font-semibold text-primary text-sm hover:underline"
           >
             Ver todas as categorias <ArrowRight className="size-4" />
@@ -91,7 +93,7 @@ export function PopularCategories() {
                 className="group flex h-full flex-col items-center rounded-3xl border bg-white p-6 text-center shadow-sm transition-all hover:border-primary/50 hover:shadow-xl dark:bg-slate-800 dark:hover:bg-slate-700"
               >
                 <div
-                  className={`mb-4 flex size-16 shrink-0 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 group-hover:rotate-3 ${category.color}`}
+                  className={`mb-4 flex size-16 shrink-0 items-center justify-center rounded-2xl transition-transform group-hover:rotate-3 group-hover:scale-110 ${category.color}`}
                 >
                   <category.icon className="size-8" />
                 </div>

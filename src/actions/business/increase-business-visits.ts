@@ -6,7 +6,9 @@ import { db } from '@/lib/firebase'
 
 export async function increaseBusinessVisits({
   profileId,
-}: { profileId?: string }) {
+}: {
+  profileId?: string
+}) {
   if (!profileId) return null
 
   try {
@@ -16,8 +18,7 @@ export async function increaseBusinessVisits({
       totalVisits: FieldValue.increment(1),
     })
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }
-

@@ -13,7 +13,7 @@ export function PropertyTitle({ propertyData, isOwner, isUserAuth }: Props) {
   return (
     <div className="mb-2 flex w-full items-start justify-between">
       <div className="w-full">
-        <h1 className="mr-4 flex w-fit items-center font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight leading-tight">
+        <h1 className="mr-4 flex w-fit items-center font-extrabold text-3xl text-slate-900 leading-tight tracking-tight sm:text-4xl">
           <span className="break-words">{propertyData?.title}</span>
           {(isOwner || isUserAuth) && <EditPropertyTitle data={propertyData} />}
         </h1>

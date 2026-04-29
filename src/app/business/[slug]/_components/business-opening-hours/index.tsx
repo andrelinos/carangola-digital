@@ -2,15 +2,15 @@
 
 import { Clock } from 'iconoir-react'
 import { ChevronDown } from 'lucide-react' // Adicionado para melhor UX
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { ProfileDataProps, ScheduleDay } from '@/_types/profile-data'
 
 import { cn } from '@/lib/utils'
 import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
 import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
-import { EditBusinessOpeningHours } from './edit-business-opening-hours'
 import { ProfileSection } from '../profile-section'
+import { EditBusinessOpeningHours } from './edit-business-opening-hours'
 
 interface Props {
   profileData: ProfileDataProps
@@ -109,7 +109,7 @@ export function ContainerOpeningHours({
             </div>
 
             <div className="flex items-center gap-2 text-slate-500 transition-colors group-hover:text-slate-800 dark:text-slate-400 dark:group-hover:text-slate-200">
-              <span className="hidden text-xs font-bold uppercase tracking-wider sm:block">
+              <span className="hidden font-bold text-xs uppercase tracking-wider sm:block">
                 {isOpen ? 'Ocultar' : 'Ver todos'}
               </span>
               <ChevronDown
@@ -125,7 +125,9 @@ export function ContainerOpeningHours({
           <div
             className={cn(
               'grid transition-all duration-300 ease-in-out',
-              isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+              isOpen
+                ? 'grid-rows-[1fr] opacity-100'
+                : 'grid-rows-[0fr] opacity-0'
             )}
           >
             <div className="overflow-hidden">
@@ -149,7 +151,12 @@ export function ContainerOpeningHours({
                       ? { ...standardDayObj, ...holiday }
                       : standardDayObj
 
-                    const { closed, intervals, isAppointmentOnly, description } = effectiveDayObj
+                    const {
+                      closed,
+                      intervals,
+                      isAppointmentOnly,
+                      description,
+                    } = effectiveDayObj
                     const isToday = index === todayIndex
 
                     const displayTime = () => {
@@ -162,14 +169,17 @@ export function ContainerOpeningHours({
                       }
                       if (isAppointmentOnly) {
                         return (
-                          <span className="font-medium italic text-primary">
+                          <span className="font-medium text-primary italic">
                             Sob agendamento
                           </span>
                         )
                       }
                       if (intervals && intervals.length > 0) {
                         return intervals
-                          .map((i: { opening: string; closing: string }) => `${i.opening} - ${i.closing}`)
+                          .map(
+                            (i: { opening: string; closing: string }) =>
+                              `${i.opening} - ${i.closing}`
+                          )
                           .join(' / ')
                       }
                       return 'Não definido'
@@ -186,9 +196,11 @@ export function ContainerOpeningHours({
                         )}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="capitalize">{translateWeekDay(day)}</span>
+                          <span className="capitalize">
+                            {translateWeekDay(day)}
+                          </span>
                           {isToday && (
-                            <span className="rounded bg-primary px-1.5 py-0.5 text-[10px] font-bold uppercase text-primary-foreground dark:text-white">
+                            <span className="rounded bg-primary px-1.5 py-0.5 font-bold text-[10px] text-primary-foreground uppercase dark:text-white">
                               Hoje
                             </span>
                           )}

@@ -20,7 +20,7 @@ export async function createOrUpdatePropertyAddress(formData: FormData) {
   const session = await getServerSession(authOptions)
   const user = session?.user
 
-  if (!user || !user.id) {
+  if (!user?.id) {
     throw new Error('Não autorizado')
   }
   const userId = user.id
@@ -55,7 +55,7 @@ export async function createOrUpdatePropertyAddress(formData: FormData) {
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

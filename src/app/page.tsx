@@ -1,7 +1,7 @@
-import { trackServerEvent } from '@/lib/mixpanel'
+import type { Metadata } from 'next'
 import { getLatestPublicProfiles } from '@/actions/business/get-latest-public-profiles'
 import { getLatestPublicProperties } from '@/actions/properties/get-latest-public-properties'
-
+import { trackServerEvent } from '@/lib/mixpanel'
 import { BusinessCTA } from './_components/business-cta'
 import { CommunityFeatures } from './_components/community-features'
 import { HomeHero } from './_components/home-hero'
@@ -9,11 +9,11 @@ import { PopularCategories } from './_components/popular-categories'
 import { PropertiesCTA } from './_components/properties-cta'
 import { RecentListings } from './_components/recent-listings'
 
-import { Metadata } from 'next'
-
 export const metadata: Metadata = {
-  title: 'Carangola Digital | Guia Comercial, Empresas e Imóveis em Carangola/MG',
-  description: 'O portal oficial de Carangola/MG para encontrar serviços, lojas, profissionais e imóveis para aluguel e venda. Cadastre seu negócio gratuitamente no Carangola Digital!',
+  title:
+    'Carangola Digital | Guia Comercial, Empresas e Imóveis em Carangola/MG',
+  description:
+    'O portal oficial de Carangola/MG para encontrar serviços, lojas, profissionais e imóveis para aluguel e venda. Cadastre seu negócio gratuitamente no Carangola Digital!',
   alternates: {
     canonical: 'https://carangoladigital.com.br',
   },
@@ -26,7 +26,7 @@ export default async function Home() {
 
   const [profiles, properties] = await Promise.all([
     getLatestPublicProfiles(),
-    getLatestPublicProperties()
+    getLatestPublicProperties(),
   ])
 
   return (
@@ -36,9 +36,9 @@ export default async function Home() {
 
         <PopularCategories />
 
-        <RecentListings 
-          profiles={profiles || []} 
-          properties={properties || []} 
+        <RecentListings
+          profiles={profiles || []}
+          properties={properties || []}
         />
 
         <CommunityFeatures />

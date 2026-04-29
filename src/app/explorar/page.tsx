@@ -4,7 +4,8 @@ import { ExplorerClient } from './_components/explorer-client'
 
 export const metadata = {
   title: 'Explorar Carangola | Empresas, Serviços e Imóveis',
-  description: 'Descubra o melhor de Carangola/MG. Navegue por categorias de empresas, serviços e encontre o imóvel ideal com busca inteligente e rolagem infinita.',
+  description:
+    'Descubra o melhor de Carangola/MG. Navegue por categorias de empresas, serviços e encontre o imóvel ideal com busca inteligente e rolagem infinita.',
 }
 
 export default async function ExplorarPage() {
@@ -14,7 +15,7 @@ export default async function ExplorarPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <ExplorerClient 
+      <ExplorerClient
         initialProfiles={initialProfiles}
         initialProperties={initialProperties}
       />

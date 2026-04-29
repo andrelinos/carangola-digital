@@ -1,17 +1,15 @@
+import clsx from 'clsx'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
-
+import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import ReactCrop, {
   type Crop,
-  type PixelCrop,
   centerCrop,
   makeAspectCrop,
+  type PixelCrop,
 } from 'react-image-crop'
-
 import { Button } from '@/components/ui/button'
 import { compressImage } from '@/utils/compress-image'
-import clsx from 'clsx'
-import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 
 interface ImageUploaderProps {
   label: string
@@ -198,7 +196,9 @@ export function ImageUploader({
               <p className="mt-2 font-semibold text-slate-700">
                 Alterar {label.toLowerCase()}
               </p>
-              {recommendation && <p className="text-xs text-slate-500 mt-1">{recommendation}</p>}
+              {recommendation && (
+                <p className="mt-1 text-slate-500 text-xs">{recommendation}</p>
+              )}
             </div>
           </div>
         )}

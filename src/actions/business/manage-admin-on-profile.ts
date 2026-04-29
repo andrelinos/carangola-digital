@@ -139,7 +139,7 @@ export async function removeAdminFromProfile(formData: FormData) {
     })
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return false
   }
 }

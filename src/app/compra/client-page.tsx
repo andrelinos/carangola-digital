@@ -15,7 +15,7 @@ export default function CompraClient({
   const searchParams = useSearchParams()
   const status = initialStatus || searchParams.get('status') || ['']
 
-  const [success, approved] = status
+  const [success, _approved] = status
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">

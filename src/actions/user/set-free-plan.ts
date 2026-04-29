@@ -1,12 +1,11 @@
 'use server'
 
-import { getServerSession } from 'next-auth/next'
 import { revalidatePath } from 'next/cache'
+import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 // Importe a instância do banco de dados do seu Firebase Admin SDK.
 // O caminho exato pode variar dependendo de como você nomeou o arquivo e a exportação.
-
 
 export async function setFreePlanAction() {
   const session = await getServerSession(authOptions)
@@ -30,9 +29,9 @@ export async function setFreePlanAction() {
         planDetails: {
           name: 'free',
           period: 'indeterminado',
-          price: 0
+          price: 0,
         },
-      }
+      },
     })
 
     revalidatePath('/dashboard/assinatura')

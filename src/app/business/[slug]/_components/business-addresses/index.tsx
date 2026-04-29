@@ -1,13 +1,13 @@
 import { MapPin } from 'iconoir-react'
+import { Navigation } from 'lucide-react'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Link } from '@/components/ui/link'
 import {
   generateGoogleMapsLinkByAddress,
   generateGoogleMapsLinkByCoords,
 } from '@/utils/generate-link-route-google-maps'
-import { Navigation } from 'lucide-react'
-import { EditBusinessAddresses } from './edit-business-addresses'
 import { ProfileSection } from '../profile-section'
+import { EditBusinessAddresses } from './edit-business-addresses'
 
 interface Props {
   profileData: ProfileDataProps
@@ -20,8 +20,8 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
   const profileId = profileData?.id || ''
 
   return (
-    <ProfileSection 
-      title="Localização" 
+    <ProfileSection
+      title="Localização"
       icon={<MapPin className="size-6" />}
       delay={0.3}
     >
@@ -34,7 +34,9 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {!businessAddresses?.length ? (
-            <p className="text-muted-foreground text-sm italic col-span-full">Nenhum endereço cadastrado</p>
+            <p className="col-span-full text-muted-foreground text-sm italic">
+              Nenhum endereço cadastrado
+            </p>
           ) : (
             businessAddresses.map((item, index) => {
               const fullAddress = `${item.address}, ${item.neighborhood}, Carangola - MG, ${item.cep}`
@@ -57,11 +59,15 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
                         <MapPin className="size-5" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-bold text-lg text-foreground leading-tight tracking-tight">{item.address}</p>
-                        <p className="text-muted-foreground text-sm mt-1">
+                        <p className="font-bold text-foreground text-lg leading-tight tracking-tight">
+                          {item.address}
+                        </p>
+                        <p className="mt-1 text-muted-foreground text-sm">
                           {item.neighborhood}, Carangola/MG
                         </p>
-                        <p className="text-muted-foreground text-xs mt-1 font-medium">{item.cep}</p>
+                        <p className="mt-1 font-medium text-muted-foreground text-xs">
+                          {item.cep}
+                        </p>
                       </div>
                     </div>
 
@@ -69,7 +75,7 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
                       href={itemMapsLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-md shadow-primary/10 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-bold text-sm text-white shadow-md shadow-primary/10 transition-all hover:scale-[1.02] hover:bg-primary/90 active:scale-[0.98]"
                     >
                       <Navigation className="size-4" />
                       Como chegar

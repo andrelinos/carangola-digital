@@ -1,16 +1,15 @@
 'use client'
 
 import { Slot } from '@radix-ui/react-slot'
-import { type VariantProps, cva } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority'
 import clsx from 'clsx'
 import Link from 'next/link'
 
-import { type InputHTMLAttributes, forwardRef } from 'react'
+import { forwardRef, type InputHTMLAttributes } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-
 
 const inputVariants = cva(
   'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
@@ -31,7 +30,7 @@ const inputVariants = cva(
 
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
-  VariantProps<typeof inputVariants> {
+    VariantProps<typeof inputVariants> {
   asChild?: boolean
   isOnlyPremium?: boolean
   title?: string
@@ -63,12 +62,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">{props?.title}</span>
-                <div className='flex'>
+                <div className="flex">
                   {isOnlyPremium ? (
                     <Link
-
                       href="/#plan"
-                      className='p-0 text-blue-500 text-xs hover:text-blue-600'
+                      className="p-0 text-blue-500 text-xs hover:text-blue-600"
                     >
                       upgrade
                     </Link>

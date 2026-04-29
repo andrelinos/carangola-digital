@@ -9,7 +9,7 @@ const protectedRoutes = [
   '/perfil',
   '/minha-conta',
   '/compra',
-  '/reivindicar-empresa'
+  '/reivindicar-empresa',
 ]
 
 const authRoute = '/acesso'
@@ -38,24 +38,30 @@ export default function proxy(request: NextRequest) {
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "upgrade-insecure-requests",
+      'upgrade-insecure-requests',
     ].join('; '),
     'X-Frame-Options': 'DENY',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
     'X-XSS-Protection': '1; mode=block',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()',
+    'Permissions-Policy':
+      'camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()',
     'X-Permitted-Cross-Domain-Policies': 'none',
     'Cross-Origin-Opener-Policy': 'same-origin',
     'Cross-Origin-Resource-Policy': 'same-origin',
   }
 
   // O restante da sua lógica de redirecionamento e honeypot permanece igual e excelente.
-  const sessionToken = request.cookies.get('__session')?.value || request.cookies.get('next-auth.session-token')?.value || request.cookies.get('__Secure-next-auth.session-token')?.value
+  const sessionToken =
+    request.cookies.get('__session')?.value ||
+    request.cookies.get('next-auth.session-token')?.value ||
+    request.cookies.get('__Secure-next-auth.session-token')?.value
 
   // Evitando falha do startsWith (garantindo que bata a rota exata ou o inicio com barra logo após)
-  const isProtectedRoute = protectedRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))
+  const isProtectedRoute = protectedRoutes.some(
+    route => pathname === route || pathname.startsWith(`${route}/`)
+  )
 
   if (isProtectedRoute && !sessionToken) {
     const url = request.nextUrl.clone()
@@ -65,13 +71,20 @@ export default function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  if (blockedPaths.some((blocked) => pathname.startsWith(blocked))) {
-    return new NextResponse(fakeContent, { status: 200, headers: { 'content-type': 'text/html' } })
+  if (blockedPaths.some(blocked => pathname.startsWith(blocked))) {
+    return new NextResponse(fakeContent, {
+      status: 200,
+      headers: { 'content-type': 'text/html' },
+    })
   }
 
   const response = NextResponse.next()
-  Object.entries(securityHeaders).forEach(([key, value]) => response.headers.set(key, value))
+  Object.entries(securityHeaders).forEach(([key, value]) =>
+    response.headers.set(key, value)
+  )
   return response
 }
 
-export const config = { matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'] }
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+}

@@ -1,11 +1,11 @@
 'use server'
 
-import { Timestamp } from 'firebase-admin/firestore'
 import { randomUUID } from 'node:crypto'
+import { Timestamp } from 'firebase-admin/firestore'
 import { getServerSession } from 'next-auth/next'
 
 import { authOptions } from '@/lib/auth'
-import { db, storage, getDownloadURLFromPath } from '@/lib/firebase'
+import { db, getDownloadURLFromPath, storage } from '@/lib/firebase'
 
 export async function updateUserProfile(formData: FormData) {
   const session = await getServerSession(authOptions)
@@ -30,14 +30,17 @@ export async function updateUserProfile(formData: FormData) {
     if (imageFile && imageFile.size > 0) {
       const currentDoc = await db.collection('users').doc(user.id).get()
       const currentData = currentDoc.data()
-      
+
       // Attempt to delete old image if it's a storage URL we manage
       if (currentData?.imagePath) {
         try {
           const oldStorageRef = storage.file(currentData.imagePath)
           await oldStorageRef.delete()
         } catch (error) {
-          console.warn(`Falha ao deletar imagem antiga: ${currentData.imagePath}`, error)
+          console.warn(
+            `Falha ao deletar imagem antiga: ${currentData.imagePath}`,
+            error
+          )
         }
       }
 
@@ -48,7 +51,7 @@ export async function updateUserProfile(formData: FormData) {
       await storageRef.save(buffer)
 
       const downloadUrl = await getDownloadURLFromPath(newPath)
-      
+
       updateData.imagePath = newPath
       if (downloadUrl) {
         updateData.image = downloadUrl // NextAuth uses 'image' field for session avatar

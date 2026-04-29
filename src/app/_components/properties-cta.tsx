@@ -1,14 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Home, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export function PropertiesCTA() {
   return (
     <section className="relative overflow-hidden bg-slate-900 py-20 text-white">
-      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[30px_30px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[30px_30px] opacity-5" />
 
       <div className="container relative z-10 mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
@@ -20,11 +20,13 @@ export function PropertiesCTA() {
           >
             <h2 className="mb-6 font-bold text-3xl md:text-5xl lg:leading-tight">
               Anuncie seu Imóvel no <br />
-              <span className="text-blue-400 font-extrabold italic">Maior Portal de Carangola</span>
+              <span className="font-extrabold text-blue-400 italic">
+                Maior Portal de Carangola
+              </span>
             </h2>
-            <p className="mb-8 text-slate-400 text-lg md:text-xl">
-              Seja você proprietário ou corretor, nosso portal é o lugar certo para dar
-              visibilidade ao seu imóvel e fechar negócio rápido.
+            <p className="mb-8 text-lg text-slate-400 md:text-xl">
+              Seja você proprietário ou corretor, nosso portal é o lugar certo
+              para dar visibilidade ao seu imóvel e fechar negócio rápido.
             </p>
 
             <div className="mb-10 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
@@ -33,9 +35,7 @@ export function PropertiesCTA() {
                 size="lg"
                 className="bg-blue-600 px-8 font-bold text-white shadow-xl hover:bg-blue-700"
               >
-                <Link href="/dashboard/imoveis#anunciar">
-                  Anunciar grátis
-                </Link>
+                <Link href="/dashboard/imoveis#anunciar">Anunciar grátis</Link>
               </Button>
 
               <Button
@@ -44,9 +44,7 @@ export function PropertiesCTA() {
                 size="lg"
                 className="border-slate-700 bg-slate-800/50 px-8 font-bold text-white hover:bg-slate-800"
               >
-                <Link href="/como-funciona">
-                  Saber mais
-                </Link>
+                <Link href="/como-funciona">Saber mais</Link>
               </Button>
             </div>
           </motion.div>
@@ -59,12 +57,12 @@ export function PropertiesCTA() {
           >
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {[
-                "Exposição Regional",
-                "Gestão Simplificada",
-                "Fotos Ilimitadas",
-                "Contato Direto",
-                "SEO Otimizado",
-                "Suporte Local"
+                'Exposição Regional',
+                'Gestão Simplificada',
+                'Fotos Ilimitadas',
+                'Contato Direto',
+                'SEO Otimizado',
+                'Suporte Local',
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="flex size-6 items-center justify-center rounded-full bg-blue-500/20 text-blue-400">

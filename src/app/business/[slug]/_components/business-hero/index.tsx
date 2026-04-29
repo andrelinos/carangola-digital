@@ -1,4 +1,4 @@
-import { MessageText, Star, ShieldCheck } from 'iconoir-react'
+import { MessageText, ShieldCheck, Star } from 'iconoir-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Badge } from '@/components/ui/badge'
@@ -19,12 +19,13 @@ export async function BusinessHero({
 }: Props) {
   const businessHeroInfo = profileData || []
   const profileId = profileData?.id || ''
-  
-  const currentRating = typeof profileData.rating === 'number' ? profileData.rating : 0
+
+  const currentRating =
+    typeof profileData.rating === 'number' ? profileData.rating : 0
   const currentReviewCount = profileData.reviewCount || 0
 
   return (
-    <section className="relative w-full overflow-hidden lg:rounded-b-[3rem] bg-slate-900 pb-24 text-white">
+    <section className="relative w-full overflow-hidden bg-slate-900 pb-24 text-white lg:rounded-b-[3rem]">
       {/* Immersive Cover Image */}
       <div className="absolute inset-0 opacity-40">
         <SafeImage
@@ -39,7 +40,7 @@ export async function BusinessHero({
       <div className="container relative z-10 mx-auto px-4 pt-32 lg:pt-48">
         <div className="flex flex-col items-center gap-8 md:flex-row md:items-end md:gap-12">
           {/* Logo Frame */}
-          <div className="relative group shrink-0">
+          <div className="group relative shrink-0">
             <div className="relative size-40 overflow-hidden rounded-4xl bg-white p-1.5 shadow-2xl ring-8 ring-white/10 transition-transform duration-500 group-hover:scale-105">
               <SafeImage
                 src={profileData?.logoImageUrl || '/default-image.png'}
@@ -49,7 +50,7 @@ export async function BusinessHero({
               />
             </div>
             {profileData?.isPremium && (
-              <div className="absolute -right-2 -top-2 z-20 flex size-10 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xl ring-4 ring-slate-950">
+              <div className="absolute -top-2 -right-2 z-20 flex size-10 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xl ring-4 ring-slate-950">
                 <Star className="size-6 fill-current" />
               </div>
             )}
@@ -59,26 +60,36 @@ export async function BusinessHero({
           <div className="flex-1 text-center md:pb-4 md:text-left">
             <div className="mb-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
               {profileData?.isVerified && (
-                <Badge variant="default" className="gap-1 bg-blue-500 text-white border-none px-3 py-1 font-bold tracking-tight">
+                <Badge
+                  variant="default"
+                  className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"
+                >
                   <ShieldCheck className="size-3.5" />
                   Verificado
                 </Badge>
               )}
               {profileData?.categories?.length ? (
-                profileData.categories.slice(0, 2).map((category) => (
-                  <Badge key={category} variant="secondary" className="bg-slate-800/80 text-white/90 border-slate-700/50 backdrop-blur-sm">
+                profileData.categories.slice(0, 2).map(category => (
+                  <Badge
+                    key={category}
+                    variant="secondary"
+                    className="border-slate-700/50 bg-slate-800/80 text-white/90 backdrop-blur-sm"
+                  >
                     {category}
                   </Badge>
                 ))
               ) : (
-                <Badge variant="secondary" className="bg-slate-800/80 text-white/90 backdrop-blur-sm">
+                <Badge
+                  variant="secondary"
+                  className="bg-slate-800/80 text-white/90 backdrop-blur-sm"
+                >
                   Geral
                 </Badge>
               )}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
-              <h1 className="font-extrabold text-4xl leading-tight md:text-6xl tracking-tight">
+              <h1 className="font-extrabold text-4xl leading-tight tracking-tight md:text-6xl">
                 {profileData?.name}
               </h1>
               {(isOwner || isUserAuth) && (
@@ -86,9 +97,9 @@ export async function BusinessHero({
               )}
             </div>
 
-            <div className="mt-8 flex flex-col md:flex-row md:items-center gap-6">
+            <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-center">
               {/* Rating Component Integration */}
-              <RatingStars 
+              <RatingStars
                 profileId={profileId}
                 slug={profileData.slug}
                 initialRating={currentRating}
@@ -102,14 +113,18 @@ export async function BusinessHero({
 
               <a
                 href="#avaliacoes"
-                className="group flex items-center justify-center gap-3 text-sm font-semibold text-white/60 transition-colors hover:text-white md:justify-start"
+                className="group flex items-center justify-center gap-3 font-semibold text-sm text-white/60 transition-colors hover:text-white md:justify-start"
               >
-                <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 group-hover:bg-amber-500 transition-colors group-hover:text-white">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 transition-colors group-hover:bg-amber-500 group-hover:text-white">
                   <MessageText className="size-5" />
                 </div>
                 <div className="flex flex-col items-start leading-tight">
-                   <span className="text-white font-bold text-base">{currentReviewCount}</span>
-                   <span className="text-[10px] uppercase tracking-wider opacity-60">Avaliações reais</span>
+                  <span className="font-bold text-base text-white">
+                    {currentReviewCount}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider opacity-60">
+                    Avaliações reais
+                  </span>
                 </div>
               </a>
             </div>

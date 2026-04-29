@@ -6,10 +6,10 @@ import SearchFormBusiness from '@/components/form-search'
 
 export function ClientHero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-primary/5 via-background to-background pb-20 pt-32 lg:pb-32 lg:pt-48">
+    <section className="relative overflow-hidden bg-linear-to-b from-primary/5 via-background to-background pt-32 pb-20 lg:pt-48 lg:pb-32">
       {/* Decorative Circles */}
-      <div className="absolute -top-24 -left-20 size-96 rounded-full bg-primary/5 blur-3xl opacity-60" />
-      <div className="absolute top-1/4 -right-20 size-80 rounded-full bg-secondary/10 blur-3xl opacity-40" />
+      <div className="absolute -top-24 -left-20 size-96 rounded-full bg-primary/5 opacity-60 blur-3xl" />
+      <div className="absolute top-1/4 -right-20 size-80 rounded-full bg-secondary/10 opacity-40 blur-3xl" />
 
       <div className="container relative mx-auto px-4">
         <div className="flex flex-col items-center text-center">
@@ -17,19 +17,19 @@ export function ClientHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-4 inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 text-primary text-sm font-medium"
+            className="mb-4 inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 font-medium text-primary text-sm"
           >
-            <Rocket className="mr-2 size-4" />
-            O guia mais completo da cidade
+            <Rocket className="mr-2 size-4" />O guia mais completo da cidade
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="max-w-4xl font-extrabold text-4xl tracking-tight text-foreground lg:text-7xl"
+            className="max-w-4xl font-extrabold text-4xl text-foreground tracking-tight lg:text-7xl"
           >
-            Conecte-se com o melhor de <span className="text-primary">Carangola</span>
+            Conecte-se com o melhor de{' '}
+            <span className="text-primary">Carangola</span>
           </motion.h1>
 
           <motion.p
@@ -38,8 +38,8 @@ export function ClientHero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-6 max-w-2xl text-lg text-muted-foreground lg:text-xl"
           >
-            Facilitamos o encontro entre você e os melhores serviços e lojas locais. 
-            Encontre o que precisa de forma rápida, simples e moderna.
+            Facilitamos o encontro entre você e os melhores serviços e lojas
+            locais. Encontre o que precisa de forma rápida, simples e moderna.
           </motion.p>
 
           <motion.div

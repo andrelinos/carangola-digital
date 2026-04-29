@@ -1,5 +1,7 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { increaseBusinessVisits } from '@/actions/business/increase-business-visits'
+import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
 import { BusinessAddresses } from './_components/business-addresses'
 import { ContactPhones } from './_components/business-contact-phones'
 import { Description } from './_components/business-description'
@@ -7,9 +9,6 @@ import { BusinessHero } from './_components/business-hero'
 import { ContainerOpeningHours } from './_components/business-opening-hours'
 import { SocialMedia } from './_components/business-social-media'
 import { LikeShareButtons } from './_components/like-share-buttons'
-
-import { increaseBusinessVisits } from '@/actions/business/increase-business-visits'
-import { getProfileData, getUsersData } from '@/app/server/get-profile-data'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -22,7 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = `${profileData.name} | Carangola Digital`
-  const description = profileData.businessDescription || `Veja informações de ${profileData.name}, contatos, endereço e horários de funcionamento em Carangola/MG.`
+  const description =
+    profileData.businessDescription ||
+    `Veja informações de ${profileData.name}, contatos, endereço e horários de funcionamento em Carangola/MG.`
   const url = `https://carangoladigital.com.br/business/${slug}`
 
   return {
@@ -39,7 +40,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Carangola Digital',
       images: [
         {
-          url: profileData.coverImageUrl || profileData.logoImageUrl || 'https://carangoladigital.com.br/images/og-image.png',
+          url:
+            profileData.coverImageUrl ||
+            profileData.logoImageUrl ||
+            'https://carangoladigital.com.br/images/og-image.png',
           width: 1200,
           height: 630,
           alt: profileData.name,
@@ -57,12 +61,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-import { FooterProfile } from '@/components/commons/footer-profile'
-import { authOptions } from '@/lib/auth'
 import { ShieldCheck } from 'iconoir-react'
 import { getServerSession } from 'next-auth/next'
-import { ContentProfile } from './content'
+import { FooterProfile } from '@/components/commons/footer-profile'
 import LocalBusinessJsonLd from '@/components/seo/local-business-json-ld'
+import { authOptions } from '@/lib/auth'
+import { ContentProfile } from './content'
 
 interface Props {
   params: Promise<{
@@ -88,7 +92,7 @@ export default async function BusinessId({ params }: Props) {
   if (!profileData) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <h1 className="font-bold text-2xl ">Perfil não encontrado</h1>
+        <h1 className="font-bold text-2xl">Perfil não encontrado</h1>
         <Link href="/business" className="text-accent-purple">
           Voltar para a página inicial
         </Link>
@@ -104,7 +108,7 @@ export default async function BusinessId({ params }: Props) {
 
   return (
     <>
-    <LocalBusinessJsonLd data={profileData} />
+      <LocalBusinessJsonLd data={profileData} />
       <ContentProfile totalVisits={profileData?.totalVisits}>
         <BusinessHero
           profileData={profileData}
@@ -127,7 +131,7 @@ export default async function BusinessId({ params }: Props) {
                 isOwner={isOwner}
                 isUserAuth={isUserAuth}
               />
-              
+
               {/* Future addition: Gallery or Services could go here */}
             </div>
 
@@ -173,7 +177,8 @@ export default async function BusinessId({ params }: Props) {
                       Reivindicar esta empresa
                     </span>
                     <p className="text-blue-800/70 text-xs dark:text-blue-200/60">
-                      Você é o dono deste negócio? Verifique e gerencie suas informações.
+                      Você é o dono deste negócio? Verifique e gerencie suas
+                      informações.
                     </p>
                   </Link>
                 </div>

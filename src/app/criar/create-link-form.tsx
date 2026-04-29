@@ -1,18 +1,15 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
+import type { Session } from 'next-auth'
 import { useState, useTransition } from 'react'
-
+import { toast } from 'sonner'
 import { createBusinessLink } from '@/actions/business/create-business-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
 import { Label } from '@/components/ui/label'
 import { forbiddenProfiles } from '@/configs/forbidden-profiles'
-
 import { sanitizeLink } from '@/utils/sanitize-link'
-import type { Session } from 'next-auth'
-import { toast } from 'sonner'
 
 interface Props {
   session: Session | null
@@ -20,7 +17,7 @@ interface Props {
 
 export function CreateLinkForm({ session }: Props) {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  const _searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
 
   const user = session?.user || null
@@ -75,7 +72,7 @@ export function CreateLinkForm({ session }: Props) {
 
   return (
     <>
-      <form onSubmit={onSubmit} className="flex w-full flex-col gap-2 ">
+      <form onSubmit={onSubmit} className="flex w-full flex-col gap-2">
         {!user?.name && (
           <div className="flex w-full flex-col items-center gap-2">
             <Label className="mt-4 font-semibold">

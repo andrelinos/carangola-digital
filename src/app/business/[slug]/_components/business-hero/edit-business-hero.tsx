@@ -36,7 +36,11 @@ export function EditBusinessHero({ data }: Props) {
 
   useEffect(() => {
     const editParam = searchParams.get('edit')
-    if (editParam === 'logo' || editParam === 'cover' || editParam === 'category') {
+    if (
+      editParam === 'logo' ||
+      editParam === 'cover' ||
+      editParam === 'category'
+    ) {
       setIsOpen(true)
     }
   }, [searchParams])
@@ -74,7 +78,7 @@ export function EditBusinessHero({ data }: Props) {
         onClose()
         router.refresh()
       })
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar perfil.')
     } finally {
       setIsSubmitting(false)
@@ -133,13 +137,13 @@ export function EditBusinessHero({ data }: Props) {
             {selectedCategories?.map(cat => (
               <div
                 key={cat}
-                className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 font-medium text-slate-700 text-sm border border-slate-200"
+                className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 font-medium text-slate-700 text-sm"
               >
                 <span>{cat}</span>
                 <button
                   onClick={() => removeCategory(cat)}
                   type="button"
-                  className="text-slate-400 hover:text-red-500 transition-colors"
+                  className="text-slate-400 transition-colors hover:text-red-500"
                 >
                   <X size={14} />
                 </button>
@@ -153,26 +157,28 @@ export function EditBusinessHero({ data }: Props) {
               onFocus={() => {
                 setDropdownOpen(true)
                 setTimeout(() => {
-                  const scrollContainer = document.getElementById('modal-scrollable-body')
+                  const scrollContainer = document.getElementById(
+                    'modal-scrollable-body'
+                  )
                   if (scrollContainer) {
                     scrollContainer.scrollTo({
                       top: scrollContainer.scrollHeight,
-                      behavior: 'smooth'
+                      behavior: 'smooth',
                     })
                   }
                 }, 150)
               }}
-              autoComplete='off'
+              autoComplete="off"
               placeholder="Buscar ou adicionar categoria..."
-              className="flex-1 bg-transparent p-1.5 text-sm outline-none text-slate-900 placeholder:text-slate-400 min-w-[200px]"
+              className="min-w-[200px] flex-1 bg-transparent p-1.5 text-slate-900 text-sm outline-none placeholder:text-slate-400"
             />
           </div>
           {dropdownOpen && availableCategories.length > 0 && (
             <>
               {/* Tooltip Arrow */}
-              <div className="absolute top-[calc(100%+6px)] left-8 z-30 h-3 w-3 -translate-x-1/2 rotate-45 border-t border-l border-slate-200 bg-white" />
+              <div className="absolute top-[calc(100%+6px)] left-8 z-30 h-3 w-3 -translate-x-1/2 rotate-45 border-slate-200 border-t border-l bg-white" />
 
-              <div className="absolute top-full left-0 z-20 mt-4 max-h-56 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl py-2 scrollbar-thin scrollbar-thumb-slate-200">
+              <div className="scrollbar-thin scrollbar-thumb-slate-200 absolute top-full left-0 z-20 mt-4 max-h-56 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-xl">
                 {availableCategories.map(cat => (
                   <div
                     key={cat}
@@ -189,7 +195,7 @@ export function EditBusinessHero({ data }: Props) {
                     role="option"
                     aria-selected={false}
                     tabIndex={0}
-                    className="cursor-pointer px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center justify-between"
+                    className="flex cursor-pointer items-center justify-between px-5 py-2.5 font-medium text-slate-600 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
                     {cat}
                   </div>
@@ -213,15 +219,19 @@ export function EditBusinessHero({ data }: Props) {
         classname="w-full relative max-w-4xl max-h-[90vh] md:rounded-3xl overflow-hidden bg-slate-50/50 p-0 border border-slate-200 shadow-2xl flex flex-col"
       >
         {/* Sticky Header */}
-        <div className="flex-none px-8 py-6 border-b border-slate-100 bg-white z-20">
+        <div className="z-20 flex-none border-slate-100 border-b bg-white px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Informações do Perfil</h2>
-              <p className="text-sm font-medium text-slate-500 mt-1">Como sua empresa aparece para os clientes e parceiros.</p>
+              <h2 className="font-bold text-2xl text-slate-900 tracking-tight">
+                Informações do Perfil
+              </h2>
+              <p className="mt-1 font-medium text-slate-500 text-sm">
+                Como sua empresa aparece para os clientes e parceiros.
+              </p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
             >
               <X size={20} />
             </button>
@@ -229,30 +239,51 @@ export function EditBusinessHero({ data }: Props) {
         </div>
 
         {/* Scrollable Body */}
-        <div id="modal-scrollable-body" className="flex-1 overflow-y-auto p-6 md:p-8">
-          <div className="flex flex-col gap-8 max-w-3xl mx-auto">
-
+        <div
+          id="modal-scrollable-body"
+          className="flex-1 overflow-y-auto p-6 md:p-8"
+        >
+          <div className="mx-auto flex max-w-3xl flex-col gap-8">
             {/* Visuals Section */}
-            <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-sm">
-              <div className="flex items-center gap-3 mb-8 border-b border-slate-100 pb-4">
-                <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8">
+              <div className="mb-8 flex items-center gap-3 border-slate-100 border-b pb-4">
+                <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
                   {/* Using generic SVG since I haven't added imports yet, wait, I will import them above */}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-image w-5 h-5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-image h-5 w-5"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800">Imagens do Perfil</h3>
-                  <p className="text-sm font-medium text-slate-500">A primeira impressão é a que fica.</p>
+                  <h3 className="font-bold text-lg text-slate-800">
+                    Imagens do Perfil
+                  </h3>
+                  <p className="font-medium text-slate-500 text-sm">
+                    A primeira impressão é a que fica.
+                  </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <ImageUploader
                   label="Logomarca"
                   aspectRatio={1 / 1}
                   initialImageUrl={data.businessHeroInfo.logoImageUrl}
                   onCropComplete={setCroppedLogoFile}
                   recommendation="Recomendado: 400x400px"
-                  className="rounded-[2rem] border-slate-200 h-[240px]"
+                  className="h-[240px] rounded-[2rem] border-slate-200"
                 />
 
                 <ImageUploader
@@ -261,20 +292,43 @@ export function EditBusinessHero({ data }: Props) {
                   initialImageUrl={data.businessHeroInfo.coverImageUrl}
                   onCropComplete={setCroppedCoverFile}
                   recommendation="Recomendado: 1200x450px"
-                  className="rounded-[2rem] border-slate-200 h-[240px]"
+                  className="h-[240px] rounded-[2rem] border-slate-200"
                 />
               </div>
             </section>
 
             {/* Basic Info Section */}
-            <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-sm">
-              <div className="flex items-center gap-3 mb-8 border-b border-slate-100 pb-4">
-                <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-building-2 w-5 h-5"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg>
+            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8">
+              <div className="mb-8 flex items-center gap-3 border-slate-100 border-b pb-4">
+                <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-building-2 h-5 w-5"
+                  >
+                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+                    <path d="M10 6h4" />
+                    <path d="M10 10h4" />
+                    <path d="M10 14h4" />
+                    <path d="M10 18h4" />
+                  </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800">Dados Básicos</h3>
-                  <p className="text-sm font-medium text-slate-500">Informações principais do seu negócio.</p>
+                  <h3 className="font-bold text-lg text-slate-800">
+                    Dados Básicos
+                  </h3>
+                  <p className="font-medium text-slate-500 text-sm">
+                    Informações principais do seu negócio.
+                  </p>
                 </div>
               </div>
 
@@ -284,29 +338,28 @@ export function EditBusinessHero({ data }: Props) {
                   name="name"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="h-12 border-slate-200 text-slate-900 font-medium text-lg focus:border-blue-500 focus:ring-blue-100 shadow-sm rounded-xl"
+                  className="h-12 rounded-xl border-slate-200 font-medium text-lg text-slate-900 shadow-sm focus:border-blue-500 focus:ring-blue-100"
                 />
                 <MultiCategorySelect />
               </div>
             </section>
-
           </div>
         </div>
 
         {/* Sticky Footer */}
-        <div className="flex-none px-6 py-5 bg-white border-t border-slate-100 flex items-center justify-end gap-3 z-20">
+        <div className="z-20 flex flex-none items-center justify-end gap-3 border-slate-100 border-t bg-white px-6 py-5">
           <Button
             variant="outline"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold px-6"
+            className="rounded-xl border-slate-200 px-6 font-semibold text-slate-700 hover:bg-slate-50"
           >
             Cancelar
           </Button>
           <Button
             onClick={handleSaveProfile}
             disabled={isSubmitting}
-            className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 shadow-md shadow-blue-500/20"
+            className="rounded-xl bg-blue-600 px-8 font-semibold text-white shadow-blue-500/20 shadow-md hover:bg-blue-700"
           >
             {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
           </Button>

@@ -1,38 +1,50 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { CheckCircle2, ChevronRight, AlertCircle, Sparkles } from 'lucide-react'
-import { calculateProfileCompleteness } from '@/utils/profile-completeness'
+import { AlertCircle, CheckCircle2, Sparkles } from 'lucide-react'
+import Link from 'next/link'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { calculateProfileCompleteness } from '@/utils/profile-completeness'
 
 interface ProfileCompletenessCardProps {
   profile?: ProfileDataProps
 }
 
-export function ProfileCompletenessCard({ profile }: ProfileCompletenessCardProps) {
+export function ProfileCompletenessCard({
+  profile,
+}: ProfileCompletenessCardProps) {
   // Se não houver perfil, usamos um mock para demonstração
   const mockProfile: Partial<ProfileDataProps> = {
     businessDescription: 'Uma descrição curta',
     category: 'Restaurante',
-    businessPhones: [{ phone: '123', nameContact: 'Teste', isWhatsapp: true, isOnlyWhatsapp: false, title: 'WhatsApp' }],
-    openingHours: {} as any
+    businessPhones: [
+      {
+        phone: '123',
+        nameContact: 'Teste',
+        isWhatsapp: true,
+        isOnlyWhatsapp: false,
+        title: 'WhatsApp',
+      },
+    ],
+    openingHours: {} as any,
   }
 
-  const { totalScore, items } = calculateProfileCompleteness((profile || mockProfile) as ProfileDataProps)
+  const { totalScore, items } = calculateProfileCompleteness(
+    (profile || mockProfile) as ProfileDataProps
+  )
 
   const pendingItems = items.filter(item => !item.isComplete)
   const nextTarget = pendingItems[0]
 
   return (
-    <div className="rounded-3xl border border-border bg-card p-6 shadow-sm overflow-hidden relative group">
+    <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-        <Sparkles className="size-24 text-primary rotate-12" />
+      <div className="absolute top-0 right-0 p-4 opacity-10 transition-opacity group-hover:opacity-20">
+        <Sparkles className="size-24 rotate-12 text-primary" />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
+      <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row">
         {/* Circular Progress */}
         <div className="relative size-32 flex-shrink-0">
           <svg className="size-full -rotate-90">
@@ -55,46 +67,62 @@ export function ProfileCompletenessCard({ profile }: ProfileCompletenessCardProp
               strokeDasharray="364.4"
               initial={{ strokeDashoffset: 364.4 }}
               animate={{ strokeDashoffset: 364.4 - (364.4 * totalScore) / 100 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
               className="text-primary"
               strokeLinecap="round"
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold">{totalScore}%</span>
-            <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Completo</span>
+            <span className="font-bold text-3xl">{totalScore}%</span>
+            <span className="font-bold text-[10px] text-muted-foreground uppercase tracking-tighter">
+              Completo
+            </span>
           </div>
         </div>
 
         {/* Content */}
         <div className="flex-1 space-y-4">
           <div>
-            <h3 className="text-xl font-bold tracking-tight">Força do seu Perfil</h3>
+            <h3 className="font-bold text-xl tracking-tight">
+              Força do seu Perfil
+            </h3>
             <p className="text-muted-foreground text-sm">
-              Perfis completos aparecem até <span className="text-primary font-bold">3x mais</span> nas buscas dos clientes.
+              Perfis completos aparecem até{' '}
+              <span className="font-bold text-primary">3x mais</span> nas buscas
+              dos clientes.
             </p>
           </div>
 
           {nextTarget ? (
-            <div className="bg-primary/5 rounded-2xl p-4 border border-primary/10">
+            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="size-5 text-primary mt-0.5" />
+                <AlertCircle className="mt-0.5 size-5 text-primary" />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold">Próximo passo:</p>
-                  <p className="text-sm text-foreground/80">Adicione seu <span className="font-bold lowercase">{nextTarget.label}</span> para ganhar +{nextTarget.score}%.</p>
+                  <p className="font-semibold text-sm">Próximo passo:</p>
+                  <p className="text-foreground/80 text-sm">
+                    Adicione seu{' '}
+                    <span className="font-bold lowercase">
+                      {nextTarget.label}
+                    </span>{' '}
+                    para ganhar +{nextTarget.score}%.
+                  </p>
                 </div>
-                <Button size="sm" asChild className="rounded-xl h-8">
-                  <Link href={`/business/${(profile || mockProfile)?.slug || ''}?edit=${nextTarget.id}`}>
+                <Button size="sm" asChild className="h-8 rounded-xl">
+                  <Link
+                    href={`/business/${(profile || mockProfile)?.slug || ''}?edit=${nextTarget.id}`}
+                  >
                     Corrigir
                   </Link>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="bg-green-500/10 rounded-2xl p-4 border border-green-500/20">
+            <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-4">
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="size-5 text-green-500" />
-                <p className="text-sm font-semibold text-green-700">Incrível! Seu perfil está nota 10.</p>
+                <p className="font-semibold text-green-700 text-sm">
+                  Incrível! Seu perfil está nota 10.
+                </p>
               </div>
             </div>
           )}
@@ -102,15 +130,17 @@ export function ProfileCompletenessCard({ profile }: ProfileCompletenessCardProp
       </div>
 
       {/* Progress Dots / Steps */}
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
         {items.map((item, idx) => (
           <div key={idx} className="flex items-center gap-2">
             {item.isComplete ? (
-              <CheckCircle2 className="size-4 text-green-500 flex-shrink-0" />
+              <CheckCircle2 className="size-4 flex-shrink-0 text-green-500" />
             ) : (
-              <div className="size-4 rounded-full border-2 border-muted flex-shrink-0" />
+              <div className="size-4 flex-shrink-0 rounded-full border-2 border-muted" />
             )}
-            <span className={`text-xs truncate ${item.isComplete ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+            <span
+              className={`truncate text-xs ${item.isComplete ? 'font-medium text-foreground' : 'text-muted-foreground'}`}
+            >
               {item.label}
             </span>
           </div>

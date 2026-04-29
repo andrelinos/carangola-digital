@@ -48,7 +48,7 @@ export async function getUserProperties(
     })
 
     return properties
-  } catch (error) {
+  } catch (_error) {
     return []
   }
 }

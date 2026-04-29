@@ -1,7 +1,7 @@
-import { serverEnv } from '@/utils/env'
+import crypto from 'node:crypto'
 import { MercadoPagoConfig } from 'mercadopago'
 import { NextResponse } from 'next/server'
-import crypto from 'node:crypto'
+import { serverEnv } from '@/utils/env'
 
 // Instância do cliente Mercado Pago
 const mpClient = new MercadoPagoConfig({

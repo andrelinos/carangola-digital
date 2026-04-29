@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import type { PropertyProps } from '@/_types/property'
 import { FooterEditModal } from '@/components/commons/footer-edit-modal'
 import { Button } from '@/components/ui/button'
@@ -7,17 +9,15 @@ import { Modal } from '@/components/ui/custom-modal'
 import { Label } from '@/components/ui/label'
 import { Link } from '@/components/ui/link'
 import { formatPhoneNumber } from '@/utils/format-phone-number'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 interface Props {
   property?: PropertyProps
 }
 
 export function PropertyContactModal({ property }: Props) {
-  const router = useRouter()
+  const _router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, _setIsSubmitting] = useState(false)
 
   function handleOpenModal() {
     setIsOpen(true)
