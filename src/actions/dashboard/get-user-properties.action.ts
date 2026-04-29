@@ -49,15 +49,16 @@ export async function getUserPropertiesForDashboard(): Promise<UserPropertyTable
 
         // Resolver Imagem (Geralmente a primeira da galeria ou uma capa)
         const imagePath = data.imagesPaths?.[0] || data.coverImagePath || null
-        let imageUrl = null
+        let imageUrl: string | null = null
         if (imagePath) {
-          imageUrl = await getDownloadURLFromPath(imagePath)
+          const url = await getDownloadURLFromPath(imagePath)
+          imageUrl = url || null
         }
 
         return {
           id: doc.id,
-          title: data.title || 'Sem título',
-          category: data.category || 'Imóvel',
+          title: (data.title as string) || 'Sem título',
+          category: (data.category as string) || 'Imóvel',
           status,
           statusColor,
           image: imageUrl
