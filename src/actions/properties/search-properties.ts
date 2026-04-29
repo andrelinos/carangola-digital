@@ -1,13 +1,14 @@
+'use server'
+
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
-import { type NextRequest, NextResponse } from 'next/server'
+import type { PropertyProps } from '@/_types/property'
 
-export async function POST(req: NextRequest) {
+export async function searchProperties(
+  searchTerms: string
+): Promise<PropertyProps[]> {
   try {
-    const formData = await req.formData()
-    const searchTerms = formData.get('searchTerms') as string
-
     if (!searchTerms || searchTerms.trim().length < 3) {
-      return NextResponse.json({ data: [] })
+      return []
     }
 
     const normalizedQuery = searchTerms
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
     const limitedKeywords = queryKeywords.slice(0, 10)
 
     if (limitedKeywords.length === 0) {
-      return NextResponse.json({ data: [] })
+      return []
     }
 
     const propertiesSnapshot = await db
@@ -60,11 +61,9 @@ export async function POST(req: NextRequest) {
       })
     )
 
-    return NextResponse.json({ data: properties })
+    return properties
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erro ao buscar imóveis' },
-      { status: 500 }
-    )
+    console.error('Erro ao buscar imóveis:', error)
+    throw new Error('Erro ao buscar imóveis')
   }
 }

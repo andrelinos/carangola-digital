@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import type { PropertyProps } from '@/_types/property'
+import { searchProperties } from '@/actions/properties/search-properties'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,17 +30,8 @@ export default function SearchFormProperties() {
     setIsLoadingProperties(true)
 
     try {
-      const formData = new FormData()
-      formData.append('searchTerms', searchTerms)
-
-      // Chama a nova API de busca de imóveis
-      const response = await fetch('/api/properties', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const json = await response?.json()
-      setResultsSearch(json.data || [])
+      const results = await searchProperties(searchTerms)
+      setResultsSearch(results as unknown as SearchProps[])
     } catch (error) {
       console.error('Erro na busca de imóveis:')
     } finally {

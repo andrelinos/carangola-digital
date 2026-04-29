@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Search, Loader2 } from 'lucide-react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
+import { searchBusinesses } from '@/actions/business/search-businesses'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,16 +29,8 @@ export default function SearchFormBusiness() {
     setIsLoadingBusiness(true)
 
     try {
-      const formData = new FormData()
-      formData.append('searchTerms', searchTerms)
-
-      const response = await fetch('/api/business', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const json = await response.json()
-      setResultsSearch(json.data || [])
+      const results = await searchBusinesses(searchTerms)
+      setResultsSearch(results || [])
     } catch {
       console.error('Erro na busca')
     } finally {

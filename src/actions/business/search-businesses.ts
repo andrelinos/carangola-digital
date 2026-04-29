@@ -1,35 +1,27 @@
-import { type NextRequest, NextResponse } from 'next/server'
+'use server'
 
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
-
 import type { ProfileDataProps } from '@/_types/profile-data'
 
-export async function POST(request: NextRequest) {
+export async function searchBusinesses(
+  searchValue: string
+): Promise<ProfileDataProps[]> {
   try {
-    const formData = await request.formData()
-    const searchValue = formData
-      .get('searchTerms')
-      ?.toString()
-      .trim()
-      .toLowerCase()
+    const value = searchValue?.trim().toLowerCase()
 
-    if (!searchValue) {
-      return NextResponse.json({
-        message: 'Search terms are required',
-      })
+    if (!value) {
+      return []
     }
 
     // Normaliza a string de busca e a divide em termos individuais
-    const searchTerms = searchValue
+    const searchTerms = value
       .normalize('NFD')
       .replace(/\p{M}/gu, '')
       .split(' ') // Divide a string em um array de palavras
       .filter(term => term.length > 0) // Remove termos vazios
 
     if (searchTerms.length === 0) {
-      return NextResponse.json({
-        message: 'Search terms are required',
-      })
+      return []
     }
 
     const snapshot = await db
@@ -41,8 +33,17 @@ export async function POST(request: NextRequest) {
     const dataResponse = await Promise.all(
       snapshot.docs.map(async doc => {
         const data = doc.data() as ProfileDataProps
-        const imagePath = data.logoImagePath || data.coverImagePath || data.imagePath
-        const imageUrl = await getDownloadURLFromPath(imagePath)
+        const imagePath =
+          data.logoImagePath || data.coverImagePath || data.imagePath
+
+        let imageUrl = null
+        if (imagePath) {
+          try {
+            imageUrl = await getDownloadURLFromPath(imagePath)
+          } catch (e) {
+            console.warn(`Could not get image URL for ${doc.id}:`, imagePath)
+          }
+        }
 
         return {
           ...data,
@@ -54,17 +55,13 @@ export async function POST(request: NextRequest) {
             Array.isArray(data.categories) && data.categories.length > 0
               ? data.categories[0]
               : data.category || 'Serviços',
-        }
+        } as ProfileDataProps
       })
     )
 
-    return NextResponse.json({
-      data: dataResponse,
-    })
+    return dataResponse
   } catch (error) {
-    return NextResponse.json(
-      { message: 'Internal Server Error', error },
-      { status: 500 }
-    )
+    console.error('Error searching businesses:', error)
+    throw new Error('Internal Server Error')
   }
 }
