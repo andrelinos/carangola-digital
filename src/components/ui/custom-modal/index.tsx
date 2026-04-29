@@ -44,8 +44,8 @@ export function Modal({
         {...props}
         className={cn('relative md:rounded-2xl', classname)}
       >
-        <p className="font-bold text-xl">{title}</p>
-        <p className="-mt-1 pb-8 font-light text-sm">- {description}</p>
+        {title && <p className="font-bold text-xl">{title}</p>}
+        {description && <p className="-mt-1 pb-8 font-light text-sm">- {description}</p>}
         {children}
       </div>
     </div>

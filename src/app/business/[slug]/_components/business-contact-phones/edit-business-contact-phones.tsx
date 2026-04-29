@@ -3,8 +3,8 @@
 import { Plus, Trash } from 'iconoir-react'
 import { ArrowUpFromLine } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -36,9 +36,18 @@ interface Props {
 
 export function EditContactPhones({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'phones') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [profileWhatsAppPic, setProfileWhatsAppPic] = useState<string | null>(
     null

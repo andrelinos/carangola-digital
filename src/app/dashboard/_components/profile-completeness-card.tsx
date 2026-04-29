@@ -84,7 +84,7 @@ export function ProfileCompletenessCard({ profile }: ProfileCompletenessCardProp
                   <p className="text-sm text-foreground/80">Adicione seu <span className="font-bold lowercase">{nextTarget.label}</span> para ganhar +{nextTarget.score}%.</p>
                 </div>
                 <Button size="sm" asChild className="rounded-xl h-8">
-                  <Link href={`/dashboard/business/edit`}>
+                  <Link href={`/business/${(profile || mockProfile)?.slug || ''}?edit=${nextTarget.id}`}>
                     Corrigir
                   </Link>
                 </Button>

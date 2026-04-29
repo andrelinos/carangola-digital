@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 
 import { updateBusinessDescription } from '@/actions/business/create-business-description'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -20,9 +20,18 @@ interface Props {
 
 export function EditBusinessDescription({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'description') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [businessDescription, setBusinessDescription] = useState(

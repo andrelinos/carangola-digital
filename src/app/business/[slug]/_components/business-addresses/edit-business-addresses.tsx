@@ -2,8 +2,8 @@
 
 import { Plus, Trash } from 'iconoir-react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { BusinessAddressProps } from '@/_types/profile-data'
@@ -29,9 +29,18 @@ interface Props {
 
 export function EditBusinessAddresses({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'addresses') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGettingAddress, setIsGettingAddress] = useState(false)
 

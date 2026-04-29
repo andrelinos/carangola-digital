@@ -1,6 +1,6 @@
 'use client'
 
-import { Building2, Home, PanelLeft, StoreIcon, CreditCard, LayoutDashboard } from 'lucide-react'
+import { Building2, Home, PanelLeft, StoreIcon, CreditCard, LayoutDashboard, UserCircle } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -76,6 +76,15 @@ export function DashboardSidebar() {
             >
               <Home className="size-5" />
               <span>Visão Geral</span>
+            </Button>
+
+            <Button
+              className={cn(baseClasses, pathname.startsWith('/dashboard/perfil') ? activeClasses : inactiveClasses)}
+              onClick={() => goToPath('/dashboard/perfil')}
+              variant="ghost"
+            >
+              <UserCircle className="size-5" />
+              <span>Meu Perfil</span>
             </Button>
 
             <Button

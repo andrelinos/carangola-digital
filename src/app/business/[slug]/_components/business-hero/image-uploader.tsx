@@ -180,7 +180,7 @@ export function ImageUploader({
             onClick={() => fileInputRef.current?.click()}
             onKeyDown={() => fileInputRef.current?.click()}
             className={clsx(
-              'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-zinc-300 border-dashed bg-zinc-50 text-zinc-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
+              'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-slate-200 border-dashed bg-slate-50 text-slate-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
               className
             )}
             style={{ aspectRatio }}
@@ -190,15 +190,15 @@ export function ImageUploader({
                 src={initialImageUrl}
                 alt="Imagem atual"
                 fill
-                className="rounded-lg object-cover opacity-40"
+                className="rounded-xl object-cover opacity-30 grayscale transition-all hover:opacity-40 hover:grayscale-0"
               />
             )}
             <div className="relative z-10 flex flex-col items-center p-4 text-center">
-              <Camera size={32} />
-              <p className="mt-2 font-semibold">
+              <Camera size={32} className="text-slate-400" />
+              <p className="mt-2 font-semibold text-slate-700">
                 Alterar {label.toLowerCase()}
               </p>
-              {recommendation && <p className="text-xs">{recommendation}</p>}
+              {recommendation && <p className="text-xs text-slate-500 mt-1">{recommendation}</p>}
             </div>
           </div>
         )}

@@ -2,69 +2,69 @@ import 'server-only'
 
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-
 import { FirestoreAdapter } from '@auth/firebase-adapter'
 import { Timestamp } from 'firebase-admin/firestore'
-import { db, firebaseCert } from '../firebase'
+import { firebaseCert } from '../firebase'
 import { getGoogleCredentials } from './utils/get-google-credentials'
+import type { AdapterUser } from 'next-auth/adapters'
+
+// 1. Instancie o adapter
+const firestoreAdapter = FirestoreAdapter({
+  credential: firebaseCert,
+})
 
 export const authOptions: NextAuthOptions = {
-  adapter: FirestoreAdapter({
-    credential: firebaseCert,
-  }),
+  // 2. Intercepte o adapter para injetar dados padrão na criação
+  adapter: {
+    ...firestoreAdapter,
+    async createUser(user: Omit<AdapterUser, 'id'>) {
+      const customUser = {
+        ...user,
+        accountVerified: false,
+        planActive: {
+          profiles: {
+            expiresAt: null,
+            type: 'free',
+            status: 'active',
+            planDetails: { name: 'free', period: 'indeterminado', price: 0 },
+          },
+          properties: {
+            expiresAt: null,
+            type: 'free',
+            status: 'active',
+            planDetails: { name: 'free', period: 'indeterminado', price: 0 },
+          },
+        },
+        createdAt: Timestamp.now().toMillis(),
+        updatedAt: Timestamp.now().toMillis(),
+      }
+      // Delega a criação final pro FirestoreAdapter com os dados completos
+      return await firestoreAdapter.createUser!(customUser as any)
+    },
+  },
   providers: [
     GoogleProvider({
       clientId: getGoogleCredentials().clientId,
       clientSecret: getGoogleCredentials().clientSecret,
     }),
   ],
-  events: {
-    async createUser({ user }) {
-      if (user.id) {
-        await db
-          .collection('users')
-          .doc(user.id)
-          .set({
-            accountVerified: false,
-            planActive: {
-              profiles: {
-                expiresAt: null,
-                type: 'free',
-                status: 'active',
-                planDetails: { name: 'free', period: 'indeterminado', price: 0 },
-              },
-              properties: {
-                expiresAt: null,
-                type: 'free',
-                status: 'active',
-                planDetails: { name: 'free', period: 'indeterminado', price: 0 },
-              },
-            },
-            createdAt: Timestamp.now().toMillis(),
-            updatedAt: Timestamp.now().toMillis(),
-          }, { merge: true }) // <--- ESSENCIAL para não apagar o nome/imagem
-      }
-    },
-  },
+
+  // Pode remover o block "events: { createUser }", pois o Adapter já resolve isso
 
   callbacks: {
     async session({ session, user }) {
-      // No modo "database", o parâmetro 'user' já vem do Firestore via Adapter
+      // Graças ao Module Augmentation, o TS não vai mais reclamar aqui
       if (session.user && user) {
         session.user.id = user.id
-        session.user.name = user.name
-        session.user.image = user.image
+        // user.name, image e email já costumam ser injetados pela DefaultSession
 
-        // Atribui os campos extras que o Adapter buscou automaticamente
-        // (Recomendo tipar o user como 'any' ou criar um next-auth.d.ts se der erro de TS)
-        const dbUser = user as any;
-
-        session.user.planActive = dbUser.planActive
-        session.user.accountVerified = dbUser.accountVerified
-        session.user.hasProfileLink = dbUser.hasProfileLink
-        session.user.role = dbUser.role
-        session.user.myProfileLink = dbUser.myProfileLink
-        session.user.favorites = dbUser.favorites
+        // Repassa os campos do DB para a sessão
+        session.user.planActive = user.planActive
+        session.user.accountVerified = user.accountVerified
+        session.user.hasProfileLink = user.hasProfileLink
+        session.user.role = user.role
+        session.user.myProfileLink = user.myProfileLink
+        session.user.favorites = user.favorites
       }
 
       return session

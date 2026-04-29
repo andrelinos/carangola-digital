@@ -2,8 +2,10 @@ import 'next-auth'
 
 declare module 'next-auth' {
   interface User {
-    hasProfileLink?: boolean
+    id: string
+    email: string
     emailVerified: string | Date | null
+    hasProfileLink?: boolean
     favorites?: string[]
     myProfileLink?: string
     accountVerified?: boolean

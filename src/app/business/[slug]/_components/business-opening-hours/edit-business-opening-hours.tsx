@@ -2,8 +2,8 @@
 
 import clsx from 'clsx'
 import { LightBulbOn, Plus, Trash } from 'iconoir-react'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type {
@@ -103,6 +103,7 @@ const initializeSchedule = (schedule?: WeeklySchedule): WeeklySchedule => {
 
 export function EditBusinessOpeningHours({ profileData }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   if (!profileData?.id) {
     return <div />
@@ -118,6 +119,14 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
     (profileData.holidayExceptions as unknown as HolidayException[]) || []
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'hours') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [openingHours, setOpeningHours] =
     useState<WeeklySchedule>(initialSchedule)

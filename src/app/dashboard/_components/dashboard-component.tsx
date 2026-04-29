@@ -5,7 +5,7 @@ import { DashboardStats } from './dashboard-stats'
 import { ProUpgradeBanner } from './pro-upgrade-banner'
 import { DashboardProfilesTable } from './dashboard-profiles-sum-table'
 import { PropertiesTable } from './dashboard-properties-table'
-import { ProfileCompletenessCard } from './profile-completeness-card'
+
 import { MarketingKit } from './marketing-kit'
 
 export function DashboardComponent({ stats, profiles, properties }: { stats: any, profiles: any[], properties: any[] }) {
@@ -17,13 +17,8 @@ export function DashboardComponent({ stats, profiles, properties }: { stats: any
       {/* 📊 Key Statistics */}
       <DashboardStats stats={stats} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2">
-          <ProfileCompletenessCard />
-        </div>
-        <div className="lg:col-span-1">
-          <ProUpgradeBanner />
-        </div>
+      <div className="mb-8">
+        <ProUpgradeBanner />
       </div>
 
       {/* 📋 Listings Summary */}

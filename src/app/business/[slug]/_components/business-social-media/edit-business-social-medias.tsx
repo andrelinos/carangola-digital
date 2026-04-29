@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
@@ -29,6 +29,7 @@ interface Props {
 
 export function EditBusinessSocialMedias({ profileData }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   if (!profileData?.id) {
     return <div />
@@ -41,6 +42,14 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
     socialMedias || ({} as FormValuesProps)
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'social') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formValues, setFormValues] =
     useState<FormValuesProps>(initialFormValues)
