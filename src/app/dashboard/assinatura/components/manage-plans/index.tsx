@@ -162,11 +162,7 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
                     )}
                   </div>
                   <CardDescription className="pt-2 font-medium text-slate-500 italic">
-                    {plan.name === 'free'
-                      ? 'O começo de tudo. Seja visto na cidade.'
-                      : plan.name === 'basic'
-                        ? 'Para quem quer crescer e se destacar.'
-                        : 'O topo da vitrine. Máxima visibilidade.'}
+                    {plan.description}
                   </CardDescription>
                 </CardHeader>
 
@@ -288,8 +284,6 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
           ))}
         </motion.div>
       </div>
-      {console.log(currentPlan)}
-      {console.log(plans)}
 
       <Dialog open={!!selectedPlan} onOpenChange={handleCloseModal}>
         <DialogContent className="overflow-hidden rounded-[3rem] border-none bg-slate-50 p-4 sm:max-w-[425px] sm:rounded-[3rem]">

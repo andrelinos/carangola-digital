@@ -47,7 +47,11 @@ export async function getUserProfilesForDashboard(): Promise<
         }
 
         const now = Date.now()
-        if (data.planActive?.expiresAt && data.planActive.expiresAt < now) {
+        if (
+          data.planActive?.expiresAt !== null &&
+          data.planActive?.expiresAt !== undefined &&
+          data.planActive.expiresAt < now
+        ) {
           status = 'Expirado'
           statusColor = 'destructive'
         }

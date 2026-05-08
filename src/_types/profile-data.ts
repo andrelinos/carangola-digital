@@ -100,9 +100,9 @@ export type ProfileDataProps = {
   logoImageUrl?: string
   categories?: string[]
   imagePath?: string
-  planActive: {
+  planActive?: {
     type: PlanTypeProps
-    expiresAt: number
+    expiresAt: number | null
   }
   holidayExceptions: HolidayException[]
   planType: string

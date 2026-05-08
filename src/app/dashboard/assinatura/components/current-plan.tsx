@@ -27,13 +27,15 @@ export function CurrentPlan({
   price,
 }: CurrentPlanProps) {
   const isFree = planType === 'free'
+  // Plano free é sempre considerado "ativo" na UI (sem expiração)
+  const isEffectivelyActive = status || isFree
 
   return (
     <Card className="mb-12 overflow-hidden rounded-[2.5rem] border-none bg-white shadow-2xl">
       <CardHeader
         className={cn(
           'relative overflow-hidden p-8 text-white',
-          status ? 'bg-primary' : 'bg-destructive'
+          isEffectivelyActive ? 'bg-primary' : 'bg-destructive'
         )}
       >
         {/* Abstract shapes for premium feel */}
@@ -60,11 +62,11 @@ export function CurrentPlan({
             <div
               className={cn(
                 'size-3 animate-pulse rounded-full',
-                status ? 'bg-green-400' : 'bg-yellow-400'
+                isEffectivelyActive ? 'bg-green-400' : 'bg-yellow-400'
               )}
             />
             <span className="font-bold text-sm uppercase tracking-widest">
-              {status ? 'Assinatura Ativa' : 'Requer Atenção'}
+              {isEffectivelyActive ? 'Assinatura Ativa' : 'Requer Atenção'}
             </span>
           </div>
         </div>
@@ -126,7 +128,11 @@ export function CurrentPlan({
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                {status ? (
+                {isFree ? (
+                  <p className="font-black text-2xl text-slate-900 uppercase tracking-tight">
+                    Vitálicio
+                  </p>
+                ) : status ? (
                   <p className="font-black text-2xl text-slate-900 tracking-tight">
                     Expira em {expiresIn}
                   </p>
@@ -139,10 +145,12 @@ export function CurrentPlan({
               <p
                 className={cn(
                   'font-bold text-xs uppercase tracking-widest',
-                  status ? 'text-green-600' : 'animate-pulse text-amber-600'
+                  isEffectivelyActive ? 'text-green-600' : 'animate-pulse text-amber-600'
                 )}
               >
-                {status
+                {isFree
+                  ? 'Sem custo • Plano permanente'
+                  : status
                   ? 'Pagamento processado com sucesso'
                   : 'Realize o upgrade para continuar'}
               </p>

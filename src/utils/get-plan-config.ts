@@ -7,13 +7,14 @@ import {
 type PlanActive = {
   type?: string
   status: string
-  expiresAt: number
+  expiresAt: number | null // null = plano free permanente
   // … demais campos do seu objeto
 }
 
 export function getPlanConfig(planActive?: PlanActive): PlanConfigProps {
   const now = Date.now()
 
+  // expiresAt null = plano free (sem data de expiração definida)
   const isValid =
     planActive &&
     planActive.status === 'active' &&

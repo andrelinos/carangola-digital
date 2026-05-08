@@ -53,6 +53,7 @@ export async function getLatestPublicProfiles(): Promise<
 
     return profiles
   } catch (error: any) {
-    throw new Error('Error:: ', error)
+    console.error("ERRO DO FIREBASE:", error.message)
+    throw new Error(`Falha ao buscar perfis: ${error.message}`)
   }
 }

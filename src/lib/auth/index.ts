@@ -18,6 +18,9 @@ export const authOptions: NextAuthOptions = {
   adapter: {
     ...firestoreAdapter,
     async createUser(user: Omit<AdapterUser, 'id'>) {
+      if (!firestoreAdapter.createUser) {
+        throw new Error('FirestoreAdapter não implementa createUser')
+      }
       const customUser = {
         ...user,
         accountVerified: false,
@@ -39,7 +42,7 @@ export const authOptions: NextAuthOptions = {
         updatedAt: Timestamp.now().toMillis(),
       }
       // Delega a criação final pro FirestoreAdapter com os dados completos
-      return await firestoreAdapter.createUser?.(customUser as any)
+      return await firestoreAdapter.createUser(customUser as any) as AdapterUser
     },
   },
   providers: [
@@ -58,8 +61,20 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id
         // user.name, image e email já costumam ser injetados pela DefaultSession
 
-        // Repassa os campos do DB para a sessão
-        session.user.planActive = user.planActive
+        // Repassa os campos do DB para a sessão.
+        // Fallback defensivo: usuários antigos sem `planActive` no Firestore
+        // recebem o plano free automaticamente na sessão.
+        const freePlanEntry = {
+          expiresAt: null,
+          type: 'free',
+          status: 'active',
+          planDetails: { name: 'free', period: 'indeterminado', price: 0 },
+        }
+        session.user.planActive = user.planActive ?? {
+          profiles: freePlanEntry,
+          properties: freePlanEntry,
+        }
+
         session.user.accountVerified = user.accountVerified
         session.user.hasProfileLink = user.hasProfileLink
         session.user.role = user.role

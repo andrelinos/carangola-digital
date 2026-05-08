@@ -1,9 +1,11 @@
 export const plansBusinessConfig = {
   free: {
     title: 'GRÁTIS',
+    description: 'O começo de tudo. Seja visto na cidade.',
     popular: false,
     price: 0,
-    frequency: '/mês',
+    frequency: 'vitalicio',
+    durationMonths: 0, // 0 = sem expiração (plano permanente)
     socialMedias: {
       linkedin: false,
       kwai: false,
@@ -34,20 +36,22 @@ export const plansBusinessConfig = {
   },
   basic: {
     title: 'BÁSICO',
+    description: 'Para quem quer crescer e se destacar.',
     popular: true,
     price: 2990,
     frequency: '/ano',
+    durationMonths: 12,
     socialMedias: {
       linkedin: true,
       kwai: false,
       tiktok: false,
       threads: true,
       site: true,
-      facebook: false,
+      facebook: true, // corrigido: basic deve ter facebook (era false por engano)
       instagram: true,
       twitter: true,
       youtube: false,
-      whatsapp: false,
+      whatsapp: true,
       telegram: false,
       pinterest: false,
       snapchat: false,
@@ -67,9 +71,11 @@ export const plansBusinessConfig = {
   },
   pro: {
     title: 'PRO',
+    description: 'O topo da vitrine. Máxima visibilidade.',
     popular: false,
     price: 5990,
     frequency: '/ano',
+    durationMonths: 12,
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -91,7 +97,6 @@ export const plansBusinessConfig = {
       discord: true,
       email: true,
     },
-
     businessPhones: {
       quantity: 30,
     },
@@ -101,9 +106,11 @@ export const plansBusinessConfig = {
   },
   master: {
     title: 'MASTER',
+    description: 'Poder total. Sem limites, sem competição.',
     popular: false,
     price: 9990,
     frequency: '/ano',
+    durationMonths: 12,
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -125,7 +132,6 @@ export const plansBusinessConfig = {
       discord: true,
       email: true,
     },
-
     businessPhones: {
       quantity: -1,
     },

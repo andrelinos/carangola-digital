@@ -53,16 +53,22 @@ export const getProfileData = cache(
     const { socialMedias, businessPhones, businessAddresses, planActive } =
       profileData
 
+    // Determina a config do plano: usa o plano ativo do perfil se válido,
+    // caso contrário aplica o plano free como padrão.
+    const planType = planActive?.type
+    const planConfig =
+      planType && planType in plansBusinessConfig
+        ? plansBusinessConfig[planType]
+        : plansBusinessConfig.free
+
     const allowedInformationByFilterDataPlan = filterUserDataByPlan({
       itemsToFilter: {
         socialMedias,
         businessPhones,
         businessAddresses,
       },
-      planConfig:
-        plansBusinessConfig[profileData?.planActive?.type] ||
-        plansBusinessConfig.free,
-      planActive,
+      planConfig,
+      planActive: planActive as any,
     })
 
     const formattedData: ProfileDataProps = {
