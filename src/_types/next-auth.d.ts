@@ -1,4 +1,4 @@
-import 'next-auth'
+import type { AsaasSubscriptionStatus } from './asaas'
 
 declare module 'next-auth' {
   interface User {
@@ -32,6 +32,11 @@ declare module 'next-auth' {
         }
       }
     }
+    // Campos Asaas
+    asaasCustomerId?: string | null
+    asaasSubscriptionId?: string | null
+    asaasSubscriptionStatus?: AsaasSubscriptionStatus | null
+    planExpiresAt?: number | null
   }
 
   interface Session {

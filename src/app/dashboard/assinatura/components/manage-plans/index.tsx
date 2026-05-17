@@ -5,6 +5,8 @@ import {
   ArrowRight,
   Check,
   Crown,
+  ExternalLink,
+  Loader2,
   ShieldCheck,
   Sparkles,
   X,
@@ -29,13 +31,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { PlanItemProps } from '@/configs/plans-business'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import type { PlanItemProps, PlanTypeProps } from '@/configs/plans-business'
 import { cn } from '@/lib/utils'
 import { formatPrice } from '@/utils/format-price'
 
 interface ManagePlansProps {
   plans: PlanItemProps[]
   currentPlan?: string
+  userId: string
+  userEmail: string
+  userName: string
 }
 
 const container = {
@@ -53,18 +60,42 @@ const item = {
   show: { y: 0, opacity: 1 },
 }
 
-export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
+export function ManagePlans({
+  plans,
+  currentPlan,
+  userId,
+  userEmail,
+  userName,
+}: ManagePlansProps) {
   const [selectedPlan, setSelectedPlan] = useState<PlanItemProps | null>(null)
   const [isPending, setIsPending] = useState(false)
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
+
+  // NOVO: Estado para armazenar o endereço de cobrança
+  const [billingAddress, setBillingAddress] = useState({
+    postalCode: '',
+    address: '',
+    addressNumber: '',
+    province: '', // Bairro
+    city: '',
+  })
+
+  // NOVO: Função para atualizar o estado do endereço
+  function handleAddressChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target
+    setBillingAddress(prev => ({ ...prev, [name]: value }))
+  }
 
   function handleCloseModal() {
     if (isPending) return
     setSelectedPlan(null)
+    setCheckoutUrl(null)
   }
 
   async function handleConfirmPlan() {
     if (!selectedPlan) return
 
+    // ── Plano Free: ativa diretamente via server action ──────────────────
     if (selectedPlan.name.toLowerCase() === 'free') {
       setIsPending(true)
       const result = await setFreePlanAction()
@@ -79,9 +110,57 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
       return
     }
 
-    // Lógica para planos pagos (Mercado Pago, Stripe, etc.)
-    alert(`Redirecionando para pagamento do plano: ${selectedPlan.title}...`)
+    // NOVO: Validação dos campos de endereço para planos pagos
+    const { postalCode, address, addressNumber, province, city } =
+      billingAddress
+    if (!postalCode || !address || !addressNumber || !province || !city) {
+      toast.error('Preencha todos os campos do endereço de cobrança.')
+      return
+    }
+
+    // ── Planos Pagos: cria checkout Asaas e redireciona ──────────────────
+    setIsPending(true)
+
+    try {
+      const res = await fetch('/api/asaas/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planType: selectedPlan.name as Exclude<PlanTypeProps, 'free'>,
+          userId,
+          userEmail,
+          userName,
+          postalCode,
+          address,
+          addressNumber,
+          province,
+          city,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Erro ao criar checkout')
+      }
+
+      // Mostra o link de pagamento antes de redirecionar
+      setCheckoutUrl(data.checkoutUrl)
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : 'Erro ao iniciar pagamento'
+      toast.error(msg)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  function handleGoToCheckout() {
+    if (!checkoutUrl) return
+    // Abre o checkout Asaas em nova aba para não perder a sessão
+    window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
     handleCloseModal()
+    toast.info('Finalize o pagamento na nova aba que foi aberta.')
   }
 
   return (
@@ -285,6 +364,7 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
         </motion.div>
       </div>
 
+      {/* ── Modal de Confirmação / Checkout ─────────────────────────── */}
       <Dialog open={!!selectedPlan} onOpenChange={handleCloseModal}>
         <DialogContent className="overflow-hidden rounded-[3rem] border-none bg-slate-50 p-4 sm:max-w-[425px] sm:rounded-[3rem]">
           <div className="space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm">
@@ -294,17 +374,26 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
               </div>
               <div className="space-y-1 text-center">
                 <DialogTitle className="font-black text-2xl text-slate-950 uppercase tracking-tighter">
-                  Quase lá!
+                  {checkoutUrl ? 'Link de Pagamento Pronto!' : 'Quase lá!'}
                 </DialogTitle>
                 <DialogDescription className="font-semibold text-slate-500">
-                  Você está selecionando o plano{' '}
-                  <span className="text-primary">{selectedPlan?.title}</span>
+                  {checkoutUrl ? (
+                    'Clique abaixo para finalizar o pagamento de forma segura via Asaas.'
+                  ) : (
+                    <>
+                      Você está selecionando o plano{' '}
+                      <span className="text-primary">
+                        {selectedPlan?.title}
+                      </span>
+                    </>
+                  )}
                 </DialogDescription>
               </div>
             </DialogHeader>
 
-            {selectedPlan && (
-              <div className="space-y-2 rounded-3xl border border-slate-200 border-dashed bg-slate-50 p-6 text-center">
+            {selectedPlan && !checkoutUrl && (
+              <div className="space-y-4">
+                <div className="space-y-2 rounded-3xl border border-slate-200 border-dashed bg-slate-50 p-6 text-center"></div>
                 {selectedPlan.price === 0 ? (
                   <>
                     <p className="font-black text-4xl text-primary uppercase tracking-tighter">
@@ -332,31 +421,169 @@ export function ManagePlans({ plans, currentPlan }: ManagePlansProps) {
                         Apenas {formatPrice(selectedPlan.price / 365)} por dia!
                       </p>
                     </div>
+                    {/* Métodos de pagamento */}
+                    <div className="mt-4 flex items-center justify-center gap-2">
+                      <span className="rounded-md bg-slate-100 px-2 py-1 font-bold text-[9px] text-slate-500 uppercase tracking-widest">
+                        PIX
+                      </span>
+                      <span className="rounded-md bg-slate-100 px-2 py-1 font-bold text-[9px] text-slate-500 uppercase tracking-widest">
+                        Boleto
+                      </span>
+                      <span className="rounded-md bg-slate-100 px-2 py-1 font-bold text-[9px] text-slate-500 uppercase tracking-widest">
+                        Cartão
+                      </span>
+                    </div>
                   </>
+                )}
+
+                {selectedPlan.price > 0 && (
+                  <div className="space-y-4 pt-4">
+                    <div className="space-y-1">
+                      <h4 className="font-bold text-slate-800 text-sm">
+                        Endereço de Cobrança
+                      </h4>
+                      <p className="text-muted-foreground text-xs">
+                        Exigido pelo sistema de pagamento
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3">
+                      <div className="grid gap-1.5">
+                        <Label htmlFor="postalCode" className="text-xs">
+                          CEP
+                        </Label>
+                        <Input
+                          id="postalCode"
+                          name="postalCode"
+                          placeholder="00000-000"
+                          value={billingAddress.postalCode}
+                          onChange={handleAddressChange}
+                          disabled={isPending}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3">
+                        <div className="col-span-2 grid gap-1.5">
+                          <Label htmlFor="address" className="text-xs">
+                            Endereço
+                          </Label>
+                          <Input
+                            id="address"
+                            name="address"
+                            placeholder="Nome da rua"
+                            value={billingAddress.address}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                        <div className="grid gap-1.5">
+                          <Label htmlFor="addressNumber" className="text-xs">
+                            Número
+                          </Label>
+                          <Input
+                            id="addressNumber"
+                            name="addressNumber"
+                            placeholder="123"
+                            value={billingAddress.addressNumber}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-1.5">
+                          <Label htmlFor="province" className="text-xs">
+                            Bairro
+                          </Label>
+                          <Input
+                            id="province"
+                            name="province"
+                            placeholder="Centro"
+                            value={billingAddress.province}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                        <div className="grid gap-1.5">
+                          <Label htmlFor="city" className="text-xs">
+                            Cidade
+                          </Label>
+                          <Input
+                            id="city"
+                            name="city"
+                            placeholder="Sua cidade"
+                            value={billingAddress.city}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
 
+            {/* Estado: Link gerado — mostra botão de ir para o checkout */}
+            {checkoutUrl && (
+              <div className="space-y-2 rounded-3xl border border-green-200 border-dashed bg-green-50 p-6 text-center">
+                <p className="font-bold text-[10px] text-green-700 uppercase tracking-widest">
+                  ✓ Checkout criado com sucesso
+                </p>
+                <p className="font-semibold text-slate-500 text-xs">
+                  Você será redirecionado para o ambiente seguro do Asaas para
+                  escolher a forma de pagamento (PIX, Boleto ou Cartão).
+                </p>
+              </div>
+            )}
+
             <DialogFooter className="mt-4 flex-col gap-3 sm:flex-col">
-              <Button
-                onClick={handleConfirmPlan}
-                disabled={isPending}
-                className="h-14 w-full rounded-2xl bg-primary font-black text-xs uppercase tracking-widest shadow-primary/20 shadow-xl hover:bg-primary/90"
-              >
-                {isPending
-                  ? 'Processando...'
-                  : selectedPlan?.price === 0
-                    ? 'Ativar Plano Grátis'
-                    : 'Confirmar Assinatura'}
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={handleCloseModal}
-                disabled={isPending}
-                className="h-12 w-full rounded-2xl font-bold text-[10px] text-slate-400 uppercase tracking-widest hover:bg-slate-100 hover:text-slate-600"
-              >
-                Voltar e revisar
-              </Button>
+              {checkoutUrl ? (
+                <>
+                  <Button
+                    onClick={handleGoToCheckout}
+                    className="h-14 w-full rounded-2xl bg-primary font-black text-xs uppercase tracking-widest shadow-primary/20 shadow-xl hover:bg-primary/90"
+                  >
+                    <ExternalLink className="mr-2 size-4" />
+                    Ir para o Pagamento
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={handleCloseModal}
+                    className="h-12 w-full rounded-2xl font-bold text-[10px] text-slate-400 uppercase tracking-widest hover:bg-slate-100 hover:text-slate-600"
+                  >
+                    Fechar
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={handleConfirmPlan}
+                    disabled={isPending}
+                    className="h-14 w-full rounded-2xl bg-primary font-black text-xs uppercase tracking-widest shadow-primary/20 shadow-xl hover:bg-primary/90"
+                  >
+                    {isPending ? (
+                      <>
+                        <Loader2 className="mr-2 size-4 animate-spin" />
+                        Gerando link de pagamento...
+                      </>
+                    ) : selectedPlan?.price === 0 ? (
+                      'Ativar Plano Grátis'
+                    ) : (
+                      'Confirmar e Gerar Link'
+                    )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={handleCloseModal}
+                    disabled={isPending}
+                    className="h-12 w-full rounded-2xl font-bold text-[10px] text-slate-400 uppercase tracking-widest hover:bg-slate-100 hover:text-slate-600"
+                  >
+                    Voltar e revisar
+                  </Button>
+                </>
+              )}
             </DialogFooter>
           </div>
         </DialogContent>

@@ -59,7 +59,13 @@ export default async function Plans() {
             Escolha um dos planos abaixo para mudar sua categoria de destaque.
           </p>
         </div>
-        <ManagePlans plans={plansArray} currentPlan={planStatus.planType} />
+        <ManagePlans
+          plans={plansArray}
+          currentPlan={planStatus.planType}
+          userId={user.id}
+          userEmail={user.email ?? ''}
+          userName={user.name ?? user.email ?? ''}
+        />
       </div>
     </div>
   )

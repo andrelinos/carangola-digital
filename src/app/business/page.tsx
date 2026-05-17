@@ -85,7 +85,7 @@ export default async function BusinessLandingPage() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
-                key={i}
+                key={String(i)}
                 className="h-[400px] w-full animate-pulse rounded-2xl bg-muted"
               />
             ))}
@@ -96,15 +96,7 @@ export default async function BusinessLandingPage() {
       {/* Call to Action Section */}
       {!hasProfileLink && <RegistrationCTA />}
 
-      {/* Footer / Info Section */}
-      <footer className="mt-auto border-t py-12">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          <p>
-            © {new Date().getFullYear()} Carangola Digital. Todos os direitos
-            reservados.
-          </p>
-        </div>
-      </footer>
+
     </div>
   )
 }

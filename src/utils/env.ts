@@ -15,6 +15,9 @@ const serverEnvSchema = z.object({
   NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY: z.string(),
   AUTH_GOOGLE_ID: z.string(),
   AUTH_GOOGLE_SECRET: z.string(),
+  // Asaas
+  ASAAS_API_KEY: z.string().optional().default(''),
+  ASAAS_WEBHOOK_TOKEN: z.string().optional().default(''),
 })
 
 const _env = serverEnvSchema.safeParse({
@@ -33,6 +36,8 @@ const _env = serverEnvSchema.safeParse({
     process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY,
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
+  ASAAS_API_KEY: process.env.ASAAS_API_KEY,
+  ASAAS_WEBHOOK_TOKEN: process.env.ASAAS_WEBHOOK_TOKEN,
 })
 
 if (!_env.success) {

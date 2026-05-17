@@ -80,6 +80,12 @@ export const authOptions: NextAuthOptions = {
         session.user.role = user.role
         session.user.myProfileLink = user.myProfileLink
         session.user.favorites = user.favorites
+
+        // Campos Asaas — propagados na sessão para leitura no cliente
+        session.user.asaasCustomerId = (user as any).asaasCustomerId ?? null
+        session.user.asaasSubscriptionId = (user as any).asaasSubscriptionId ?? null
+        session.user.asaasSubscriptionStatus = (user as any).asaasSubscriptionStatus ?? null
+        session.user.planExpiresAt = (user as any).planExpiresAt ?? null
       }
 
       return session
