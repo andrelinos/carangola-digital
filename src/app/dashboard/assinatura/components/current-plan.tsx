@@ -15,16 +15,20 @@ import { formatPrice } from '@/utils/format-price'
 
 interface CurrentPlanProps {
   planType: string
+  planTitle: string
   status: boolean
   expiresIn: string
   price: number
+  asaasSubscriptionStatus?: string | null
 }
 
 export function CurrentPlan({
   planType,
+  planTitle,
   status,
   expiresIn,
   price,
+  asaasSubscriptionStatus,
 }: CurrentPlanProps) {
   const isFree = planType === 'free'
   // Plano free é sempre considerado "ativo" na UI (sem expiração)
@@ -84,7 +88,7 @@ export function CurrentPlan({
             </div>
             <div className="space-y-1">
               <h3 className="font-black text-4xl text-slate-900 uppercase tracking-tighter">
-                {planType}
+                {planTitle}
               </h3>
               <Badge
                 variant="outline"
@@ -97,6 +101,20 @@ export function CurrentPlan({
               >
                 {isFree ? 'Nível Básico' : 'Destaque Premium'}
               </Badge>
+              {asaasSubscriptionStatus && !isFree && (
+                <p className='mt-1 font-bold text-[10px] text-slate-400 uppercase tracking-widest'>
+                  Asaas:{' '}
+                  <span
+                    className={cn(
+                      asaasSubscriptionStatus === 'ACTIVE'
+                        ? 'text-green-600'
+                        : 'text-amber-600'
+                    )}
+                  >
+                    {asaasSubscriptionStatus}
+                  </span>
+                </p>
+              )}
             </div>
           </div>
 
@@ -145,14 +163,16 @@ export function CurrentPlan({
               <p
                 className={cn(
                   'font-bold text-xs uppercase tracking-widest',
-                  isEffectivelyActive ? 'text-green-600' : 'animate-pulse text-amber-600'
+                  isEffectivelyActive
+                    ? 'text-green-600'
+                    : 'animate-pulse text-amber-600'
                 )}
               >
                 {isFree
                   ? 'Sem custo • Plano permanente'
                   : status
-                  ? 'Pagamento processado com sucesso'
-                  : 'Realize o upgrade para continuar'}
+                    ? 'Pagamento processado com sucesso'
+                    : 'Realize o upgrade para continuar'}
               </p>
             </div>
           </div>

@@ -6,6 +6,7 @@ import {
   plansBusinessConfig,
 } from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
 import { getPlanStatus } from '@/utils/get-plan-status'
 import { CurrentPlan } from './components/current-plan'
 import { ManagePlans } from './components/manage-plans'
@@ -22,32 +23,45 @@ const plansArray: PlanItemProps[] = Object.entries(plansBusinessConfig)
 export default async function Plans() {
   const session = await getServerSession(authOptions)
 
-  if (!session) {
+  if (!session?.user?.id) {
     redirect('/')
   }
 
-  const user = session?.user
+  const { user } = session
 
-  // Buscar status do plano (focando em perfis/business)
+  // ── Busca dados frescos do Firestore ──────────────────────────────────────
+  // NÃO usamos a sessão para dados de plano, pois o webhook do Asaas atualiza
+  // o Firestore diretamente e a sessão só é renovada no próximo login.
+  const userDoc = await db.collection('users').doc(user.id).get()
+  const userData = userDoc.data()
+
+  // Suporta tanto a estrutura nova (profiles nested) quanto dados legados
   const planActive =
-    (user as any).planActive?.profiles || (user as any).planActive
+    userData?.planActive?.profiles ??
+    userData?.planActive ??
+    null
+
   const planStatus = getPlanStatus({
     ...user,
     planActive,
+    hasProfileLink: userData?.hasProfileLink ?? user.hasProfileLink ?? false,
+    myProfileLink: userData?.myProfileLink ?? user.myProfileLink ?? '',
   } as any)
 
-  // Pegar preço do plano atual da config
   const currentPlanConfig =
     plansBusinessConfig[planStatus.planType as keyof typeof plansBusinessConfig]
-  const currentPrice = currentPlanConfig?.price || 0
+  const currentPrice = currentPlanConfig?.price ?? 0
+  const currentPlanTitle = currentPlanConfig?.title ?? planStatus.planType.toUpperCase()
 
   return (
     <div className="flex flex-col gap-10">
       <CurrentPlan
         planType={planStatus.planType}
+        planTitle={currentPlanTitle}
         status={planStatus.status}
         expiresIn={planStatus.expiresIn}
         price={currentPrice}
+        asaasSubscriptionStatus={userData?.asaasSubscriptionStatus ?? null}
       />
 
       <div className="space-y-4">

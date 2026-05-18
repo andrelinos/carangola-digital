@@ -154,18 +154,26 @@ export async function POST(req: NextRequest) {
     })
 
     // 2. Salva asaasCustomerId no Firestore (se for novo)
-    await db.collection('users').doc(userId).update({
-      asaasCustomerId: customer.id,
-      asaasSubscriptionStatus: 'PENDING',
-      updatedAt: Timestamp.now().toMillis(),
-    })
+    await db
+      .collection('users')
+      .doc(userId)
+      .set({
+        asaasCustomerId: customer.id,
+        asaasSubscriptionStatus: 'PENDING',
+        updatedAt: Timestamp.now().toMillis(),
+      }, { merge: true });
 
     const priceInReais = planConfig.price / 100 // centavos → reais
     const cycle = toAsaasCycle(planConfig.durationMonths)
 
     // NOVO: Gerar a data de hoje no formato YYYY-MM-DD exigido pelo Asaas
+    // Pegando a data "hoje" de forma segura no fuso local (Brasil)
     const today = new Date()
-    const nextDueDate = today.toISOString().split('T')[0]
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0') // Meses vão de 0 a 11
+    const day = String(today.getDate()).padStart(2, '0')
+
+    const nextDueDate = `${year}-${month}-${day}` // Ficará exatamente "2026-05-17"
 
     // 3. Cria o checkout Asaas com recorrência
     const checkout = await createAsaasCheckout({

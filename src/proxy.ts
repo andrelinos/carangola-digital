@@ -8,7 +8,6 @@ const protectedRoutes = [
   '/admin',
   '/perfil',
   '/minha-conta',
-  '/compra',
   '/reivindicar-empresa',
 ]
 
@@ -79,9 +78,10 @@ export default function proxy(request: NextRequest) {
   }
 
   const response = NextResponse.next()
-  Object.entries(securityHeaders).forEach(([key, value]) =>
+
+  for (const [key, value] of Object.entries(securityHeaders)) {
     response.headers.set(key, value)
-  )
+  }
   return response
 }
 

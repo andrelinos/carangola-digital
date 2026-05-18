@@ -1,13 +1,16 @@
 /**
  * POST /api/asaas/webhook
  *
- * Recebe eventos do Asaas e processa o status da assinatura.
+ * Recebe todos os eventos do Asaas e encaminha para o handler de negócio.
  *
- * Segurança: valida o header `asaas-access-token` contra ASAAS_WEBHOOK_TOKEN.
+ * Segurança:
+ *   - Valida o header `asaas-access-token` contra ASAAS_WEBHOOK_TOKEN
+ *   - Sempre responde 200 para eventos desconhecidos/informativos (idempotência)
+ *   - Responde 200 mesmo em erros internos para não pausar a fila de retentativas
  *
  * Configure no painel Asaas (Integrações > Webhooks):
- *   URL: https://seudominio.com.br/api/asaas/webhook
- *   Token: o valor de ASAAS_WEBHOOK_TOKEN
+ *   URL:   https://seudominio.com.br/api/asaas/webhook
+ *   Token: valor de ASAAS_WEBHOOK_TOKEN
  *
  * Ref: https://docs.asaas.com/docs/sobre-os-webhooks
  */
@@ -17,23 +20,27 @@ import type { AsaasWebhookPayload } from '@/_types/asaas'
 import { handleAsaasWebhook } from '@/app/server/asaas/handle-payment'
 
 export async function POST(request: Request) {
-  // 1. Valida o token de segurança do webhook
+  console.log('webhook recebido')
+  console.log(request)
+  // ── 1. Validação do token de segurança ─────────────────────────────────────
   const receivedToken = request.headers.get('asaas-access-token')
   const expectedToken = process.env.ASAAS_WEBHOOK_TOKEN
 
   if (!expectedToken) {
     console.error('[Asaas Webhook] ASAAS_WEBHOOK_TOKEN não configurado.')
-    // Retorna 200 para não pausar a fila do Asaas (idempotência)
+    // Retorna 200 para não pausar a fila do Asaas
     return NextResponse.json({ received: true }, { status: 200 })
   }
 
   if (receivedToken !== expectedToken) {
+    console.warn('[Asaas Webhook] Token inválido recebido:', receivedToken)
     return NextResponse.json(
       { error: 'Token de webhook inválido' },
       { status: 401 }
     )
   }
 
+  // ── 2. Parse do payload ────────────────────────────────────────────────────
   let payload: AsaasWebhookPayload
 
   try {
@@ -42,73 +49,31 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Payload inválido' }, { status: 400 })
   }
 
-  const { event, payment } = payload
+  const { event } = payload
 
-  // Loga o evento recebido (remover em produção se gerar muito ruído)
-  console.info(`[Asaas Webhook] Evento recebido: ${event} | Payment: ${payment?.id}`)
+  // Log do evento recebido (útil para debug/auditoria)
+  console.info(
+    `[Asaas Webhook] Evento: ${event}`,
+    payload.payment
+      ? `| payment=${payload.payment.id} | externalRef=${payload.payment.externalReference ?? 'N/A'}`
+      : payload.subscription
+        ? `| subscription=${payload.subscription.id} | externalRef=${payload.subscription.externalReference ?? 'N/A'}`
+        : ''
+  )
 
+  // ── 3. Processamento ──────────────────────────────────────────────────────
   try {
-    /**
-     * Detecta o planType a partir do externalReference salvo no checkout.
-     * Como gravamos `externalReference: userId`, buscamos o planType
-     * no campo `planType` salvo no Firestore ao criar o checkout.
-     *
-     * Alternativa mais robusta: salvar o planType no externalReference
-     * como JSON encoded ou usar campos separados.
-     */
-    const planType = await detectPlanTypeFromPayment(payment?.id)
-
-    await handleAsaasWebhook(payload, planType)
+    await handleAsaasWebhook(payload)
   } catch (error) {
-    console.error('[Asaas Webhook] Erro ao processar:', error)
-    // Retorna 200 mesmo em erro interno para não bloquear a fila Asaas
-    // O Asaas re-tentará automaticamente se retornarmos 5xx
-    return NextResponse.json({ received: true, error: 'Erro interno' }, { status: 200 })
+    console.error('[Asaas Webhook] Erro inesperado ao processar:', error)
+    // Retorna 200 para não bloquear a fila de retentativas do Asaas.
+    // O erro já foi logado; corrija e use o painel de reenvio do Asaas se necessário.
+    return NextResponse.json(
+      { received: true, error: 'Erro interno' },
+      { status: 200 }
+    )
   }
 
-  // Responde 200 rapidamente — o Asaas exige resposta rápida
+  // ── 4. Resposta rápida (o Asaas exige resposta em < 5s) ───────────────────
   return NextResponse.json({ received: true }, { status: 200 })
-}
-
-/**
- * Tenta detectar o planType buscando o usuário que possui esse paymentId
- * ou usando o campo `planType` gravado no Firestore durante o checkout.
- *
- * Se não encontrar, retorna 'basic' como fallback seguro.
- */
-async function detectPlanTypeFromPayment(
-  paymentId?: string
-): Promise<string> {
-  if (!paymentId) return 'basic'
-
-  try {
-    // Import dinâmico para evitar circular dependency
-    const { db } = await import('@/lib/firebase')
-
-    // Busca usuário que tem esse paymentId gravado (via planActive.id)
-    const query = await db
-      .collection('users')
-      .where('planActive.lastPaymentId', '==', paymentId)
-      .limit(1)
-      .get()
-
-    if (!query.empty) {
-      return query.docs[0].data()?.planType ?? 'basic'
-    }
-
-    // Busca pelo asaasLastCheckoutId
-    const checkoutQuery = await db
-      .collection('users')
-      .where('asaasLastCheckoutId', '==', paymentId)
-      .limit(1)
-      .get()
-
-    if (!checkoutQuery.empty) {
-      return checkoutQuery.docs[0].data()?.planType ?? 'basic'
-    }
-  } catch {
-    // Falha silenciosa — usa fallback
-  }
-
-  return 'basic'
 }
