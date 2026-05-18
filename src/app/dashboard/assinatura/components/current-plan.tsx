@@ -35,11 +35,13 @@ export function CurrentPlan({
   const isEffectivelyActive = status || isFree
 
   return (
-    <Card className="mb-12 overflow-hidden rounded-[2.5rem] border-none bg-white shadow-2xl">
+    <Card className="mb-12 overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white shadow-xl transition-all dark:border-slate-850 dark:bg-slate-900/50 dark:shadow-none">
       <CardHeader
         className={cn(
           'relative overflow-hidden p-8 text-white',
-          isEffectivelyActive ? 'bg-primary' : 'bg-destructive'
+          isEffectivelyActive
+            ? 'bg-gradient-to-r from-primary to-indigo-650'
+            : 'bg-gradient-to-r from-destructive to-red-600'
         )}
       >
         {/* Abstract shapes for premium feel */}
@@ -57,7 +59,7 @@ export function CurrentPlan({
                 Detalhes da Assinatura
               </h2>
             </div>
-            <p className="font-medium text-white/70 tracking-tight">
+            <p className="font-medium text-white/80 tracking-tight">
               Gerencie seu nível de visibilidade na plataforma
             </p>
           </div>
@@ -76,18 +78,18 @@ export function CurrentPlan({
         </div>
       </CardHeader>
 
-      <CardContent className="p-10">
+      <CardContent className="p-8 md:p-10">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Plan Type */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-slate-400">
-              <CheckCircle2 className="size-4" />
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <CheckCircle2 className="size-4 text-primary" />
               <span className="font-black text-[10px] uppercase tracking-widest">
                 Plano Atual
               </span>
             </div>
             <div className="space-y-1">
-              <h3 className="font-black text-4xl text-slate-900 uppercase tracking-tighter">
+              <h3 className="font-black text-4xl text-foreground uppercase tracking-tighter">
                 {planTitle}
               </h3>
               <Badge
@@ -95,20 +97,20 @@ export function CurrentPlan({
                 className={cn(
                   'px-3 py-1 font-bold text-[10px] uppercase tracking-wider',
                   isFree
-                    ? 'border-slate-200 text-slate-400'
-                    : 'border-primary/20 bg-primary/5 text-primary'
+                    ? 'border-slate-200 text-muted-foreground dark:border-slate-800'
+                    : 'border-primary/20 bg-primary/5 text-primary dark:border-primary/30 dark:bg-primary/10'
                 )}
               >
                 {isFree ? 'Nível Básico' : 'Destaque Premium'}
               </Badge>
               {asaasSubscriptionStatus && !isFree && (
-                <p className='mt-1 font-bold text-[10px] text-slate-400 uppercase tracking-widest'>
+                <p className="mt-1 font-bold text-[10px] text-muted-foreground uppercase tracking-widest">
                   Asaas:{' '}
                   <span
                     className={cn(
                       asaasSubscriptionStatus === 'ACTIVE'
-                        ? 'text-green-600'
-                        : 'text-amber-600'
+                        ? 'text-green-600 dark:text-green-400'
+                        : 'text-amber-600 dark:text-amber-400'
                     )}
                   >
                     {asaasSubscriptionStatus}
@@ -120,17 +122,17 @@ export function CurrentPlan({
 
           {/* Value / Investment */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-slate-400">
-              <Wallet className="size-4" />
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Wallet className="size-4 text-primary" />
               <span className="font-black text-[10px] uppercase tracking-widest">
                 Investimento
               </span>
             </div>
             <div className="space-y-1">
-              <p className="font-black text-4xl text-slate-900 tracking-tighter">
+              <p className="font-black text-4xl text-foreground tracking-tighter">
                 {price > 0 ? formatPrice(price) : 'Grátis'}
               </p>
-              <p className="font-bold text-slate-400 text-xs uppercase tracking-widest">
+              <p className="font-bold text-muted-foreground text-xs uppercase tracking-widest">
                 {isFree ? 'Vitalício • Sem cobrança' : 'Renovação anual'}
               </p>
             </div>
@@ -138,8 +140,8 @@ export function CurrentPlan({
 
           {/* Expiration / Status */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-slate-400">
-              <Calendar className="size-4" />
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Calendar className="size-4 text-primary" />
               <span className="font-black text-[10px] uppercase tracking-widest">
                 Status de Validade
               </span>
@@ -147,11 +149,11 @@ export function CurrentPlan({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 {isFree ? (
-                  <p className="font-black text-2xl text-slate-900 uppercase tracking-tight">
+                  <p className="font-black text-2xl text-foreground uppercase tracking-tight">
                     Vitálicio
                   </p>
                 ) : status ? (
-                  <p className="font-black text-2xl text-slate-900 tracking-tight">
+                  <p className="font-black text-2xl text-foreground tracking-tight">
                     Expira em {expiresIn}
                   </p>
                 ) : (
@@ -164,8 +166,8 @@ export function CurrentPlan({
                 className={cn(
                   'font-bold text-xs uppercase tracking-widest',
                   isEffectivelyActive
-                    ? 'text-green-600'
-                    : 'animate-pulse text-amber-600'
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'animate-pulse text-amber-600 dark:text-amber-400'
                 )}
               >
                 {isFree
@@ -179,15 +181,15 @@ export function CurrentPlan({
         </div>
 
         {/* Info Box */}
-        <div className="group mt-12 flex items-center gap-6 rounded-3xl border border-slate-100 bg-slate-50 p-6 transition-colors hover:border-primary/20">
-          <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-colors group-hover:bg-primary/10">
+        <div className="group mt-12 flex flex-col items-start gap-6 rounded-3xl border border-slate-100 bg-slate-50/50 p-6 transition-colors hover:border-primary/20 md:flex-row md:items-center dark:border-slate-800 dark:bg-slate-900/30 dark:hover:border-primary/30">
+          <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-colors group-hover:bg-primary/10 dark:border-slate-800 dark:bg-slate-900">
             <ArrowRight className="size-6 text-primary" />
           </div>
           <div>
-            <p className="font-black text-slate-950 text-sm uppercase tracking-tight">
+            <p className="font-black text-foreground text-sm uppercase tracking-tight">
               Deseja mudar de plano?
             </p>
-            <p className="font-medium text-slate-500 text-xs">
+            <p className="font-medium text-muted-foreground text-xs">
               Explore as opções de upgrade abaixo para aumentar sua visibilidade
               e alcançar mais clientes em Carangola.
             </p>

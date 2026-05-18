@@ -36,12 +36,10 @@ export function DashboardComponent({
         <div className="xl:col-span-2">
           <PropertiesTable properties={properties} />
         </div>
-        <div className="xl:col-span-2 mt-8">
+        <div className='mt-8 xl:col-span-2'>
           <MarketingKit profiles={profiles} />
         </div>
       </div>
-
-
 
       <div className="mt-8 flex flex-col items-center justify-center rounded-3xl border border-dashed bg-muted/20 py-12 text-muted-foreground opacity-50">
         <p className="font-medium text-sm italic">

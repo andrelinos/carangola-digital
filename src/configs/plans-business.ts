@@ -41,6 +41,17 @@ export const plansBusinessConfig = {
     price: 2990,
     frequency: '/ano',
     durationMonths: 12,
+    premiumFeatures: {
+      prioritySearch: false, // Aparece no topo das buscas (Top Placement)
+      verifiedBadge: false, // Selo de Empresa Verificada/Destaque
+      hideCompetitors: false, // Remove anúncios/sugestões de concorrentes na página
+      stickyCta: false, // Botão de WhatsApp/Contato fixo na tela (mobile)
+      analytics: false, // Acesso ao painel de cliques e visualizações
+    },
+    imageGallery: {
+      enabled: false,
+      limit: 0, // Permite até 10 fotos (fachada, produtos, cardápio)
+    },
     socialMedias: {
       linkedin: true,
       kwai: false,
@@ -63,19 +74,31 @@ export const plansBusinessConfig = {
       email: true,
     },
     businessPhones: {
-      quantity: 15,
+      quantity: 8,
     },
     addresses: {
-      quantity: 5,
+      quantity: 4,
     },
   },
   pro: {
     title: 'PRO',
     description: 'O topo da vitrine. Máxima visibilidade.',
     popular: false,
+    tag: 'MAIS VANTAJOSO',
     price: 5990,
     frequency: '/ano',
     durationMonths: 12,
+    premiumFeatures: {
+      prioritySearch: true,     // Aparece no topo das buscas (Top Placement)
+      verifiedBadge: true,      // Selo de Empresa Verificada/Destaque
+      hideCompetitors: true,    // Remove anúncios/sugestões de concorrentes na página
+      stickyCta: true,          // Botão de WhatsApp/Contato fixo na tela (mobile)
+      analytics: true,          // Acesso ao painel de cliques e visualizações
+    },
+    imageGallery: {
+      enabled: true,
+      limit: 10,                // Permite até 10 fotos (fachada, produtos, cardápio)
+    },
     socialMedias: {
       linkedin: true,
       kwai: true,
@@ -98,7 +121,7 @@ export const plansBusinessConfig = {
       email: true,
     },
     businessPhones: {
-      quantity: 30,
+      quantity: 50,
     },
     addresses: {
       quantity: 10,

@@ -37,9 +37,7 @@ export default async function Plans() {
 
   // Suporta tanto a estrutura nova (profiles nested) quanto dados legados
   const planActive =
-    userData?.planActive?.profiles ??
-    userData?.planActive ??
-    null
+    userData?.planActive?.profiles ?? userData?.planActive ?? null
 
   const planStatus = getPlanStatus({
     ...user,
@@ -51,10 +49,12 @@ export default async function Plans() {
   const currentPlanConfig =
     plansBusinessConfig[planStatus.planType as keyof typeof plansBusinessConfig]
   const currentPrice = currentPlanConfig?.price ?? 0
-  const currentPlanTitle = currentPlanConfig?.title ?? planStatus.planType.toUpperCase()
+  const currentPlanTitle =
+    currentPlanConfig?.title ?? planStatus.planType.toUpperCase()
 
   // Assinatura paga ativa: planType != 'free' e status = true (não expirou)
-  const hasActivePaidPlan = planStatus.planType !== 'free' && planStatus.status === true
+  const hasActivePaidPlan =
+    planStatus.planType !== 'free' && planStatus.status === true
 
   // Esconde o plano free da lista quando o usuário já possui uma assinatura paga e válida
   const visiblePlans = hasActivePaidPlan
@@ -74,10 +74,10 @@ export default async function Plans() {
 
       <div className="space-y-4">
         <div className="flex flex-col gap-1">
-          <h2 className="font-black text-2xl text-slate-900 uppercase italic tracking-tighter">
+          <h2 className="font-black text-2xl text-foreground uppercase italic tracking-tighter">
             {hasActivePaidPlan ? 'Alterar Plano' : 'Opções de Upgrade'}
           </h2>
-          <p className="font-medium text-slate-500 text-sm">
+          <p className="font-medium text-muted-foreground text-sm">
             {hasActivePaidPlan
               ? 'Faça upgrade ou downgrade para outro plano pago a qualquer momento.'
               : 'Escolha um dos planos abaixo para mudar sua categoria de destaque.'}
