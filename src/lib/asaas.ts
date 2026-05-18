@@ -176,3 +176,108 @@ export async function createOrFetchAsaasCustomer(data: {
   // Se não existe, criamos JÁ ENVIANDO o endereço
   return createAsaasCustomer(data)
 }
+
+// ============================================================
+// Cobranças avulsas (Payment)
+// ============================================================
+
+export interface AsaasPayment {
+  id: string
+  customer: string
+  billingType: string
+  value: number
+  dueDate: string
+  status: string
+  externalReference?: string
+  description?: string
+  invoiceUrl?: string
+  bankSlipUrl?: string | null
+}
+
+/**
+ * Cria uma cobrança avulsa (pagamento único) no Asaas.
+ * Usada para proration/upgrade de plano.
+ *
+ * Ref: https://docs.asaas.com/reference/criar-nova-cobranca
+ */
+export async function createAsaasPayment(data: {
+  customer: string
+  billingType: 'CREDIT_CARD' | 'BOLETO' | 'PIX'
+  value: number
+  dueDate: string
+  description?: string
+  externalReference?: string
+  /** URL de sucesso após pagamento (redirect automático) */
+  callback?: {
+    successUrl: string
+    cancelUrl?: string
+    autoRedirect?: boolean
+  }
+}): Promise<AsaasPayment> {
+  return asaasFetch<AsaasPayment>('/payments', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+// ============================================================
+// Assinaturas (Subscription)
+// ============================================================
+
+export interface AsaasSubscription {
+  id: string
+  customer: string
+  billingType: string
+  cycle: string
+  value: number
+  nextDueDate: string
+  status: string
+  externalReference?: string
+  description?: string
+}
+
+/**
+ * Cria uma nova assinatura recorrente no Asaas.
+ * Usada APÓS o upgrade ser confirmado via webhook para criar
+ * a recorrência futura do novo plano.
+ *
+ * Ref: https://docs.asaas.com/reference/criar-nova-assinatura
+ */
+export async function createAsaasSubscription(data: {
+  customer: string
+  billingType: 'CREDIT_CARD' | 'BOLETO' | 'PIX'
+  value: number
+  nextDueDate: string
+  cycle: 'MONTHLY' | 'QUARTERLY' | 'SEMIANNUALLY' | 'YEARLY'
+  description?: string
+  externalReference?: string
+}): Promise<AsaasSubscription> {
+  return asaasFetch<AsaasSubscription>('/subscriptions', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+/**
+ * Cancela/deleta uma assinatura existente no Asaas.
+ * Deve ser chamado antes de criar a nova assinatura no upgrade.
+ *
+ * Ref: https://docs.asaas.com/reference/remover-assinatura
+ */
+export async function deleteAsaasSubscription(
+  subscriptionId: string
+): Promise<{ deleted: boolean; id: string }> {
+  return asaasFetch<{ deleted: boolean; id: string }>(
+    `/subscriptions/${subscriptionId}`,
+    { method: 'DELETE' }
+  )
+}
+
+/**
+ * Busca uma assinatura pelo ID.
+ */
+export async function getAsaasSubscription(
+  subscriptionId: string
+): Promise<AsaasSubscription> {
+  return asaasFetch<AsaasSubscription>(`/subscriptions/${subscriptionId}`)
+}

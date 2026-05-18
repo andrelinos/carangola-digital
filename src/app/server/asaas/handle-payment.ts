@@ -28,6 +28,10 @@ import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
+import {
+  createAsaasSubscription,
+  deleteAsaasSubscription,
+} from '@/lib/asaas'
 import { db } from '@/lib/firebase'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -189,6 +193,137 @@ async function handlePaymentSuccess(
 
   console.info(
     `[Asaas Webhook] ✅ Plano ${planType} ativado para userId=${userId} até ${new Date(expiresAt).toISOString()}`
+  )
+}
+
+/**
+ * UPGRADE: PAYMENT_CONFIRMED com externalReference começando por 'UPGRADE_'
+ *
+ * Fluxo:
+ *  1. Extrai o newPlanType do externalReference (ex: UPGRADE_PRO_userId)
+ *  2. Cancela a assinatura antiga no Asaas
+ *  3. Cria nova assinatura anual no Asaas (vencimento = hoje + 1 ano)
+ *  4. Atualiza o Firestore com o novo plano e limpa campos pendentes
+ */
+async function handleUpgradePayment(
+  payment: AsaasWebhookPayment,
+  userId: string
+): Promise<void> {
+  // externalReference format: UPGRADE_{PLANTYPE}_{userId}
+  // ex: UPGRADE_PRO_abc123
+  const parts = (payment.externalReference ?? '').split('_')
+  // parts[0] = 'UPGRADE', parts[1] = 'PRO', parts[2..] = userId parts
+  const newPlanType = parts[1]?.toLowerCase() as PlanTypeProps
+
+  const newPlanConfig = plansBusinessConfig[newPlanType]
+  if (!newPlanConfig) {
+    console.error(
+      `[Asaas Webhook] Upgrade: planType inválido extraido do externalReference: ${payment.externalReference}`
+    )
+    return
+  }
+
+  const userDoc = await db.collection('users').doc(userId).get()
+  const userData = userDoc.data()
+  const oldSubscriptionId: string | null =
+    userData?.asaasSubscriptionId ?? null
+  const asaasCustomerId: string | null = userData?.asaasCustomerId ?? null
+
+  const now = Timestamp.now().toMillis()
+
+  // ── 2. Cancela a assinatura antiga ───────────────────────────────────────
+  if (oldSubscriptionId) {
+    try {
+      await deleteAsaasSubscription(oldSubscriptionId)
+      console.info(
+        `[Asaas Webhook] 🗑️ Assinatura antiga cancelada: ${oldSubscriptionId}`
+      )
+    } catch (err) {
+      // Não bloqueia o upgrade se o cancel falhar (assinatura pode já estar inativa)
+      console.warn(
+        `[Asaas Webhook] Aviso: falha ao cancelar assinatura antiga ${oldSubscriptionId}:`,
+        err
+      )
+    }
+  }
+
+  // ── 3. Cria nova assinatura anual (cobrará o valor cheio daqui a 1 ano) ──
+  let newSubscriptionId: string | null = null
+
+  if (asaasCustomerId) {
+    try {
+      const nextDueDate = new Date()
+      nextDueDate.setFullYear(nextDueDate.getFullYear() + 1)
+      const y = nextDueDate.getFullYear()
+      const m = String(nextDueDate.getMonth() + 1).padStart(2, '0')
+      const d = String(nextDueDate.getDate()).padStart(2, '0')
+
+      const newSubscription = await createAsaasSubscription({
+        customer: asaasCustomerId,
+        billingType: 'CREDIT_CARD',
+        value: newPlanConfig.price / 100, // centavos → reais
+        nextDueDate: `${y}-${m}-${d}`,
+        cycle: 'YEARLY',
+        description: `Assinatura ${newPlanConfig.title} — Carangola Digital (Renovação Anual)`,
+        externalReference: userId, // webhook vai usar externalReference normal no futuro
+      })
+
+      newSubscriptionId = newSubscription.id
+      console.info(
+        `[Asaas Webhook] ✅ Nova assinatura criada: ${newSubscriptionId} para plano ${newPlanType}`
+      )
+    } catch (err) {
+      console.error(
+        '[Asaas Webhook] Erro ao criar nova assinatura após upgrade:',
+        err
+      )
+      // Não aborta: o Firestore será atualizado mesmo sem a subscription
+    }
+  }
+
+  // ── 4. Calcula nova data de expiração (hoje + 1 ano) ───────────────────
+  const expiresAt = calculateExpiresAt(newPlanType)
+
+  const planEntry = {
+    id: payment.id,
+    type: newPlanType,
+    expiresAt,
+    paymentDate: now,
+    status: 'active',
+    lastPaymentId: payment.id,
+    transactionAmount: payment.value,
+    netAmount: payment.netValue,
+    currency: 'BRL',
+    gateway: 'asaas',
+    billingType: payment.billingType,
+    asaasSubscriptionId: newSubscriptionId,
+  }
+
+  const planActive = {
+    profiles: planEntry,
+    properties: planEntry,
+  }
+
+  await db
+    .collection('users')
+    .doc(userId)
+    .update({
+      planActive,
+      planType: newPlanType,
+      asaasSubscriptionId: newSubscriptionId,
+      asaasSubscriptionStatus: 'ACTIVE',
+      planExpiresAt: expiresAt,
+      // Limpa campos de pendência do upgrade
+      pendingUpgradePlanType: null,
+      pendingUpgradePaymentId: null,
+      updatedAt: now,
+    })
+
+  await updateProfile(userId, { planActive: planEntry })
+
+  console.info(
+    `[Asaas Webhook] 🎉 Upgrade concluído! userId=${userId} | ${userData?.planType ?? '?'} → ${newPlanType}`,
+    `| válido até ${new Date(expiresAt).toISOString()}`
   )
 }
 
@@ -367,6 +502,27 @@ export async function handleAsaasWebhook(
         console.error(`[Asaas Webhook] Evento ${event} sem objeto payment.`)
         return false
       }
+
+      // ✨ Intercepta pagamentos de UPGRADE (externalReference: UPGRADE_{PLAN}_{userId})
+      if (payment.externalReference?.startsWith('UPGRADE_')) {
+        // Extrai o userId: formato UPGRADE_{PLANTYPE}_{userId} (userId pode conter _)
+        // parts[0]='UPGRADE', parts[1]='PRO', parts[2..n]=userId
+        const parts = payment.externalReference.split('_')
+        const upgradeUserId = parts.slice(2).join('_')
+
+        if (!upgradeUserId) {
+          console.error(
+            '[Asaas Webhook] Upgrade: não foi possível extrair userId do externalReference:',
+            payment.externalReference
+          )
+          return false
+        }
+
+        await handleUpgradePayment(payment, upgradeUserId)
+        return true
+      }
+
+      // Pagamento normal de nova assinatura
       await handlePaymentSuccess(payment)
       return true
     }

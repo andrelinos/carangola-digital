@@ -36,7 +36,7 @@ export default function CompraClient({
                 {' '}
                 {gateway || 'nosso sistema'}
               </span>
-              .
+              . Em breve, sua conta estará ativa.
             </p>
           </>
         ) : currentStatus === 'cancelado' || currentStatus === 'falha' ? (
