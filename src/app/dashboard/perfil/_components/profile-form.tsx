@@ -1,9 +1,9 @@
 'use client'
 
-import { Camera, Loader2, Save, User } from 'lucide-react'
+import { Camera, Loader2, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { updateUserProfile } from '@/actions/user/update-user-profile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,8 +12,8 @@ import { Label } from '@/components/ui/label'
 import { compressImage } from '@/utils/compress-image'
 
 interface ProfileFormProps {
-  initialName?: string
-  initialImage?: string
+  initialName: string | null | undefined
+  initialImage: string
 }
 
 export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
@@ -21,16 +21,23 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [name, setName] = useState(initialName || '')
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    initialImage || null
-  )
+  const [name, setName] = useState(initialName)
+  const [imagePreview, setImagePreview] = useState<string | ''>(initialImage)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{
     type: 'success' | 'error'
     text: string
   } | null>(null)
+
+  // Limpa a URL do blob quando o componente é desmontado para evitar vazamento de memória
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview)
+      }
+    }
+  }, [imagePreview])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -40,13 +47,17 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
     }
   }
 
+  const triggerFileInput = () => {
+    fileInputRef.current?.click()
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setMessage(null)
 
     const formData = new FormData()
-    formData.append('name', name)
+    formData.append('name', name || 'Usuario')
 
     if (selectedFile) {
       const compressedImage = await compressImage(selectedFile, {
@@ -61,7 +72,8 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
 
       if (result.success) {
         setMessage({ type: 'success', text: 'Perfil atualizado com sucesso!' })
-        // Atualiza a sessão no client para refletir imediatamente no header
+        // Atualiza a sessão no client. Se sua API retornar a nova URL da imagem,
+        // adicione-a aqui: await update({ name, image: result.newImageUrl })
         await update({ name })
         router.refresh()
       } else {
@@ -77,26 +89,35 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
     }
   }
 
+
+
+  // Define qual imagem será exibida (Preview > Padrão)
+  const displayImage = imagePreview
+
   return (
     <form onSubmit={handleSubmit} className="max-w-xl space-y-8">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
         <div className="group relative">
           <div className="relative size-32 overflow-hidden rounded-full border-4 border-slate-100 bg-slate-100 shadow-sm dark:border-slate-800 dark:bg-slate-800">
-            {imagePreview ? (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-slate-400">
-                <User className="size-12 opacity-50" />
-              </div>
-            )}
+            <img
+              src={displayImage}
+              alt={`Foto de perfil de ${name}`}
+              className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
+            />
 
+            {/* Overlay com botão acessível */}
             <div
-              className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
-              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="Alterar foto de perfil"
+              className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/40 opacity-0 transition-opacity focus:opacity-100 group-hover:opacity-100"
+              onClick={triggerFileInput}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  triggerFileInput()
+                }
+              }}
             >
               <Camera className="size-6 text-white" />
             </div>
@@ -107,13 +128,14 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
             className="hidden"
             accept="image/*"
             onChange={handleImageChange}
+            aria-hidden="true"
           />
           <div className="mt-3 text-center sm:hidden">
             <Button
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={triggerFileInput}
             >
               Trocar foto
             </Button>
@@ -130,7 +152,7 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
             </Label>
             <Input
               id="name"
-              value={name}
+              value={name || ''}
               onChange={e => setName(e.target.value)}
               placeholder="Seu nome"
               className="mt-1.5"
@@ -142,7 +164,10 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
 
       {message && (
         <div
-          className={`rounded-xl p-4 font-medium text-sm ${message.type === 'success' ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}
+          className={`rounded-xl p-4 font-medium text-sm ${message.type === 'success'
+            ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+            : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+            }`}
         >
           {message.text}
         </div>

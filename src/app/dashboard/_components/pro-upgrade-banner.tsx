@@ -3,13 +3,25 @@
 import { ArrowRight, Check, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { plansBusinessConfig } from '@/configs/plans-business'
 
 export function ProUpgradeBanner() {
+  // Calcula o valor mensal do plano pago mais barato (Básico) com base no valor anual
+  // plansBusinessConfig.basic.price = 2990 (R$ 29,90)
+  const startingAnnualPrice = plansBusinessConfig.basic.price / 100 // 29.90
+  const startingMonthlyPrice = (startingAnnualPrice / 12).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+
+  // Benefícios reais baseados nos seus configs de Imóveis e Negócios
   const benefits = [
-    'Destaque no topo das buscas',
-    'Customização de cores e temas',
-    'Exibição no mapa interativo',
-    'Estatísticas detalhadas de visitas',
+    'Busca externa ativada (SEO Google)',
+    'Integração completa com Redes Sociais',
+    'Maior limite de anúncios e fotos na galeria',
+    'Múltiplos telefones e endereços no perfil',
   ]
 
   return (
@@ -25,12 +37,12 @@ export function ProUpgradeBanner() {
             <span>Power up seu negócio</span>
           </div>
           <h2 className="mb-4 font-extrabold text-3xl tracking-tight">
-            Seja um parceiro <span className="text-primary italic">Pro</span> do
-            Carangola Digital
+            Desbloqueie todo o potencial com o{' '}
+            <span className="text-primary italic">Premium</span>
           </h2>
           <p className="mb-6 text-lg text-slate-400 leading-relaxed">
             Aumente a visibilidade da sua empresa ou imobiliária com ferramentas
-            exclusivas de destaque e análise de performance.
+            exclusivas, mais contatos, galerias maiores e destaque nas buscas.
           </p>
 
           <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -39,10 +51,10 @@ export function ProUpgradeBanner() {
                 key={benefit}
                 className="flex items-center gap-2 text-slate-300 text-sm"
               >
-                <div className="flex size-5 items-center justify-center rounded-full bg-white/5">
+                <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-white/5">
                   <Check className="size-3 text-primary" />
                 </div>
-                {benefit}
+                <span>{benefit}</span>
               </div>
             ))}
           </div>
@@ -54,11 +66,11 @@ export function ProUpgradeBanner() {
               <span className="font-bold text-slate-400 text-xs uppercase">
                 A partir de
               </span>
-              <span className="font-black text-3xl text-white">R$ 49,90</span>
+              <span className="font-black text-3xl text-white">{startingMonthlyPrice}</span>
               <span className="font-medium text-slate-400 text-sm">/mês</span>
             </div>
             <p className="mb-6 text-slate-400 text-xs italic">
-              * cancelamento fácil a qualquer momento
+              * faturado anualmente ({startingAnnualPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })})
             </p>
             <Button
               asChild
@@ -66,7 +78,7 @@ export function ProUpgradeBanner() {
             >
               <Link
                 href="/dashboard/assinatura"
-                className="flex items-center gap-2"
+                className="flex items-center justify-center gap-2"
               >
                 <span>Assine Agora</span>
                 <ArrowRight className="size-4" />

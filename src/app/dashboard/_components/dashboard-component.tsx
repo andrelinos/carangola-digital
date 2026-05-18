@@ -34,13 +34,14 @@ export function DashboardComponent({
           <DashboardProfilesTable profiles={profiles} />
         </div>
         <div className="xl:col-span-2">
+          <PropertiesTable properties={properties} />
+        </div>
+        <div className="xl:col-span-2 mt-8">
           <MarketingKit profiles={profiles} />
         </div>
       </div>
 
-      <div className="xl:cols-4 mt-8 grid grid-cols-1">
-        <PropertiesTable properties={properties} />
-      </div>
+
 
       <div className="mt-8 flex flex-col items-center justify-center rounded-3xl border border-dashed bg-muted/20 py-12 text-muted-foreground opacity-50">
         <p className="font-medium text-sm italic">
