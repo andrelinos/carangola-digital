@@ -65,7 +65,12 @@ import { ShieldCheck } from 'iconoir-react'
 import { getServerSession } from 'next-auth/next'
 import { FooterProfile } from '@/components/commons/footer-profile'
 import LocalBusinessJsonLd from '@/components/seo/local-business-json-ld'
+import {
+  type PlanTypeProps,
+  plansBusinessConfig,
+} from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
+import { StickyCta } from './_components/sticky-cta'
 import { ContentProfile } from './content'
 
 interface Props {
@@ -82,6 +87,9 @@ export default async function BusinessId({ params }: Props) {
   const profileData = await getProfileData(slug, session?.user?.id)
 
   const userData = await getUsersData(session?.user?.id || '')
+
+  const planType = (profileData?.planActive?.type as PlanTypeProps) || 'free'
+  const planConfig = plansBusinessConfig[planType] || plansBusinessConfig.free
 
   const isOwner = profileData?.userId === session?.user?.id
   const isUserAuth = !!(
@@ -112,6 +120,7 @@ export default async function BusinessId({ params }: Props) {
       <ContentProfile totalVisits={profileData?.totalVisits}>
         <BusinessHero
           profileData={profileData}
+          planConfig={planConfig}
           isOwner={isOwner}
           isUserAuth={isUserAuth}
         />
@@ -189,6 +198,15 @@ export default async function BusinessId({ params }: Props) {
       </ContentProfile>
 
       <FooterProfile profileData={profileData} isOwner={isOwner} />
+
+      {('premiumFeatures' in planConfig
+        ? planConfig.premiumFeatures?.stickyCta
+        : false) && (
+        <StickyCta
+          phones={profileData.businessPhones || []}
+          businessName={profileData.name}
+        />
+      )}
     </>
   )
 }

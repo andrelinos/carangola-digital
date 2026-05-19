@@ -3,17 +3,20 @@ import { MessageText, ShieldCheck, Star } from 'iconoir-react'
 import type { ProfileDataProps } from '@/_types/profile-data'
 import { Badge } from '@/components/ui/badge'
 import { SafeImage } from '@/components/ui/safe-image'
+import type { PlanConfigProps } from '@/configs/plans-business'
 import { EditBusinessHero } from './edit-business-hero'
 import { RatingStars } from './rating-stars'
 
 interface Props {
   profileData: ProfileDataProps
+  planConfig: PlanConfigProps
   isOwner?: boolean
   isUserAuth?: boolean
 }
 
 export async function BusinessHero({
   profileData,
+  planConfig,
   isOwner,
   isUserAuth,
 }: Props) {
@@ -59,7 +62,10 @@ export async function BusinessHero({
           {/* Business Info Layer */}
           <div className="flex-1 text-center md:pb-4 md:text-left">
             <div className="mb-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              {profileData?.isVerified && (
+              {(profileData?.isVerified ||
+                ('premiumFeatures' in planConfig
+                  ? planConfig.premiumFeatures?.verifiedBadge
+                  : false)) && (
                 <Badge
                   variant="default"
                   className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"

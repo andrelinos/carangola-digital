@@ -20,15 +20,15 @@
  * Ref: https://docs.asaas.com/reference/criar-nova-cobranca
  */
 
+import { Timestamp } from 'firebase-admin/firestore'
 import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { Timestamp } from 'firebase-admin/firestore'
 import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
-import { authOptions } from '@/lib/auth'
 import { createAsaasPayment } from '@/lib/asaas'
+import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 
 /** Valor mínimo de cobrança aceito pelo Asaas (R$ 5,00) */
@@ -65,9 +65,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Body inválido' }, { status: 400 })
   }
 
-  const { newPlanType } = body
+  const newPlanType = body.newPlanType as string
 
-  const newPlanConfig = plansBusinessConfig[newPlanType]
+  const newPlanConfig = plansBusinessConfig[newPlanType as PlanTypeProps]
 
   if (!newPlanConfig || newPlanType === 'free') {
     return NextResponse.json(
@@ -127,7 +127,8 @@ export async function POST(req: NextRequest) {
   const remainingDays = Math.ceil((planExpiresAt - now) / msPerDay)
 
   // Valor diário do plano atual (em centavos → reais)
-  const currentPlanConfig = plansBusinessConfig[currentPlanType as PlanTypeProps]
+  const currentPlanConfig =
+    plansBusinessConfig[currentPlanType as PlanTypeProps]
   const currentPlanAnnualPriceReais = (currentPlanConfig?.price ?? 0) / 100
   const currentDailyRate = currentPlanAnnualPriceReais / 365
 
@@ -154,13 +155,10 @@ export async function POST(req: NextRequest) {
 
   // ── 6. Salva pendência no Firestore ───────────────────────────────────────
   // O webhook vai ler esse campo para saber qual plano ativar após o pagamento
-  await db
-    .collection('users')
-    .doc(userId)
-    .update({
-      pendingUpgradePlanType: newPlanType,
-      updatedAt: Timestamp.now().toMillis(),
-    })
+  await db.collection('users').doc(userId).update({
+    pendingUpgradePlanType: newPlanType,
+    updatedAt: Timestamp.now().toMillis(),
+  })
 
   // ── 7. Cria a cobrança avulsa de upgrade no Asaas ─────────────────────────
   const siteUrl =
@@ -189,13 +187,10 @@ export async function POST(req: NextRequest) {
     })
 
     // Salva o paymentId pendente para rastreamento
-    await db
-      .collection('users')
-      .doc(userId)
-      .update({
-        pendingUpgradePaymentId: payment.id,
-        updatedAt: Timestamp.now().toMillis(),
-      })
+    await db.collection('users').doc(userId).update({
+      pendingUpgradePaymentId: payment.id,
+      updatedAt: Timestamp.now().toMillis(),
+    })
 
     return NextResponse.json({
       paymentId: payment.id,
@@ -209,14 +204,11 @@ export async function POST(req: NextRequest) {
     console.error('[Upgrade Plan] Erro ao criar cobrança no Asaas:', error)
 
     // Limpa a pendência em caso de erro
-    await db
-      .collection('users')
-      .doc(userId)
-      .update({
-        pendingUpgradePlanType: null,
-        pendingUpgradePaymentId: null,
-        updatedAt: Timestamp.now().toMillis(),
-      })
+    await db.collection('users').doc(userId).update({
+      pendingUpgradePlanType: null,
+      pendingUpgradePaymentId: null,
+      updatedAt: Timestamp.now().toMillis(),
+    })
 
     return NextResponse.json(
       { error: 'Erro ao processar upgrade. Tente novamente.' },

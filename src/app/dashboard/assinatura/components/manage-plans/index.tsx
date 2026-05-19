@@ -183,130 +183,81 @@ export function ManagePlans({
           animate="show"
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
-          {plans?.map(plan => (
-            <motion.div key={plan.name} variants={item}>
-              <Card
-                className={cn(
-                  'group relative flex h-full flex-col overflow-hidden border-2 bg-card text-card-foreground transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl',
-                  plan?.popular
-                    ? 'border-primary bg-slate-50/50 shadow-primary/5 hover:shadow-primary/10 dark:bg-primary/5'
-                    : plan?.name === 'pro'
-                      ? 'border-amber-500 bg-amber-50/30 hover:shadow-amber-500/20 dark:bg-amber-500/5'
-                      : 'border-slate-100 hover:border-slate-200 dark:border-slate-800 dark:hover:border-slate-700'
-                )}
-              >
-                {plan?.popular && (
-                  <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
-                    <div className="absolute top-4 -right-8 w-32 rotate-45 bg-primary py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
-                      Popular
-                    </div>
-                  </div>
-                )}
-
-                {plan?.name === 'pro' && (
-                  <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
-                    <div className="absolute top-4 -right-8 w-32 rotate-45 bg-amber-500 py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
-                      Mais Vantajoso
-                    </div>
-                  </div>
-                )}
-
-                <CardHeader className="relative pt-10 pb-6">
-                  <div className="mb-4 flex items-start justify-between">
-                    <CardTitle className="font-black text-3xl text-foreground uppercase tracking-tight">
-                      {plan.title}
-                    </CardTitle>
-                    {plan?.popular ? (
-                      <Crown className="size-6 animate-pulse text-primary" />
-                    ) : plan.name !== 'free' ? (
-                      <Sparkles className="size-6 text-amber-500" />
-                    ) : null}
-                  </div>
-
-                  <div className="flex flex-col pt-2">
-                    <div className="flex items-baseline gap-1">
-                      <span className="font-black text-5xl text-foreground tracking-tighter">
-                        {plan.price > 0
-                          ? formatPrice(plan.price / 12)
-                          : formatPrice(0)}
-                      </span>
-                      <span className="font-bold text-muted-foreground text-sm uppercase tracking-wider">
-                        /mês
-                      </span>
-                    </div>
-                    {plan.price > 0 && (
-                      <span className="mt-1 font-bold text-muted-foreground/80 text-xs uppercase tracking-widest">
-                        Faturado anualmente ({formatPrice(plan.price)})
-                      </span>
-                    )}
-                  </div>
-                  <CardDescription className="pt-2 font-medium text-muted-foreground italic">
-                    {plan.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="grow space-y-6">
-                  <div className="h-px w-full bg-slate-100 dark:bg-slate-800" />
-                  <p className="font-black text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
-                    O que está incluso:
-                  </p>
-
-                  <ul className="space-y-4">
-                    <li className="flex items-center gap-3">
-                      <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
-                        <Check
-                          className="size-4 text-green-600 dark:text-green-400"
-                          strokeWidth={3}
-                        />
+          {plans?.map(planRaw => {
+            const plan = planRaw as PlanItemProps & {
+              tag?: string
+              imageGallery?: { enabled: boolean; limit: number }
+              premiumFeatures?: Record<string, boolean>
+            }
+            return (
+              <motion.div key={plan.name} variants={item}>
+                <Card
+                  className={cn(
+                    'group relative flex h-full flex-col overflow-hidden border-2 bg-card text-card-foreground transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl',
+                    plan?.popular
+                      ? 'border-primary bg-slate-50/50 shadow-primary/5 hover:shadow-primary/10 dark:bg-primary/5'
+                      : plan?.name === 'pro'
+                        ? 'border-amber-500 bg-amber-50/30 hover:shadow-amber-500/20 dark:bg-amber-500/5'
+                        : 'border-slate-100 hover:border-slate-200 dark:border-slate-800 dark:hover:border-slate-700'
+                  )}
+                >
+                  {plan?.popular && (
+                    <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
+                      <div className="absolute top-4 -right-8 w-32 rotate-45 bg-primary py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
+                        Popular
                       </div>
-                      <span className="font-semibold text-foreground text-sm">
-                        {plan.addresses.quantity === -1
-                          ? 'Endereços Ilimitados'
-                          : `${plan.addresses.quantity} Endereços`}
-                      </span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
-                        <Check
-                          className="size-4 text-green-600 dark:text-green-400"
-                          strokeWidth={3}
-                        />
+                    </div>
+                  )}
+
+                  {plan?.tag && !plan.popular && (
+                    <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
+                      <div className="absolute top-4 -right-8 w-32 rotate-45 bg-amber-500 py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
+                        {plan.tag}
                       </div>
-                      <span className="font-semibold text-foreground text-sm">
-                        {plan.businessPhones.quantity === -1
-                          ? 'Telefones Ilimitados'
-                          : `${plan.businessPhones.quantity} Telefones / WhatsApp`}
-                      </span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      {plan.activeSocialMedias > 0 ? (
-                        <>
-                          <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
-                            <Check
-                              className="size-4 text-green-600 dark:text-green-400"
-                              strokeWidth={3}
-                            />
-                          </div>
-                          <span className="font-semibold text-foreground text-sm">
-                            {plan.activeSocialMedias} Links de Redes Sociais
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <div className="rounded-full bg-slate-100 p-1 opacity-40 dark:bg-slate-800">
-                            <X
-                              className="size-4 text-muted-foreground"
-                              strokeWidth={3}
-                            />
-                          </div>
-                          <span className="font-medium text-muted-foreground text-sm line-through">
-                            Redes Sociais
-                          </span>
-                        </>
+                    </div>
+                  )}
+
+                  <CardHeader className="relative pt-10 pb-6">
+                    <div className="mb-4 flex items-start justify-between">
+                      <CardTitle className="font-black text-3xl text-foreground uppercase tracking-tight">
+                        {plan.title}
+                      </CardTitle>
+                      {plan?.popular ? (
+                        <Crown className="size-6 animate-pulse text-primary" />
+                      ) : plan.name !== 'free' ? (
+                        <Sparkles className="size-6 text-amber-500" />
+                      ) : null}
+                    </div>
+
+                    <div className="flex flex-col pt-2">
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-black text-5xl text-foreground tracking-tighter">
+                          {plan.price > 0
+                            ? formatPrice(plan.price / 12)
+                            : formatPrice(0)}
+                        </span>
+                        <span className="font-bold text-muted-foreground text-sm uppercase tracking-wider">
+                          /mês
+                        </span>
+                      </div>
+                      {plan.price > 0 && (
+                        <span className="mt-1 font-bold text-muted-foreground/80 text-xs uppercase tracking-widest">
+                          Faturado anualmente ({formatPrice(plan.price)})
+                        </span>
                       )}
-                    </li>
+                    </div>
+                    <CardDescription className="pt-2 font-medium text-muted-foreground italic">
+                      {plan.description}
+                    </CardDescription>
+                  </CardHeader>
 
-                    {/* {plan?.name !== 'free' ? (
+                  <CardContent className="grow space-y-6">
+                    <div className="h-px w-full bg-slate-100 dark:bg-slate-800" />
+                    <p className="font-black text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
+                      O que está incluso:
+                    </p>
+
+                    <ul className="space-y-4">
                       <li className="flex items-center gap-3">
                         <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
                           <Check
@@ -315,52 +266,165 @@ export function ManagePlans({
                           />
                         </div>
                         <span className="font-semibold text-foreground text-sm">
-                          Galeria de Fotos Completa
+                          {plan.addresses.quantity === -1
+                            ? 'Endereços Ilimitados'
+                            : `${plan.addresses.quantity} Endereços`}
                         </span>
                       </li>
-                    ) : (
-                      <li className="flex items-center gap-3 opacity-40">
-                        <div className="rounded-full bg-slate-100 p-1 dark:bg-slate-800">
-                          <X
-                            className="size-4 text-muted-foreground"
+                      <li className="flex items-center gap-3">
+                        <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
+                          <Check
+                            className="size-4 text-green-600 dark:text-green-400"
                             strokeWidth={3}
                           />
                         </div>
-                        <span className="font-medium text-muted-foreground text-sm line-through">
-                          Galeria de Fotos
+                        <span className="font-semibold text-foreground text-sm">
+                          {plan.businessPhones.quantity === -1
+                            ? 'Telefones Ilimitados'
+                            : `${plan.businessPhones.quantity} Telefones / WhatsApp`}
                         </span>
                       </li>
-                    )} */}
-                  </ul>
-                </CardContent>
+                      <li className="flex items-center gap-3">
+                        {plan.activeSocialMedias > 0 ? (
+                          <>
+                            <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
+                              <Check
+                                className="size-4 text-green-600 dark:text-green-400"
+                                strokeWidth={3}
+                              />
+                            </div>
+                            <span className="font-semibold text-foreground text-sm">
+                              {plan.activeSocialMedias} Links de Redes Sociais
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="rounded-full bg-slate-100 p-1 opacity-40 dark:bg-slate-800">
+                              <X
+                                className="size-4 text-muted-foreground"
+                                strokeWidth={3}
+                              />
+                            </div>
+                            <span className="font-medium text-muted-foreground text-sm line-through">
+                              Redes Sociais
+                            </span>
+                          </>
+                        )}
+                      </li>
 
-                <CardFooter className="pt-8 pb-10">
-                  <Button
-                    onClick={() => setSelectedPlan(plan)}
-                    disabled={
-                      plan.name.toLowerCase() === currentPlan?.toLowerCase()
-                    }
-                    className={cn(
-                      'h-14 w-full rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-300',
-                      plan.name.toLowerCase() === currentPlan?.toLowerCase()
-                        ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                        : plan.popular
-                          ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] hover:bg-primary/90 dark:shadow-none'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                    )}
-                    variant="ghost"
-                  >
-                    {plan.name.toLowerCase() === currentPlan?.toLowerCase()
-                      ? 'Plano Atual'
-                      : `Escolher ${plan.title}`}
-                    {plan.name.toLowerCase() !== currentPlan?.toLowerCase() && (
-                      <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-                    )}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
+                      <li className="flex items-center gap-3">
+                        {plan.imageGallery?.enabled ? (
+                          <>
+                            <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
+                              <Check
+                                className="size-4 text-green-600 dark:text-green-400"
+                                strokeWidth={3}
+                              />
+                            </div>
+                            <span className="font-semibold text-foreground text-sm">
+                              Até {plan.imageGallery.limit} Fotos na Galeria
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="rounded-full bg-slate-100 p-1 opacity-40 dark:bg-slate-800">
+                              <X
+                                className="size-4 text-muted-foreground"
+                                strokeWidth={3}
+                              />
+                            </div>
+                            <span className="font-medium text-muted-foreground text-sm line-through">
+                              Galeria de Fotos
+                            </span>
+                          </>
+                        )}
+                      </li>
+
+                      {[
+                        {
+                          key: 'prioritySearch',
+                          label: 'Destaque no Topo das Buscas',
+                        },
+                        {
+                          key: 'verifiedBadge',
+                          label: 'Selo de Empresa Verificada',
+                        },
+                        {
+                          key: 'hideCompetitors',
+                          label: 'Página sem Concorrentes',
+                        },
+                        { key: 'stickyCta', label: 'Botão de Contato Fixo' },
+                        { key: 'analytics', label: 'Painel de Métricas' },
+                      ].map(feat => {
+                        const hasFeature =
+                          plan.premiumFeatures?.[
+                            feat.key as keyof typeof plan.premiumFeatures
+                          ]
+                        return (
+                          <li
+                            key={feat.key}
+                            className="flex items-center gap-3"
+                          >
+                            {hasFeature ? (
+                              <>
+                                <div className="rounded-full bg-green-500/10 p-1 transition-transform group-hover:scale-110">
+                                  <Check
+                                    className="size-4 text-green-600 dark:text-green-400"
+                                    strokeWidth={3}
+                                  />
+                                </div>
+                                <span className="font-semibold text-foreground text-sm">
+                                  {feat.label}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <div className="rounded-full bg-slate-100 p-1 opacity-40 dark:bg-slate-800">
+                                  <X
+                                    className="size-4 text-muted-foreground"
+                                    strokeWidth={3}
+                                  />
+                                </div>
+                                <span className="font-medium text-muted-foreground text-sm line-through">
+                                  {feat.label}
+                                </span>
+                              </>
+                            )}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </CardContent>
+
+                  <CardFooter className="pt-8 pb-10">
+                    <Button
+                      onClick={() => setSelectedPlan(plan)}
+                      disabled={
+                        plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                      }
+                      className={cn(
+                        'h-14 w-full rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-300',
+                        plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                          ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
+                          : plan.popular
+                            ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] hover:bg-primary/90 dark:shadow-none'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                      )}
+                      variant="ghost"
+                    >
+                      {plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                        ? 'Plano Atual'
+                        : `Escolher ${plan.title}`}
+                      {plan.name.toLowerCase() !==
+                        currentPlan?.toLowerCase() && (
+                        <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </div>
 
