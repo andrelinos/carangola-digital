@@ -70,6 +70,7 @@ import {
   plansBusinessConfig,
 } from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
+import { BusinessGallery } from './_components/business-gallery'
 import { StickyCta } from './_components/sticky-cta'
 import { ContentProfile } from './content'
 
@@ -88,7 +89,7 @@ export default async function BusinessId({ params }: Props) {
 
   const userData = await getUsersData(session?.user?.id || '')
 
-  const planType = (profileData?.planActive?.type as PlanTypeProps) || 'free'
+  const planType = (profileData?.planActive?.planType as PlanTypeProps) || 'basic'
   const planConfig = plansBusinessConfig[planType] || plansBusinessConfig.free
 
   const isOwner = profileData?.userId === session?.user?.id
@@ -124,7 +125,7 @@ export default async function BusinessId({ params }: Props) {
           isOwner={isOwner}
           isUserAuth={isUserAuth}
         />
-
+        {JSON.stringify(profileData)}
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Main Content Column (70%) */}
@@ -141,7 +142,20 @@ export default async function BusinessId({ params }: Props) {
                 isUserAuth={isUserAuth}
               />
 
-              {/* Future addition: Gallery or Services could go here */}
+              {('imageGallery' in planConfig
+                ? planConfig.imageGallery?.enabled
+                : false) && (
+                  <BusinessGallery
+                    galleryImages={profileData.galleryImages}
+                    isOwner={isOwner}
+                    businessId={profileData.id}
+                    limit={
+                      'imageGallery' in planConfig
+                        ? planConfig.imageGallery?.limit
+                        : 10
+                    }
+                  />
+                )}
             </div>
 
             {/* Sidebar Column (30%) */}
@@ -202,11 +216,11 @@ export default async function BusinessId({ params }: Props) {
       {('premiumFeatures' in planConfig
         ? planConfig.premiumFeatures?.stickyCta
         : false) && (
-        <StickyCta
-          phones={profileData.businessPhones || []}
-          businessName={profileData.name}
-        />
-      )}
+          <StickyCta
+            phones={profileData.businessPhones || []}
+            businessName={profileData.name}
+          />
+        )}
     </>
   )
 }

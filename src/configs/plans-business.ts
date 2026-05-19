@@ -49,8 +49,8 @@ export const plansBusinessConfig = {
       analytics: false, // Acesso ao painel de cliques e visualizações
     },
     imageGallery: {
-      enabled: false,
-      limit: 0, // Permite até 10 fotos (fachada, produtos, cardápio)
+      enabled: true,
+      limit: 10,                // Permite até 10 fotos (fachada, produtos, cardápio)
     },
     socialMedias: {
       linkedin: true,

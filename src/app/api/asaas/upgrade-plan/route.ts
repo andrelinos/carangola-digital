@@ -79,17 +79,17 @@ export async function POST(req: NextRequest) {
   // ── 3. Busca dados do usuário no Firestore ────────────────────────────────
   const userDoc = await db.collection('users').doc(userId).get()
 
-  if (!userDoc.exists) {
+  if (!userDoc.exists || !userDoc.data()) {
     return NextResponse.json(
       { error: 'Usuário não encontrado no banco de dados.' },
       { status: 404 }
     )
   }
 
-  const userData = userDoc.data()!
-  const currentPlanType: string = userData.planType ?? 'free'
-  const planExpiresAt: number | null = userData.planExpiresAt ?? null
-  const asaasCustomerId: string | null = userData.asaasCustomerId ?? null
+  const userData = userDoc.data()
+  const currentPlanType: string = userData?.planType ?? 'free'
+  const planExpiresAt: number | null = userData?.planExpiresAt ?? null
+  const asaasCustomerId: string | null = userData?.asaasCustomerId ?? null
 
   // ── 4. Validações de negócio ──────────────────────────────────────────────
   if (currentPlanType === newPlanType) {

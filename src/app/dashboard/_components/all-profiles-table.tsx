@@ -287,13 +287,13 @@ export function AllProfilesTable({
                     <Badge
                       variant="secondary"
                       className={cn(
-                        'rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-[0.1em]',
-                        profile.planActive?.type === 'free'
+                        'rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-widest',
+                        profile.planActive?.planType === 'free'
                           ? 'bg-slate-100 text-slate-500'
                           : 'bg-primary/10 text-primary'
                       )}
                     >
-                      {profile.planActive?.type || 'Grátis'}
+                      {profile.planActive?.planType || 'Grátis'}
                     </Badge>
                   </div>
                 </div>

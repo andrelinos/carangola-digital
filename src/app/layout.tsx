@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Quicksand } from 'next/font/google'
+import Script from 'next/script'
 import { Toaster } from 'sonner'
 
 import { CookieBanner } from '@/components/commons/cookie-banner'
@@ -74,6 +75,7 @@ export default function RootLayout({
           quicksand.className
         )}
       >
+        <Script src="https://upload-widget.cloudinary.com/global/all.js" strategy="beforeInteractive" />
         <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
         <AuthProvider>
           <ThemeProvider>

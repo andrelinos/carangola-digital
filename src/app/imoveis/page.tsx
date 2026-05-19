@@ -103,6 +103,7 @@ export default async function PropertiesPage() {
                       height={192}
                       className="size-full object-cover"
                       src={'/default-image.png'}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       alt={property.title}
                       priority
                     />

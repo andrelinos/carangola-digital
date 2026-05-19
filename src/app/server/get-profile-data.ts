@@ -55,7 +55,7 @@ export const getProfileData = cache(
 
     // Determina a config do plano: usa o plano ativo do perfil se válido,
     // caso contrário aplica o plano free como padrão.
-    const planType = planActive?.type
+    const planType = planActive?.planType
     const planConfig =
       planType && planType in plansBusinessConfig
         ? plansBusinessConfig[planType]

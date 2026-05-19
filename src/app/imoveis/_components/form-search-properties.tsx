@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
 
-interface SearchProps extends PropertyProps {}
+interface SearchProps extends PropertyProps { }
 
 export default function SearchFormProperties() {
   const [searchTerms, setSearchTerms] = useState('')
@@ -84,6 +84,7 @@ export default function SearchFormProperties() {
                         className="size-full object-cover"
                         src={'/default-image.png'}
                         // src={property.images[0] || '/default-image.png'}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={property.title}
                         priority
                       />

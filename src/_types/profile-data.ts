@@ -101,7 +101,7 @@ export type ProfileDataProps = {
   categories?: string[]
   imagePath?: string
   planActive?: {
-    type: PlanTypeProps
+    planType: PlanTypeProps
     expiresAt: number | null
   }
   holidayExceptions: HolidayException[]
@@ -115,6 +115,7 @@ export type ProfileDataProps = {
   currentUserRating?: number | null
 
   favorites: BusinessFavoritesProps[]
+  galleryImages?: string[]
   openingHours: Schedule
   socialMedias: SocialMediasProps
   businessDescription: string

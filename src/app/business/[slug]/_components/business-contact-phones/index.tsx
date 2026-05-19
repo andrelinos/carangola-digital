@@ -123,8 +123,9 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
                                 item?.imageProfileWhatsApp ||
                                 '/default-image.png'
                               }
-                              alt={`Foto de ${item.nameContact}`}
                               className="size-full rounded-xl object-cover shadow-md ring-2 ring-white dark:ring-zinc-800"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              alt={`Foto de ${item.nameContact}`}
                               fill
                             />
                           </div>
