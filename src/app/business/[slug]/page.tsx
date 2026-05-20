@@ -69,6 +69,7 @@ import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
+import { getPlanConfig } from '@/utils/get-plan-config'
 import { authOptions } from '@/lib/auth'
 import { BusinessGallery } from './_components/business-gallery'
 import { StickyCta } from './_components/sticky-cta'
@@ -89,8 +90,7 @@ export default async function BusinessId({ params }: Props) {
 
   const userData = await getUsersData(session?.user?.id || '')
 
-  const planType = (profileData?.planActive?.planType as PlanTypeProps) || 'basic'
-  const planConfig = plansBusinessConfig[planType] || plansBusinessConfig.free
+  const planConfig = getPlanConfig(profileData?.planActive as any)
 
   const isOwner = profileData?.userId === session?.user?.id
   const isUserAuth = !!(
@@ -125,7 +125,6 @@ export default async function BusinessId({ params }: Props) {
           isOwner={isOwner}
           isUserAuth={isUserAuth}
         />
-        {JSON.stringify(profileData)}
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Main Content Column (70%) */}
@@ -142,20 +141,14 @@ export default async function BusinessId({ params }: Props) {
                 isUserAuth={isUserAuth}
               />
 
-              {('imageGallery' in planConfig
-                ? planConfig.imageGallery?.enabled
-                : false) && (
-                  <BusinessGallery
-                    galleryImages={profileData.galleryImages}
-                    isOwner={isOwner}
-                    businessId={profileData.id}
-                    limit={
-                      'imageGallery' in planConfig
-                        ? planConfig.imageGallery?.limit
-                        : 10
-                    }
-                  />
-                )}
+              {planConfig.imageGallery?.enabled && (
+                <BusinessGallery
+                  galleryImages={profileData.galleryImages}
+                  isOwner={isOwner}
+                  businessId={profileData.id}
+                  limit={planConfig.imageGallery.limit}
+                />
+              )}
             </div>
 
             {/* Sidebar Column (30%) */}
@@ -213,14 +206,12 @@ export default async function BusinessId({ params }: Props) {
 
       <FooterProfile profileData={profileData} isOwner={isOwner} />
 
-      {('premiumFeatures' in planConfig
-        ? planConfig.premiumFeatures?.stickyCta
-        : false) && (
-          <StickyCta
-            phones={profileData.businessPhones || []}
-            businessName={profileData.name}
-          />
-        )}
+      {planConfig.premiumFeatures?.stickyCta && (
+        <StickyCta
+          phones={profileData.businessPhones || []}
+          businessName={profileData.name}
+        />
+      )}
     </>
   )
 }

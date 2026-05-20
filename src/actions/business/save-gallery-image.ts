@@ -10,6 +10,7 @@ import {
 } from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
+import { getPlanConfig } from '@/utils/get-plan-config'
 
 export async function saveGalleryImage(profileId: string, secureUrl: string) {
   try {
@@ -36,11 +37,10 @@ export async function saveGalleryImage(profileId: string, secureUrl: string) {
       }
     }
 
-    // 2. Validar plano ativo e regra de limite (PRO/Master)
-    const planType = (profile.planActive?.planType as PlanTypeProps) || 'free'
-    const planConfig = plansBusinessConfig[planType] || plansBusinessConfig.free
+    // 2. Validar plano ativo e regra de limite usando getPlanConfig (verifica expiração e status)
+    const planConfig = getPlanConfig(profile.planActive as any)
 
-    if (!('imageGallery' in planConfig) || !planConfig.imageGallery?.enabled) {
+    if (!planConfig.imageGallery?.enabled) {
       return {
         success: false,
         error:

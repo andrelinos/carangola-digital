@@ -21,9 +21,10 @@ export function getPlanConfig(planActive?: PlanActive): PlanConfigProps {
     typeof planActive.expiresAt === 'number' &&
     planActive.expiresAt > now
 
+  const rawType = planActive?.type || (planActive as any)?.planType
   const key: PlanTypeProps =
-    isValid && (planActive?.type as PlanTypeProps) in plansBusinessConfig
-      ? (planActive?.type as PlanTypeProps)
+    isValid && rawType in plansBusinessConfig
+      ? (rawType as PlanTypeProps)
       : 'free'
 
   return plansBusinessConfig[key]

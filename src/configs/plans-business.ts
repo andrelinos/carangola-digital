@@ -6,6 +6,17 @@ export const plansBusinessConfig = {
     price: 0,
     frequency: 'vitalicio',
     durationMonths: 0, // 0 = sem expiração (plano permanente)
+    premiumFeatures: {
+      prioritySearch: false,
+      verifiedBadge: false,
+      hideCompetitors: false,
+      stickyCta: false,
+      analytics: false,
+    },
+    imageGallery: {
+      enabled: false,
+      limit: 0,
+    },
     socialMedias: {
       linkedin: false,
       kwai: false,
@@ -84,10 +95,10 @@ export const plansBusinessConfig = {
     title: 'PRO',
     description: 'O topo da vitrine. Máxima visibilidade.',
     popular: false,
-    tag: 'MAIS VANTAJOSO',
     price: 5990,
     frequency: '/ano',
     durationMonths: 12,
+    tag: 'MAIS VANTAJOSO',
     premiumFeatures: {
       prioritySearch: true,     // Aparece no topo das buscas (Top Placement)
       verifiedBadge: true,      // Selo de Empresa Verificada/Destaque
@@ -134,6 +145,17 @@ export const plansBusinessConfig = {
     price: 9990,
     frequency: '/ano',
     durationMonths: 12,
+    premiumFeatures: {
+      prioritySearch: true,
+      verifiedBadge: true,
+      hideCompetitors: true,
+      stickyCta: true,
+      analytics: true,
+    },
+    imageGallery: {
+      enabled: true,
+      limit: 20,                // Permite até 20 fotos na galeria
+    },
     socialMedias: {
       linkedin: true,
       kwai: true,

@@ -8,6 +8,7 @@ import { plansBusinessConfig } from '@/configs/plans-business'
 
 import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
+import { getPlanConfig } from '@/utils/get-plan-config'
 
 export const getProfileData = cache(
   async (slug: string, userId?: string): Promise<ProfileDataProps | null> => {
@@ -53,13 +54,8 @@ export const getProfileData = cache(
     const { socialMedias, businessPhones, businessAddresses, planActive } =
       profileData
 
-    // Determina a config do plano: usa o plano ativo do perfil se válido,
-    // caso contrário aplica o plano free como padrão.
-    const planType = planActive?.planType
-    const planConfig =
-      planType && planType in plansBusinessConfig
-        ? plansBusinessConfig[planType]
-        : plansBusinessConfig.free
+    // Determina a config do plano usando o utilitário getPlanConfig, que valida status e expiração.
+    const planConfig = getPlanConfig(planActive as any)
 
     const allowedInformationByFilterDataPlan = filterUserDataByPlan({
       itemsToFilter: {
