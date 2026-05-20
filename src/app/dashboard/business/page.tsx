@@ -6,6 +6,7 @@ import CreatePage from '@/app/criar/page'
 import { getUsersAdminsProfile } from '@/app/server/get-users-admins-profile'
 import { verifyAdmin } from '@/app/server/verify-admin.server'
 import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
 import { getPlanStatus } from '@/utils/get-plan-status'
 import { AllProfilesTable } from '../_components/all-profiles-table'
 import { FormManage } from '../gerenciadores/_components/form-manage'
@@ -22,9 +23,14 @@ export default async function ProfilesPage() {
   const userId = session?.user.id
   const isAdmin = await verifyAdmin()
 
+  // Busca dados frescos do Firestore para exibir o plano ativo correto sem depender do relog
+  const userDoc = await db.collection('users').doc(userId).get()
+  const userData = userDoc.exists ? userDoc.data() : null
+
   // Buscar status do plano (focando em perfis/business)
   const planActive =
-    (user as any).planActive?.profiles || (user as any).planActive
+    userData?.planActive?.profiles ?? userData?.planActive ?? (user as any).planActive ?? null
+
   const planStatus = getPlanStatus({
     ...user,
     planActive,

@@ -16,19 +16,26 @@ export const getProfileData = cache(
       return null
     }
 
-    const snapshot = await db
-      .collection('profiles')
-      .where('slug', '==', slug)
-      .get()
+    // Suporta busca tanto por ID do documento do perfil quanto pelo slug amigável
+    let profileDoc = await db.collection('profiles').doc(slug).get()
+    let profileData: ProfileDataProps
 
-    if (snapshot.empty) {
-      return null
+    if (profileDoc.exists) {
+      profileData = profileDoc.data() as ProfileDataProps
+    } else {
+      const snapshot = await db
+        .collection('profiles')
+        .where('slug', '==', slug)
+        .limit(1)
+        .get()
+
+      if (snapshot.empty) {
+        return null
+      }
+      profileDoc = snapshot.docs[0]
+      profileData = profileDoc.data() as ProfileDataProps
     }
-
-    const profileDoc = snapshot.docs[0]
     const profileDocId = profileDoc.id
-
-    const profileData = profileDoc.data() as ProfileDataProps
 
     let currentUserRating: number | null = null
 
@@ -51,8 +58,27 @@ export const getProfileData = cache(
       getDownloadURLFromPath(logoPath),
     ])
 
-    const { socialMedias, businessPhones, businessAddresses, planActive } =
-      profileData
+    const { socialMedias, businessPhones, businessAddresses } = profileData
+
+    // Busca dados do proprietário do perfil na coleção 'users' para obter o plano ativo
+    let userPlanActive = null
+    if (profileData.userId) {
+      try {
+        const userDoc = await db.collection('users').doc(profileData.userId).get()
+        if (userDoc.exists) {
+          const userData = userDoc.data()
+          userPlanActive =
+            userData?.planActive?.profiles ??
+            userData?.planActive ??
+            null
+        }
+      } catch (err) {
+        console.error('Erro ao buscar plano ativo do usuário:', err)
+      }
+    }
+
+    // Define o planActive usando o plano do usuário (ou fallback para o perfil)
+    const planActive = userPlanActive ?? profileData.planActive ?? null
 
     // Determina a config do plano usando o utilitário getPlanConfig, que valida status e expiração.
     const planConfig = getPlanConfig(planActive as any)
@@ -67,6 +93,15 @@ export const getProfileData = cache(
       planActive: planActive as any,
     })
 
+    const resolvedPlanType = planActive?.type || planActive?.planType || 'free'
+    const planActiveObj = planActive
+      ? {
+          ...planActive,
+          planType: resolvedPlanType,
+          type: resolvedPlanType,
+        }
+      : undefined
+
     const formattedData: ProfileDataProps = {
       ...profileData,
       id: profileDocId,
@@ -78,6 +113,7 @@ export const getProfileData = cache(
       socialMedias: { ...allowedInformationByFilterDataPlan.socialMedias },
       businessPhones: allowedInformationByFilterDataPlan.businessPhones,
       businessAddresses: allowedInformationByFilterDataPlan.businessAddresses,
+      planActive: planActiveObj as any,
     }
 
     return formattedData
