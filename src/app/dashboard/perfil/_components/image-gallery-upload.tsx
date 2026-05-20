@@ -47,7 +47,7 @@ export function ImageGalleryUpload({ businessId, currentImagesCount, limit }: Im
         </div>
       ) : (
         <CldUploadWidget
-          uploadPreset="carangola_unsigned"
+          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
           options={{
             maxFiles: limit - currentImagesCount,
             resourceType: 'image',
