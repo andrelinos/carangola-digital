@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Check, X } from 'lucide-react'
 import { getServerSession } from 'next-auth/next'
 import { PurchaseButtons } from '@/app/business/[slug]/compre/components/purchase-buttons'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import { Card, CardContent } from '@/components/ui/card'
 import { plansBusinessConfig } from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
@@ -10,6 +11,7 @@ import { formatPrice } from '@/utils/format-price'
 export async function PricingPlans() {
   const session = await getServerSession(authOptions)
   const _user = session?.user
+  const isAdmin = await verifyAdmin()
 
   const plans = [
     {
@@ -160,6 +162,7 @@ export async function PricingPlans() {
                   profileId={session?.user.myProfileLink}
                   user={session?.user}
                   plan={plan as any}
+                  isAdmin={isAdmin}
                 />
               </CardContent>
             </Card>

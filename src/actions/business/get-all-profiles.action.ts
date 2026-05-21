@@ -1,11 +1,11 @@
 'use server'
 
-import { verifyAdmin } from '@/app/server/verify-admin.server'
+import { requireAdmin } from '@/app/server/verify-admin.server'
 import { db } from '@/lib/firebase'
 
 export async function getAllProfiles() {
   try {
-    await verifyAdmin()
+    await requireAdmin()
 
     const profilesSnapshot = await db
       .collection('profiles')
