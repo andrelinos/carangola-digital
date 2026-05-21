@@ -6,6 +6,7 @@ import {
   Home,
   LayoutDashboard,
   PanelLeft,
+  Shield,
   StoreIcon,
   UserCircle,
 } from 'lucide-react'
@@ -16,7 +17,7 @@ import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -34,11 +35,11 @@ export function DashboardSidebar() {
   }
 
   const baseClasses =
-    'flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300'
+    'flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200 w-full justify-start text-sm group'
   const activeClasses =
-    'bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90'
+    'bg-primary/10 dark:bg-primary/20 text-primary font-semibold shadow-none hover:bg-primary/15 dark:hover:bg-primary/25'
   const inactiveClasses =
-    'bg-slate-100/50 text-slate-500 font-medium hover:bg-slate-100 hover:text-slate-900 border border-transparent'
+    'bg-transparent text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800/55 hover:text-slate-900 dark:hover:text-slate-100 border border-transparent'
 
   return (
     <>
@@ -54,15 +55,15 @@ export function DashboardSidebar() {
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-[84px] left-6 z-40 rounded-full bg-white shadow-md md:hidden"
+          className="fixed top-[84px] left-6 z-40 rounded-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-850 shadow-md md:hidden"
         >
-          <PanelLeft className="size-5 opacity-70" />
+          <PanelLeft className="size-5 opacity-70 dark:text-slate-300" />
         </Button>
       )}
 
       <aside
         className={cn(
-          'fixed top-[72px] left-0 z-30 h-[calc(100vh-72px)] w-64 transform border-slate-100 border-r bg-white px-4 py-8 text-slate-900 transition-transform duration-500 ease-in-out',
+          'fixed top-[72px] left-0 z-30 h-[calc(100vh-72px)] w-64 transform border-slate-100 dark:border-slate-800/60 border-r bg-white dark:bg-slate-900 px-4 py-8 text-slate-900 dark:text-slate-100 transition-transform duration-500 ease-in-out',
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
           'md:translate-x-0'
         )}
@@ -70,95 +71,129 @@ export function DashboardSidebar() {
         <div className="flex h-full flex-col">
           {/* Logo Area */}
           <div className="mb-10 flex items-center gap-3 px-2">
-            <div className="rounded-2xl bg-primary/10 p-2">
+            <div className="rounded-2xl bg-primary/10 dark:bg-primary/20 p-2">
               <LayoutDashboard className="size-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-black text-slate-900 leading-none tracking-tighter">
+              <h2 className="font-black text-slate-900 dark:text-slate-100 leading-none tracking-tighter">
                 PAINEL
               </h2>
-              <p className="font-bold text-[10px] text-slate-400 uppercase tracking-widest">
+              <p className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                 Controle Geral
               </p>
             </div>
           </div>
 
-          <nav className="flex-1 space-y-3">
-            <Button
-              className={cn(
-                baseClasses,
-                pathname === '/dashboard' ? activeClasses : inactiveClasses
-              )}
-              onClick={() => goToPath('/dashboard')}
-              variant="ghost"
-            >
-              <Home className="size-5" />
-              <span>Visão Geral</span>
-            </Button>
+          <nav className="flex-1 space-y-6">
+            {/* Grupo: Principal */}
+            <div className="space-y-1">
+              <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                Principal
+              </span>
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname === '/dashboard' ? activeClasses : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard')}
+                variant="ghost"
+              >
+                <Home className="size-5" />
+                <span>Visão Geral</span>
+              </Button>
 
-            <Button
-              className={cn(
-                baseClasses,
-                pathname.startsWith('/dashboard/perfil')
-                  ? activeClasses
-                  : inactiveClasses
-              )}
-              onClick={() => goToPath('/dashboard/perfil')}
-              variant="ghost"
-            >
-              <UserCircle className="size-5" />
-              <span>Meu Perfil</span>
-            </Button>
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname.startsWith('/dashboard/perfil')
+                    ? activeClasses
+                    : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard/perfil')}
+                variant="ghost"
+              >
+                <UserCircle className="size-5" />
+                <span>Meu Perfil</span>
+              </Button>
 
-            <Button
-              className={cn(
-                baseClasses,
-                pathname.startsWith('/dashboard/business')
-                  ? activeClasses
-                  : inactiveClasses
-              )}
-              onClick={() => goToPath('/dashboard/business')}
-              variant="ghost"
-            >
-              <StoreIcon className="size-5" />
-              <span>Meus Negócios</span>
-            </Button>
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname.startsWith('/dashboard/assinatura')
+                    ? activeClasses
+                    : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard/assinatura')}
+                variant="ghost"
+              >
+                <CreditCard className="size-5" />
+                <span>Assinatura</span>
+              </Button>
+            </div>
 
-            <Button
-              className={cn(
-                baseClasses,
-                pathname.startsWith('/dashboard/imoveis')
-                  ? activeClasses
-                  : inactiveClasses
-              )}
-              onClick={() => goToPath('/dashboard/imoveis')}
-              variant="ghost"
-            >
-              <Building2 className="size-5" />
-              <span>Meus Imóveis</span>
-            </Button>
+            {/* Grupo: Anúncios */}
+            <div className="space-y-1">
+              <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                Meus Anúncios
+              </span>
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname.startsWith('/dashboard/business')
+                    ? activeClasses
+                    : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard/business')}
+                variant="ghost"
+              >
+                <StoreIcon className="size-5" />
+                <span>Meus Negócios</span>
+              </Button>
 
-            <Button
-              className={cn(
-                baseClasses,
-                pathname.startsWith('/dashboard/assinatura')
-                  ? activeClasses
-                  : inactiveClasses
-              )}
-              onClick={() => goToPath('/dashboard/assinatura')}
-              variant="ghost"
-            >
-              <CreditCard className="size-5" />
-              <span>Assinatura</span>
-            </Button>
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname.startsWith('/dashboard/imoveis')
+                    ? activeClasses
+                    : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard/imoveis')}
+                variant="ghost"
+              >
+                <Building2 className="size-5" />
+                <span>Meus Imóveis</span>
+              </Button>
+            </div>
+
+            {/* Grupo: Admin */}
+            {isAdmin && (
+              <div className="space-y-1 pt-4 border-t border-slate-100">
+                <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                  Painel Admin
+                </span>
+                <Button
+                  className={cn(
+                    baseClasses,
+                    pathname.startsWith('/dashboard/todos-negocios')
+                      ? activeClasses
+                      : inactiveClasses
+                  )}
+                  onClick={() => goToPath('/dashboard/todos-negocios')}
+                  variant="ghost"
+                >
+                  <Shield className="size-5" />
+                  <span>Todos os Negócios</span>
+                </Button>
+              </div>
+            )}
           </nav>
 
-          <footer className="mt-auto border-slate-100 border-t pt-6">
-            <div className="rounded-2xl border border-slate-200/50 bg-slate-50 p-4">
-              <p className="mb-1 text-center font-black text-slate-400 text-xs uppercase tracking-widest">
+          <footer className="mt-auto border-slate-100 dark:border-slate-800/60 border-t pt-6">
+            <div className="rounded-2xl border border-slate-200/50 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
+              <p className="mb-1 text-center font-black text-slate-400 dark:text-slate-500 text-xs uppercase tracking-widest">
                 Versão do Sistema
               </p>
-              <p className="text-center font-bold text-slate-900 text-sm">
+              <p className="text-center font-bold text-slate-900 dark:text-slate-100 text-sm">
                 v1.25.11
               </p>
             </div>

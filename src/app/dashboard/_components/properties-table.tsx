@@ -50,7 +50,6 @@ export function PropertiesTable({ properties, session }: Props) {
     startTransition(async () => {
       const result = await transferProfile(
         selectedProfile?.id ?? '',
-        selectedProfile.userId,
         newOwnerId
       )
       if (result.success) {
@@ -70,8 +69,7 @@ export function PropertiesTable({ properties, session }: Props) {
 
     startTransition(async () => {
       const result = await deleteProfile(
-        selectedProfile?.id ?? '',
-        selectedProfile.userId
+        selectedProfile?.id ?? ''
       )
       if (result.success) {
         alert(result.message)

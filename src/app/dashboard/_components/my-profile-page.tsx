@@ -56,7 +56,6 @@ export function MyProfilePage({ session, profilesAdmins }: Props) {
     startTransition(async () => {
       const result = await transferProfile(
         selectedProfile.id,
-        selectedProfile.userId,
         newOwnerId
       )
       if (result.success) {
@@ -76,8 +75,7 @@ export function MyProfilePage({ session, profilesAdmins }: Props) {
 
     startTransition(async () => {
       const result = await deleteProfile(
-        selectedProfile.id,
-        selectedProfile.userId
+        selectedProfile.id
       )
       if (result.success) {
         toast.error(result.message)

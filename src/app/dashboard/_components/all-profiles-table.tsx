@@ -89,7 +89,6 @@ export function AllProfilesTable({
     startTransition(async () => {
       const result = await transferProfile(
         selectedProfile?.id ?? '',
-        selectedProfile.userId,
         newOwnerId
       )
       if (result.success) {
@@ -109,8 +108,7 @@ export function AllProfilesTable({
 
     startTransition(async () => {
       const result = await deleteProfile(
-        selectedProfile?.id ?? '',
-        selectedProfile.userId
+        selectedProfile?.id ?? ''
       )
       if (result.success) {
         toast.success(result.message)
