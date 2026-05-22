@@ -30,7 +30,7 @@ const inputVariants = cva(
 
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+  VariantProps<typeof inputVariants> {
   asChild?: boolean
   isOnlyPremium?: boolean
   title?: string
@@ -79,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 <span
                   className="pl-0.5 text-red-400"
                   title="Campo obrigatório"
-                  aria-label={props?.title}
+                  aria-hidden="true"
                 >
                   *
                 </span>

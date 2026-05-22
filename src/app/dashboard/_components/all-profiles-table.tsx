@@ -124,12 +124,12 @@ export function AllProfilesTable({
   return (
     <div className="space-y-8">
       {/* Header & Filters */}
-      <div className="flex flex-col justify-between gap-6 rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-6 rounded-4xl border border-slate-100 bg-white p-6 shadow-sm md:flex-row md:items-center">
         <div className="relative max-w-md flex-1">
           <Search className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-slate-400" />
           <Input
             placeholder="Pesquisar por nome ou link..."
-            className="h-12 rounded-2xl border-none bg-slate-50 pl-11 focus-visible:ring-primary/20"
+            className="h-12 rounded-2xl border-none pl-11 text-accent-foreground focus-visible:ring-primary/20"
             value={searchTerms}
             onChange={e => setSearchTerms(e.target.value)}
           />
