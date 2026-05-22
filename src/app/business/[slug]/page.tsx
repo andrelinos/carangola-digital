@@ -62,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 import { ShieldCheck } from 'iconoir-react'
+import { Sparkles } from 'lucide-react'
 import { getServerSession } from 'next-auth/next'
 import { FooterProfile } from '@/components/commons/footer-profile'
 import LocalBusinessJsonLd from '@/components/seo/local-business-json-ld'
@@ -148,6 +149,32 @@ export default async function BusinessId({ params }: Props) {
                   businessId={profileData.id}
                   limit={planConfig.imageGallery.limit}
                 />
+              )}
+
+              {!planConfig.imageGallery?.enabled && isOwner && (
+                <div className="overflow-hidden rounded-2xl border border-blue-100 bg-blue-50/50 p-6 dark:border-blue-900/50 dark:bg-blue-900/10">
+                  <div className="flex flex-col items-center gap-6 sm:flex-row">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/50">
+                      <Sparkles className="size-6 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="flex-1 text-center sm:text-left">
+                      <h3 className="font-bold text-blue-950 text-lg dark:text-blue-100">
+                        Potencialize seu perfil!
+                      </h3>
+                      <p className="mt-1 text-blue-800/80 text-sm dark:text-blue-200/70">
+                        Faça um upgrade para adicionar uma galeria de fotos atrativa, conectar todas as suas redes e destacar seu negócio no topo das buscas.
+                      </p>
+                    </div>
+                    <div className="shrink-0">
+                      <Link
+                        href="/dashboard/assinatura"
+                        className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 font-semibold text-sm text-white transition-all hover:bg-blue-700 hover:shadow-md dark:bg-blue-600 dark:hover:bg-blue-500"
+                      >
+                        Ver Benefícios
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
 
