@@ -7,6 +7,8 @@ import { pathsSitemap } from '@/configs/paths-to-sitemap'
 import { getAllProfileData } from './server/get-all-profile-data'
 import { getAllPropertiesData } from './server/get-all-properties-data'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://carangoladigital.com.br'
   const lastModified = new Date().toISOString()

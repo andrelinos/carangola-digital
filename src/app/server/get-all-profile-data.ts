@@ -8,7 +8,6 @@ export async function getAllProfileData() {
   const snapshot = await db
     .collection('profiles')
     .where('isPublished', '==', true)
-    .orderBy('createdAt', 'desc')
     .get()
 
   if (!snapshot.docs) {

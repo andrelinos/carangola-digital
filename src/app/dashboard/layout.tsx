@@ -6,6 +6,8 @@ import { verifyAdmin } from '@/app/server/verify-admin.server'
 
 import { DashboardSidebar } from './_components/dashboard-sidebar'
 
+export const dynamic = 'force-dynamic'
+
 export default async function RootLayout({
   children,
 }: Readonly<{

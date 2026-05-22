@@ -7,7 +7,6 @@ export async function getAllPropertiesData() {
   const snapshot = await db
     .collectionGroup('user_properties')
     .where('isPublished', '==', true)
-    .orderBy('createdAt', 'desc')
     .get()
 
   if (!snapshot.docs) {

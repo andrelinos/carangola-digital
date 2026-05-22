@@ -44,9 +44,20 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
   return (
     <>
       {isSidebarOpen && (
+        // biome-ignore lint/a11y/useSemanticElements: Semântica é de overlay
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Fechar menu lateral"
           className="fixed inset-x-0 top-[72px] bottom-0 z-20 bg-black/50 md:hidden"
           onClick={toggleSidebar}
+          onKeyDown={(e) => {
+            // Aciona a função se o usuário apertar "Enter" ou "Espaço"
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleSidebar();
+            }
+          }}
         />
       )}
 
@@ -55,7 +66,7 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-[84px] left-6 z-40 rounded-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-850 shadow-md md:hidden"
+          className='fixed top-[84px] left-6 z-40 rounded-full border-slate-200 bg-white shadow-md md:hidden dark:border-slate-850 dark:bg-slate-900'
         >
           <PanelLeft className="size-5 opacity-70 dark:text-slate-300" />
         </Button>
@@ -63,7 +74,7 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
 
       <aside
         className={cn(
-          'fixed top-[72px] left-0 z-30 h-[calc(100vh-72px)] w-64 transform border-slate-100 dark:border-slate-800/60 border-r bg-white dark:bg-slate-900 px-4 py-8 text-slate-900 dark:text-slate-100 transition-transform duration-500 ease-in-out',
+          'fixed top-[72px] left-0 z-30 h-[calc(100vh-72px)] w-64 transform border-slate-100 border-r bg-white px-4 py-8 text-slate-900 transition-transform duration-500 ease-in-out dark:border-slate-800/60 dark:bg-slate-900 dark:text-slate-100',
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
           'md:translate-x-0'
         )}
@@ -71,14 +82,14 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
         <div className="flex h-full flex-col">
           {/* Logo Area */}
           <div className="mb-10 flex items-center gap-3 px-2">
-            <div className="rounded-2xl bg-primary/10 dark:bg-primary/20 p-2">
+            <div className='rounded-2xl bg-primary/10 p-2 dark:bg-primary/20'>
               <LayoutDashboard className="size-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-black text-slate-900 dark:text-slate-100 leading-none tracking-tighter">
+              <h2 className='font-black text-slate-900 leading-none tracking-tighter dark:text-slate-100'>
                 PAINEL
               </h2>
-              <p className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+              <p className='font-bold text-[10px] text-slate-400 uppercase tracking-widest dark:text-slate-500'>
                 Controle Geral
               </p>
             </div>
@@ -87,7 +98,7 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
           <nav className="flex-1 space-y-6">
             {/* Grupo: Principal */}
             <div className="space-y-1">
-              <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              <span className='mb-2 block px-4 font-bold text-[10px] text-slate-400 uppercase tracking-wider'>
                 Principal
               </span>
               <Button
@@ -133,7 +144,7 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
 
             {/* Grupo: Anúncios */}
             <div className="space-y-1">
-              <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              <span className='mb-2 block px-4 font-bold text-[10px] text-slate-400 uppercase tracking-wider'>
                 Meus Anúncios
               </span>
               <Button
@@ -167,8 +178,8 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
 
             {/* Grupo: Admin */}
             {isAdmin && (
-              <div className="space-y-1 pt-4 border-t border-slate-100">
-                <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              <div className='space-y-1 border-slate-100 border-t pt-4'>
+                <span className='mb-2 block px-4 font-bold text-[10px] text-slate-400 uppercase tracking-wider'>
                   Painel Admin
                 </span>
                 <Button
@@ -188,13 +199,13 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
             )}
           </nav>
 
-          <footer className="mt-auto border-slate-100 dark:border-slate-800/60 border-t pt-6">
-            <div className="rounded-2xl border border-slate-200/50 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
-              <p className="mb-1 text-center font-black text-slate-400 dark:text-slate-500 text-xs uppercase tracking-widest">
+          <footer className='mt-auto border-slate-100 border-t pt-6 dark:border-slate-800/60'>
+            <div className='rounded-2xl border border-slate-200/50 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40'>
+              <p className='mb-1 text-center font-black text-slate-400 text-xs uppercase tracking-widest dark:text-slate-500'>
                 Versão do Sistema
               </p>
-              <p className="text-center font-bold text-slate-900 dark:text-slate-100 text-sm">
-                v1.25.11
+              <p className='text-center font-bold text-slate-900 text-sm dark:text-slate-100'>
+                v1.26.2
               </p>
             </div>
           </footer>
