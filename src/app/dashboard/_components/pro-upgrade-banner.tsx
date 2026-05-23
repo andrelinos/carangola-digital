@@ -9,12 +9,15 @@ export function ProUpgradeBanner() {
   // Calcula o valor mensal do plano pago mais barato (Básico) com base no valor anual
   // plansBusinessConfig.basic.price = 2990 (R$ 29,90)
   const startingAnnualPrice = plansBusinessConfig.basic.price / 100 // 29.90
-  const startingMonthlyPrice = (startingAnnualPrice / 12).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const startingMonthlyPrice = (startingAnnualPrice / 12).toLocaleString(
+    'pt-BR',
+    {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
 
   // Benefícios reais baseados nos seus configs de Imóveis e Negócios
   const benefits = [
@@ -66,11 +69,18 @@ export function ProUpgradeBanner() {
               <span className="font-bold text-slate-400 text-xs uppercase">
                 A partir de
               </span>
-              <span className="font-black text-3xl text-white">{startingMonthlyPrice}</span>
+              <span className="font-black text-3xl text-white">
+                {startingMonthlyPrice}
+              </span>
               <span className="font-medium text-slate-400 text-sm">/mês</span>
             </div>
             <p className="mb-6 text-slate-400 text-xs italic">
-              * faturado anualmente ({startingAnnualPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })})
+              * faturado anualmente (
+              {startingAnnualPrice.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })}
+              )
             </p>
             <Button
               asChild

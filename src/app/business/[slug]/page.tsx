@@ -70,8 +70,8 @@ import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
-import { getPlanConfig } from '@/utils/get-plan-config'
 import { authOptions } from '@/lib/auth'
+import { getPlanConfig } from '@/utils/get-plan-config'
 import { BusinessGallery } from './_components/business-gallery'
 import { StickyCta } from './_components/sticky-cta'
 import { ContentProfile } from './content'
@@ -162,7 +162,9 @@ export default async function BusinessId({ params }: Props) {
                         Potencialize seu perfil!
                       </h3>
                       <p className="mt-1 text-blue-800/80 text-sm dark:text-blue-200/70">
-                        Faça um upgrade para adicionar uma galeria de fotos atrativa, conectar todas as suas redes e destacar seu negócio no topo das buscas.
+                        Faça um upgrade para adicionar uma galeria de fotos
+                        atrativa, conectar todas as suas redes e destacar seu
+                        negócio no topo das buscas.
                       </p>
                     </div>
                     <div className="shrink-0">

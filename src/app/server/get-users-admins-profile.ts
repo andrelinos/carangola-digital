@@ -7,9 +7,11 @@ export async function getUsersAdminsProfile(userId: string) {
 
   const userDoc = await db.collection('users').doc(userId).get()
   const userData = userDoc.exists ? userDoc.data() : null
-  const rawPlanActive = userData?.planActive?.profiles ?? userData?.planActive ?? null
+  const rawPlanActive =
+    userData?.planActive?.profiles ?? userData?.planActive ?? null
 
-  const resolvedPlanType = rawPlanActive?.type || rawPlanActive?.planType || 'free'
+  const resolvedPlanType =
+    rawPlanActive?.type || rawPlanActive?.planType || 'free'
   const planActiveObj = rawPlanActive
     ? {
         ...rawPlanActive,

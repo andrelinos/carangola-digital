@@ -32,7 +32,9 @@ export async function requireAdmin(): Promise<true> {
 
   if (!adminEmail) {
     // Falha fechada: sem configuração, ninguém passa
-    throw new Error('[requireAdmin] Variável de ambiente ADMIN_EMAIL não configurada.')
+    throw new Error(
+      '[requireAdmin] Variável de ambiente ADMIN_EMAIL não configurada.'
+    )
   }
 
   const session = await getServerSession(authOptions)

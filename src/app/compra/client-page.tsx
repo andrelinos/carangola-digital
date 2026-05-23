@@ -20,13 +20,13 @@ export default function CompraClient({
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
-      <div className='w-full max-w-md space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 text-center shadow-slate-200/50 shadow-xl'>
+      <div className="w-full max-w-md space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 text-center shadow-slate-200/50 shadow-xl">
         {currentStatus === 'sucesso' ? (
           <>
             <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-green-100">
               <span className="text-4xl">✅</span>
             </div>
-            <h1 className='font-black text-2xl text-slate-900 uppercase tracking-tight'>
+            <h1 className="font-black text-2xl text-slate-900 uppercase tracking-tight">
               Assinatura Confirmada!
             </h1>
             <p className="font-medium text-slate-500">
@@ -44,7 +44,7 @@ export default function CompraClient({
             <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-red-100">
               <span className="text-4xl">❌</span>
             </div>
-            <h1 className='font-black text-2xl text-slate-900 uppercase tracking-tight'>
+            <h1 className="font-black text-2xl text-slate-900 uppercase tracking-tight">
               Pagamento Não Concluído
             </h1>
             <p className="font-medium text-slate-500">
@@ -57,7 +57,7 @@ export default function CompraClient({
             <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-100">
               <span className="text-4xl">⚠️</span>
             </div>
-            <h1 className='font-black text-2xl text-slate-900 uppercase tracking-tight'>
+            <h1 className="font-black text-2xl text-slate-900 uppercase tracking-tight">
               Status Desconhecido
             </h1>
             <p className="font-medium text-slate-500">
@@ -69,7 +69,10 @@ export default function CompraClient({
 
         <div className="pt-6">
           <Link href="/">
-            <button type='button' className='h-14 w-full rounded-2xl bg-primary font-black text-white text-xs uppercase tracking-widest transition-all hover:scale-[1.02] hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30'>
+            <button
+              type="button"
+              className="h-14 w-full rounded-2xl bg-primary font-black text-white text-xs uppercase tracking-widest transition-all hover:scale-[1.02] hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
+            >
               Voltar para o Início
             </button>
           </Link>

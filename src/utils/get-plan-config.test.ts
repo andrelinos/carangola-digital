@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { getPlanConfig } from '@/utils/get-plan-config'
 import { plansBusinessConfig } from '@/configs/plans-business'
+import { getPlanConfig } from '@/utils/get-plan-config'
 
 const FUTURE_DATE = Date.now() + 1000 * 60 * 60 * 24 * 30 // +30 dias
 const PAST_DATE = Date.now() - 1000 * 60 * 60 * 24 * 10 // -10 dias

@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { CldUploadWidget, type CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { ImagePlus, Loader2 } from 'lucide-react'
+import {
+  CldUploadWidget,
+  type CloudinaryUploadWidgetResults,
+} from 'next-cloudinary'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { saveGalleryImage } from '@/actions/business/save-gallery-image'
@@ -13,12 +16,18 @@ interface ImageGalleryUploadProps {
   limit: number
 }
 
-export function ImageGalleryUpload({ businessId, currentImagesCount, limit }: ImageGalleryUploadProps) {
+export function ImageGalleryUpload({
+  businessId,
+  currentImagesCount,
+  limit,
+}: ImageGalleryUploadProps) {
   const [isSaving, setIsSaving] = useState(false)
 
   const isLimitReached = currentImagesCount >= limit
 
-  const handleUploadSuccess = async (results: CloudinaryUploadWidgetResults) => {
+  const handleUploadSuccess = async (
+    results: CloudinaryUploadWidgetResults
+  ) => {
     // Validação da URL segura retornada pelo Cloudinary
     if (typeof results.info === 'object' && 'secure_url' in results.info) {
       setIsSaving(true)
@@ -42,7 +51,8 @@ export function ImageGalleryUpload({ businessId, currentImagesCount, limit }: Im
       {isLimitReached ? (
         <div className="rounded-lg border border-orange-200 bg-orange-50 p-4 dark:border-orange-900/50 dark:bg-orange-900/20">
           <p className="font-medium text-orange-800 text-sm dark:text-orange-200">
-            Você atingiu o limite de {limit} fotos na sua galeria (Plano PRO). Exclua alguma imagem para adicionar novas.
+            Você atingiu o limite de {limit} fotos na sua galeria (Plano PRO).
+            Exclua alguma imagem para adicionar novas.
           </p>
         </div>
       ) : (

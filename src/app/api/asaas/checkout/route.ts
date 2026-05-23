@@ -154,14 +154,14 @@ export async function POST(req: NextRequest) {
     })
 
     // 2. Salva asaasCustomerId no Firestore (se for novo)
-    await db
-      .collection('users')
-      .doc(userId)
-      .set({
+    await db.collection('users').doc(userId).set(
+      {
         asaasCustomerId: customer.id,
         asaasSubscriptionStatus: 'PENDING',
         updatedAt: Timestamp.now().toMillis(),
-      }, { merge: true });
+      },
+      { merge: true }
+    )
 
     const priceInReais = planConfig.price / 100 // centavos → reais
     const cycle = toAsaasCycle(planConfig.durationMonths)
@@ -202,13 +202,10 @@ export async function POST(req: NextRequest) {
     })
 
     // 4. Salva o checkoutId no Firestore para rastreamento
-    await db
-      .collection('users')
-      .doc(userId)
-      .update({
-        asaasLastCheckoutId: checkout.id,
-        updatedAt: Timestamp.now().toMillis(),
-      })
+    await db.collection('users').doc(userId).update({
+      asaasLastCheckoutId: checkout.id,
+      updatedAt: Timestamp.now().toMillis(),
+    })
 
     // A API do Asaas NÃO retorna uma URL pronta no response do POST /checkouts.
     // A URL deve ser montada manualmente com o ID retornado.

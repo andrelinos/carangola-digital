@@ -26,7 +26,8 @@ export async function getUserProfilesForDashboard(): Promise<
 
     const userDoc = await db.collection('users').doc(userId).get()
     const userData = userDoc.exists ? userDoc.data() : null
-    const planActive = userData?.planActive?.profiles ?? userData?.planActive ?? null
+    const planActive =
+      userData?.planActive?.profiles ?? userData?.planActive ?? null
 
     const snapshot = await db
       .collection('profiles')
@@ -51,7 +52,8 @@ export async function getUserProfilesForDashboard(): Promise<
         }
 
         const now = Date.now()
-        const resolvedExpiresAt = planActive?.expiresAt ?? data.planActive?.expiresAt
+        const resolvedExpiresAt =
+          planActive?.expiresAt ?? data.planActive?.expiresAt
         if (
           resolvedExpiresAt !== null &&
           resolvedExpiresAt !== undefined &&

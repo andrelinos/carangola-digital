@@ -7,11 +7,7 @@
 // Checkout
 // ----------------------------
 
-export type AsaasBillingType =
-  | 'BOLETO'
-  | 'CREDIT_CARD'
-  | 'PIX'
-  | 'UNDEFINED'
+export type AsaasBillingType = 'BOLETO' | 'CREDIT_CARD' | 'PIX' | 'UNDEFINED'
 
 export type AsaasChargeType = 'DETACHED' | 'RECURRENT' | 'INSTALLMENT'
 
@@ -230,9 +226,8 @@ export type AsaasSubscriptionStatus =
   | 'INACTIVE'
 
 export interface AsaasUserFields {
-  asaasCustomerId?: string          // "cus_000005123456"
-  asaasSubscriptionId?: string      // "sub_..."
+  asaasCustomerId?: string // "cus_000005123456"
+  asaasSubscriptionId?: string // "sub_..."
   asaasSubscriptionStatus?: AsaasSubscriptionStatus
-  planExpiresAt?: number | null     // timestamp em ms (null = free permanente)
+  planExpiresAt?: number | null // timestamp em ms (null = free permanente)
 }
-

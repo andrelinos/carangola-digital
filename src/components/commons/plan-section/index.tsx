@@ -26,8 +26,14 @@ export async function PricingPlans() {
       cardClass: 'bg-gray-50 border-gray-200',
       features: [
         { name: 'Perfil básico do estabelecimento', included: true },
-        { name: `${plansBusinessConfig.free.addresses.quantity} Endereços`, included: true },
-        { name: `${plansBusinessConfig.free.businessPhones.quantity} Telefones/Whatsapp`, included: true },
+        {
+          name: `${plansBusinessConfig.free.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.free.businessPhones.quantity} Telefones/Whatsapp`,
+          included: true,
+        },
         { name: 'Informações de contato e horário', included: true },
         { name: 'Rota de localização no Google Maps', included: true },
       ],
@@ -41,10 +47,17 @@ export async function PricingPlans() {
       disable: false,
       buttonText: `Escolher ${plansBusinessConfig.basic.title}`,
       buttonVariant: 'default' as const,
-      cardClass: 'bg-gradient-to-br from-gray-900 shadow-3xl to-gray-800 text-white',
+      cardClass:
+        'bg-gradient-to-br from-gray-900 shadow-3xl to-gray-800 text-white',
       features: [
-        { name: `${plansBusinessConfig.basic.addresses.quantity} Endereços`, included: true },
-        { name: `${plansBusinessConfig.basic.businessPhones.quantity} Telefones / WhatsApp`, included: true },
+        {
+          name: `${plansBusinessConfig.basic.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.basic.businessPhones.quantity} Telefones / WhatsApp`,
+          included: true,
+        },
         { name: 'Links para todas as redes sociais', included: true },
         { name: 'Galeria de Fotos', included: false },
         { name: 'Destaque no Topo das Buscas', included: false },
@@ -67,30 +80,39 @@ export async function PricingPlans() {
       features: [
         {
           name: 'Destaque no Topo das Buscas',
-          included: plansBusinessConfig.pro.premiumFeatures?.prioritySearch ?? true
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.prioritySearch ?? true,
         },
         {
           name: 'Selo de Empresa Verificada',
-          included: plansBusinessConfig.pro.premiumFeatures?.verifiedBadge ?? true
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.verifiedBadge ?? true,
         },
         {
           name: 'Página sem Concorrentes',
-          included: plansBusinessConfig.pro.premiumFeatures?.hideCompetitors ?? true
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.hideCompetitors ?? true,
         },
         {
           name: `Até ${plansBusinessConfig.pro.imageGallery?.limit || 10} Fotos na Galeria`,
-          included: true
+          included: true,
         },
         {
           name: 'Botão de Contato Fixo',
-          included: plansBusinessConfig.pro.premiumFeatures?.stickyCta ?? true
+          included: plansBusinessConfig.pro.premiumFeatures?.stickyCta ?? true,
         },
         {
           name: 'Painel de Métricas',
-          included: plansBusinessConfig.pro.premiumFeatures?.analytics ?? true
+          included: plansBusinessConfig.pro.premiumFeatures?.analytics ?? true,
         },
-        { name: `${plansBusinessConfig.pro.addresses.quantity} Endereços`, included: true },
-        { name: `${plansBusinessConfig.pro.businessPhones.quantity} Telefones / WhatsApp`, included: true },
+        {
+          name: `${plansBusinessConfig.pro.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.pro.businessPhones.quantity} Telefones / WhatsApp`,
+          included: true,
+        },
         { name: '19 Links de Redes Sociais', included: true },
       ],
     },
@@ -142,16 +164,22 @@ export async function PricingPlans() {
                       })}
                     >
                       {feature.included ? (
-                        <Check className={clsx(
-                          'mr-3 h-5 w-5 shrink-0',
-                          plan.id === 'basic' ? 'text-green-400' : 'text-green-500'
-                        )} />
+                        <Check
+                          className={clsx(
+                            'mr-3 h-5 w-5 shrink-0',
+                            plan.id === 'basic'
+                              ? 'text-green-400'
+                              : 'text-green-500'
+                          )}
+                        />
                       ) : (
                         <X className="mr-3 h-5 w-5 shrink-0 text-current" />
                       )}
-                      <span className={clsx('text-sm md:text-base', {
-                        'line-through': !feature.included
-                      })}>
+                      <span
+                        className={clsx('text-sm md:text-base', {
+                          'line-through': !feature.included,
+                        })}
+                      >
                         {feature.name}
                       </span>
                     </li>

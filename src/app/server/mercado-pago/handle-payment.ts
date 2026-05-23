@@ -27,7 +27,6 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
     }
 
     if (profileId && planType && userId) {
-
       // Calcula a data de expiração com base em durationMonths do plansBusinessConfig
       const planConfig = plansBusinessConfig[planType as PlanTypeProps]
       const durationMonths = planConfig?.durationMonths ?? 12 // fallback: 12 meses

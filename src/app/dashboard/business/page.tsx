@@ -27,7 +27,10 @@ export default async function ProfilesPage() {
 
   // Buscar status do plano (focando em perfis/business)
   const planActive =
-    userData?.planActive?.profiles ?? userData?.planActive ?? (user as any).planActive ?? null
+    userData?.planActive?.profiles ??
+    userData?.planActive ??
+    (user as any).planActive ??
+    null
 
   const planStatus = getPlanStatus({
     ...user,

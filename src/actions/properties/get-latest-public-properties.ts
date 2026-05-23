@@ -46,7 +46,7 @@ export async function getLatestPublicProperties(): Promise<
 
     return properties
   } catch (_error: any) {
-    console.error("ERRO DO FIREBASE:", _error.message)
+    console.error('ERRO DO FIREBASE:', _error.message)
     throw new Error(`Falha ao buscar propriedades: ${_error.message}`)
   }
 }

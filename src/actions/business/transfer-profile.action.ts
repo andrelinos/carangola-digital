@@ -13,17 +13,15 @@ import { db } from '@/lib/firebase'
  *
  * O currentOwnerId é SEMPRE lido do Firestore — nunca confiamos no que vem do cliente.
  */
-export async function transferProfile(
-  profileId: string,
-  newOwnerId: string
-) {
+export async function transferProfile(profileId: string, newOwnerId: string) {
   // Apenas o admin da plataforma pode transferir perfis
   try {
     await requireAdmin()
   } catch {
     return {
       success: false,
-      message: 'Acesso negado. Apenas o administrador da plataforma pode transferir perfis.',
+      message:
+        'Acesso negado. Apenas o administrador da plataforma pode transferir perfis.',
     }
   }
 
@@ -44,7 +42,10 @@ export async function transferProfile(
     }
 
     if (newOwnerId === currentOwnerId) {
-      return { success: false, message: 'O novo dono já é o proprietário atual.' }
+      return {
+        success: false,
+        message: 'O novo dono já é o proprietário atual.',
+      }
     }
 
     await db.runTransaction(async transaction => {

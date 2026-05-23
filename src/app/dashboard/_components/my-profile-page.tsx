@@ -54,10 +54,7 @@ export function MyProfilePage({ session, profilesAdmins }: Props) {
     setIsLoading(true)
 
     startTransition(async () => {
-      const result = await transferProfile(
-        selectedProfile.id,
-        newOwnerId
-      )
+      const result = await transferProfile(selectedProfile.id, newOwnerId)
       if (result.success) {
         toast.success(result.message)
         setTransferModalOpen(false)
@@ -74,9 +71,7 @@ export function MyProfilePage({ session, profilesAdmins }: Props) {
     setIsLoading(true)
 
     startTransition(async () => {
-      const result = await deleteProfile(
-        selectedProfile.id
-      )
+      const result = await deleteProfile(selectedProfile.id)
       if (result.success) {
         toast.error(result.message)
         setDeleteModalOpen(false)

@@ -1,8 +1,8 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getPlanStatus } from '@/utils/get-plan-status'
 
 const FUTURE_MS = Date.now() + 1000 * 60 * 60 * 24 * 30 // +30 dias
-const PAST_MS = Date.now() - 1000 * 60 * 60 * 24 * 10  // -10 dias
+const PAST_MS = Date.now() - 1000 * 60 * 60 * 24 * 10 // -10 dias
 
 const BASE_USER = {
   hasProfileLink: true,
@@ -102,7 +102,10 @@ describe('getPlanStatus', () => {
     })
 
     it('retorna myProfileLink correto', () => {
-      const result = getPlanStatus({ ...BASE_USER, myProfileLink: 'padaria-xyz' })
+      const result = getPlanStatus({
+        ...BASE_USER,
+        myProfileLink: 'padaria-xyz',
+      })
       expect(result.myProfileLink).toBe('padaria-xyz')
     })
 

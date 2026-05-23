@@ -33,7 +33,7 @@ export default function proxy(request: NextRequest) {
       "font-src 'self' data: https://fonts.gstatic.com",
       // ATENÇÃO: Adicione aqui as APIs externas que seu frontend consome (Firebase, Supabase, APIs de pagamento, etc)
       "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://identitytoolkit.googleapis.com https://upload-widget.cloudinary.com https://*.cloudinary.com",
-      "frame-src https://upload-widget.cloudinary.com",
+      'frame-src https://upload-widget.cloudinary.com',
       "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",

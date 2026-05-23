@@ -36,7 +36,7 @@ export function DashboardComponent({
         <div className="xl:col-span-2">
           <PropertiesTable properties={properties} />
         </div>
-        <div className='mt-8 xl:col-span-2'>
+        <div className="mt-8 xl:col-span-2">
           <MarketingKit profiles={profiles} />
         </div>
       </div>

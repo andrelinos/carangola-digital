@@ -42,7 +42,9 @@ export const authOptions: NextAuthOptions = {
         updatedAt: Timestamp.now().toMillis(),
       }
       // Delega a criação final pro FirestoreAdapter com os dados completos
-      return await firestoreAdapter.createUser(customUser as any) as AdapterUser
+      return (await firestoreAdapter.createUser(
+        customUser as any
+      )) as AdapterUser
     },
   },
   providers: [
@@ -83,8 +85,10 @@ export const authOptions: NextAuthOptions = {
 
         // Campos Asaas — propagados na sessão para leitura no cliente
         session.user.asaasCustomerId = (user as any).asaasCustomerId ?? null
-        session.user.asaasSubscriptionId = (user as any).asaasSubscriptionId ?? null
-        session.user.asaasSubscriptionStatus = (user as any).asaasSubscriptionStatus ?? null
+        session.user.asaasSubscriptionId =
+          (user as any).asaasSubscriptionId ?? null
+        session.user.asaasSubscriptionStatus =
+          (user as any).asaasSubscriptionStatus ?? null
         session.user.planExpiresAt = (user as any).planExpiresAt ?? null
       }
 

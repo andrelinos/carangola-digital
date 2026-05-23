@@ -9,6 +9,7 @@ import {
   MoreVertical,
   Search,
   Settings2,
+  Star,
   Trash2,
   UserPlus,
   Users,
@@ -43,6 +44,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { AddProfileModal } from './add-profile-modal'
+import { FeaturedModal } from './featured-modal'
 
 interface Props {
   profiles: ProfileDataProps[]
@@ -65,8 +67,31 @@ export function AllProfilesTable({
 
   const [isTransferModalOpen, setTransferModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isFeaturedModalOpen, setFeaturedModalOpen] = useState(false)
   const [newOwnerId, setNewOwnerId] = useState('')
   const [searchTerms, setSearchTerms] = useState('')
+
+  // Optimistic local updates for isFeatured — avoids full page reload
+  const [featuredOverrides, setFeaturedOverrides] = useState<
+    Record<
+      string,
+      {
+        isFeatured: boolean
+        featuredStartAt: number | null
+        featuredEndAt: number | null
+      }
+    >
+  >({})
+
+  const getProfileFeaturedState = (profile: ProfileDataProps) => {
+    const override = featuredOverrides[profile.id ?? '']
+    if (override !== undefined) return override
+    return {
+      isFeatured: !!profile.isFeatured,
+      featuredStartAt: profile.featuredStartAt ?? null,
+      featuredEndAt: profile.featuredEndAt ?? null,
+    }
+  }
 
   useEffect(() => {
     const result = profiles.filter(profile => {
@@ -107,9 +132,7 @@ export function AllProfilesTable({
     setIsLoading(true)
 
     startTransition(async () => {
-      const result = await deleteProfile(
-        selectedProfile?.id ?? ''
-      )
+      const result = await deleteProfile(selectedProfile?.id ?? '')
       if (result.success) {
         toast.success(result.message)
         setDeleteModalOpen(false)
@@ -119,6 +142,22 @@ export function AllProfilesTable({
     })
 
     setIsLoading(false)
+  }
+
+  const handleFeaturedSuccess = (
+    profileId: string,
+    isFeatured: boolean,
+    startAt: string | null,
+    endAt: string | null
+  ) => {
+    setFeaturedOverrides(prev => ({
+      ...prev,
+      [profileId]: {
+        isFeatured,
+        featuredStartAt: startAt ? new Date(startAt).getTime() : null,
+        featuredEndAt: endAt ? new Date(endAt).getTime() : null,
+      },
+    }))
   }
 
   return (
@@ -201,6 +240,34 @@ export function AllProfilesTable({
                             <DropdownMenuItem
                               onClick={() => {
                                 setSelectedProfile(profile)
+                                setFeaturedModalOpen(true)
+                              }}
+                              className={cn(
+                                'rounded-xl focus:bg-amber-50 focus:text-amber-700',
+                                getProfileFeaturedState(profile).isFeatured
+                                  ? 'text-amber-600'
+                                  : 'text-slate-600'
+                              )}
+                            >
+                              <div className="flex items-center gap-2 p-2">
+                                <Star
+                                  className={cn(
+                                    'size-4',
+                                    getProfileFeaturedState(profile)
+                                      .isFeatured && 'fill-amber-400'
+                                  )}
+                                />
+                                <span className="font-bold text-xs uppercase">
+                                  {getProfileFeaturedState(profile).isFeatured
+                                    ? 'Remover Destaque'
+                                    : 'Destacar Empresa'}
+                                </span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedProfile(profile)
                                 setTransferModalOpen(true)
                               }}
                               className="rounded-xl text-blue-600 focus:bg-blue-50 focus:text-blue-700"
@@ -269,6 +336,27 @@ export function AllProfilesTable({
                     </div>
                   </div>
 
+                  {/* Featured badge */}
+                  {getProfileFeaturedState(profile).isFeatured && (
+                    <div className="flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-1.5">
+                      <Star className="size-3 fill-amber-400 text-amber-400" />
+                      <span className="font-black text-[10px] text-amber-600 uppercase tracking-widest">
+                        Em Destaque
+                      </span>
+                      {getProfileFeaturedState(profile).featuredEndAt && (
+                        <span className="ml-1 font-medium text-[10px] text-amber-500 italic">
+                          até{' '}
+                          {new Date(
+                            getProfileFeaturedState(profile).featuredEndAt!
+                          ).toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: 'short',
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex flex-col gap-1">
                       <span className="flex items-center gap-1 font-black text-[10px] text-slate-400 uppercase tracking-widest">
@@ -328,6 +416,26 @@ export function AllProfilesTable({
             Tente ajustar sua pesquisa ou adicione um novo perfil.
           </p>
         </div>
+      )}
+
+      {/* --- MODAL DE DESTAQUE --- */}
+      {selectedProfile && (
+        <FeaturedModal
+          open={isFeaturedModalOpen}
+          onOpenChange={setFeaturedModalOpen}
+          profileId={selectedProfile.id ?? ''}
+          profileName={selectedProfile.name}
+          currentIsFeatured={
+            getProfileFeaturedState(selectedProfile).isFeatured
+          }
+          currentFeaturedStartAt={
+            getProfileFeaturedState(selectedProfile).featuredStartAt
+          }
+          currentFeaturedEndAt={
+            getProfileFeaturedState(selectedProfile).featuredEndAt
+          }
+          onSuccess={handleFeaturedSuccess}
+        />
       )}
 
       {/* --- MODAL DE TRANSFERÊNCIA --- */}

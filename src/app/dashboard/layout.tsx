@@ -1,8 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
-
-import { authOptions } from '@/lib/auth'
 import { verifyAdmin } from '@/app/server/verify-admin.server'
+import { authOptions } from '@/lib/auth'
 
 import { DashboardSidebar } from './_components/dashboard-sidebar'
 

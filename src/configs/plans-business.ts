@@ -61,7 +61,7 @@ export const plansBusinessConfig = {
     },
     imageGallery: {
       enabled: true,
-      limit: 10,                // Permite até 10 fotos (fachada, produtos, cardápio)
+      limit: 10, // Permite até 10 fotos (fachada, produtos, cardápio)
     },
     socialMedias: {
       linkedin: true,
@@ -100,15 +100,15 @@ export const plansBusinessConfig = {
     durationMonths: 12,
     tag: 'MAIS VANTAJOSO',
     premiumFeatures: {
-      prioritySearch: true,     // Aparece no topo das buscas (Top Placement)
-      verifiedBadge: true,      // Selo de Empresa Verificada/Destaque
-      hideCompetitors: true,    // Remove anúncios/sugestões de concorrentes na página
-      stickyCta: true,          // Botão de WhatsApp/Contato fixo na tela (mobile)
-      analytics: true,          // Acesso ao painel de cliques e visualizações
+      prioritySearch: true, // Aparece no topo das buscas (Top Placement)
+      verifiedBadge: true, // Selo de Empresa Verificada/Destaque
+      hideCompetitors: true, // Remove anúncios/sugestões de concorrentes na página
+      stickyCta: true, // Botão de WhatsApp/Contato fixo na tela (mobile)
+      analytics: true, // Acesso ao painel de cliques e visualizações
     },
     imageGallery: {
       enabled: true,
-      limit: 10,                // Permite até 10 fotos (fachada, produtos, cardápio)
+      limit: 10, // Permite até 10 fotos (fachada, produtos, cardápio)
     },
     socialMedias: {
       linkedin: true,
@@ -154,7 +154,7 @@ export const plansBusinessConfig = {
     },
     imageGallery: {
       enabled: true,
-      limit: 20,                // Permite até 20 fotos na galeria
+      limit: 20, // Permite até 20 fotos na galeria
     },
     socialMedias: {
       linkedin: true,

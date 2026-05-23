@@ -3,7 +3,7 @@
 import { Camera, Loader2, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useRef, useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { updateUserProfile } from '@/actions/user/update-user-profile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -89,8 +89,6 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
     }
   }
 
-
-
   // Define qual imagem será exibida (Preview > Padrão)
   const displayImage = imagePreview
 
@@ -164,10 +162,11 @@ export function ProfileForm({ initialName, initialImage }: ProfileFormProps) {
 
       {message && (
         <div
-          className={`rounded-xl p-4 font-medium text-sm ${message.type === 'success'
-            ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-            : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-            }`}
+          className={`rounded-xl p-4 font-medium text-sm ${
+            message.type === 'success'
+              ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+              : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+          }`}
         >
           {message.text}
         </div>

@@ -10,8 +10,6 @@ export const metadata = {
   description: 'Gerencie suas informações de perfil',
 }
 
-
-
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions)
 
@@ -41,10 +39,7 @@ export default async function ProfilePage() {
       </div>
 
       <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm md:p-10 dark:border-slate-800 dark:bg-slate-900">
-        <ProfileForm
-          initialName={name}
-          initialImage={initialImage}
-        />
+        <ProfileForm initialName={name} initialImage={initialImage} />
       </div>
     </div>
   )

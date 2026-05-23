@@ -66,14 +66,14 @@ export async function BusinessHero({
                 ('premiumFeatures' in planConfig
                   ? planConfig.premiumFeatures?.verifiedBadge
                   : false)) && (
-                  <Badge
-                    variant="default"
-                    className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"
-                  >
-                    <ShieldCheck className="size-3.5" />
-                    Verificado
-                  </Badge>
-                )}
+                <Badge
+                  variant="default"
+                  className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"
+                >
+                  <ShieldCheck className="size-3.5" />
+                  Verificado
+                </Badge>
+              )}
               {profileData?.categories?.length ? (
                 profileData.categories.slice(0, 2).map(category => (
                   <Badge

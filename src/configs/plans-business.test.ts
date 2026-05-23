@@ -5,7 +5,7 @@ describe('plansBusinessConfig', () => {
   const plans = ['free', 'basic', 'pro', 'master'] as const
 
   describe('estrutura dos planos', () => {
-    it.each(plans)('plano "%s" possui as propriedades obrigatórias', (plan) => {
+    it.each(plans)('plano "%s" possui as propriedades obrigatórias', plan => {
       const config = plansBusinessConfig[plan]
       expect(config).toHaveProperty('title')
       expect(config).toHaveProperty('price')
@@ -16,7 +16,7 @@ describe('plansBusinessConfig', () => {
       expect(config).toHaveProperty('addresses')
     })
 
-    it.each(plans)('plano "%s" tem title como string não-vazia', (plan) => {
+    it.each(plans)('plano "%s" tem title como string não-vazia', plan => {
       expect(typeof plansBusinessConfig[plan].title).toBe('string')
       expect(plansBusinessConfig[plan].title.length).toBeGreaterThan(0)
     })
@@ -54,8 +54,12 @@ describe('plansBusinessConfig', () => {
     })
 
     it('não possui prioritySearch nem verifiedBadge', () => {
-      expect(plansBusinessConfig.basic.premiumFeatures.prioritySearch).toBe(false)
-      expect(plansBusinessConfig.basic.premiumFeatures.verifiedBadge).toBe(false)
+      expect(plansBusinessConfig.basic.premiumFeatures.prioritySearch).toBe(
+        false
+      )
+      expect(plansBusinessConfig.basic.premiumFeatures.verifiedBadge).toBe(
+        false
+      )
     })
 
     it('permite whatsapp nas redes sociais', () => {
@@ -101,9 +105,15 @@ describe('plansBusinessConfig', () => {
 
   describe('hierarquia de planos', () => {
     it('preço cresce conforme a hierarquia dos planos', () => {
-      expect(plansBusinessConfig.free.price).toBeLessThan(plansBusinessConfig.basic.price)
-      expect(plansBusinessConfig.basic.price).toBeLessThan(plansBusinessConfig.pro.price)
-      expect(plansBusinessConfig.pro.price).toBeLessThan(plansBusinessConfig.master.price)
+      expect(plansBusinessConfig.free.price).toBeLessThan(
+        plansBusinessConfig.basic.price
+      )
+      expect(plansBusinessConfig.basic.price).toBeLessThan(
+        plansBusinessConfig.pro.price
+      )
+      expect(plansBusinessConfig.pro.price).toBeLessThan(
+        plansBusinessConfig.master.price
+      )
     })
   })
 })

@@ -68,9 +68,7 @@ export function PropertiesTable({ properties, session }: Props) {
     setIsLoading(true)
 
     startTransition(async () => {
-      const result = await deleteProfile(
-        selectedProfile?.id ?? ''
-      )
+      const result = await deleteProfile(selectedProfile?.id ?? '')
       if (result.success) {
         alert(result.message)
         setDeleteModalOpen(false)

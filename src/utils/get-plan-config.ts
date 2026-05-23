@@ -29,4 +29,3 @@ export function getPlanConfig(planActive?: PlanActive): PlanConfigProps {
 
   return plansBusinessConfig[key]
 }
-

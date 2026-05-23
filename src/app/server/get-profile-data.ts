@@ -64,13 +64,14 @@ export const getProfileData = cache(
     let userPlanActive = null
     if (profileData.userId) {
       try {
-        const userDoc = await db.collection('users').doc(profileData.userId).get()
+        const userDoc = await db
+          .collection('users')
+          .doc(profileData.userId)
+          .get()
         if (userDoc.exists) {
           const userData = userDoc.data()
           userPlanActive =
-            userData?.planActive?.profiles ??
-            userData?.planActive ??
-            null
+            userData?.planActive?.profiles ?? userData?.planActive ?? null
         }
       } catch (err) {
         console.error('Erro ao buscar plano ativo do usuário:', err)

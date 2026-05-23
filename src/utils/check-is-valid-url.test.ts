@@ -23,6 +23,8 @@ describe('checkIsValidURL', () => {
   })
 
   it('retorna true para URL https com path', () => {
-    expect(checkIsValidURL('https://carangoladigital.com.br/business/slug')).toBe(true)
+    expect(
+      checkIsValidURL('https://carangoladigital.com.br/business/slug')
+    ).toBe(true)
   })
 })

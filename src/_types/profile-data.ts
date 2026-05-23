@@ -110,6 +110,9 @@ export type ProfileDataProps = {
   isActive: boolean
   isPremium: boolean
   isVerified: boolean
+  isFeatured?: boolean
+  featuredStartAt?: number | null
+  featuredEndAt?: number | null
   reviewCount: number
   totalScoreSum?: number
   currentUserRating?: number | null

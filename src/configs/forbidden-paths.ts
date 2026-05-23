@@ -1,1 +1,6 @@
-export const forbiddenPaths: string[] = ['/acesso', '/admin', '/dashboard', '/auth/login']
+export const forbiddenPaths: string[] = [
+  '/acesso',
+  '/admin',
+  '/dashboard',
+  '/auth/login',
+]

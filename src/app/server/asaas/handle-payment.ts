@@ -28,10 +28,7 @@ import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
-import {
-  createAsaasSubscription,
-  deleteAsaasSubscription,
-} from '@/lib/asaas'
+import { createAsaasSubscription, deleteAsaasSubscription } from '@/lib/asaas'
 import { db } from '@/lib/firebase'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -61,12 +58,16 @@ async function resolveUserId(
   asaasCustomerId?: string,
   asaasSubscriptionId?: string
 ): Promise<string | null> {
-  console.log(`[Webhook Debug] Tentando resolver usuário com: extRef=${externalReference}, customerId=${asaasCustomerId}, subId=${asaasSubscriptionId}`);
+  console.log(
+    `[Webhook Debug] Tentando resolver usuário com: extRef=${externalReference}, customerId=${asaasCustomerId}, subId=${asaasSubscriptionId}`
+  )
 
   // 1. externalReference = userId
   if (externalReference && externalReference !== 'N/A') {
     const doc = await db.collection('users').doc(externalReference).get()
-    console.log(`[Webhook Debug] Resolvido via externalReference: ${externalReference}`);
+    console.log(
+      `[Webhook Debug] Resolvido via externalReference: ${externalReference}`
+    )
     if (doc.exists) return externalReference
   }
 
@@ -78,10 +79,14 @@ async function resolveUserId(
       .limit(1)
       .get()
     if (!q.empty) {
-      console.log(`[Webhook Debug] Resolvido via asaasCustomerId: ${q.docs[0].id}`);
+      console.log(
+        `[Webhook Debug] Resolvido via asaasCustomerId: ${q.docs[0].id}`
+      )
       return q.docs[0].id
     } else {
-      console.log(`[Webhook Debug] Usuário não encontrado para asaasCustomerId: ${asaasCustomerId}`);
+      console.log(
+        `[Webhook Debug] Usuário não encontrado para asaasCustomerId: ${asaasCustomerId}`
+      )
     }
   }
 
@@ -93,12 +98,16 @@ async function resolveUserId(
       .limit(1)
       .get()
     if (!q.empty) {
-      console.log(`[Webhook Debug] Resolvido via asaasSubscriptionId: ${q.docs[0].id}`);
+      console.log(
+        `[Webhook Debug] Resolvido via asaasSubscriptionId: ${q.docs[0].id}`
+      )
       return q.docs[0].id
     }
   }
 
-  console.error(`[Webhook Debug] ❌ FALHA TOTAL: Nenhum usuário encontrado para estes parâmetros.`);
+  console.error(
+    `[Webhook Debug] ❌ FALHA TOTAL: Nenhum usuário encontrado para estes parâmetros.`
+  )
 
   return null
 }
@@ -225,8 +234,7 @@ async function handleUpgradePayment(
 
   const userDoc = await db.collection('users').doc(userId).get()
   const userData = userDoc.data()
-  const oldSubscriptionId: string | null =
-    userData?.asaasSubscriptionId ?? null
+  const oldSubscriptionId: string | null = userData?.asaasSubscriptionId ?? null
   const asaasCustomerId: string | null = userData?.asaasCustomerId ?? null
 
   const now = Timestamp.now().toMillis()
@@ -304,20 +312,17 @@ async function handleUpgradePayment(
     properties: planEntry,
   }
 
-  await db
-    .collection('users')
-    .doc(userId)
-    .update({
-      planActive,
-      planType: newPlanType,
-      asaasSubscriptionId: newSubscriptionId,
-      asaasSubscriptionStatus: 'ACTIVE',
-      planExpiresAt: expiresAt,
-      // Limpa campos de pendência do upgrade
-      pendingUpgradePlanType: null,
-      pendingUpgradePaymentId: null,
-      updatedAt: now,
-    })
+  await db.collection('users').doc(userId).update({
+    planActive,
+    planType: newPlanType,
+    asaasSubscriptionId: newSubscriptionId,
+    asaasSubscriptionStatus: 'ACTIVE',
+    planExpiresAt: expiresAt,
+    // Limpa campos de pendência do upgrade
+    pendingUpgradePlanType: null,
+    pendingUpgradePaymentId: null,
+    updatedAt: now,
+  })
 
   await updateProfile(userId, { planActive: planEntry })
 
@@ -447,7 +452,6 @@ async function handleSubscriptionInactivated(
 async function handleSubscriptionActivated(
   subscription: AsaasWebhookSubscription
 ): Promise<void> {
-
   const userId = await resolveUserId(
     subscription.externalReference,
     subscription.customer,

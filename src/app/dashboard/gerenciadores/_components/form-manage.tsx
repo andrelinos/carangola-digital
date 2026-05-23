@@ -119,10 +119,11 @@ export function FormManage({ session, profiles }: Props) {
           return (
             <Card
               key={profile.id}
-              className={`overflow-hidden transition-all duration-300 ${isExpanded
-                ? 'border-blue-200 shadow-lg ring-2 ring-blue-500'
-                : 'border-slate-200 bg-white shadow-sm hover:shadow-md'
-                }`}
+              className={`overflow-hidden transition-all duration-300 ${
+                isExpanded
+                  ? 'border-blue-200 shadow-lg ring-2 ring-blue-500'
+                  : 'border-slate-200 bg-white shadow-sm hover:shadow-md'
+              }`}
             >
               <CardContent className="p-0">
                 {/* Card Header & Summary */}
@@ -133,10 +134,11 @@ export function FormManage({ session, profiles }: Props) {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`font-bold text-[10px] uppercase ${profile.planActive?.planType === 'pro'
-                        ? 'border-amber-200 bg-amber-100 text-amber-700'
-                        : 'border-slate-200 bg-slate-100 text-slate-600'
-                        }`}
+                      className={`font-bold text-[10px] uppercase ${
+                        profile.planActive?.planType === 'pro'
+                          ? 'border-amber-200 bg-amber-100 text-amber-700'
+                          : 'border-slate-200 bg-slate-100 text-slate-600'
+                      }`}
                     >
                       {profile.planActive?.planType || 'Grátis'}
                     </Badge>
@@ -166,10 +168,11 @@ export function FormManage({ session, profiles }: Props) {
                   <Button
                     onClick={() => setProfileId(isExpanded ? '' : profile.id)}
                     variant={isExpanded ? 'secondary' : 'default'}
-                    className={`h-11 w-full rounded-xl font-bold transition-all ${isExpanded
-                      ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                      : 'bg-blue-600 text-white shadow-blue-500/20 shadow-md hover:bg-blue-700'
-                      }`}
+                    className={`h-11 w-full rounded-xl font-bold transition-all ${
+                      isExpanded
+                        ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        : 'bg-blue-600 text-white shadow-blue-500/20 shadow-md hover:bg-blue-700'
+                    }`}
                   >
                     <Settings className="mr-2 size-4" />
                     {isExpanded ? 'Fechar Gerenciador' : 'Gerenciar Perfil'}

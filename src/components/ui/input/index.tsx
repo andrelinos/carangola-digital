@@ -12,14 +12,16 @@ import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
 const inputVariants = cva(
-  'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+  'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
   {
     variants: {
       variant: {
         default:
-          'border-border-primary font-medium placeholder:text-content-placeholder',
-        secondary: 'bg-background-tertiary',
-        ghost: 'border-border-primary font-medium placeholder:text-zinc-300',
+          'border-input font-medium placeholder:text-muted-foreground/60',
+        secondary:
+          'border-transparent bg-muted text-muted-foreground placeholder:text-muted-foreground/50',
+        ghost:
+          'border-transparent bg-transparent font-medium placeholder:text-muted-foreground/60',
       },
     },
     defaultVariants: {
@@ -30,7 +32,7 @@ const inputVariants = cva(
 
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
-  VariantProps<typeof inputVariants> {
+    VariantProps<typeof inputVariants> {
   asChild?: boolean
   isOnlyPremium?: boolean
   title?: string
@@ -97,8 +99,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             clsx({
-              'ring ring-rose-400': props?.error || literalerror,
-              'bg-background-primary': !props?.error && !literalerror,
+              'border-destructive ring-destructive focus-visible:ring-destructive':
+                props?.error || literalerror,
+              'bg-background': !props?.error && !literalerror,
             }),
             inputVariants({ variant, className })
           )}
