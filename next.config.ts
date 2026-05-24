@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  transpilePackages: ['react-leaflet', 'leaflet', 'geofire-common'],
   images: {
     remotePatterns: [
       {
