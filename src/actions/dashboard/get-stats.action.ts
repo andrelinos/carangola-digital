@@ -60,8 +60,15 @@ export async function getDashboardStats() {
           .get(),
       ])
 
-    // Inicialização das variáveis com os valores padrão
-    let { activeBusinesses, totalVisits, announcedProperties, newLeads } =
+    const DEFAULT_STATS = {
+      activeBusinesses: 0,
+      announcedProperties: 0,
+      totalVisits: 0,
+      newLeads: 0,
+      whatsappClicks: 0,
+    }
+
+    let { activeBusinesses, totalVisits, announcedProperties, newLeads, whatsappClicks } =
       DEFAULT_STATS
 
     // Processamento seguro dos resultados
@@ -69,6 +76,9 @@ export async function getDashboardStats() {
       activeBusinesses = businessesResult.value.size
       totalVisits = businessesResult.value.docs.reduce((acc, doc) => {
         return acc + (doc.data().totalVisits || 0)
+      }, 0)
+      whatsappClicks = businessesResult.value.docs.reduce((acc, doc) => {
+        return acc + (doc.data().whatsappClicks || 0)
       }, 0)
     } else {
       console.error('[Stats] Erro em Profiles:', businessesResult.reason)
@@ -91,6 +101,7 @@ export async function getDashboardStats() {
       announcedProperties,
       totalVisits,
       newLeads,
+      whatsappClicks,
     }
   } catch (error) {
     // Catch genérico para capturar falhas na autenticação ou rede

@@ -11,15 +11,41 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline:
-          'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
-        secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-transparent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+        default: cn(
+          'bg-primary text-primary-foreground shadow-sm',
+          'hover:bg-primary/90 hover:shadow-md',
+          'active:scale-[0.98] active:shadow-none',
+          'dark:shadow-primary/20'
+        ),
+        destructive: cn(
+          'bg-destructive text-destructive-foreground shadow-sm',
+          'hover:bg-destructive/90 hover:shadow-md',
+          'active:scale-[0.98]',
+          'dark:bg-destructive/90 dark:hover:bg-destructive'
+        ),
+        outline: cn(
+          'border border-input bg-background text-foreground shadow-sm',
+          'hover:border-accent hover:bg-accent hover:text-accent-foreground',
+          'active:scale-[0.98]',
+          'dark:border-input/60 dark:hover:border-input dark:hover:bg-accent/50'
+        ),
+        secondary: cn(
+          'bg-secondary text-secondary-foreground shadow-sm',
+          'hover:bg-secondary/70',
+          'active:scale-[0.98]',
+          'dark:bg-secondary/80 dark:hover:bg-secondary'
+        ),
+        ghost: cn(
+          'text-foreground',
+          'hover:bg-accent hover:text-accent-foreground',
+          'active:scale-[0.98]',
+          'dark:hover:bg-accent/60'
+        ),
+        link: cn(
+          'text-primary underline-offset-4',
+          'hover:text-primary/80 hover:underline',
+          'dark:text-primary dark:hover:text-primary/70'
+        ),
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -37,7 +63,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 

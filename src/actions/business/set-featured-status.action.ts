@@ -62,7 +62,7 @@ export async function setFeaturedStatus({
     await profileRef.update(updatePayload)
 
     // Invalida o cache da página de destaques
-    revalidateTag('featured-profiles')
+    revalidateTag('featured-profiles', 'max')
     revalidatePath('/business')
     revalidatePath('/dashboard/todos-negocios')
 

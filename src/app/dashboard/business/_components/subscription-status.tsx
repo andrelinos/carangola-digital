@@ -64,8 +64,8 @@ export function SubscriptionStatus({
       className={cn(
         'mb-8 overflow-hidden border-0 shadow-lg transition-all duration-500',
         isFree
-          ? 'bg-gradient-to-r from-blue-600 to-indigo-700'
-          : 'bg-gradient-to-r from-amber-500 to-orange-600'
+          ? 'bg-linear-to-r from-blue-600 to-indigo-700'
+          : 'bg-linear-to-r from-amber-500 to-orange-600'
       )}
     >
       <CardContent className="relative p-6">

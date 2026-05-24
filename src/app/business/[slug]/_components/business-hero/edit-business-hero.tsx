@@ -2,7 +2,7 @@
 
 import 'react-image-crop/dist/ReactCrop.css'
 
-import { X } from 'lucide-react'
+import { Building2, Image as ImageIcon, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { startTransition, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -62,6 +62,8 @@ export function EditBusinessHero({ data }: Props) {
 
   async function handleSaveProfile() {
     setIsSubmitting(true)
+    router.replace(window.location.pathname)
+
     try {
       const formData = new FormData()
       formData.append('profileId', profileId)
@@ -81,7 +83,11 @@ export function EditBusinessHero({ data }: Props) {
     } catch (_error) {
       toast.error('Erro ao salvar perfil.')
     } finally {
-      setIsSubmitting(false)
+      startTransition(() => {
+        setIsSubmitting(false)
+        onClose()
+        router.refresh()
+      })
     }
   }
 
@@ -107,7 +113,7 @@ export function EditBusinessHero({ data }: Props) {
       setSelectedCategories(selectedCategories.filter(c => c !== category))
     }
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // biome-ignore lint/correctness/useExhaustiveDependencies: ingore this lint
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (
@@ -125,25 +131,25 @@ export function EditBusinessHero({ data }: Props) {
       <div className="relative flex flex-col gap-2">
         <label
           htmlFor="category-search"
-          className="font-semibold text-slate-700 text-sm"
+          className='font-semibold text-slate-700 text-sm dark:text-slate-300'
         >
           Categorias
         </label>
         <div
           ref={wrapperRef}
-          className="w-full rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50/50"
+          className="w-full rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50/50 dark:border-slate-800 dark:bg-slate-950 dark:focus-within:border-blue-500 dark:focus-within:ring-blue-900/30"
         >
           <div className="flex w-full flex-wrap gap-2">
             {selectedCategories?.map(cat => (
               <div
                 key={cat}
-                className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 font-medium text-slate-700 text-sm"
+                className='flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 font-medium text-slate-700 text-sm dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300'
               >
                 <span>{cat}</span>
                 <button
                   onClick={() => removeCategory(cat)}
                   type="button"
-                  className="text-slate-400 transition-colors hover:text-red-500"
+                  className="text-slate-400 transition-colors hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400"
                 >
                   <X size={14} />
                 </button>
@@ -170,15 +176,15 @@ export function EditBusinessHero({ data }: Props) {
               }}
               autoComplete="off"
               placeholder="Buscar ou adicionar categoria..."
-              className="min-w-[200px] flex-1 bg-transparent p-1.5 text-slate-900 text-sm outline-none placeholder:text-slate-400"
+              className='min-w-[200px] flex-1 bg-transparent p-1.5 text-slate-900 text-sm outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500'
             />
           </div>
           {dropdownOpen && availableCategories.length > 0 && (
             <>
               {/* Tooltip Arrow */}
-              <div className="absolute top-[calc(100%+6px)] left-8 z-30 h-3 w-3 -translate-x-1/2 rotate-45 border-slate-200 border-t border-l bg-white" />
+              <div className='absolute top-[calc(100%+6px)] left-8 z-30 h-3 w-3 -translate-x-1/2 rotate-45 border-slate-200 border-t border-l bg-white dark:border-slate-800 dark:bg-slate-900' />
 
-              <div className="scrollbar-thin scrollbar-thumb-slate-200 absolute top-full left-0 z-20 mt-4 max-h-56 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-xl">
+              <div className='scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 absolute top-full left-0 z-20 mt-4 max-h-56 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-xl dark:border-slate-800 dark:bg-slate-900'>
                 {availableCategories.map(cat => (
                   <div
                     key={cat}
@@ -195,7 +201,7 @@ export function EditBusinessHero({ data }: Props) {
                     role="option"
                     aria-selected={false}
                     tabIndex={0}
-                    className="flex cursor-pointer items-center justify-between px-5 py-2.5 font-medium text-slate-600 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    className='flex cursor-pointer items-center justify-between px-5 py-2.5 font-medium text-slate-600 text-sm transition-colors hover:bg-blue-50 hover:text-blue-600 dark:text-slate-300 dark:hover:bg-blue-500/10 dark:hover:text-blue-400'
                   >
                     {cat}
                   </div>
@@ -216,22 +222,23 @@ export function EditBusinessHero({ data }: Props) {
       <Modal
         isOpen={isOpen}
         setIsOpen={onClose}
-        classname="w-full relative max-w-4xl max-h-[90vh] md:rounded-3xl overflow-hidden bg-slate-50/50 p-0 border border-slate-200 shadow-2xl flex flex-col"
+        classname="relative flex w-full max-h-[90vh] max-w-4xl flex-col overflow-hidden border border-slate-200 bg-slate-50/50 p-0 shadow-2xl md:rounded-3xl dark:border-slate-800 dark:bg-slate-950/50"
       >
         {/* Sticky Header */}
-        <div className="z-20 flex-none border-slate-100 border-b bg-white px-8 py-6">
+        <div className='z-20 flex-none border-slate-100 border-b bg-white px-8 py-6 dark:border-slate-800 dark:bg-slate-900'>
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-bold text-2xl text-slate-900 tracking-tight">
+              <h2 className='font-bold text-2xl text-slate-900 tracking-tight dark:text-slate-100'>
                 Informações do Perfil
               </h2>
-              <p className="mt-1 font-medium text-slate-500 text-sm">
+              <p className='mt-1 font-medium text-slate-500 text-sm dark:text-slate-400'>
                 Como sua empresa aparece para os clientes e parceiros.
               </p>
             </div>
             <button
+              type="button"
               onClick={onClose}
-              className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+              className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
             >
               <X size={20} />
             </button>
@@ -245,32 +252,16 @@ export function EditBusinessHero({ data }: Props) {
         >
           <div className="mx-auto flex max-w-3xl flex-col gap-8">
             {/* Visuals Section */}
-            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8">
-              <div className="mb-8 flex items-center gap-3 border-slate-100 border-b pb-4">
-                <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
-                  {/* Using generic SVG since I haven't added imports yet, wait, I will import them above */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-image h-5 w-5"
-                  >
-                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                    <circle cx="9" cy="9" r="2" />
-                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                  </svg>
+            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8 dark:border-slate-800/60 dark:bg-slate-900">
+              <div className='mb-8 flex items-center gap-3 border-slate-100 border-b pb-4 dark:border-slate-800'>
+                <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                  <ImageIcon className="size-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-slate-800">
+                  <h3 className='font-bold text-lg text-slate-800 dark:text-slate-200'>
                     Imagens do Perfil
                   </h3>
-                  <p className="font-medium text-slate-500 text-sm">
+                  <p className='font-medium text-slate-500 text-sm dark:text-slate-400'>
                     A primeira impressão é a que fica.
                   </p>
                 </div>
@@ -283,7 +274,7 @@ export function EditBusinessHero({ data }: Props) {
                   initialImageUrl={data.businessHeroInfo.logoImageUrl}
                   onCropComplete={setCroppedLogoFile}
                   recommendation="Recomendado: 400x400px"
-                  className="h-[240px] rounded-[2rem] border-slate-200"
+                  className="h-[240px] rounded-4xl border-slate-200 dark:border-slate-800"
                 />
 
                 <ImageUploader
@@ -292,41 +283,22 @@ export function EditBusinessHero({ data }: Props) {
                   initialImageUrl={data.businessHeroInfo.coverImageUrl}
                   onCropComplete={setCroppedCoverFile}
                   recommendation="Recomendado: 1200x450px"
-                  className="h-[240px] rounded-[2rem] border-slate-200"
+                  className="h-[240px] rounded-4xl border-slate-200 dark:border-slate-800"
                 />
               </div>
             </section>
 
             {/* Basic Info Section */}
-            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8">
-              <div className="mb-8 flex items-center gap-3 border-slate-100 border-b pb-4">
-                <div className="rounded-xl bg-blue-50 p-2 text-blue-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-building-2 h-5 w-5"
-                  >
-                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
-                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
-                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
-                    <path d="M10 6h4" />
-                    <path d="M10 10h4" />
-                    <path d="M10 14h4" />
-                    <path d="M10 18h4" />
-                  </svg>
+            <section className="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm md:p-8 dark:border-slate-800/60 dark:bg-slate-900">
+              <div className='mb-8 flex items-center gap-3 border-slate-100 border-b pb-4 dark:border-slate-800'>
+                <div className="rounded-xl bg-blue-50 p-2 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                  <Building2 className="size-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-slate-800">
+                  <h3 className='font-bold text-lg text-slate-800 dark:text-slate-200'>
                     Dados Básicos
                   </h3>
-                  <p className="font-medium text-slate-500 text-sm">
+                  <p className='font-medium text-slate-500 text-sm dark:text-slate-400'>
                     Informações principais do seu negócio.
                   </p>
                 </div>
@@ -338,7 +310,7 @@ export function EditBusinessHero({ data }: Props) {
                   name="name"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="h-12 rounded-xl border-slate-200 font-medium text-lg text-slate-900 shadow-sm focus:border-blue-500 focus:ring-blue-100"
+                  className='h-12 rounded-xl border-slate-200 font-medium text-lg text-slate-900 shadow-sm focus:border-blue-500 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-500 dark:focus:ring-blue-900'
                 />
                 <MultiCategorySelect />
               </div>
@@ -347,19 +319,19 @@ export function EditBusinessHero({ data }: Props) {
         </div>
 
         {/* Sticky Footer */}
-        <div className="z-20 flex flex-none items-center justify-end gap-3 border-slate-100 border-t bg-white px-6 py-5">
+        <div className='z-20 flex flex-none items-center justify-end gap-3 border-slate-100 border-t bg-white px-6 py-5 dark:border-slate-800 dark:bg-slate-900'>
           <Button
             variant="outline"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-xl border-slate-200 px-6 font-semibold text-slate-700 hover:bg-slate-50"
+            className="rounded-xl border-slate-200 px-6 font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Cancelar
           </Button>
           <Button
             onClick={handleSaveProfile}
             disabled={isSubmitting}
-            className="rounded-xl bg-blue-600 px-8 font-semibold text-white shadow-blue-500/20 shadow-md hover:bg-blue-700"
+            className='rounded-xl bg-blue-600 px-8 font-semibold text-white shadow-blue-500/20 shadow-md hover:bg-blue-700 dark:hover:bg-blue-500'
           >
             {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
           </Button>

@@ -3,14 +3,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth/next'
 
-import { manageAuth } from '@/actions/manage-auth'
 import { getLatestPublicProperties } from '@/actions/properties/get-latest-public-properties'
-import { Button } from '@/components/ui/button'
 import { authOptions } from '@/lib/auth'
 import { trackServerEvent } from '@/lib/mixpanel'
 import { formatPrice } from '@/utils/format-price'
 
-import SearchFormProperties from './_components/form-search-properties'
+import { ClientHero } from './_components/client-hero'
+import { RegistrationCTA } from './_components/registration-cta'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://carangoladigital.com.br'),
@@ -64,88 +63,79 @@ export default async function PropertiesPage() {
   })
 
   return (
-    <div className="size-full px-4 py-36">
-      <div className="flex size-full flex-1 flex-col items-center justify-center">
-        <h1 className="max-w-2xl text-center font-bold text-3xl lg:text-5xl">
-          Encontre imóveis para alugar ou vender
-        </h1>
-        <p className="my-4 max-w-2xl text-center">
-          Explore nossa lista de casas, apartamentos e lotes disponíveis em
-          Carangola e região.
-        </p>
+    <div className="flex min-h-screen flex-col bg-background">
+      {/* Hero Section */}
+      <ClientHero />
 
-        <SearchFormProperties />
+      {/* Latest Properties Grid */}
+      {latestPublicProperties && latestPublicProperties.length > 0 && (
+        <section className="container mx-auto px-4 py-16">
+          <div className="mb-12 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
+            <div className="text-center md:text-left">
+              <h2 className="font-bold text-3xl tracking-tight lg:text-4xl">
+                Últimos imóveis adicionados
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                As melhores opções de casas, apartamentos e lotes para você.
+              </p>
+            </div>
+            <div className="h-1 w-20 rounded-full bg-primary/20 md:hidden" />
+          </div>
 
-        <h2 className="mt-6 w-full py-2 text-center text-2xl">
-          Últimos imóveis adicionados
-        </h2>
-        <div className="mt-6 flex w-full max-w-5xl flex-wrap justify-around gap-6">
-          {latestPublicProperties?.map(property => (
-            <Link
-              key={property.id}
-              href={`/imoveis/${property.slug}`} // Rota de detalhe do imóvel (precisa ser criada)
-              className="group h-[320px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 pb-4 font-medium text-zinc-700 shadow-md transition-all duration-300 ease-in-out hover:bg-blue-100"
-            >
-              <div className="flex h-full w-full flex-col gap-2">
-                <div className="relative h-48 w-full">
-                  {property?.thumbnail ? (
-                    <Image
-                      width={332}
-                      height={192}
-                      className="size-full object-cover"
-                      src={property?.thumbnail || '/default-image.png'}
-                      alt={property.title}
-                      priority
-                    />
-                  ) : (
-                    <Image
-                      width={332}
-                      height={192}
-                      className="size-full object-cover"
-                      src={'/default-image.png'}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      alt={property.title}
-                      priority
-                    />
-                  )}
-                </div>
-                {/* Informações */}
-                <div className="flex flex-1 flex-col justify-between px-4">
-                  <h2 className="text-center font-semibold text-xl">
-                    {property.title}
-                  </h2>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {latestPublicProperties.map(property => (
+              <div key={property.id} className="flex justify-center">
+                <Link
+                  href={`/imoveis/${property.slug}`}
+                  className="group flex h-[360px] w-full max-w-[332px] flex-col overflow-hidden rounded-lg bg-zinc-50 font-medium text-zinc-700 shadow-md transition-all duration-300 ease-in-out hover:bg-blue-100"
+                >
+                  <div className="relative h-48 w-full shrink-0">
+                    {property?.thumbnail ? (
+                      <Image
+                        fill
+                        className="object-cover"
+                        src={property?.thumbnail || '/default-image.png'}
+                        alt={property.title}
+                        priority
+                      />
+                    ) : (
+                      <Image
+                        fill
+                        className="object-cover"
+                        src={'/default-image.png'}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        alt={property.title}
+                        priority
+                      />
+                    )}
+                  </div>
+                  {/* Informações */}
+                  <div className="flex flex-1 flex-col justify-between px-4 py-4">
+                    <h2 className="line-clamp-2 text-center font-semibold text-xl">
+                      {property.title}
+                    </h2>
 
-                  {property?.type && (
-                    <p className="text-center text-gray-600 text-sm capitalize">
-                      {property.type === 'rent' ? 'Para Alugar' : 'À Venda'}
-                    </p>
-                  )}
+                    {property?.type && (
+                      <p className="text-center text-gray-600 text-sm capitalize">
+                        {property.type === 'rent' ? 'Para Alugar' : 'À Venda'}
+                      </p>
+                    )}
 
-                  {property?.price && (
-                    <p className="text-center font-bold text-blue-600 text-lg">
-                      {formatPrice(Number(property.price))}
-                    </p>
-                  )}
-                </div>
+                    {property?.price && (
+                      <p className="mt-auto text-center font-bold text-blue-600 text-lg">
+                        {formatPrice(Number(property.price))}
+                      </p>
+                    )}
+                  </div>
+                </Link>
               </div>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-        <div className="w-full max-w-xs pt-16">
-          {session ? (
-            <Button asChild className="w-full bg-orange-500">
-              <Link href="/dashboard/imoveis">Anunciar seu imóvel</Link>
-            </Button>
-          ) : (
-            <form action={manageAuth} className="w-full">
-              <Button className="w-full bg-orange-500">
-                Anunciar seu imóvel
-              </Button>
-            </form>
-          )}
-        </div>
-      </div>
+      {/* Call to Action Section */}
+      <RegistrationCTA hasSession={!!session} />
     </div>
   )
 }

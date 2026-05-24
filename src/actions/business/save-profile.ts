@@ -2,6 +2,7 @@
 
 import { randomUUID } from 'node:crypto'
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
+import { revalidatePath } from 'next/cache'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
@@ -101,6 +102,11 @@ export async function saveProfile(formData: FormData) {
     }
 
     await profileRef.update(updateData)
+
+    if (currentData?.slug) {
+      revalidatePath(`/business/${currentData.slug}`)
+      revalidatePath(`/business/${currentData.slug}`, 'layout')
+    }
 
     return true
   } catch (_error) {

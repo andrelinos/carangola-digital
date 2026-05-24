@@ -37,7 +37,7 @@ export function ProUpgradeBanner() {
         <div className="max-w-xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/20 px-3 py-1 font-bold text-primary text-xs uppercase tracking-wider">
             <Sparkles className="size-3" />
-            <span>Power up seu negócio</span>
+            <span>Potencialize seu negócio</span>
           </div>
           <h2 className="mb-4 font-extrabold text-3xl tracking-tight">
             Desbloqueie todo o potencial com o{' '}

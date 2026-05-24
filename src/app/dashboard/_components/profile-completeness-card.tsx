@@ -38,55 +38,58 @@ export function ProfileCompletenessCard({
   const nextTarget = pendingItems[0]
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm">
+    <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 p-4 opacity-10 transition-opacity group-hover:opacity-20">
-        <Sparkles className="size-24 rotate-12 text-primary" />
+      <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] transition-transform duration-500 group-hover:scale-110 group-hover:opacity-[0.06]">
+        <Sparkles className="size-40 rotate-12 text-primary" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row">
+      <div className="relative z-10 flex flex-col items-center gap-8">
         {/* Circular Progress */}
-        <div className="relative size-32 flex-shrink-0">
-          <svg className="size-full -rotate-90">
+        <div className="relative flex size-[120px] shrink-0 items-center justify-center rounded-full bg-background shadow-inner">
+          <svg className="absolute inset-0 size-full -rotate-90 drop-shadow-sm">
+            <title>Progresso do Perfil</title>
             <circle
-              cx="64"
-              cy="64"
-              r="58"
+              cx="60"
+              cy="60"
+              r="52"
               fill="transparent"
               stroke="currentColor"
               strokeWidth="8"
-              className="text-muted/20"
+              className="text-muted/30"
             />
             <motion.circle
-              cx="64"
-              cy="64"
-              r="58"
+              cx="60"
+              cy="60"
+              r="52"
               fill="transparent"
               stroke="currentColor"
               strokeWidth="8"
-              strokeDasharray="364.4"
-              initial={{ strokeDashoffset: 364.4 }}
-              animate={{ strokeDashoffset: 364.4 - (364.4 * totalScore) / 100 }}
+              strokeDasharray="326.7" // 2 * PI * 52
+              initial={{ strokeDashoffset: 326.7 }}
+              animate={{ strokeDashoffset: 326.7 - (326.7 * totalScore) / 100 }}
               transition={{ duration: 1.5, ease: 'easeOut' }}
               className="text-primary"
               strokeLinecap="round"
             />
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-bold text-3xl">{totalScore}%</span>
-            <span className="font-bold text-[10px] text-muted-foreground uppercase tracking-tighter">
-              Completo
+          <div className="flex flex-col items-center justify-center">
+            <span className="font-black text-3xl text-primary">
+              {totalScore}%
+            </span>
+            <span className="font-bold text-[10px] text-muted-foreground uppercase tracking-widest">
+              Concluído
             </span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 space-y-4">
+        <div className='w-full flex-1 space-y-5 text-center'>
           <div>
-            <h3 className="font-bold text-xl tracking-tight">
+            <h3 className='font-black text-foreground text-xl tracking-tight'>
               Força do seu Perfil
             </h3>
-            <p className="text-muted-foreground text-sm">
+            <p className='mx-auto mt-1 max-w-xs font-medium text-muted-foreground text-sm'>
               Perfis completos aparecem até{' '}
               <span className="font-bold text-primary">3x mais</span> nas buscas
               dos clientes.
@@ -94,35 +97,52 @@ export function ProfileCompletenessCard({
           </div>
 
           {nextTarget ? (
-            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-4">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="mt-0.5 size-5 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-sm">Próximo passo:</p>
-                  <p className="text-foreground/80 text-sm">
-                    Adicione seu{' '}
-                    <span className="font-bold lowercase">
-                      {nextTarget.label}
-                    </span>{' '}
-                    para ganhar +{nextTarget.score}%.
-                  </p>
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left transition-colors hover:bg-primary/10">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-3">
+                  <div className='shrink-0 rounded-full bg-primary/20 p-2'>
+                    <AlertCircle className="size-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground text-sm">
+                      Próximo passo sugerido:
+                    </p>
+                    <p className="mt-0.5 font-medium text-muted-foreground text-sm">
+                      Adicione seu{' '}
+                      <span className="font-bold text-foreground lowercase">
+                        {nextTarget.label}
+                      </span>{' '}
+                      para ganhar +{nextTarget.score}%.
+                    </p>
+                  </div>
                 </div>
-                <Button size="sm" asChild className="h-8 rounded-xl">
+                <Button
+                  size="sm"
+                  asChild
+                  className="h-10 w-full rounded-xl font-bold shadow-sm"
+                >
                   <Link
                     href={`/business/${(profile || mockProfile)?.slug || ''}?edit=${nextTarget.id}`}
                   >
-                    Corrigir
+                    Completar Agora
                   </Link>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-4">
+            <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-4 text-left">
               <div className="flex items-center gap-3">
-                <CheckCircle2 className="size-5 text-green-500" />
-                <p className="font-semibold text-green-700 text-sm">
-                  Incrível! Seu perfil está nota 10.
-                </p>
+                <div className='shrink-0 rounded-full bg-green-500/20 p-2'>
+                  <CheckCircle2 className="size-5 text-green-600 dark:text-green-400" />
+                </div>
+                <div>
+                  <p className="font-bold text-green-800 text-sm dark:text-green-300">
+                    Incrível! Seu perfil está nota 10.
+                  </p>
+                  <p className="font-medium text-green-700/80 text-xs dark:text-green-400/80">
+                    Você preencheu todas as informações importantes.
+                  </p>
+                </div>
               </div>
             </div>
           )}
@@ -130,16 +150,28 @@ export function ProfileCompletenessCard({
       </div>
 
       {/* Progress Dots / Steps */}
-      <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="mt-8 grid grid-cols-2 gap-2 sm:gap-3">
         {items.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-2">
+          <div
+            key={String(idx)}
+            className={`flex items-center gap-2 rounded-xl border p-2.5 transition-colors ${item.isComplete
+                ? 'border-primary/20 bg-primary/5 dark:bg-primary/10'
+                : 'border-border bg-background'
+              }`}
+          >
             {item.isComplete ? (
-              <CheckCircle2 className="size-4 flex-shrink-0 text-green-500" />
+              <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                <CheckCircle2 className="size-3.5 text-primary" />
+              </div>
             ) : (
-              <div className="size-4 flex-shrink-0 rounded-full border-2 border-muted" />
+              <div className="size-5 shrink-0 rounded-full border-2 border-muted bg-background shadow-inner" />
             )}
             <span
-              className={`truncate text-xs ${item.isComplete ? 'font-medium text-foreground' : 'text-muted-foreground'}`}
+              className={`truncate text-xs ${item.isComplete
+                  ? 'font-bold text-foreground'
+                  : 'font-medium text-muted-foreground'
+                }`}
+              title={item.label}
             >
               {item.label}
             </span>

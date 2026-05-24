@@ -8,6 +8,7 @@ interface DashboardStatsData {
   announcedProperties: number
   totalVisits: number
   newLeads: number
+  whatsappClicks?: number
 }
 
 interface DashboardStatsProps {
@@ -21,7 +22,10 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
     announcedProperties: 0,
     totalVisits: 0,
     newLeads: 0,
+    whatsappClicks: 0,
   }
+
+  const wppClicks = data.whatsappClicks || 0
 
   const statsConfig = [
     {
@@ -62,26 +66,29 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
     },
     {
       title: 'Cliques no WhatsApp',
-      value: data.totalVisits.toLocaleString('pt-BR'),
-      change: '+15.2% vs. mês passado',
-      trend: 'up' as const,
+      value: wppClicks.toLocaleString('pt-BR'),
+      change:
+        wppClicks > 0
+          ? '+15.2% vs. mês passado'
+          : 'Sem dados suficientes',
+      trend: wppClicks > 0 ? ('up' as const) : ('neutral' as const),
       icon: <Eye className="size-5 text-purple-500" />,
       iconClass: 'text-purple-500',
       sparkline: [
-        data.totalVisits * 0.5,
-        data.totalVisits * 0.6,
-        data.totalVisits * 0.7,
-        data.totalVisits * 0.8,
-        data.totalVisits * 0.9,
-        data.totalVisits * 0.95,
-        data.totalVisits,
+        wppClicks * 0.5,
+        wppClicks * 0.6,
+        wppClicks * 0.7,
+        wppClicks * 0.8,
+        wppClicks * 0.9,
+        wppClicks * 0.95,
+        wppClicks,
       ],
     },
     {
       title: 'Novos Leads',
       value: data.newLeads.toString(),
-      change: '+12% hoje',
-      trend: 'up' as const,
+      change: data.newLeads > 0 ? '+12% hoje' : 'Nenhum lead recente',
+      trend: data.newLeads > 0 ? ('up' as const) : ('neutral' as const),
       icon: <MessageSquare className="size-5 text-orange-500" />,
       iconClass: 'text-orange-500',
       sparkline: [

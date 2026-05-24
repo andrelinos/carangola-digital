@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
-import { type ChangeEvent, useEffect, useRef, useState } from 'react'
+import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import ReactCrop, {
   type Crop,
   centerCrop,
@@ -74,7 +74,6 @@ function useDebounceEffect(
   waitTime: number,
   deps: React.DependencyList
 ) {
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const t = setTimeout(() => {
       fn()
@@ -83,7 +82,7 @@ function useDebounceEffect(
     return () => {
       clearTimeout(t)
     }
-  }, deps)
+  }, [fn, waitTime, ...deps])
 }
 
 export function ImageUploader({
@@ -124,20 +123,18 @@ export function ImageUploader({
     setCrop(newCrop)
   }
 
-  useDebounceEffect(
-    async () => {
-      if (completedCrop?.width && completedCrop?.height && imgRef.current) {
-        const croppedFile = await getCroppedImg(
-          imgRef.current,
-          completedCrop,
-          'cropped-image.jpeg'
-        )
-        onCropComplete(croppedFile)
-      }
-    },
-    100,
-    [completedCrop]
-  )
+  const handleCropComplete = useCallback(async () => {
+    if (completedCrop?.width && completedCrop?.height && imgRef.current) {
+      const croppedFile = await getCroppedImg(
+        imgRef.current,
+        completedCrop,
+        'cropped-image.jpeg'
+      )
+      onCropComplete(croppedFile)
+    }
+  }, [completedCrop, onCropComplete])
+
+  useDebounceEffect(handleCropComplete, 100, [completedCrop])
 
   return (
     <div className={clsx('flex flex-col', container)}>
@@ -158,6 +155,7 @@ export function ImageUploader({
               minWidth={150}
               className="h-auto max-h-96"
             >
+              {/** biome-ignore lint/performance/noImgElement: react-image-crop requires a native img element */}
               <img
                 ref={imgRef}
                 alt="Recortar imagem"
@@ -167,16 +165,16 @@ export function ImageUploader({
               />
             </ReactCrop>
             <Button
-              variant="outline"
+              variant="link"
               onClick={() => fileInputRef.current?.click()}
             >
               Trocar Imagem
             </Button>
           </div>
         ) : (
-          <div
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
-            onKeyDown={() => fileInputRef.current?.click()}
             className={clsx(
               'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-slate-200 border-dashed bg-slate-50 text-slate-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
               className
@@ -200,7 +198,7 @@ export function ImageUploader({
                 <p className="mt-1 text-slate-500 text-xs">{recommendation}</p>
               )}
             </div>
-          </div>
+          </button>
         )}
         <input
           ref={fileInputRef}

@@ -239,6 +239,8 @@ export default async function BusinessId({ params }: Props) {
         <StickyCta
           phones={profileData.businessPhones || []}
           businessName={profileData.name}
+          profileId={profileData.id!}
+          ownerId={profileData.userId}
         />
       )}
     </>

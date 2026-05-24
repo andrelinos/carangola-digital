@@ -47,6 +47,7 @@ export function EditBusinessDescription({ data }: Props) {
 
   async function handleSaveOpeningHours() {
     setIsSubmitting(true)
+    router.replace(window.location.pathname)
 
     try {
       const formData = new FormData()
@@ -62,7 +63,6 @@ export function EditBusinessDescription({ data }: Props) {
       startTransition(() => {
         setIsSubmitting(false)
         onClose()
-
         router.refresh()
       })
     }

@@ -5,13 +5,16 @@ import { MessageCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import type { BusinessPhoneProps } from '@/_types/profile-data'
+import { registerWhatsappLead } from '@/actions/business/register-whatsapp-lead'
 
 interface StickyCtaProps {
   phones: BusinessPhoneProps[]
   businessName: string
+  profileId: string
+  ownerId?: string | null
 }
 
-export function StickyCta({ phones, businessName }: StickyCtaProps) {
+export function StickyCta({ phones, businessName, profileId, ownerId }: StickyCtaProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   // Identifica o primeiro telefone que seja WhatsApp
@@ -31,6 +34,12 @@ export function StickyCta({ phones, businessName }: StickyCtaProps) {
   // Remove formatações (parenteses, traços, espaços)
   const cleanPhone = whatsapp.phone.replace(/\D/g, '')
 
+  const handleClick = () => {
+    if (profileId) {
+      registerWhatsappLead({ profileId, ownerId })
+    }
+  }
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -38,6 +47,7 @@ export function StickyCta({ phones, businessName }: StickyCtaProps) {
           initial={{ opacity: 0, y: 50, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.8 }}
+          onClick={handleClick}
           href={`https://wa.me/55${cleanPhone}?text=${encodeURIComponent(
             `Olá, vi o perfil de ${businessName} no Carangola Digital e gostaria de mais informações.`
           )}`}
@@ -51,3 +61,4 @@ export function StickyCta({ phones, businessName }: StickyCtaProps) {
     </AnimatePresence>
   )
 }
+

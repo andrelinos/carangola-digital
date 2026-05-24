@@ -195,6 +195,19 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
                   <Shield className="size-5" />
                   <span>Todos os Negócios</span>
                 </Button>
+                <Button
+                  className={cn(
+                    baseClasses,
+                    pathname.startsWith('/dashboard/todos-imoveis')
+                      ? activeClasses
+                      : inactiveClasses
+                  )}
+                  onClick={() => goToPath('/dashboard/todos-imoveis')}
+                  variant="ghost"
+                >
+                  <Building2 className="size-5" />
+                  <span>Todos os Imóveis</span>
+                </Button>
               </div>
             )}
           </nav>

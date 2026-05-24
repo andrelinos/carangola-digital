@@ -51,6 +51,9 @@ export type PropertyProps = {
   images: PropertyImage[]
   features: string[]
 
+  isFeatured?: boolean
+  featuredStartAt?: number | null
+  featuredEndAt?: number | null
   isPublished: boolean
   totalVisits: number
   keywords: string[]
