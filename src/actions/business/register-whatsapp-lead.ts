@@ -3,6 +3,14 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 import { db } from '@/lib/firebase'
 
+import { headers } from 'next/headers'
+import { rateLimit } from '@/lib/rate-limit'
+
+const limiter = rateLimit({
+  uniqueTokenPerInterval: 500,
+  interval: 60000,
+})
+
 export async function registerWhatsappLead({
   profileId,
   ownerId,
@@ -11,6 +19,17 @@ export async function registerWhatsappLead({
   ownerId?: string | null
 }) {
   if (!profileId) return
+
+  try {
+    const headersList = await headers()
+    const ip = headersList.get('x-forwarded-for') || '127.0.0.1'
+    
+    // Limita a 5 requisições por IP a cada 1 minuto
+    await limiter.check(5, ip)
+  } catch (error) {
+    console.warn('Rate limit bloqueou clique no WhatsApp para o IP:', error)
+    return
+  }
 
   try {
     const profileRef = db.collection('profiles').doc(profileId)

@@ -41,7 +41,8 @@ export default function RealEstateListingJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
     />
   )
 }

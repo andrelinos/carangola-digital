@@ -21,7 +21,7 @@ export function PropertyCard({ property, className }: PropertyCardProps) {
   }).format(property.price)
 
   const thumbnail =
-    property.thumbnail || property.images?.[0]?.url || '/default-property.png'
+    property.thumbnail || property.images?.[0]?.url || '/default-property.webp'
 
   return (
     <motion.div

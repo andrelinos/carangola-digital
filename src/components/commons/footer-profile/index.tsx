@@ -15,7 +15,7 @@ export function FooterProfile({ profileData, isOwner }: Props) {
       <div className="flex w-full max-w-7xl px-4 py-10">
         <div className="relative size-24 max-h-24 max-w-24 overflow-hidden rounded-lg">
           <SafeImage
-            src={profileData?.logoImageUrl || '/default-image.png'}
+            src={profileData?.logoImageUrl || '/default-image.webp'}
             alt={`Banner de ${profileData?.name}`}
             className="rounded-lg border border-white object-cover shadow-md"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

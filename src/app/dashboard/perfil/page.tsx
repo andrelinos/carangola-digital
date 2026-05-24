@@ -6,8 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { ProfileForm } from './_components/profile-form'
 
 export const metadata = {
-  title: 'Configurações de Perfil | Dashboard',
-  description: 'Gerencie suas informações de perfil',
+  title: 'Meu Perfil | Dashboard',
+  description: 'Gerencie suas informações pessoais e foto de perfil.',
 }
 
 export default async function ProfilePage() {
@@ -17,28 +17,37 @@ export default async function ProfilePage() {
     redirect('/acesso')
   }
 
-  const name = session?.user?.name
+  const name = session.user.name ?? null
+  const email = session.user.email ?? null
 
-  // Gera a imagem padrão baseada no nome usando UI Avatars
   const fallbackImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     name || 'Usuario'
   )}&background=e2e8f0&color=475569&size=256&font-size=0.4&bold=true`
 
-  const initialImage = session?.user?.image || fallbackImage
+  const initialImage = session.user.image || fallbackImage
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
-      <div>
-        <h1 className="flex items-center gap-3 font-bold text-3xl text-foreground tracking-tight">
-          <UserCircle className="size-8 text-primary" />
+    <div className="mx-auto max-w-3xl space-y-8">
+      {/* Page Header */}
+      <div className="flex flex-col gap-2 border-slate-100 border-b pb-6 dark:border-slate-800">
+        <h1 className="flex items-center gap-3 font-black text-2xl text-slate-900 tracking-tight dark:text-slate-100">
+          <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 dark:bg-primary/20">
+            <UserCircle className="size-5 text-primary" />
+          </div>
           Meu Perfil
         </h1>
-        <p className="mt-2 text-muted-foreground">
-          Gerencie suas informações pessoais e foto de perfil.
+        <p className="ml-[52px] font-medium text-muted-foreground text-sm">
+          Atualize seu nome e foto de perfil exibidos na plataforma.
         </p>
+        {email && (
+          <p className="ml-[52px] font-mono text-[11px] text-slate-400 dark:text-slate-500">
+            {email}
+          </p>
+        )}
       </div>
 
-      <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm md:p-10 dark:border-slate-800 dark:bg-slate-900">
+      {/* Form Card */}
+      <div className="rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm md:p-10 dark:border-slate-800 dark:bg-slate-900">
         <ProfileForm initialName={name} initialImage={initialImage} />
       </div>
     </div>

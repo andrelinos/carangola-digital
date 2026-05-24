@@ -127,7 +127,7 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
                             <SafeImage
                               src={
                                 item?.imageProfileWhatsApp ||
-                                '/default-image.png'
+                                '/default-image.webp'
                               }
                               className="size-full rounded-xl object-cover shadow-md ring-2 ring-white dark:ring-zinc-800"
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

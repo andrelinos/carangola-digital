@@ -12,6 +12,7 @@ const DEFAULT_STATS = {
   announcedProperties: 0,
   totalVisits: 0,
   newLeads: 0,
+  whatsappClicks: 0,
 }
 
 export async function getDashboardStats() {
@@ -59,14 +60,6 @@ export async function getDashboardStats() {
           .count()
           .get(),
       ])
-
-    const DEFAULT_STATS = {
-      activeBusinesses: 0,
-      announcedProperties: 0,
-      totalVisits: 0,
-      newLeads: 0,
-      whatsappClicks: 0,
-    }
 
     let { activeBusinesses, totalVisits, announcedProperties, newLeads, whatsappClicks } =
       DEFAULT_STATS

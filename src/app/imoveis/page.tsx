@@ -94,7 +94,7 @@ export default async function PropertiesPage() {
                       <Image
                         fill
                         className="object-cover"
-                        src={property?.thumbnail || '/default-image.png'}
+                        src={property?.thumbnail || '/default-image.webp'}
                         alt={property.title}
                         priority
                       />
@@ -102,7 +102,7 @@ export default async function PropertiesPage() {
                       <Image
                         fill
                         className="object-cover"
-                        src={'/default-image.png'}
+                        src={'/default-image.webp'}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={property.title}
                         priority

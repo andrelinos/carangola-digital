@@ -32,7 +32,7 @@ export async function BusinessHero({
       {/* Immersive Cover Image */}
       <div className="absolute inset-0 opacity-40">
         <SafeImage
-          src={profileData?.coverImageUrl || '/default-image.png'}
+          src={profileData?.coverImageUrl || '/default-image.webp'}
           alt={`Banner de ${profileData?.name}`}
           className="size-full object-cover"
           fill
@@ -46,7 +46,7 @@ export async function BusinessHero({
           <div className="group relative shrink-0">
             <div className="relative size-40 overflow-hidden rounded-4xl bg-white p-1.5 shadow-2xl ring-8 ring-white/10 transition-transform duration-500 group-hover:scale-105">
               <SafeImage
-                src={profileData?.logoImageUrl || '/default-image.png'}
+                src={profileData?.logoImageUrl || '/default-image.webp'}
                 alt={`Logo de ${profileData?.name}`}
                 className="size-full rounded-4xl object-contain p-2"
                 fill
@@ -66,14 +66,14 @@ export async function BusinessHero({
                 ('premiumFeatures' in planConfig
                   ? planConfig.premiumFeatures?.verifiedBadge
                   : false)) && (
-                <Badge
-                  variant="default"
-                  className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"
-                >
-                  <ShieldCheck className="size-3.5" />
-                  Verificado
-                </Badge>
-              )}
+                  <Badge
+                    variant="default"
+                    className="gap-1 border-none bg-blue-500 px-3 py-1 font-bold text-white tracking-tight"
+                  >
+                    <ShieldCheck className="size-3.5" />
+                    Verificado
+                  </Badge>
+                )}
               {profileData?.categories?.length ? (
                 profileData.categories.slice(0, 2).map(category => (
                   <Badge

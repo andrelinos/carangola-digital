@@ -9,7 +9,7 @@ interface SafeImageProps extends ImageProps {
 
 export function SafeImage({
   src,
-  fallbackSrc = '/default-image.png',
+  fallbackSrc = '/default-image.webp',
   alt = '',
   ...props
 }: SafeImageProps) {

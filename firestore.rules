@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 🛡️ SEGURANÇA MÁXIMA
+    // O projeto Next.js (App Router) da Carangola Digital utiliza 100% de 
+    // Server Actions e Server Components com o Firebase Admin SDK.
+    // O Admin SDK atua nos bastidores (servidor) e tem acesso irrestrito por padrão.
+    //
+    // Portanto, FECHAMOS TOTALMENTE a porta de acesso via cliente (navegador).
+    // Qualquer tentativa de usar as chaves públicas para ler, gravar ou raspar
+    // dados do banco será sumariamente bloqueada pelo Firebase.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

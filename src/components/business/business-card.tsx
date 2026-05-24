@@ -26,7 +26,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
   const logo =
     profile.logoImageUrl ||
     ('imagePath' in profile ? profile.imagePath : null) ||
-    '/default-image.png'
+    '/default-image.webp'
 
   return (
     <motion.div
