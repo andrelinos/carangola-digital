@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { startTransition, useState } from 'react'
 import type { PropertyProps } from '@/_types/property'
 import { propertyUpdateActionCard } from '@/actions/properties/property-update-action-card'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -8,8 +10,6 @@ import { Modal } from '@/components/ui/custom-modal'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
 
 interface Props {
   data: PropertyProps | null
@@ -136,12 +136,12 @@ export function EditPropertyActionCard({ data }: Props) {
           onChange={handleChange}
           className="w-full"
         />
-        <Label htmlFor="actionDescription" className='font-bold'>
+        <Label htmlFor="actionDescription" className="font-bold">
           Descrição
         </Label>
         <Textarea
           id="actionDescription"
-          className='font-normal'
+          className="font-normal"
           name="actionDescription"
           placeholder="Dê mais informações para contato"
           maxLength={300}

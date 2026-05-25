@@ -12,8 +12,8 @@ const MapPage = dynamic(() => import('./map'), {
 import type { PropertyProps } from '@/_types/property'
 
 import {
-  type PropertyAddressProps,
   createOrUpdatePropertyAddress,
+  type PropertyAddressProps,
 } from '@/actions/properties/property-create-update-address'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
@@ -83,7 +83,7 @@ export function EditPropertyAddresses({ data }: Props) {
 
       await createOrUpdatePropertyAddress(formData)
       toast.success('Endereço salvo com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar o endereço.')
       return false
     } finally {
@@ -112,7 +112,6 @@ export function EditPropertyAddresses({ data }: Props) {
         }))
       }
     } catch {
-      console.error('Failed to fetch address')
     } finally {
       setIsGettingAddress(false)
     }
@@ -135,7 +134,7 @@ export function EditPropertyAddresses({ data }: Props) {
         classname="w-full max-w-lg justify-center border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
-          <div className="flex w-full flex-col gap-4 ">
+          <div className="flex w-full flex-col gap-4">
             <div className="relative mt-6 flex w-full flex-1 flex-col text-zinc-700">
               <div className="flex w-full gap-4">
                 <div className="flex w-full flex-1 flex-col gap-4 text-zinc-700">
@@ -230,7 +229,7 @@ export function EditPropertyAddresses({ data }: Props) {
             <Button
               onClick={handleSaveAddresses}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               Salvar
             </Button>

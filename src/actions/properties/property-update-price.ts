@@ -37,9 +37,7 @@ export async function propertyUpdatePrice({ price, propertyId }: Props) {
     })
 
     return true
-  } catch (error) {
-    console.error('Erro ao atualizar preço')
-
+  } catch (_error) {
     return false
   }
 }

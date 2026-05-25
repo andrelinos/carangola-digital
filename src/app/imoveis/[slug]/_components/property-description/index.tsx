@@ -15,15 +15,15 @@ export function PropertyDescription({
   isUserAuth,
 }: Props) {
   return (
-    <div className="rounded-lg bg-white p-6 shadow">
-      <div className=' mb-4 flex w-fit gap-1 text-gray-900 text-xl'>
-        <span className="font-bold">Descrição</span>
+    <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div className="relative mb-6 flex w-fit gap-1 font-bold text-slate-900 text-xl tracking-tight">
+        Descrição do Imóvel
         {(isOwner || isUserAuth) && (
           <EditPropertyDescription data={propertyData} />
         )}
       </div>
-      <p className="text-gray-700 leading-relaxed">
-        {propertyData?.description}
+      <p className="whitespace-pre-wrap text-slate-600 leading-relaxed">
+        {propertyData?.description || 'Nenhuma descrição fornecida.'}
       </p>
     </div>
   )

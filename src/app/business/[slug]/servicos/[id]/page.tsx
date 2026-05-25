@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
   ArrowLeft,
   Bath,
@@ -13,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { use, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { formatPrice } from '../../../../../utils/format-price'
 
 // No Next.js 15, params é assíncrono
@@ -24,11 +24,11 @@ export default function PropertyDetailPage({
   const { profileId, id } = use(params)
   const router = useRouter()
 
-  const [editingField, setEditingField] = useState<string | null>(null)
-  const [tempValue, setTempValue] = useState('')
-  const [isSaving, setIsSaving] = useState(false)
+  const [_editingField, _setEditingField] = useState<string | null>(null)
+  const [_tempValue, _setTempValue] = useState('')
+  const [_isSaving, _setIsSaving] = useState(false)
 
-  const [property, setProperty] = useState({
+  const [property, _setProperty] = useState({
     id: '1',
     title: 'Apartamento Central',
     type: 'Apartamento',
@@ -58,7 +58,7 @@ export default function PropertyDetailPage({
     createdAt: '2025-10-01',
   })
 
-  const handleEdit = () => {
+  const _handleEdit = () => {
     router.push(`/${profileId}/imoveis/${id}/editar`)
   }
 

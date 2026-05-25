@@ -53,7 +53,7 @@ export function PropertyImageGallery({
 
   return (
     <div className="relative w-full">
-      <div className="group -top-6 absolute right-2 z-30 ">
+      <div className="group absolute -top-6 right-2 z-30">
         <EditPropertyGallery
           propertyData={propertyData}
           isOwner={isOwner}

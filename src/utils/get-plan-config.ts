@@ -7,22 +7,24 @@ import {
 type PlanActive = {
   type?: string
   status: string
-  expiresAt: number
+  expiresAt: number | null // null = plano free permanente
   // … demais campos do seu objeto
 }
 
 export function getPlanConfig(planActive?: PlanActive): PlanConfigProps {
   const now = Date.now()
 
+  // expiresAt null = plano free (sem data de expiração definida)
   const isValid =
     planActive &&
     planActive.status === 'active' &&
     typeof planActive.expiresAt === 'number' &&
     planActive.expiresAt > now
 
+  const rawType = planActive?.type || (planActive as any)?.planType
   const key: PlanTypeProps =
-    isValid && (planActive?.type as PlanTypeProps) in plansBusinessConfig
-      ? (planActive?.type as PlanTypeProps)
+    isValid && rawType in plansBusinessConfig
+      ? (rawType as PlanTypeProps)
       : 'free'
 
   return plansBusinessConfig[key]

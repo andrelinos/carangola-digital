@@ -1,4 +1,4 @@
-import { JSX, SVGProps } from 'react';
+import type { JSX, SVGProps } from 'react'
 
 export const LogoOneLight = (
   props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
@@ -26,4 +26,4 @@ export const LogoOneLight = (
       fill="#0F97D1"
     />
   </svg>
-);
+)

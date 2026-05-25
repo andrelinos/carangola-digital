@@ -1,8 +1,7 @@
-import type { ProfileDataProps } from '@/_types/profile-data'
-
-import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
 import { Suspense } from 'react'
+import type { ProfileDataProps } from '@/_types/profile-data'
+import { authOptions } from '@/lib/auth'
 import { HeaderPageContainer } from '..'
 import { LogoHeader } from '../logo-header'
 import { Menus } from './menus'
@@ -14,7 +13,7 @@ interface Props {
 
 export async function HeaderHome({ profileData, headerShow = true }: Props) {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   const hasProfileLink = session?.user?.hasProfileLink || false
 
@@ -22,7 +21,7 @@ export async function HeaderHome({ profileData, headerShow = true }: Props) {
     <Suspense fallback={<p>Carregando...</p>}>
       <HeaderPageContainer>
         {headerShow && (
-          <div className="flex w-full items-center justify-between">
+          <div className="flex w-full items-center justify-between print:hidden">
             <LogoHeader />
             <Menus hasProfileLink={hasProfileLink} session={session} />
           </div>

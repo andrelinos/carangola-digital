@@ -16,20 +16,17 @@ import {
 } from 'react'
 import ReactCrop, {
   type Crop,
-  type PixelCrop,
   centerCrop,
   makeAspectCrop,
+  type PixelCrop,
 } from 'react-image-crop'
 import { toast } from 'sonner'
-
+import type { PropertyProps } from '@/_types/property'
+import { updatePropertyGallery } from '@/actions/properties/save-image-gallery-property'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
-
-import type { PropertyProps } from '@/_types/property'
-
-import { updatePropertyGallery } from '@/actions/properties/save-image-gallery-property'
 
 import { compressImage } from '@/utils/compress-image'
 
@@ -269,8 +266,8 @@ export function EditPropertyGallery({
       for (const img of newImages) {
         URL.revokeObjectURL(img.previewUrl)
       }
-    } catch (error) {
-      console.log('Erro ao recarregar imagem...')
+    } catch (_error) {
+      console.info('Erro ao recarregar imagem...')
     }
     setNewImages([])
     setIsOpen(false)
@@ -321,9 +318,8 @@ export function EditPropertyGallery({
       }
 
       toast.success('Galeria atualizada com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar galeria.')
-      console.error(error)
     } finally {
       setIsSubmitting(false)
       startTransition(async () => {

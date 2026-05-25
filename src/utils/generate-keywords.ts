@@ -1,6 +1,6 @@
 export function generateKeywords(text: string): string[] {
   try {
-    if (!text || !text.trim()) return []
+    if (!text?.trim()) return []
 
     const normalized = text
       .normalize('NFD')

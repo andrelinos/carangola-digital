@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { LoaderCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface Props {
   onClose?: () => void

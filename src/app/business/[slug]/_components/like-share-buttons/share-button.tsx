@@ -1,6 +1,9 @@
 'use client'
 
+import { Check, Copy, ShareAndroid } from 'iconoir-react'
+import { X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -8,100 +11,123 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-import { Check, Copy, ShareAndroid } from 'iconoir-react'
-import { useState } from 'react'
-
-import { FooterEditModal } from '@/components/commons/footer-edit-modal'
 import { Modal } from '@/components/ui/custom-modal'
+import { cn } from '@/lib/utils'
 
 export function ShareButton() {
   const path = usePathname()
-
   const [isOpen, setIsOpen] = useState(false)
-
   const [isCopied, setIsCopied] = useState(false)
 
-  function handleOpenModal() {
-    setIsOpen(!isOpen)
-  }
-
-  function onClose() {
-    setIsOpen(false)
-
-    setIsCopied(false)
-  }
-
-  const shareUrl = `https://carangoladigital.com.br${path}`
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${path}`
+      : `https://carangoladigital.com.br${path}`
 
   function handleCopy() {
-    const textArea = document.createElement('textarea')
-    textArea.value = shareUrl
-    textArea.style.position = 'fixed'
-    textArea.style.top = '0'
-    textArea.style.left = '0'
-    textArea.style.opacity = '0'
-
-    document.body.appendChild(textArea)
-    textArea.focus()
-    textArea.select()
-
-    try {
-      document.execCommand('copy')
-
+    navigator.clipboard.writeText(shareUrl).then(() => {
       setIsCopied(true)
-
       setTimeout(() => setIsCopied(false), 2000)
-    } catch (err) {
-      console.error('Falha ao copiar o texto: ', err)
-    }
+    })
+  }
 
-    document.body.removeChild(textArea)
+  const handleShareClick = () => {
+    // Pequeno delay para garantir que o compartilhamento inicie antes do modal fechar
+    setTimeout(() => setIsOpen(false), 100)
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <>
       <button
-        onClick={handleOpenModal}
+        onClick={() => setIsOpen(true)}
         type="button"
-        className="group flex h-fit items-center gap-2 rounded-lg bg-zinc-600 px-4 py-1 text-white hover:cursor-pointer"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-50 p-4 font-bold text-slate-600 ring-1 ring-slate-200 transition-all hover:bg-slate-100 active:scale-95 dark:bg-slate-900/40 dark:text-slate-400 dark:ring-slate-700"
       >
-        <ShareAndroid className="size-6 stroke-1 transition-all duration-300 ease-in-out group-hover:scale-115" />
-        <span className="">Compartilhar</span>
+        <ShareAndroid className="size-5" />
+        <span>Compartilhar</span>
       </button>
 
       <Modal
         isOpen={isOpen}
-        setIsOpen={onClose}
-        title="Compartilhe este perfil"
-        description="Escolha a plataforma que você deseja compartilhar este perfil"
-        classname="w-full max-w-lg justify-center sm:rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
+        setIsOpen={setIsOpen}
+        classname="max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-[2.5rem] p-0 overflow-hidden"
       >
-        <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
-          <div className="flex w-full justify-center gap-4 ">
-            <FacebookShareButton url={shareUrl} className="">
-              <FacebookIcon size={44} round />
-            </FacebookShareButton>
-            <WhatsappShareButton url={shareUrl} className="">
-              <WhatsappIcon size={44} round />
-            </WhatsappShareButton>
+        <div className="relative p-8">
+          {/* Close Button */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-6 right-6 rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+          >
+            <X size={20} />
+          </button>
+
+          <div className="mb-8">
+            <h2 className="font-bold text-2xl text-slate-900 tracking-tight dark:text-white">
+              Compartilhar Perfil
+            </h2>
+            <p className="mt-1 font-medium text-slate-500 text-sm leading-relaxed">
+              Espalhe a novidade! Escolha como deseja compartilhar este negócio.
+            </p>
+          </div>
+
+          <div className="mb-10 flex justify-center gap-6">
+            <div onClick={handleShareClick}>
+              <FacebookShareButton
+                url={shareUrl}
+                className="transition-transform hover:scale-110 active:scale-95"
+              >
+                <FacebookIcon size={64} round />
+              </FacebookShareButton>
+            </div>
+
+            <div onClick={handleShareClick}>
+              <WhatsappShareButton
+                url={shareUrl}
+                className="transition-transform hover:scale-110 active:scale-95"
+              >
+                <WhatsappIcon size={64} round />
+              </WhatsappShareButton>
+            </div>
 
             <button
               type="button"
-              onClick={handleCopy}
-              className={`flex size-11 items-center justify-center rounded-full text-white transition-colors duration-300 hover:cursor-pointer ${
-                isCopied ? 'bg-green-500' : 'bg-orange-500'
-              }`}
+              onClick={() => {
+                handleCopy()
+                // No fechamento automático para dar feedback do "Copiado!"
+              }}
+              className={cn(
+                'flex size-[64px] items-center justify-center rounded-full text-white shadow-lg transition-all hover:scale-110 active:scale-95',
+                isCopied
+                  ? 'bg-emerald-500 shadow-emerald-200'
+                  : 'bg-slate-800 shadow-slate-200 dark:bg-slate-700'
+              )}
             >
               {isCopied ? (
-                <Check className="size-8" />
+                <Check className="size-7" />
               ) : (
-                <Copy className="size-8" />
+                <Copy className="size-7" />
               )}
             </button>
           </div>
+
+          <div className="space-y-3">
+            <label className="px-1 font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+              Link Direto
+            </label>
+            <div className="flex items-center gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 dark:bg-slate-800/50 dark:ring-slate-800">
+              <span className="flex-1 truncate font-bold text-slate-600 text-xs dark:text-slate-400">
+                {shareUrl}
+              </span>
+              <button
+                onClick={handleCopy}
+                className="whitespace-nowrap font-black text-[11px] text-blue-600 uppercase tracking-tighter hover:text-blue-700 dark:text-blue-400"
+              >
+                {isCopied ? 'Copiado!' : 'Copiar Link'}
+              </button>
+            </div>
+          </div>
         </div>
-        <FooterEditModal onClose={onClose} />
       </Modal>
-    </div>
+    </>
   )
 }

@@ -3,19 +3,17 @@
 import { Plus, Trash } from 'iconoir-react'
 import { ArrowUpFromLine } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-
+import type { BusinessPhoneProps } from '@/_types/profile-data'
+import { createBusinessPhones } from '@/actions/business/create-business-phones'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-import type { BusinessPhoneProps } from '@/_types/profile-data'
-import { createBusinessPhones } from '@/actions/business/create-business-phones'
 import { sanitizePhoneNumber } from '@/utils/format-phone-number'
 import { handleImageInput } from '@/utils/handle-image-input'
 
@@ -36,9 +34,18 @@ interface Props {
 
 export function EditContactPhones({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'phones') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [profileWhatsAppPic, setProfileWhatsAppPic] = useState<string | null>(
     null
@@ -87,8 +94,7 @@ export function EditContactPhones({ data }: Props) {
   }
 
   function handleDeletePhone(event: React.MouseEvent<HTMLButtonElement>) {
-    if (!event || !event.currentTarget || !event.currentTarget.dataset.index)
-      return
+    if (!event?.currentTarget?.dataset.index) return
     const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
     setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
   }
@@ -116,13 +122,13 @@ export function EditContactPhones({ data }: Props) {
       setFormValues(prev =>
         prev
           ? prev.map((item, i) =>
-            i === index
-              ? {
-                ...item,
-                [field]: sanitizedValue,
-              }
-              : item
-          )
+              i === index
+                ? {
+                    ...item,
+                    [field]: sanitizedValue,
+                  }
+                : item
+            )
           : prev
       )
       return
@@ -131,13 +137,13 @@ export function EditContactPhones({ data }: Props) {
     setFormValues(prev =>
       prev
         ? prev.map((item, i) =>
-          i === index
-            ? {
-              ...item,
-              [field]: type === 'checkbox' ? checked : value,
-            }
-            : item
-        )
+            i === index
+              ? {
+                  ...item,
+                  [field]: type === 'checkbox' ? checked : value,
+                }
+              : item
+          )
         : prev
     )
   }
@@ -157,7 +163,7 @@ export function EditContactPhones({ data }: Props) {
 
       await createBusinessPhones(formData)
       toast.success('Telefones de contato salvos com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar os telefones de contato.')
       return false
     } finally {
@@ -187,7 +193,7 @@ export function EditContactPhones({ data }: Props) {
         classname="w-full max-w-lg max-h-[90vh] justify-center  overflow-y-auto border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="lg:fex-row flex w-full flex-col gap-4 pt-8 pb-24">
-          <div className="flex w-full flex-col items-end gap-4 ">
+          <div className="flex w-full flex-col items-end gap-4">
             <div className="flex w-full flex-1 flex-col items-end gap-8 p-4 text-zinc-700">
               {formValues?.map((phone, index) => {
                 return (
@@ -270,7 +276,7 @@ export function EditContactPhones({ data }: Props) {
                             </div>
                           </div>
                         </div>
-                        <div className="flex w-full flex-1 flex-col gap-4 ">
+                        <div className="flex w-full flex-1 flex-col gap-4">
                           <Input
                             variant="ghost"
                             name={`phone${index}.nameContact`}

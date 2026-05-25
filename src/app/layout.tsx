@@ -1,16 +1,16 @@
 import '@/styles/globals.css'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Quicksand } from 'next/font/google'
 import { Toaster } from 'sonner'
-
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { CookieBanner } from '@/components/commons/cookie-banner'
 import { Footer } from '@/components/commons/footer'
 import { HeaderHome } from '@/components/commons/headers'
 import { PageTransition, StairTransition } from '@/components/effects'
 import { cn } from '@/lib/utils'
+import { AuthProvider } from '@/providers/session-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
 import { serverEnv } from '@/utils/env'
 
@@ -70,23 +70,25 @@ export default function RootLayout({
     <html lang="pt" suppressHydrationWarning>
       <body
         className={cn(
-          'bg-background text-content-body antialiased ',
+          'bg-background text-content-body antialiased',
           quicksand.className
         )}
       >
-        <ThemeProvider>
-          <StairTransition />
-          <PageTransition>
-            <HeaderHome />
-            {children}
-            <CookieBanner />
-          </PageTransition>
-        </ThemeProvider>
+        <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
+        <AuthProvider>
+          <ThemeProvider>
+            <StairTransition />
+            <PageTransition>
+              <HeaderHome />
+              {children}
+              <CookieBanner />
+            </PageTransition>
+          </ThemeProvider>
+        </AuthProvider>
 
         <Toaster richColors position="top-right" />
         <Footer />
       </body>
-      <GoogleAnalytics gaId={serverEnv.ANALYTICS_GOOGLE_ID} />
     </html>
   )
 }

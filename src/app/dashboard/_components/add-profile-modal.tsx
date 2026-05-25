@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { useState, useTransition } from 'react'
 import { createBusinessLink } from '@/actions/business/create-business-link'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
@@ -12,9 +14,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { sanitizeLink } from '@/utils/sanitize-link'
-import Link from 'next/link'
-
-import { useState, useTransition } from 'react'
 
 interface Props {
   userId?: string
@@ -52,12 +51,7 @@ export function AddProfileModal({ userId }: Props) {
         throw new Error('O campo name é obrigatório')
       }
 
-      console.log('DOIS :: ', name, link, id)
-
       await createBusinessLink({ name, link, userId: id })
-    } catch (err) {
-      console.error(err)
-      throw err
     } finally {
       setIsLoading(false)
     }
@@ -93,8 +87,13 @@ export function AddProfileModal({ userId }: Props) {
               </div>
               <div className="flex w-full flex-col items-start gap-2">
                 <Label htmlFor="link" className="mt-4 font-semibold">
-                  <span className='flex gap-2'>Link para o negócio
-                    {link && <Link href={`/business/${link}`} target='_blank'>link</Link>}
+                  <span className="flex gap-2">
+                    Link para o negócio
+                    {link && (
+                      <Link href={`/business/${link}`} target="_blank">
+                        link
+                      </Link>
+                    )}
                   </span>
                 </Label>
                 <Input

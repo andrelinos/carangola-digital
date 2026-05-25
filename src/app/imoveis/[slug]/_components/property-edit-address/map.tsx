@@ -5,8 +5,8 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet/dist/leaflet.css'
 
 import { MapPinPlus as MapIcon, Map as MapIconButton } from 'iconoir-react'
+import { LocateFixed } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-
 import {
   MapContainer,
   Marker,
@@ -14,10 +14,8 @@ import {
   useMap,
   useMapEvents,
 } from 'react-leaflet'
-
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
-import { LocateFixed } from 'lucide-react'
 
 type MapClickHandlerProps = {
   setCoordinates: (latlng: [number, number]) => void

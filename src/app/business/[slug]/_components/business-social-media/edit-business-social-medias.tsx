@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
@@ -29,6 +29,7 @@ interface Props {
 
 export function EditBusinessSocialMedias({ profileData }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   if (!profileData?.id) {
     return <div />
@@ -41,6 +42,14 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
     socialMedias || ({} as FormValuesProps)
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'social') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formValues, setFormValues] =
     useState<FormValuesProps>(initialFormValues)
@@ -72,7 +81,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
 
       await createBusinessSocialMedia(formData)
       toast.success('Redes sociais salvas com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar as redes sociais.')
       return false
     } finally {
@@ -90,8 +99,6 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
 
   const isOnlyPremium = !profileData?.isPremium
 
-
-
   return (
     <>
       <ButtonForOwnerOnly handleExecute={handleOpenModal}>
@@ -106,8 +113,8 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
         classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
-          <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:items-center ">
-            <div className='flex w-full flex-1 flex-col items-end gap-4 p-1 text-zinc-700'>
+          <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:items-center">
+            <div className="flex w-full flex-1 flex-col items-end gap-4 p-1 text-zinc-700">
               <Input
                 variant="ghost"
                 name="instagram"
@@ -197,7 +204,7 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
             <Button
               onClick={handleSaveSocialMedia}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               Salvar
             </Button>

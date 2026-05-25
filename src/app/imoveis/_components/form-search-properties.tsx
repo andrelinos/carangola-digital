@@ -1,14 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-
 import type { PropertyProps } from '@/_types/property'
+import { searchProperties } from '@/actions/properties/search-properties'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
-import Image from 'next/image'
 
 interface SearchProps extends PropertyProps {}
 
@@ -29,19 +29,10 @@ export default function SearchFormProperties() {
     setIsLoadingProperties(true)
 
     try {
-      const formData = new FormData()
-      formData.append('searchTerms', searchTerms)
-
-      // Chama a nova API de busca de imóveis
-      const response = await fetch('/api/properties', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const json = await response?.json()
-      setResultsSearch(json.data || [])
-    } catch (error) {
-      console.error('Erro na busca de imóveis:', error)
+      const results = await searchProperties(searchTerms)
+      setResultsSearch(results as unknown as SearchProps[])
+    } catch (_error) {
+      console.error('Erro na busca de imóveis:')
     } finally {
       setHasSearched(true)
       setIsLoadingProperties(false)
@@ -74,7 +65,7 @@ export default function SearchFormProperties() {
 
         {resultsSearch && resultsSearch?.length > 0 && (
           <div className="flex size-full flex-col gap-2 py-8">
-            <h2 className=" py-6 text-center font-bold text-2xl">
+            <h2 className="py-6 text-center font-bold text-2xl">
               Resultados da sua busca
             </h2>
             <div className="flex w-full max-w-5xl flex-wrap justify-around gap-6">
@@ -91,8 +82,9 @@ export default function SearchFormProperties() {
                         width={332}
                         height={192}
                         className="size-full object-cover"
-                        src={'/default-image.png'}
-                        // src={property.images[0] || '/default-image.png'}
+                        src={'/default-image.webp'}
+                        // src={property.images[0] || '/default-image.webp'}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={property.title}
                         priority
                       />

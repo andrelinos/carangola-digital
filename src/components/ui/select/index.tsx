@@ -18,9 +18,9 @@ export const Select: React.FC<CustomSelectProps> = ({
   selected,
   handleSelectChange,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [_isOpen, setIsOpen] = useState(false)
   // const [selected, setSelected] = useState<string | null>(null)
-  const [search, setSearch] = useState('')
+  const [search, _setSearch] = useState('')
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Filtra as opções com base no texto digitado

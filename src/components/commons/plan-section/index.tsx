@@ -1,73 +1,120 @@
+import clsx from 'clsx'
+import { Check, X } from 'lucide-react'
+import { getServerSession } from 'next-auth/next'
 import { PurchaseButtons } from '@/app/business/[slug]/compre/components/purchase-buttons'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import { Card, CardContent } from '@/components/ui/card'
+import { plansBusinessConfig } from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
 import { formatPrice } from '@/utils/format-price'
-import clsx from 'clsx'
-
-import { Check } from 'lucide-react'
-import { getServerSession } from 'next-auth/next'
 
 export async function PricingPlans() {
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
+  const isAdmin = await verifyAdmin()
 
   const plans = [
     {
       id: 'free',
-      name: 'Grátis',
-      price: 0,
+      name: plansBusinessConfig.free.title,
+      price: plansBusinessConfig.free.price,
       period: 'Para sempre',
-      popular: false,
+      popular: plansBusinessConfig.free.popular,
       disable: false,
-      features: [
-        'Perfil básico do estabelecimento',
-        'Informações de contato',
-        'Horário de funcionamento',
-        'Links para 2 redes sociais',
-        '2 Telefones/Whatsapp',
-        'Rota de localização no Google Maps',
-      ],
       buttonText: 'Começar Grátis',
       buttonVariant: 'outline' as const,
       cardClass: 'bg-gray-50 border-gray-200',
+      features: [
+        { name: 'Perfil básico do estabelecimento', included: true },
+        {
+          name: `${plansBusinessConfig.free.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.free.businessPhones.quantity} Telefones/Whatsapp`,
+          included: true,
+        },
+        { name: 'Informações de contato e horário', included: true },
+        { name: 'Rota de localização no Google Maps', included: true },
+      ],
     },
     {
       id: 'basic',
-      name: 'Básico',
-      price: 25,
-      period: 'por mês',
-      popular: true,
+      name: plansBusinessConfig.basic.title,
+      price: plansBusinessConfig.basic.price,
+      period: 'por ano',
+      popular: plansBusinessConfig.basic.popular,
       disable: false,
-      features: [
-        'Tudo do plano Grátis',
-        'Links para todas as redes sociais',
-        'Até 15 telefones/whatsapp',
-        'Botão de compartilhamento',
-        'Suporte técnico',
-      ],
-      buttonText: 'Escolher Básico',
+      buttonText: `Escolher ${plansBusinessConfig.basic.title}`,
       buttonVariant: 'default' as const,
       cardClass:
-        'bg-gradient-to-br from-gray-900  shadow-3xl to-gray-800 text-white',
+        'bg-gradient-to-br from-gray-900 shadow-3xl to-gray-800 text-white',
+      features: [
+        {
+          name: `${plansBusinessConfig.basic.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.basic.businessPhones.quantity} Telefones / WhatsApp`,
+          included: true,
+        },
+        { name: 'Links para todas as redes sociais', included: true },
+        { name: 'Galeria de Fotos', included: false },
+        { name: 'Destaque no Topo das Buscas', included: false },
+        { name: 'Selo de Empresa Verificada', included: false },
+        { name: 'Página sem Concorrentes', included: false },
+        { name: 'Botão de Contato Fixo', included: false },
+        { name: 'Painel de Métricas', included: false },
+      ],
     },
     {
       id: 'pro',
-      name: 'Pro',
-      price: 49.99,
+      name: plansBusinessConfig.pro.title,
+      price: plansBusinessConfig.pro.price,
       period: 'por ano',
-      popular: false,
+      popular: plansBusinessConfig.pro.popular,
       disable: false,
-      features: [
-        'Tudo do plano Básico',
-        'Galeria com até 15 fotos',
-        'Cupons e promoções QR',
-        'Cardápio/catálogo digital',
-        'Analytics e relatórios',
-        'Prioridade no suporte',
-      ],
-      buttonText: 'Em breve...',
+      buttonText: `Escolher ${plansBusinessConfig.pro.title}`,
       buttonVariant: 'secondary' as const,
       cardClass: 'bg-white border-2 border-primary shadow-lg',
+      features: [
+        {
+          name: 'Destaque no Topo das Buscas',
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.prioritySearch ?? true,
+        },
+        {
+          name: 'Selo de Empresa Verificada',
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.verifiedBadge ?? true,
+        },
+        {
+          name: 'Página sem Concorrentes',
+          included:
+            plansBusinessConfig.pro.premiumFeatures?.hideCompetitors ?? true,
+        },
+        {
+          name: `Até ${plansBusinessConfig.pro.imageGallery?.limit || 10} Fotos na Galeria`,
+          included: true,
+        },
+        {
+          name: 'Botão de Contato Fixo',
+          included: plansBusinessConfig.pro.premiumFeatures?.stickyCta ?? true,
+        },
+        {
+          name: 'Painel de Métricas',
+          included: plansBusinessConfig.pro.premiumFeatures?.analytics ?? true,
+        },
+        {
+          name: `${plansBusinessConfig.pro.addresses.quantity} Endereços`,
+          included: true,
+        },
+        {
+          name: `${plansBusinessConfig.pro.businessPhones.quantity} Telefones / WhatsApp`,
+          included: true,
+        },
+        { name: '19 Links de Redes Sociais', included: true },
+      ],
     },
   ]
 
@@ -84,7 +131,7 @@ export async function PricingPlans() {
         </div>
 
         <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
-          {plans.map((plan, index) => (
+          {plans.map((plan, _index) => (
             <Card
               key={plan.name}
               className={clsx(`relative ${plan.cardClass}`, {
@@ -92,7 +139,7 @@ export async function PricingPlans() {
               })}
             >
               {plan.popular && (
-                <div className="-top-4 -translate-x-1/2 absolute left-1/2 transform">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 transform">
                   <span className="rounded-full bg-primary px-4 py-1 font-semibold text-sm">
                     Mais Popular
                   </span>
@@ -101,18 +148,40 @@ export async function PricingPlans() {
 
               <CardContent className="p-8">
                 <div className="mb-8 text-center">
-                  <h3 className={'mb-2 font-bold text-2xl'}>{plan.name}</h3>
-                  <div className={'mb-1 font-bold text-4xl'}>
+                  <h3 className="mb-2 font-bold text-2xl">{plan.name}</h3>
+                  <div className="mb-1 font-bold text-4xl">
                     {formatPrice(plan.price)}
                   </div>
-                  <p>{plan.period}</p>
+                  <p className="text-sm opacity-80">{plan.period}</p>
                 </div>
 
                 <ul className="mb-8 space-y-4">
                   {plan.features.map(feature => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="mr-3 h-5 w-5 flex-shrink-0 text-current" />
-                      <span>{feature}</span>
+                    <li
+                      key={feature.name}
+                      className={clsx('flex items-center', {
+                        'opacity-50': !feature.included,
+                      })}
+                    >
+                      {feature.included ? (
+                        <Check
+                          className={clsx(
+                            'mr-3 h-5 w-5 shrink-0',
+                            plan.id === 'basic'
+                              ? 'text-green-400'
+                              : 'text-green-500'
+                          )}
+                        />
+                      ) : (
+                        <X className="mr-3 h-5 w-5 shrink-0 text-current" />
+                      )}
+                      <span
+                        className={clsx('text-sm md:text-base', {
+                          'line-through': !feature.included,
+                        })}
+                      >
+                        {feature.name}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -120,7 +189,8 @@ export async function PricingPlans() {
                 <PurchaseButtons
                   profileId={session?.user.myProfileLink}
                   user={session?.user}
-                  plan={plan}
+                  plan={plan as any}
+                  isAdmin={isAdmin}
                 />
               </CardContent>
             </Card>

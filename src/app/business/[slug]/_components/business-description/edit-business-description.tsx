@@ -1,15 +1,14 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
-
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { updateBusinessDescription } from '@/actions/business/create-business-description'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
 import { TextArea } from '@/components/ui/text-area'
-import { toast } from 'sonner'
 
 interface Props {
   data: {
@@ -20,9 +19,18 @@ interface Props {
 
 export function EditBusinessDescription({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'description') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [businessDescription, setBusinessDescription] = useState(
@@ -39,6 +47,7 @@ export function EditBusinessDescription({ data }: Props) {
 
   async function handleSaveOpeningHours() {
     setIsSubmitting(true)
+    router.replace(window.location.pathname)
 
     try {
       const formData = new FormData()
@@ -47,14 +56,13 @@ export function EditBusinessDescription({ data }: Props) {
 
       await updateBusinessDescription(formData)
       toast.success('Descrição salva com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar descrição')
       return false
     } finally {
       startTransition(() => {
         setIsSubmitting(false)
         onClose()
-
         router.refresh()
       })
     }
@@ -111,7 +119,7 @@ export function EditBusinessDescription({ data }: Props) {
             <Button
               onClick={handleSaveOpeningHours}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               Salvar
             </Button>

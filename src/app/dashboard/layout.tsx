@@ -1,9 +1,11 @@
-import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
-
+import { getServerSession } from 'next-auth/next'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import { authOptions } from '@/lib/auth'
 
 import { DashboardSidebar } from './_components/dashboard-sidebar'
+
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({
   children,
@@ -16,11 +18,17 @@ export default async function RootLayout({
     redirect('/acesso')
   }
 
+  const isAdmin = await verifyAdmin()
+
   return (
     <div className="flex w-full bg-background font-sans text-foreground antialiased">
-      <DashboardSidebar />
-      <main className="h-full flex-1 overflow-y-auto transition-all duration-300 ease-in-out md:ml-64">
-        <div className="p-4 md:p-8">{children}</div>
+      <div className="print:hidden">
+        <DashboardSidebar isAdmin={isAdmin} />
+      </div>
+      <main className="h-full flex-1 overflow-y-auto transition-all duration-300 ease-in-out md:ml-64 print:ml-0 print:overflow-visible">
+        <div className="px-4 pt-20 pb-4 md:px-8 md:pt-[84px] md:pb-8 print:p-0">
+          {children}
+        </div>
       </main>
     </div>
   )

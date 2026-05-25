@@ -1,8 +1,12 @@
 'use server'
 
-import type { PaymentDataProps } from '@/_types/payment-data'
-import { db } from '@/lib/firebase'
 import { Timestamp } from 'firebase-admin/firestore'
+import type { PaymentDataProps } from '@/_types/payment-data'
+import {
+  type PlanTypeProps,
+  plansBusinessConfig,
+} from '@/configs/plans-business'
+import { db } from '@/lib/firebase'
 
 export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
   let profileId = ''
@@ -15,25 +19,19 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
         profileId = paymentData.external_reference
         planType = paymentData.metadata.plan.type
         userId = paymentData.metadata.user_id
-      } catch (error) {
+      } catch {
         console.error(
           'Erro ao analisar external_reference, verifique o formato dos dados.'
-          // error
         )
       }
     }
 
     if (profileId && planType && userId) {
-      const currentDate = new Date()
-      const expirationDate = new Date(currentDate)
-
-      if (planType === 'basic') {
-        expirationDate.setMonth(expirationDate.getMonth() + 1)
-      } else if (planType === 'pro') {
-        expirationDate.setFullYear(expirationDate.getFullYear() + 1)
-      } else {
-        expirationDate.setMonth(expirationDate.getMonth() + 1)
-      }
+      // Calcula a data de expiração com base em durationMonths do plansBusinessConfig
+      const planConfig = plansBusinessConfig[planType as PlanTypeProps]
+      const durationMonths = planConfig?.durationMonths ?? 12 // fallback: 12 meses
+      const expirationDate = new Date()
+      expirationDate.setMonth(expirationDate.getMonth() + durationMonths)
 
       const planActive = {
         id: paymentData.id,
@@ -68,8 +66,8 @@ export async function handleMercadoPagoPayment(paymentData: PaymentDataProps) {
       )
       return false
     }
-  } catch (error) {
-    console.error('Erro ao processar pagamento:', error)
+  } catch {
+    console.error('Erro ao processar pagamento')
     return false
   }
 

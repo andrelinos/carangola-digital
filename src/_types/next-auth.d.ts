@@ -1,9 +1,11 @@
-import 'next-auth'
+import type { AsaasSubscriptionStatus } from './asaas'
 
 declare module 'next-auth' {
   interface User {
-    hasProfileLink?: boolean
+    id: string
+    email: string
     emailVerified: string | Date | null
+    hasProfileLink?: boolean
     favorites?: string[]
     myProfileLink?: string
     accountVerified?: boolean
@@ -30,6 +32,11 @@ declare module 'next-auth' {
         }
       }
     }
+    // Campos Asaas
+    asaasCustomerId?: string | null
+    asaasSubscriptionId?: string | null
+    asaasSubscriptionStatus?: AsaasSubscriptionStatus | null
+    planExpiresAt?: number | null
   }
 
   interface Session {

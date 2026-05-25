@@ -9,7 +9,7 @@ interface SafeImageProps extends ImageProps {
 
 export function SafeImage({
   src,
-  fallbackSrc = '/default-image.png',
+  fallbackSrc = '/default-image.webp',
   alt = '',
   ...props
 }: SafeImageProps) {
@@ -27,6 +27,7 @@ export function SafeImage({
       onError={() => {
         setImgSrc(fallbackSrc)
       }}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       priority
     />
   )

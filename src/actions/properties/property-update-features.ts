@@ -38,9 +38,7 @@ export async function propertyUpdateFeatures({ features, propertyId }: Props) {
     })
 
     return true
-  } catch (error) {
-    console.error('Erro ao atualizar descrição', error)
-
+  } catch (_error) {
     return false
   }
 }

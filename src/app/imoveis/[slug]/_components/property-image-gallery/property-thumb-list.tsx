@@ -1,8 +1,8 @@
 'use client'
 
-import type { PropertyImage } from '@/_types/property'
 import clsx from 'clsx'
 import Image from 'next/image'
+import type { PropertyImage } from '@/_types/property'
 
 interface Props {
   title: string
@@ -19,7 +19,7 @@ export function PropertyThumbList({
 }: Props) {
   return (
     <div className="w-full overflow-x-auto rounded-b-lg border border-zinc-400/20 p-2 shadow-lg">
-      <div className=" relative flex space-x-2">
+      <div className="relative flex space-x-2">
         {images?.map((imgUrl, index) => (
           <button
             key={String(index)}

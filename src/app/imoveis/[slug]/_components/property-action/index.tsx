@@ -13,23 +13,24 @@ interface Props {
 
 export function PropertyAction({ propertyData, isOwner, isUserAuth }: Props) {
   return (
-    <>
-      <div className="rounded-lg bg-blue-50 p-6 shadow">
-        <div className=" mb-4 flex w-fit gap-1 font-bold text-gray-900 text-xl">
-          Interessado?
+    <div className="flex flex-col gap-4">
+      <div className="w-full rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-50 to-white p-6 shadow-sm">
+        <div className="mb-4 flex w-fit gap-1 font-bold text-slate-900 text-xl tracking-tight">
+          Tem interesse?
           {(isOwner || isUserAuth) && (
             <EditPropertyActionCard data={propertyData} />
           )}
         </div>
 
-        <p className="mb-4 text-gray-700 text-sm">
-          Entre em contato para mais informações sobre este imóvel.
+        <p className="mb-6 text-slate-600 text-sm leading-relaxed">
+          Entre em contato diretamente e garanta a melhor negociação para este
+          imóvel.
         </p>
         <PropertyContactModal property={propertyData} />
       </div>
-      <div className="flex w-full justify-center">
+      <div className="mt-2 flex w-full justify-center">
         <ShareButton />
       </div>
-    </>
+    </div>
   )
 }

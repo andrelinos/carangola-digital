@@ -18,8 +18,7 @@ export async function updateBusinessDescription(formData: FormData) {
     })
 
     return { success: true }
-  } catch (error) {
-    console.error('Erro ao atualizar descrição:', error)
+  } catch (_error) {
     return { success: false, error: 'Erro interno do servidor' }
   }
 }

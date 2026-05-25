@@ -1,10 +1,9 @@
 'server-only'
 
-import path from 'node:path'
-
 import { promises as fs } from 'node:fs'
-import { serverEnv } from '@/utils/env'
+import path from 'node:path'
 import { Timestamp } from 'firebase-admin/firestore'
+import { serverEnv } from '@/utils/env'
 
 interface DataProps {
   userId: string | null | undefined
@@ -62,7 +61,7 @@ export async function generateJsonFile(data: DataProps) {
     }
 
     return true
-  } catch (error) {
+  } catch (_error) {
     return true
   }
 }

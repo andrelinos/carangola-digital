@@ -2,8 +2,8 @@
 
 import { Plus, Trash } from 'iconoir-react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { BusinessAddressProps } from '@/_types/profile-data'
@@ -29,9 +29,18 @@ interface Props {
 
 export function EditBusinessAddresses({ data }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const profileId = data.profileId
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'addresses') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGettingAddress, setIsGettingAddress] = useState(false)
 
@@ -116,7 +125,7 @@ export function EditBusinessAddresses({ data }: Props) {
 
       await createBusinessAddress(formData)
       toast.success('Endereços salvos com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar os endereços.')
       return false
     } finally {
@@ -130,8 +139,7 @@ export function EditBusinessAddresses({ data }: Props) {
   }
 
   function handleDeleteAddress(event: React.MouseEvent<HTMLButtonElement>) {
-    if (!event || !event.currentTarget || !event.currentTarget.dataset.index)
-      return
+    if (!event?.currentTarget?.dataset.index) return
     const index = Number.parseInt(event.currentTarget.dataset.index ?? '0', 10)
     setFormValues(prev => (prev ? prev.filter((_, i) => i !== index) : null))
   }
@@ -216,7 +224,7 @@ export function EditBusinessAddresses({ data }: Props) {
         classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
-          <div className="flex w-full flex-col gap-4 ">
+          <div className="flex w-full flex-col gap-4">
             {formValues?.map((item, index) => {
               const coordinates: [number, number] = [
                 typeof item.latitude === 'number' && item.latitude !== 0
@@ -349,7 +357,7 @@ export function EditBusinessAddresses({ data }: Props) {
             <Button
               onClick={handleSaveAddresses}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               Salvar
             </Button>

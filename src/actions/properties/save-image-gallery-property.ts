@@ -1,8 +1,8 @@
 'use server'
 
+import { randomUUID } from 'node:crypto'
 import { Timestamp } from 'firebase-admin/firestore'
 import { getServerSession } from 'next-auth/next'
-import { randomUUID } from 'node:crypto'
 
 import { authOptions } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
@@ -112,14 +112,8 @@ export async function updatePropertyGallery(formData: FormData) {
     })
 
     return { success: true }
-  } catch (error) {
-    console.error('Erro ao atualizar galeria:', error)
-
+  } catch (_error) {
     if (newImagePaths.length > 0) {
-      console.warn(
-        'Erro na transação. Revertendo uploads de imagens...',
-        newImagePaths
-      )
       await deleteOldImages(newImagePaths)
     }
 

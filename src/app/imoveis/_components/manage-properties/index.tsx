@@ -1,13 +1,25 @@
 'use client'
 
-import type { PropertyProps } from '@/_types/property'
-import { Button } from '@/components/ui/button'
-
-import { deleteProperty } from '@/actions/properties/delete-property'
-import { formatPrice } from '@/utils/format-price'
-import { Eye, Home, Plus, Search, Trash2 } from 'lucide-react'
+import {
+  DollarSign,
+  Eye,
+  Home,
+  MapPin,
+  Plus,
+  Search,
+  Star,
+  Tag,
+  Trash2,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import type { PropertyProps } from '@/_types/property'
+import { deleteProperty } from '@/actions/properties/delete-property'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { formatPrice } from '@/utils/format-price'
 import { AddPropertyModal } from './add-property-modal'
 import { DeletePropertyModal } from './delete-property-modal'
 
@@ -23,16 +35,33 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const [termsToSearch, setTermsToSearch] = useState('')
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [_isDeleting, setIsDeleting] = useState(false)
   const [propertyToDelete, setPropertyToDelete] =
     useState<PropertyProps | null>(null)
 
+  // NOVO: useEffect ajustado com delay para evitar conflito de hidratação/rotas
+  useEffect(() => {
+    const checkHash = setTimeout(() => {
+      if (
+        typeof window !== 'undefined' &&
+        window.location.hash === '#anunciar'
+      ) {
+        setIsModalOpen(true)
+
+        // Limpa a hash da URL sem disparar eventos de navegação que fecham o modal
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        )
+      }
+    }, 150) // 150ms é o suficiente para a DOM estar pronta
+
+    return () => clearTimeout(checkHash)
+  }, [])
+
   const handleView = (id: string) => {
     router.push(`/imoveis/${id}`)
-  }
-
-  const handleEdit = (id: string) => {
-    router.push(`/imoveis/${id}/editar`)
   }
 
   /**
@@ -70,10 +99,10 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
           handleCloseDeleteModal()
         } else {
-          console.error(result.error)
+          console.error('Erro no processo')
         }
-      } catch (error) {
-        console.error('Falha ao tentar excluir:', error)
+      } catch (_error) {
+        console.error('Falha ao tentar excluir:')
       } finally {
         setIsDeleting(false)
       }
@@ -103,225 +132,194 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
     setProperties(result)
   }, [data, termsToSearch])
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Disponível':
-        return 'bg-green-100 text-green-800'
-      case 'Alugado':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'Vendido':
-        return 'bg-gray-100 text-gray-800'
-      default:
-        return 'bg-blue-100 text-blue-800'
-    }
-  }
-
   return (
-    <>
-      <div className="mx-auto my-8 px-4 pt-8 md:pt-0">
-        <div className="mb-8 flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex flex-1 flex-col flex-wrap">
-            <h1 className="flex items-center gap-3 font-bold text-3xl">
-              <Home className="h-8 w-8" />
-              Seus Imóveis
-            </h1>
-            <p className="mt-2 text-gray-400">
-              Gerencie seus imóveis cadastrados
-            </p>
-          </div>
-          <Button
-            variant="ghost"
-            onClick={handleNew}
-            className="flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 hover:text-white hover:shadow-lg"
-          >
-            <Plus className="h-5 w-5" />
-            Novo Imóvel
-          </Button>
+    <div className="flex w-full flex-col gap-8 pb-10">
+      {/* Header Area */}
+      <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-6 sm:flex-row sm:items-center dark:border-slate-800">
+        <div>
+          <h1 className="font-black text-3xl text-slate-900 tracking-tight dark:text-slate-100">
+            Meus Imóveis
+          </h1>
+          <p className="mt-1 font-medium text-slate-500 text-sm dark:text-slate-400">
+            Gerencie seus imóveis cadastrados, status e valores.
+          </p>
         </div>
+        <Button
+          onClick={handleNew}
+          className="flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-6 font-bold text-white shadow-blue-500/20 shadow-md transition hover:bg-blue-700"
+        >
+          <Plus className="size-4" />
+          Novo Imóvel
+        </Button>
+      </div>
 
-        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-blue-700 p-4 shadow dark:bg-blue-600">
-            <p className="text-blue-100 text-sm">Total de Imóveis</p>
-            <p className="font-bold text-2xl text-white">{properties.length}</p>
-          </div>
-
-          <div className="rounded-lg bg-white p-4 shadow dark:border dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-sm text-zinc-600 dark:text-slate-400">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Card className="overflow-hidden border-slate-200 bg-blue-600 shadow-sm dark:border-slate-800 dark:bg-blue-700">
+          <CardContent className="p-6">
+            <p className="font-medium text-blue-100 text-sm">
+              Total de Imóveis
+            </p>
+            <p className="mt-2 font-bold text-3xl text-white">
+              {properties.length}
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="overflow-hidden border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <CardContent className="p-6">
+            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">
               Disponíveis
             </p>
-            <p className="font-bold text-2xl text-blue-900 dark:text-blue-300">
+            <p className="mt-2 font-bold text-3xl text-slate-900 dark:text-slate-100">
               {properties.filter(p => p.status === 'Disponível').length}
             </p>
-          </div>
-
-          <div className="rounded-lg bg-white p-4 shadow dark:border dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-sm text-zinc-600 dark:text-slate-400">
-              Alugados/Vendidos
+          </CardContent>
+        </Card>
+        <Card className="overflow-hidden border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <CardContent className="p-6">
+            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">
+              Alugados / Vendidos
             </p>
-            <p className="font-bold text-2xl text-amber-600 dark:text-amber-400">
+            <p className="mt-2 font-bold text-3xl text-slate-900 dark:text-slate-100">
               {properties.filter(p => p.status !== 'Disponível').length}
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="mb-6">
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <Search className="h-5 w-5 text-slate-400" />
-            </span>
+      <div className="relative max-w-md">
+        <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400" />
+        <Input
+          type="search"
+          placeholder="Buscar por título ou endereço..."
+          className="h-12 rounded-xl border-slate-200 bg-white pl-11 font-medium shadow-sm transition-all focus:border-blue-500 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-blue-500 dark:focus:ring-blue-900"
+          value={termsToSearch}
+          onChange={e => setTermsToSearch(e.target.value)}
+        />
+      </div>
 
-            <input
-              type="search"
-              placeholder="Buscar por título ou endereço..."
-              className="w-full max-w-lg rounded-lg border border-slate-300 bg-white p-2.5 pl-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 "
-              value={termsToSearch}
-              onChange={e => setTermsToSearch(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="hidden grid-cols-1 gap-4 md:grid lg:grid-cols-2 xl:grid-cols-3">
-          {properties.map(property => (
-            <div
-              key={property.id}
-              className="flex flex-col overflow-hidden rounded-lg border border-transparent shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-blue-400 hover:shadow-2xl dark:border dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-500"
-            >
-              <div className="p-4 sm:p-5">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="font-bold text-blue-900 text-lg dark:text-blue-200">
-                      {property.title}
-                    </p>
-                    <p className="text-slate-600 text-sm dark:text-slate-400">
-                      {property.address}
-                    </p>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {properties.map(property => (
+          <Card
+            key={property.id}
+            className="overflow-hidden border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+          >
+            <CardContent className="p-0">
+              <div className="p-6">
+                <div className="mb-5 flex items-start justify-between">
+                  <div className="rounded-2xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                    <Home className="size-6" />
                   </div>
-
-                  <span
-                    className={`ml-2 shrink-0 rounded-full px-3 py-1 font-medium text-xs ${getStatusColor(property.status)}`}
+                  <Badge
+                    variant="outline"
+                    className={`font-bold text-[10px] uppercase tracking-wider ${
+                      property.status === 'Disponível'
+                        ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
+                        : property.status === 'Alugado'
+                          ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
+                          : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
+                    }`}
                   >
                     {property.status}
-                  </span>
+                  </Badge>
                 </div>
-              </div>
 
-              <div className="px-4 pb-4 sm:px-5">
-                <p className="font-bold text-2xl text-slate-900 dark:text-slate-100">
-                  {formatPrice(property.price)}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
-                  <span className="rounded-full bg-blue-100 px-3 py-1 font-medium text-blue-800 text-xs">
-                    {property.listingType}
-                  </span>
-
-                  <span className="text-slate-700 text-sm dark:text-slate-300">
-                    Tipo: <span className="font-medium">{property.type}</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-auto border-slate-200 border-t bg-slate-50 p-4 sm:px-5 dark:border-slate-700 dark:bg-slate-800/50">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleView(property.slug)}
-                    className="rounded-lg p-2 text-blue-600 transition hover:scale-110 hover:cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/50"
-                    title="Visualizar"
+                <div className="mb-6">
+                  <h2
+                    className="truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100"
+                    title={property.title}
                   >
-                    <Eye className="h-5 w-5" />
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleOpenDeleteModal(property.id)}
-                    className="rounded-lg p-2 text-rose-400 transition hover:scale-110 hover:cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/50"
-                    title="Excluir"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-4 md:hidden">
-          {properties.map(property => (
-            <div key={property.id} className="rounded-lg bg-white p-4 shadow">
-              <div className="mb-3 flex items-start justify-between">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 text-lg">
                     {property.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm">{property.address}</p>
+                  </h2>
+                  <div className="mt-4 flex flex-col gap-2.5">
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
+                      <MapPin className="size-4 shrink-0 text-rose-500 dark:text-rose-400" />
+                      <span className="truncate font-medium">
+                        {property.address}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
+                      <Tag className="size-4 shrink-0 text-blue-500 dark:text-blue-400" />
+                      <span className="font-medium">
+                        {property.listingType} • {property.type}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
+                      <DollarSign className="size-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
+                      <span className="font-bold text-slate-900 dark:text-slate-100">
+                        {formatPrice(Number(property.price))}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <span
-                  className={`rounded-full px-2 py-1 text-xs ${getStatusColor(property.status)}`}
-                >
-                  {property.status}
-                </span>
-              </div>
 
-              <div className="mb-3 grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <span className="text-gray-600">Tipo:</span>
-                  <span className="ml-2 font-medium text-gray-900">
-                    {property.type}
-                  </span>
+                {property.isFeatured && (
+                  <div className="mb-4 flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-1.5 dark:bg-amber-500/10">
+                    <Star className="size-3 fill-amber-400 text-amber-400" />
+                    <span className="font-black text-[10px] text-amber-600 uppercase tracking-widest dark:text-amber-400">
+                      Em Destaque
+                    </span>
+                    {property.featuredEndAt && (
+                      <span className="ml-1 font-medium text-[10px] text-amber-500 italic dark:text-amber-300">
+                        até{' '}
+                        {new Date(property.featuredEndAt).toLocaleDateString(
+                          'pt-BR',
+                          {
+                            day: '2-digit',
+                            month: 'short',
+                          }
+                        )}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleView(property.slug)}
+                    className="h-11 flex-1 rounded-xl font-bold transition-all hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+                  >
+                    <Eye className="mr-2 size-4" />
+                    Ver
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleOpenDeleteModal(property.id)}
+                    className="h-11 rounded-xl border-rose-200 font-bold text-rose-600 transition-all hover:bg-rose-50 hover:text-rose-700 dark:border-rose-900/50 dark:text-rose-400 dark:hover:bg-rose-900/30 dark:hover:text-rose-300"
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
                 </div>
-                <div>
-                  <span className="text-gray-600">Finalidade:</span>
-                  <span className="ml-2 font-medium text-gray-900">
-                    {property.listingType}
-                  </span>
-                </div>
               </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-              <div className="mb-3 font-semibold text-blue-600 text-lg">
-                {formatPrice(Number(property.price))}
-              </div>
-
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => handleView(property.slug)}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-50 px-4 py-2 font-medium text-blue-600 transition hover:bg-blue-100"
-                >
-                  <Eye className="h-4 w-4" />
-                  Ver
-                </Button>
-
-
-                <Button
-                  onClick={() => handleOpenDeleteModal(property.id)}
-                  className="flex items-center justify-center rounded-lg bg-red-50 px-4 py-2 text-red-600 transition hover:bg-red-100"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {properties.length === 0 && (
-          <div className="rounded-lg bg-white p-12 text-center shadow">
-            <Home className="mx-auto mb-4 h-16 w-16 text-gray-400" />
-            <h3 className="mb-2 font-semibold text-gray-900 text-xl">
-              Nenhum imóvel {termsToSearch ? 'encontrado' : 'cadastrado'}
-            </h3>
-            <p className="mb-6 text-gray-600">
-              {termsToSearch
-                ? 'Cadastre mais imóveis'
-                : 'Comece cadastrando seu primeiro imóvel'}
-            </p>
+      {properties?.length === 0 && (
+        <div className="mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center dark:border-slate-800 dark:bg-slate-900">
+          <div className="mb-4 rounded-full bg-slate-50 p-4 dark:bg-slate-800">
+            <Home className="size-10 text-slate-400 dark:text-slate-500" />
+          </div>
+          <h2 className="font-bold text-slate-900 text-xl dark:text-slate-100">
+            Nenhum imóvel {termsToSearch ? 'encontrado' : 'cadastrado'}
+          </h2>
+          <p className="mt-2 max-w-sm font-medium text-slate-500 dark:text-slate-400">
+            {termsToSearch
+              ? 'A busca não retornou resultados.'
+              : 'Você ainda não possui imóveis cadastrados na plataforma.'}
+          </p>
+          {!termsToSearch && (
             <Button
               onClick={handleNew}
-              className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+              className="mt-6 h-11 rounded-xl bg-blue-600 px-6 font-bold text-white shadow-blue-500/20 shadow-md transition-all hover:bg-blue-700"
             >
+              <Plus className="mr-2 size-4" />
               Cadastrar Imóvel
             </Button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       <AddPropertyModal isOpen={isModalOpen} onClose={onCloseModal} />
 
@@ -331,6 +329,6 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
         onConfirm={handleConfirmDelete}
         propertyName={propertyToDelete?.title || ''}
       />
-    </>
+    </div>
   )
 }

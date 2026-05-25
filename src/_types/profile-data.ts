@@ -100,19 +100,25 @@ export type ProfileDataProps = {
   logoImageUrl?: string
   categories?: string[]
   imagePath?: string
-  planActive: {
-    type: PlanTypeProps
-    expiresAt: number
+  planActive?: {
+    planType: PlanTypeProps
+    expiresAt: number | null
   }
   holidayExceptions: HolidayException[]
   planType: string
-  rating: string
+  rating?: number
   isActive: boolean
   isPremium: boolean
   isVerified: boolean
+  isFeatured?: boolean
+  featuredStartAt?: number | null
+  featuredEndAt?: number | null
   reviewCount: number
+  totalScoreSum?: number
+  currentUserRating?: number | null
 
   favorites: BusinessFavoritesProps[]
+  galleryImages?: string[]
   openingHours: Schedule
   socialMedias: SocialMediasProps
   businessDescription: string

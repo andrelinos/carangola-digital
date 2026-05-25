@@ -2,8 +2,8 @@
 
 import clsx from 'clsx'
 import { LightBulbOn, Plus, Trash } from 'iconoir-react'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import type {
@@ -103,6 +103,7 @@ const initializeSchedule = (schedule?: WeeklySchedule): WeeklySchedule => {
 
 export function EditBusinessOpeningHours({ profileData }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   if (!profileData?.id) {
     return <div />
@@ -118,6 +119,14 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
     (profileData.holidayExceptions as unknown as HolidayException[]) || []
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const editParam = searchParams.get('edit')
+    if (editParam === 'hours') {
+      setIsOpen(true)
+    }
+  }, [searchParams])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [openingHours, setOpeningHours] =
     useState<WeeklySchedule>(initialSchedule)
@@ -265,7 +274,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
 
       await createBusinessOpeningHours(formData)
       toast.success('Horário de funcionamento salvo com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao salvar horário de funcionamento.')
     } finally {
       startTransition(() => {
@@ -391,7 +400,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
         description="Defina seu horário de funcionamento para cada dia, podendo adicionar mais de um período."
         classname="w-full max-w-[638px] max-h-[90vh] overflow-y-auto justify-center md:rounded-2xl border-[0.5px] border-blue-300 bg-white py-16 px-6 text-zinc-700"
       >
-        <div className="lg:fex-row flex w-full flex-col gap-4 ">
+        <div className="lg:fex-row flex w-full flex-col gap-4">
           {WEEK_DAYS.map(day => (
             <div
               key={day}
@@ -702,7 +711,7 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
             <Button
               onClick={handleSaveOpeningHours}
               disabled={isSubmitting}
-              className="min-w-[120px] font-bold "
+              className="min-w-[120px] font-bold"
             >
               {isSubmitting ? 'Salvando...' : 'Salvar'}
             </Button>

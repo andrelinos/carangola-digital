@@ -15,6 +15,12 @@ const serverEnvSchema = z.object({
   NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY: z.string(),
   AUTH_GOOGLE_ID: z.string(),
   AUTH_GOOGLE_SECRET: z.string(),
+  // Asaas
+  ASAAS_API_KEY: z.string().optional().default(''),
+  ASAAS_WEBHOOK_TOKEN: z.string().optional().default(''),
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 })
 
 const _env = serverEnvSchema.safeParse({
@@ -33,10 +39,15 @@ const _env = serverEnvSchema.safeParse({
     process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY,
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
+  ASAAS_API_KEY: process.env.ASAAS_API_KEY,
+  ASAAS_WEBHOOK_TOKEN: process.env.ASAAS_WEBHOOK_TOKEN,
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 })
 
 if (!_env.success) {
-  console.error('Erro nas variáveis de ambiente:', _env.error.format())
   throw new Error('Variáveis de ambiente inválidas.')
 }
 

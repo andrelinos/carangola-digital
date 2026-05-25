@@ -1,16 +1,15 @@
 'server-only'
 
+import { cache } from 'react'
 import type { PropertyImage, PropertyProps } from '@/_types/property'
 import type { UserProps } from '@/_types/user'
-
-import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 import {
   type PlanConfigProps,
   type PlanTypeProps,
   plansRealEstateConfig,
 } from '@/configs/plans-real-estate'
-import { cache } from 'react'
+import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export type PropertyDataWithConfig = {
   property: PropertyProps
@@ -49,7 +48,6 @@ export const getPropertyData = cache(
     const userSnapshot = await userDocRef.get()
 
     if (!userSnapshot?.exists) {
-      console.error('O documento do usuário proprietário não existe.')
       return null
     }
 
@@ -106,7 +104,7 @@ export async function getUsersData(userId: string) {
     const docs = snapshot.data()
 
     return docs as UserProps
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }
@@ -129,7 +127,7 @@ export async function getPropertyId(userId?: string) {
     }
 
     return snapshot.docs.map(doc => doc.id)
-  } catch (error) {
+  } catch (_error) {
     return
   }
 }

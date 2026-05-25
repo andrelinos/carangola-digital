@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
-import { type VariantProps, cva } from 'class-variance-authority'
-import { type TextareaHTMLAttributes, forwardRef } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { forwardRef, type TextareaHTMLAttributes } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
@@ -8,15 +8,18 @@ import { cn } from '@/lib/utils'
 import { Label } from '../label'
 
 const textAreaVariants = cva(
-  'w-full rounded-xl border border-transparent p-3 text-zinc-700 placeholder:text-content-placeholder hover:border-border-secondary active:border-border-tertiary disabled:opacity-70',
-
+  'w-full rounded-xl border border-input bg-background p-3 text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-70',
   {
     variants: {
       variant: {
-        default: 'bg-accent-purple',
-        tertiary: 'bg-background-secondary',
-        secondary: 'bg-background-tertiary',
-        ghost: 'border-border-primary bg-transparent',
+        default:
+          'border-input bg-background placeholder:text-muted-foreground/60',
+        secondary:
+          'border-transparent bg-muted text-muted-foreground placeholder:text-muted-foreground/50',
+        tertiary:
+          'border-transparent bg-muted/50 text-muted-foreground placeholder:text-muted-foreground/50',
+        ghost:
+          'border-transparent bg-transparent placeholder:text-muted-foreground/60',
       },
     },
     defaultVariants: {
@@ -71,7 +74,11 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           </Label>
         )}
         <Comp
-          className={cn(textAreaVariants({ variant, className }))}
+          className={cn(
+            (props?.error || literalerror) &&
+              'border-destructive ring-destructive focus-visible:ring-destructive',
+            textAreaVariants({ variant, className })
+          )}
           ref={ref}
           {...props}
         />

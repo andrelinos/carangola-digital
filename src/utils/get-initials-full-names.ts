@@ -7,7 +7,7 @@ export function getInitialsFullNameAvatar(name: string | null | undefined) {
       }
 
       return partesNome[0][0].toUpperCase() + partesNome[1][0].toUpperCase()
-    } catch (error) {
+    } catch (_error) {
       return 'NA'
     }
   }

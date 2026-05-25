@@ -1,8 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 interface ClaimButtonProps {
   businessId?: string
@@ -47,8 +46,7 @@ Obrigado!`
             setIsLoading(false)
           }, 3000) // 3000ms = 3 segundos
         })
-        .catch(err => {
-          console.error('Falha ao copiar mensagem: ', err)
+        .catch(() => {
           window.open(instagramUrl, '_blank', 'noopener,noreferrer')
           setIsLoading(false)
         })

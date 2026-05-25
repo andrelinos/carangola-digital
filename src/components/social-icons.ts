@@ -1,15 +1,12 @@
 import {
-
-CinemaOld,
-Facebook,
-Globe,
-Instagram,
-Linkedin,
-Threads,
-Tiktok,
+  CinemaOld,
+  Facebook,
+  Globe,
+  Instagram,
+  Linkedin,
+  Threads,
+  Tiktok,
 } from 'iconoir-react'
-
-
 
 import { Mail } from 'lucide-react'
 

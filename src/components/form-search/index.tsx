@@ -1,23 +1,18 @@
 'use client'
 
-import Link from 'next/link'
+import { Loader2, Search } from 'lucide-react'
 import { useState } from 'react'
 
 import type { ProfileDataProps } from '@/_types/profile-data'
+import { searchBusinesses } from '@/actions/business/search-businesses'
+import { BusinessCard } from '@/components/business/business-card'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
-import Image from 'next/image'
-
-interface SearchProps extends ProfileDataProps {
-  profileId: string
-}
-
 export default function SearchFormBusiness() {
   const [searchTerms, setSearchTerms] = useState('')
-  const [resultsSearch, setResultsSearch] = useState<SearchProps[]>([])
+  const [resultsSearch, setResultsSearch] = useState<ProfileDataProps[]>([])
   const [isLoadingBusiness, setIsLoadingBusiness] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
 
@@ -29,21 +24,15 @@ export default function SearchFormBusiness() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (searchTerms.trim().length < 3) return
+
     setIsLoadingBusiness(true)
 
     try {
-      const formData = new FormData()
-      formData.append('searchTerms', searchTerms)
-
-      const response = await fetch('/api/business', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const json = await response.json()
-      setResultsSearch(json.data || [])
-    } catch (error) {
-      console.error('Erro na busca:', error)
+      const results = await searchBusinesses(searchTerms)
+      setResultsSearch(results || [])
+    } catch {
+      console.error('Erro na busca')
     } finally {
       setHasSearched(true)
       setIsLoadingBusiness(false)
@@ -52,90 +41,79 @@ export default function SearchFormBusiness() {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-4 py-4">
+      <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 py-8">
         <form
           onSubmit={onSubmit}
-          className="mx-auto flex w-full max-w-xl flex-col gap-2 sm:flex-row"
+          className="group relative mx-auto flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center"
         >
-          <Input
-            type="search"
-            name="searchTerms"
-            value={searchTerms}
-            onChange={onChangeSearchTerms}
-            placeholder="Quem você deseja encontrar?"
-            className="h-14 flex-1 rounded-lg border border-gray-300 px-6 text-xl shadow-sm"
-          />
+          <div className="relative flex-1">
+            <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+            <Input
+              type="search"
+              name="searchTerms"
+              value={searchTerms}
+              onChange={onChangeSearchTerms}
+              placeholder="Ex: Restaurante, Mecânica, Advogado..."
+              className="h-14 w-full rounded-2xl border-border bg-background pr-6 pl-12 text-lg shadow-sm ring-offset-background transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
+            />
+          </div>
           <Button
             type="submit"
-            className="h-14 rounded bg-blue-500 px-4 py-4 text-white"
+            size="lg"
+            className="h-14 rounded-2xl bg-primary px-8 text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             disabled={searchTerms.trim().length < 3 || isLoadingBusiness}
           >
+            {isLoadingBusiness ? (
+              <Loader2 className="mr-2 size-5 animate-spin" />
+            ) : (
+              <Search className="mr-2 size-5" />
+            )}
             Encontrar
           </Button>
         </form>
 
-        {resultsSearch && resultsSearch?.length > 0 && (
-          <div className="flex size-full flex-col gap-2 py-8">
-            <h2 className=" py-6 text-center font-bold text-2xl">
-              Resultados da sua busca
-            </h2>
-            <div className="flex w-full max-w-5xl flex-wrap justify-around gap-6">
-              {resultsSearch?.map((profile, index) => (
-                <Link
-                  key={profile?.userId + String(index)}
-                  href={`/business/${profile.slug}`}
-                  className="group h-[300px] w-[332px] overflow-hidden rounded-lg bg-zinc-50 py-4 font-medium text-zinc-700 transition-all duration-300 ease-in-out hover:bg-blue-100"
-                  target="_blank"
-                >
-                  <div className="flex w-full flex-col gap-2">
-                    <div className="flex h-14 w-full items-center justify-center">
-                      {getOperatingStatus({
-                        schedule: profile.openingHours as any,
-                        currentTime: new Date(),
-                      })}
-                    </div>
-                    <div className="relative flex h-24 w-full items-center justify-center overflow-hidden ">
-                      <Image
-                        width={100}
-                        height={100}
-                        className="z-10 h-full max-h-24 w-auto shadow-2xl lg:max-h-24"
-                        src={profile.imagePath || '/default-image.png'}
-                        alt={profile.name}
-                        priority
-                      />
+        {resultsSearch && resultsSearch.length > 0 && (
+          <div className="flex w-full flex-col gap-6 py-12">
+            <div className="flex items-center justify-between border-b pb-4">
+              <h2 className="font-bold text-2xl tracking-tight">
+                Resultados da sua busca
+              </h2>
+              <span className="text-muted-foreground text-sm">
+                {resultsSearch.length}{' '}
+                {resultsSearch.length === 1
+                  ? 'resultado encontrado'
+                  : 'resultados encontrados'}
+              </span>
+            </div>
 
-                      <Image
-                        id="background-image"
-                        loading="eager"
-                        src={profile?.imagePath || '/default-image.png'}
-                        className="absolute z-0 size-full object-cover object-center opacity-90 blur-md"
-                        alt={profile?.name || ''}
-                        quality={10}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        fill
-                        unoptimized
-                        priority
-                      />
-                    </div>
-                    <div className="flex-1 px-4">
-                      <h2 className="text-center font-semibold text-xl">
-                        {profile.name}
-                      </h2>
-                    </div>
-                  </div>
-                </Link>
+            <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {resultsSearch.map((profile, index) => (
+                <div
+                  key={profile?.id || profile?.userId + String(index)}
+                  className="flex justify-center"
+                >
+                  <BusinessCard profile={profile} />
+                </div>
               ))}
             </div>
           </div>
         )}
+
         {hasSearched &&
           !isLoadingBusiness &&
           resultsSearch &&
           resultsSearch.length === 0 && (
-            <div className="flex size-full flex-col py-8">
-              <h2 className="py-6 text-center font-bold text-2xl">
+            <div className="flex w-full flex-col items-center py-12 text-center">
+              <div className="mb-4 rounded-full bg-muted p-4">
+                <Search className="size-8 text-muted-foreground" />
+              </div>
+              <h2 className="font-bold text-2xl">
                 Nenhum resultado encontrado
               </h2>
+              <p className="mt-2 max-w-md text-muted-foreground">
+                Não encontramos o que você procurava. Tente usar termos mais
+                genéricos ou verifique a ortografia.
+              </p>
             </div>
           )}
       </div>

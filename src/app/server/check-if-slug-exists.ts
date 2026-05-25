@@ -14,7 +14,7 @@ export async function checkIfSlugExists(slug: string) {
     const snapshot = (await q.get()).empty
 
     return !snapshot
-  } catch (error) {
+  } catch (_error) {
     return true
   }
 }

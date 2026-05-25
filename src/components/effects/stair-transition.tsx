@@ -1,8 +1,8 @@
 'use client'
 
-import { Stairs } from '@/components/effects'
 import { AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
+import { Stairs } from '@/components/effects'
 
 export function StairTransition() {
   const pathname = usePathname()

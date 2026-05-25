@@ -8,26 +8,47 @@ import { plansBusinessConfig } from '@/configs/plans-business'
 
 import { filterUserDataByPlan } from '@/lib/filter-user-data-by-plan'
 import { db, getDownloadURLFromPath } from '@/lib/firebase'
+import { getPlanConfig } from '@/utils/get-plan-config'
 
 export const getProfileData = cache(
-  async (slug: string): Promise<ProfileDataProps | null> => {
+  async (slug: string, userId?: string): Promise<ProfileDataProps | null> => {
     if (!slug) {
       return null
     }
 
-    const snapshot = await db
-      .collection('profiles')
-      .where('slug', '==', slug)
-      .get()
+    // Suporta busca tanto por ID do documento do perfil quanto pelo slug amigável
+    let profileDoc = await db.collection('profiles').doc(slug).get()
+    let profileData: ProfileDataProps
 
-    if (snapshot.empty) {
-      return null
+    if (profileDoc.exists) {
+      profileData = profileDoc.data() as ProfileDataProps
+    } else {
+      const snapshot = await db
+        .collection('profiles')
+        .where('slug', '==', slug)
+        .limit(1)
+        .get()
+
+      if (snapshot.empty) {
+        return null
+      }
+      profileDoc = snapshot.docs[0]
+      profileData = profileDoc.data() as ProfileDataProps
     }
-
-    const profileDoc = snapshot.docs[0]
     const profileDocId = profileDoc.id
 
-    const profileData = profileDoc.data() as ProfileDataProps
+    let currentUserRating: number | null = null
+
+    if (userId) {
+      const ratingDoc = await db
+        .collection('ratings')
+        .doc(`${userId}_${profileDocId}`)
+        .get()
+
+      if (ratingDoc.exists) {
+        currentUserRating = ratingDoc.data()?.score || null
+      }
+    }
 
     const coverPath = profileData.coverImagePath || profileData.imagePath
     const logoPath = profileData.logoImagePath
@@ -37,8 +58,31 @@ export const getProfileData = cache(
       getDownloadURLFromPath(logoPath),
     ])
 
-    const { socialMedias, businessPhones, businessAddresses, planActive } =
-      profileData
+    const { socialMedias, businessPhones, businessAddresses } = profileData
+
+    // Busca dados do proprietário do perfil na coleção 'users' para obter o plano ativo
+    let userPlanActive = null
+    if (profileData.userId) {
+      try {
+        const userDoc = await db
+          .collection('users')
+          .doc(profileData.userId)
+          .get()
+        if (userDoc.exists) {
+          const userData = userDoc.data()
+          userPlanActive =
+            userData?.planActive?.profiles ?? userData?.planActive ?? null
+        }
+      } catch (err) {
+        console.error('Erro ao buscar plano ativo do usuário:', err)
+      }
+    }
+
+    // Define o planActive usando o plano do usuário (ou fallback para o perfil)
+    const planActive = userPlanActive ?? profileData.planActive ?? null
+
+    // Determina a config do plano usando o utilitário getPlanConfig, que valida status e expiração.
+    const planConfig = getPlanConfig(planActive as any)
 
     const allowedInformationByFilterDataPlan = filterUserDataByPlan({
       itemsToFilter: {
@@ -46,22 +90,31 @@ export const getProfileData = cache(
         businessPhones,
         businessAddresses,
       },
-      planConfig:
-        plansBusinessConfig[profileData?.planActive?.type] ||
-        plansBusinessConfig.free,
-      planActive,
+      planConfig,
+      planActive: planActive as any,
     })
+
+    const resolvedPlanType = planActive?.type || planActive?.planType || 'free'
+    const planActiveObj = planActive
+      ? {
+          ...planActive,
+          planType: resolvedPlanType,
+          type: resolvedPlanType,
+        }
+      : undefined
 
     const formattedData: ProfileDataProps = {
       ...profileData,
       id: profileDocId,
       coverImageUrl: coverImageUrl,
       logoImageUrl: logoImageUrl,
+      currentUserRating,
 
       imagePath: coverImageUrl,
       socialMedias: { ...allowedInformationByFilterDataPlan.socialMedias },
       businessPhones: allowedInformationByFilterDataPlan.businessPhones,
       businessAddresses: allowedInformationByFilterDataPlan.businessAddresses,
+      planActive: planActiveObj as any,
     }
 
     return formattedData
@@ -83,7 +136,7 @@ export async function getUsersData(userId: string) {
     const docs = snapshot.data()
 
     return docs as UserProps
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }
@@ -106,7 +159,7 @@ export async function getProfileId(userId?: string) {
     }
 
     return snapshot.docs.map(doc => doc.id)
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }

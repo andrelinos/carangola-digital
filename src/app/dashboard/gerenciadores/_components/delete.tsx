@@ -3,12 +3,11 @@
 import { Trash } from 'iconoir-react'
 import { useRouter } from 'next/navigation'
 import { startTransition, useState } from 'react'
-
+import { toast } from 'sonner'
 import { removeAdminFromProfile } from '@/actions/business/manage-admin-on-profile'
 import { Loading } from '@/components/commons/loading'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/custom-modal'
-import { toast } from 'sonner'
 
 interface AdminProps {
   email: string
@@ -48,7 +47,7 @@ export function RemoveAdmin({ admin, profileId }: Props) {
 
       await removeAdminFromProfile(formData)
       toast.success('Gerente removido com sucesso!')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Erro ao remover gerente do perfil.')
     } finally {
       startTransition(() => {
@@ -66,7 +65,7 @@ export function RemoveAdmin({ admin, profileId }: Props) {
         onClick={handleOpenModal}
         className="size-8 hover:bg-rose-400"
       >
-        <Trash className="size-4 " />
+        <Trash className="size-4" />
       </Button>
 
       <Modal

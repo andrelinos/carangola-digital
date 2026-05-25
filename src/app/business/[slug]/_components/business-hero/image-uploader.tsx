@@ -1,17 +1,21 @@
+import clsx from 'clsx'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
-
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import ReactCrop, {
   type Crop,
-  type PixelCrop,
   centerCrop,
   makeAspectCrop,
+  type PixelCrop,
 } from 'react-image-crop'
-
 import { Button } from '@/components/ui/button'
 import { compressImage } from '@/utils/compress-image'
-import clsx from 'clsx'
-import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 
 interface ImageUploaderProps {
   label: string
@@ -60,7 +64,6 @@ async function getCroppedImg(
   })
 
   if (!blob) {
-    console.error('Canvas está vazio após o recorte.')
     return null
   }
 
@@ -77,7 +80,6 @@ function useDebounceEffect(
   waitTime: number,
   deps: React.DependencyList
 ) {
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const t = setTimeout(() => {
       fn()
@@ -86,7 +88,7 @@ function useDebounceEffect(
     return () => {
       clearTimeout(t)
     }
-  }, deps)
+  }, [fn, waitTime, ...deps])
 }
 
 export function ImageUploader({
@@ -127,20 +129,18 @@ export function ImageUploader({
     setCrop(newCrop)
   }
 
-  useDebounceEffect(
-    async () => {
-      if (completedCrop?.width && completedCrop?.height && imgRef.current) {
-        const croppedFile = await getCroppedImg(
-          imgRef.current,
-          completedCrop,
-          'cropped-image.jpeg'
-        )
-        onCropComplete(croppedFile)
-      }
-    },
-    100,
-    [completedCrop]
-  )
+  const handleCropComplete = useCallback(async () => {
+    if (completedCrop?.width && completedCrop?.height && imgRef.current) {
+      const croppedFile = await getCroppedImg(
+        imgRef.current,
+        completedCrop,
+        'cropped-image.jpeg'
+      )
+      onCropComplete(croppedFile)
+    }
+  }, [completedCrop, onCropComplete])
+
+  useDebounceEffect(handleCropComplete, 100, [completedCrop])
 
   return (
     <div className={clsx('flex flex-col', container)}>
@@ -161,6 +161,7 @@ export function ImageUploader({
               minWidth={150}
               className="h-auto max-h-96"
             >
+              {/** biome-ignore lint/performance/noImgElement: react-image-crop requires a native img element */}
               <img
                 ref={imgRef}
                 alt="Recortar imagem"
@@ -170,18 +171,18 @@ export function ImageUploader({
               />
             </ReactCrop>
             <Button
-              variant="outline"
+              variant="link"
               onClick={() => fileInputRef.current?.click()}
             >
               Trocar Imagem
             </Button>
           </div>
         ) : (
-          <div
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
-            onKeyDown={() => fileInputRef.current?.click()}
             className={clsx(
-              'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-zinc-300 border-dashed bg-zinc-50 text-zinc-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
+              'relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-slate-200 border-dashed bg-slate-50 text-slate-500 transition-colors hover:border-blue-400 hover:bg-blue-50',
               className
             )}
             style={{ aspectRatio }}
@@ -191,17 +192,19 @@ export function ImageUploader({
                 src={initialImageUrl}
                 alt="Imagem atual"
                 fill
-                className="rounded-lg object-cover opacity-40"
+                className="rounded-xl object-cover opacity-30 grayscale transition-all hover:opacity-40 hover:grayscale-0"
               />
             )}
             <div className="relative z-10 flex flex-col items-center p-4 text-center">
-              <Camera size={32} />
-              <p className="mt-2 font-semibold">
+              <Camera size={32} className="text-slate-400" />
+              <p className="mt-2 font-semibold text-slate-700">
                 Alterar {label.toLowerCase()}
               </p>
-              {recommendation && <p className="text-xs">{recommendation}</p>}
+              {recommendation && (
+                <p className="mt-1 text-slate-500 text-xs">{recommendation}</p>
+              )}
             </div>
-          </div>
+          </button>
         )}
         <input
           ref={fileInputRef}

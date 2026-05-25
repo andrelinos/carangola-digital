@@ -12,12 +12,14 @@ interface Props {
   profileId: string | undefined
   user: Session['user'] | undefined
   plan?: PlanProps
+  isAdmin?: boolean
 }
 
 export function PurchaseButtons({
   profileId,
   user,
   plan = {} as PlanProps,
+  isAdmin = false,
 }: Props) {
   const { createMercadoPagoCheckout } = useMercadoPago()
 
@@ -33,10 +35,7 @@ export function PurchaseButtons({
       ) : (
         <Button
           className={'w-full'}
-          disabled={
-            // plan.disable
-            !['andrelinodev@gmail.com'].includes(user?.email ?? '')
-          }
+          disabled={!isAdmin}
           variant={plan.buttonVariant}
           onClick={() =>
             createMercadoPagoCheckout({

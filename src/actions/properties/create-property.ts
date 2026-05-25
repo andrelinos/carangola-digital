@@ -1,18 +1,17 @@
 'use server'
 
 import { Timestamp } from 'firebase-admin/firestore'
+import { revalidatePath } from 'next/cache'
 import { getServerSession } from 'next-auth/next'
-
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 import { slugify } from '@/utils/generate-slug'
-import { revalidatePath } from 'next/cache'
 
 export async function createNewProperty(formData: FormData) {
   const session = await getServerSession(authOptions)
   const user = session?.user
 
-  if (!user || !user.id) {
+  if (!user?.id) {
     throw new Error('Não autorizado')
   }
 
@@ -84,7 +83,6 @@ export async function createNewProperty(formData: FormData) {
 
     return { success: true, message: 'Propriedade criada com sucesso!' }
   } catch (error) {
-    console.error('Erro ao criar propriedade:', error)
     return { success: false, error: (error as Error).message }
   }
 }

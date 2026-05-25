@@ -1,15 +1,17 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Phone, Whatsapp } from 'iconoir-react'
+import { PhoneCall } from 'lucide-react'
 import type {
   BusinessPhoneProps,
   ProfileDataProps,
 } from '@/_types/profile-data'
+import { registerWhatsappLead } from '@/actions/business/register-whatsapp-lead'
 import { Link } from '@/components/ui/link'
 import { SafeImage } from '@/components/ui/safe-image'
 import { formatPhoneNumber } from '@/utils/format-phone-number'
-import clsx from 'clsx'
-import { Phone, Whatsapp } from 'iconoir-react'
-import { PhoneCall } from 'lucide-react'
+import { ProfileSection } from '../profile-section'
 import { EditContactPhones } from './edit-business-contact-phones'
 
 interface Props {
@@ -30,83 +32,148 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
   )
 
   return (
-    <div className="my-6 flex w-full flex-col items-center gap-6 rounded-xl p-6 pb-16">
-      <div className="relative mx-auto flex justify-center">
-        <h2 className="flex items-center gap-2 text-center font-bold text-background-secondary text-xl">
-          <PhoneCall className="size-6" />
-          Telefones de contato
-        </h2>
+    <ProfileSection
+      title="Canais de Contato"
+      icon={<PhoneCall className="size-6" />}
+      delay={0.4}
+    >
+      <div className="relative">
         {(isOwner || isUserAuth) && (
-          <div className="-top-5 absolute right-0">
+          <div className="absolute -top-14 right-0">
             <EditContactPhones data={{ businessPhones, profileId }} />
           </div>
         )}
-      </div>
 
-      {phoneContacts && phoneContacts.length > 0 && (
-        <div className="flex w-full flex-col items-center gap-3">
-          <h3 className="font-semibold text-muted-foreground">Telefones</h3>
-          {phoneContacts.map((item: BusinessPhoneProps, index: number) => (
-            <Link
-              key={`phone-${String(index)}`}
-              href={`tel:${item.phone}`}
-              className="hover:-translate-y-1 flex w-full max-w-xs transform items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 text-white shadow-md transition-transform duration-200 hover:shadow-xl"
-            >
-              <Phone className="h-5 w-5" />
-              <span className="font-medium tracking-wider">
-                {formatPhoneNumber(item.phone)}
-              </span>
-            </Link>
-          ))}
-        </div>
-      )}
+        <div className="space-y-6">
+          {phoneContacts && phoneContacts.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="px-1 font-extrabold text-[10px] text-muted-foreground/50 uppercase tracking-[0.2em]">
+                Atendimento por Voz
+              </h3>
+              <div className="grid grid-cols-1 gap-3">
+                {phoneContacts.map(
+                  (item: BusinessPhoneProps, index: number) => (
+                    <motion.div
+                      key={`phone-${String(index)}`}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Link
+                        href={`tel:${item.phone}`}
+                        className="group flex items-center gap-4 rounded-[1.25rem] bg-linear-to-br from-white to-slate-50 p-2.5 pr-5 shadow-black/5 shadow-sm ring-1 ring-zinc-200/60 transition-all hover:ring-blue-500/30 dark:from-zinc-900 dark:to-zinc-950 dark:ring-zinc-800"
+                      >
+                        <div className="relative size-14 shrink-0">
+                          {/* Background that rotates */}
+                          <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-blue-600 shadow-blue-600/20 shadow-lg transition-transform duration-500 group-hover:rotate-12" />
+                          {/* Icon that stays fixed */}
+                          <div className="relative flex size-full items-center justify-center text-white">
+                            <Phone className="size-6 fill-current transition-transform duration-500" />
+                          </div>
+                          <div className="absolute -right-1.5 -bottom-1.5 flex size-7 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg ring-4 ring-white transition-transform duration-500 dark:ring-zinc-900">
+                            <PhoneCall className="size-3.5" />
+                          </div>
+                        </div>
 
-      {whatsappContacts && whatsappContacts.length > 0 && (
-        <div className="flex w-full flex-col items-center gap-3">
-          <h3 className="font-semibold text-muted-foreground">WhatsApp</h3>
-          {whatsappContacts.map((item: BusinessPhoneProps, index: number) => (
-            <Link
-              key={`whatsapp-${String(index)}`}
-              href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={clsx(
-                'hover:-translate-y-1 flex w-full max-w-xs transform items-center gap-3 rounded-lg bg-green-500 p-2.5 text-white shadow-md transition-transform duration-200 hover:bg-green-600 hover:shadow-xl',
-                {
-                  'justify-center': !item?.imageProfileWhatsApp,
-                  'justify-start': item?.imageProfileWhatsApp,
-                }
-              )}
-            >
-              {item?.imageProfileWhatsApp && (
-                <SafeImage
-                  width={40}
-                  height={40}
-                  src={item?.imageProfileWhatsApp || '/default-image.png'}
-                  alt={`Foto de ${item.nameContact}`}
-                  className="h-10 w-10 rounded-full border-2 border-white/80 object-cover"
-                />
-              )}
+                        <div className="flex flex-1 flex-col justify-center leading-tight">
+                          <span className="font-extrabold text-[17px] text-zinc-900 tracking-tight dark:text-zinc-100">
+                            {formatPhoneNumber(item.phone)}
+                          </span>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span className="size-1.5 animate-pulse rounded-full bg-blue-500" />
+                            <span className="font-bold text-[10px] text-blue-600 uppercase tracking-wider">
+                              Ligação direta
+                            </span>
+                          </div>
+                        </div>
 
-              <div
-                className={clsx('flex flex-1 items-center gap-2', {
-                  'justify-center': !item?.imageProfileWhatsApp,
-                  'justify-start': item?.imageProfileWhatsApp,
-                })}
-              >
-                <Whatsapp className="h-5 w-5 flex-shrink-0" />
-                <span className="font-medium">{item.nameContact}</span>
+                        <div className="hidden size-8 items-center justify-center rounded-full bg-blue-50 text-blue-500 transition-colors group-hover:bg-blue-600 group-hover:text-white sm:flex dark:bg-blue-950/30">
+                          <Phone className="size-3.5" />
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )
+                )}
               </div>
-            </Link>
-          ))}
-        </div>
-      )}
+            </div>
+          )}
 
-      {businessPhones.length === 0 && (
-        <p className="pt-4 text-center text-muted-foreground">
-          Nenhum telefone de contato cadastrado.
-        </p>
-      )}
-    </div>
+          {whatsappContacts && whatsappContacts.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="px-1 font-extrabold text-[10px] text-muted-foreground/50 uppercase tracking-[0.2em]">
+                WhatsApp direto
+              </h3>
+              <div className="grid grid-cols-1 gap-3">
+                {whatsappContacts.map(
+                  (item: BusinessPhoneProps, index: number) => (
+                    <motion.div
+                      key={`whatsapp-${String(index)}`}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Link
+                        onClick={() => {
+                          if (profileId) {
+                            registerWhatsappLead({
+                              profileId,
+                              ownerId: profileData.userId,
+                            })
+                          }
+                        }}
+                        href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-4 rounded-[1.25rem] bg-linear-to-br from-white to-slate-50 p-2.5 pr-5 shadow-black/5 shadow-sm ring-1 ring-zinc-200/60 transition-all hover:ring-emerald-500/30 dark:from-zinc-900 dark:to-zinc-950 dark:ring-zinc-800"
+                      >
+                        <div className="relative size-14 shrink-0">
+                          {/* Imagem que rotaciona no hover (seguindo a lógica do background da voz) */}
+                          <div className="absolute inset-0 transition-transform duration-500 group-hover:rotate-12">
+                            <SafeImage
+                              src={
+                                item?.imageProfileWhatsApp ||
+                                '/default-image.webp'
+                              }
+                              className="size-full rounded-xl object-cover shadow-md ring-2 ring-white dark:ring-zinc-800"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              alt={`Foto de ${item.nameContact}`}
+                              fill
+                            />
+                          </div>
+
+                          {/* Badge do WhatsApp que fica fixo no lugar */}
+                          <div className="absolute -right-1.5 -bottom-1.5 flex size-7 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg ring-4 ring-white transition-transform duration-500 dark:ring-zinc-900">
+                            <Whatsapp className="size-4" />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-1 flex-col justify-center leading-tight">
+                          <span className="font-extrabold text-[15px] text-zinc-900 dark:text-zinc-100">
+                            {item.nameContact}
+                          </span>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+                            <span className="font-bold text-[10px] text-emerald-600 uppercase tracking-wider">
+                              Mensagens e voz
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="hidden size-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-500 transition-colors group-hover:bg-emerald-500 group-hover:text-white sm:flex dark:bg-emerald-950/30">
+                          <PhoneCall className="size-3.5" />
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+          {businessPhones.length === 0 && (
+            <p className="py-4 text-center text-muted-foreground text-sm italic">
+              Nenhum canal de atendimento disponível no momento.
+            </p>
+          )}
+        </div>
+      </div>
+    </ProfileSection>
   )
 }

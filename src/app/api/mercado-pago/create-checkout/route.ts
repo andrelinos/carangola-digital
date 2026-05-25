@@ -1,10 +1,9 @@
 import { Preference } from 'mercadopago'
 import { type NextRequest, NextResponse } from 'next/server'
-
+import { getServerSession } from 'next-auth/next'
 import type { PlanProps } from '@/_types/plan'
 import { authOptions } from '@/lib/auth'
 import mpClient from '@/lib/mercado-pago'
-import { getServerSession } from 'next-auth/next'
 
 interface RequestProps {
   profileId: string
@@ -15,7 +14,7 @@ interface RequestProps {
 export async function POST(req: NextRequest) {
   const { profileId, userEmail, plan } = (await req.json()) as RequestProps
   const session = await getServerSession(authOptions)
-  const user = session?.user
+  const _user = session?.user
 
   if (!session || !profileId || !userEmail || !plan) {
     return NextResponse.error()
@@ -82,8 +81,7 @@ export async function POST(req: NextRequest) {
       preferenceId: createdPreference.id,
       initPoint: createdPreference.init_point,
     })
-  } catch (err) {
-    console.error('ERROR :: ', err)
+  } catch (_err) {
     return NextResponse.error()
   }
 }

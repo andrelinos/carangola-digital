@@ -21,8 +21,7 @@ export async function createBusinessPhones(formData: FormData) {
     })
 
     return { success: true }
-  } catch (error) {
-    console.error('Erro ao atualizar telefones:', error)
+  } catch (_error) {
     return { success: false, error: 'Erro interno do servidor' }
   }
 }

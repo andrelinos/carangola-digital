@@ -1,9 +1,11 @@
 'use client'
 
+import Link from 'next/link'
+import type { Session } from 'next-auth'
 import { useState, useTransition } from 'react'
-
+import { toast } from 'sonner'
+import type { ProfileDataProps } from '@/_types/profile-data'
 import { deleteProfile } from '@/actions/business/delete-profile.action'
-
 import { transferProfile } from '@/actions/business/transfer-profile.action'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,11 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-import type { ProfileDataProps } from '@/_types/profile-data'
-import type { Session } from 'next-auth'
-import Link from 'next/link'
-import { toast } from 'sonner'
 import { AddProfileModal } from './add-profile-modal'
 
 interface Props {
@@ -40,7 +37,7 @@ export function PropertiesTable({ properties, session }: Props) {
   const [isPending, startTransition] = useTransition()
   const [selectedProfile, setSelectedProfile] =
     useState<ProfileDataProps | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [_isLoading, setIsLoading] = useState(false)
 
   const [isTransferModalOpen, setTransferModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -53,7 +50,6 @@ export function PropertiesTable({ properties, session }: Props) {
     startTransition(async () => {
       const result = await transferProfile(
         selectedProfile?.id ?? '',
-        selectedProfile.userId,
         newOwnerId
       )
       if (result.success) {
@@ -72,10 +68,7 @@ export function PropertiesTable({ properties, session }: Props) {
     setIsLoading(true)
 
     startTransition(async () => {
-      const result = await deleteProfile(
-        selectedProfile?.id ?? '',
-        selectedProfile.userId
-      )
+      const result = await deleteProfile(selectedProfile?.id ?? '')
       if (result.success) {
         alert(result.message)
         setDeleteModalOpen(false)
@@ -89,7 +82,7 @@ export function PropertiesTable({ properties, session }: Props) {
 
   return (
     <div className="container">
-      <div className="w-full ">
+      <div className="w-full">
         <div className="flex items-end gap-4 py-4">
           <div className="flex-1">
             <Label htmlFor="search">Pesquisar</Label>

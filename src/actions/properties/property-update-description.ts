@@ -40,9 +40,7 @@ export async function propertyUpdateDescription({
     })
 
     return { success: true }
-  } catch (error) {
-    console.error('Erro ao atualizar descrição', error)
-
+  } catch (_error) {
     return false
   }
 }

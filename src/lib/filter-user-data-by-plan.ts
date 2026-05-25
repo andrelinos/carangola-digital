@@ -15,7 +15,7 @@ interface FilterUserDataByPlanProps {
   planConfig: PlanConfigProps
   planActive?: {
     type: typeProps
-    expiresAt: number
+    expiresAt: number | null // null = plano free permanente
   }
 }
 
@@ -24,7 +24,11 @@ export function filterUserDataByPlan({
   planConfig = plansBusinessConfig.free,
   planActive,
 }: FilterUserDataByPlanProps) {
-  const isPlanActive = planActive ? planActive.expiresAt > Date.now() : false
+  // Se expiresAt for null, o plano é free permanente (nunca expira por tempo)
+  const isPlanActive =
+    planActive && planActive.expiresAt !== null
+      ? planActive.expiresAt > Date.now()
+      : false
 
   const planConfigToUse = isPlanActive ? planConfig : plansBusinessConfig.free
 

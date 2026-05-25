@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { startTransition, useState } from 'react'
 import type { PropertyProps } from '@/_types/property'
 import { propertyUpdateStatus } from '@/actions/properties/property-update-status'
 import { ButtonForOwnerOnly } from '@/components/commons/button-for-owner-only'
@@ -12,8 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useRouter } from 'next/navigation'
-import { startTransition, useState } from 'react'
 
 interface Props {
   data: PropertyProps | null

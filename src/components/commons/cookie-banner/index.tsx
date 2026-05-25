@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 const COOKIE_KEY = 'consentCookie'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 ano em segundos

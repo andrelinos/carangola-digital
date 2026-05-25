@@ -29,8 +29,8 @@ export async function compressImage(
       type: compressedFile.type,
       lastModified: Date.now(),
     })
-  } catch (error) {
-    console.error('Erro ao comprimir imagem:', error)
+  } catch {
+    console.error('Erro ao comprimir imagem')
     return null
   }
 }

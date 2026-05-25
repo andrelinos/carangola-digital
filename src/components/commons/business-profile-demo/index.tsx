@@ -1,17 +1,13 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Facebook, Instagram } from 'iconoir-react'
 import {
   Clock,
   Download,
   ExternalLink,
-  Facebook,
   Gift,
   Globe,
   Images,
-  Instagram,
   Mail,
   MapPin,
   MessageCircle,
@@ -21,6 +17,9 @@ import {
   StarHalf,
 } from 'lucide-react'
 import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function BusinessProfileDemo() {
   const businessHours = [
@@ -68,7 +67,7 @@ export function BusinessProfileDemo() {
 
         <Card className="overflow-hidden rounded-2xl bg-white shadow-xl">
           {/* Cover Photo */}
-          <div className="relative h-64 bg-gradient-to-r from-blue-500 to-purple-600">
+          <div className="relative h-64 bg-linear-to-r from-blue-500 to-purple-600">
             <img
               src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=600"
               alt="Modern coffee shop interior"
@@ -80,7 +79,7 @@ export function BusinessProfileDemo() {
           <CardContent className="p-8">
             {/* Business Header */}
             <div className="mb-8 flex items-start space-x-6">
-              <div className="-mt-16 relative z-10 h-24 w-24 rounded-2xl bg-white p-4 shadow-lg">
+              <div className="relative z-10 -mt-16 h-24 w-24 rounded-2xl bg-white p-4 shadow-lg">
                 <img
                   src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200"
                   alt="Coffee shop logo"
@@ -222,7 +221,7 @@ export function BusinessProfileDemo() {
             </div>
 
             {/* Special Offer */}
-            <Card className="mb-8 border border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50">
+            <Card className="mb-8 border border-yellow-200 bg-linear-to-r from-yellow-50 to-orange-50">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>

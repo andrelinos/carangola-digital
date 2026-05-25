@@ -15,7 +15,7 @@ interface UserData {
   email?: string | null
   image?: string | null
   id?: string
-  planActive: PlanActive
+  planActive?: PlanActive // Opcional: usuários sem assinatura não terão esse campo
   accountVerified: boolean
   hasProfileLink: boolean
   role?: string // pode ser undefined

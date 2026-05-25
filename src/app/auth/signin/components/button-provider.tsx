@@ -18,7 +18,7 @@ export function ButtonProvider({ provider, title, ...rest }: componentsProps) {
     try {
       setIsLoading(true)
       await signIn(provider)
-    } catch (error) {
+    } catch (_error) {
       setIsLoading(false)
     }
   }
