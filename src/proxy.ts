@@ -29,7 +29,7 @@ export default function proxy(request: NextRequest) {
       "default-src 'self'",
       `script-src ${scriptSrc}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://*.carangoladigital.com.br https://carangoladigital.com.br https://storage.googleapis.com https://firebasestorage.googleapis.com https://*.cloudinary.com",
+      "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://*.carangoladigital.com.br https://carangoladigital.com.br https://storage.googleapis.com https://firebasestorage.googleapis.com https://*.cloudinary.com https://*.tile.openstreetmap.org",
       "font-src 'self' data: https://fonts.gstatic.com",
       // ATENÇÃO: Adicione aqui as APIs externas que seu frontend consome (Firebase, Supabase, APIs de pagamento, etc)
       "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://identitytoolkit.googleapis.com https://upload-widget.cloudinary.com https://*.cloudinary.com",
