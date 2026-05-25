@@ -19,20 +19,18 @@ export default function proxy(request: NextRequest) {
 
   // 1. CSP Dinâmico: Remove unsafe-eval em produção
   const scriptSrc = isProduction
-    ? "'self' 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com https://www.google.com https://upload-widget.cloudinary.com"
-    : "'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://*.google-analytics.com https://www.google.com https://upload-widget.cloudinary.com"
-
-  // "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.carangoladigital.com.br https://storage.googleapis.com https://firebasestorage.googleapis.com",
+    ? "'self' 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com https://www.google.com https://upload-widget.cloudinary.com https://static.cloudflareinsights.com"
+    : "'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://*.google-analytics.com https://www.google.com https://upload-widget.cloudinary.com https://static.cloudflareinsights.com"
 
   const securityHeaders = {
     'Content-Security-Policy': [
       "default-src 'self'",
       `script-src ${scriptSrc}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://*.carangoladigital.com.br https://carangoladigital.com.br https://storage.googleapis.com https://firebasestorage.googleapis.com https://*.cloudinary.com https://*.tile.openstreetmap.org",
+      "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://*.carangoladigital.com.br https://carangoladigital.com.br https://storage.googleapis.com https://firebasestorage.googleapis.com https://*.cloudinary.com https://res.cloudinary.com https://*.tile.openstreetmap.org https://ui-avatars.com https://lh3.googleusercontent.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       // ATENÇÃO: Adicione aqui as APIs externas que seu frontend consome (Firebase, Supabase, APIs de pagamento, etc)
-      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://identitytoolkit.googleapis.com https://upload-widget.cloudinary.com https://*.cloudinary.com",
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://*.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://cloudflareinsights.com https://upload-widget.cloudinary.com https://*.cloudinary.com",
       'frame-src https://upload-widget.cloudinary.com',
       "frame-ancestors 'none'",
       "object-src 'none'",
