@@ -127,6 +127,8 @@ export async function createAsaasCustomer(data: {
   addressNumber?: string
   province?: string
   city?: string
+  cpfCnpj?: string
+  phone?: string
 }): Promise<AsaasCustomer> {
   return asaasFetch<AsaasCustomer>('/customers', {
     method: 'POST',
@@ -146,6 +148,8 @@ export async function updateAsaasCustomer(
     addressNumber: string
     province: string
     city: string
+    cpfCnpj?: string
+    phone?: string
   }
 ): Promise<AsaasCustomer> {
   return asaasFetch<AsaasCustomer>(`/customers/${customerId}`, {
@@ -167,6 +171,8 @@ export async function createOrFetchAsaasCustomer(data: {
   addressNumber: string
   province: string
   city: string
+  cpfCnpj?: string
+  phone?: string
 }): Promise<AsaasCustomer> {
   const existing = await findAsaasCustomerByEmail(data.email)
 

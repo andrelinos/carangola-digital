@@ -32,6 +32,7 @@ export default function proxy(request: NextRequest) {
       // ATENÇÃO: Adicione aqui as APIs externas que seu frontend consome (Firebase, Supabase, APIs de pagamento, etc)
       "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://*.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://cloudflareinsights.com https://upload-widget.cloudinary.com https://*.cloudinary.com",
       'frame-src https://upload-widget.cloudinary.com',
+      'worker-src blob:',
       "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",

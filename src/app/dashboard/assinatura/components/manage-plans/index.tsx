@@ -35,6 +35,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import type { PlanItemProps, PlanTypeProps } from '@/configs/plans-business'
 import { cn } from '@/lib/utils'
+import { formatCep } from '@/utils/format-cep'
+import { formatCpfCnpj } from '@/utils/format-cpf-cnpj'
+import { formatPhoneNumber } from '@/utils/format-phone-number'
 import { formatPrice } from '@/utils/format-price'
 
 interface ManagePlansProps {
@@ -78,12 +81,22 @@ export function ManagePlans({
     addressNumber: '',
     province: '', // Bairro
     city: '',
+    cpfCnpj: '',
+    phone: '',
   })
 
   // NOVO: Função para atualizar o estado do endereço
   function handleAddressChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
-    setBillingAddress(prev => ({ ...prev, [name]: value }))
+    const formatted =
+      name === 'cpfCnpj'
+        ? formatCpfCnpj(value)
+        : name === 'postalCode'
+          ? formatCep(value)
+          : name === 'phone'
+            ? formatPhoneNumber(value)
+            : value
+    setBillingAddress(prev => ({ ...prev, [name]: formatted }))
   }
 
   function handleCloseModal() {
@@ -111,9 +124,9 @@ export function ManagePlans({
     }
 
     // NOVO: Validação dos campos de endereço para planos pagos
-    const { postalCode, address, addressNumber, province, city } =
+    const { postalCode, address, addressNumber, province, city, cpfCnpj, phone } =
       billingAddress
-    if (!postalCode || !address || !addressNumber || !province || !city) {
+    if (!postalCode || !address || !addressNumber || !province || !city || !cpfCnpj || !phone) {
       toast.error('Preencha todos os campos do endereço de cobrança.')
       return
     }
@@ -135,6 +148,8 @@ export function ManagePlans({
           addressNumber,
           province,
           city,
+          cpfCnpj,
+          phone,
         }),
       })
 
@@ -514,6 +529,35 @@ export function ManagePlans({
                     </div>
 
                     <div className="grid gap-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="grid gap-1.5">
+                          <Label htmlFor="cpfCnpj" className="text-xs">
+                            CPF / CNPJ
+                          </Label>
+                          <Input
+                            id="cpfCnpj"
+                            name="cpfCnpj"
+                            placeholder="000.000.000-00"
+                            value={billingAddress.cpfCnpj}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                        <div className="grid gap-1.5">
+                          <Label htmlFor="phone" className="text-xs">
+                            Telefone
+                          </Label>
+                          <Input
+                            id="phone"
+                            name="phone"
+                            placeholder="(32) 99999-9999"
+                            value={billingAddress.phone}
+                            onChange={handleAddressChange}
+                            disabled={isPending}
+                          />
+                        </div>
+                      </div>
+
                       <div className="grid gap-1.5">
                         <Label htmlFor="postalCode" className="text-xs">
                           CEP
