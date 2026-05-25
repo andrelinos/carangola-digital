@@ -68,9 +68,7 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
       title: 'Cliques no WhatsApp',
       value: wppClicks.toLocaleString('pt-BR'),
       change:
-        wppClicks > 0
-          ? '+15.2% vs. mês passado'
-          : 'Sem dados suficientes',
+        wppClicks > 0 ? '+15.2% vs. mês passado' : 'Sem dados suficientes',
       trend: wppClicks > 0 ? ('up' as const) : ('neutral' as const),
       icon: <Eye className="size-5 text-purple-500" />,
       iconClass: 'text-purple-500',

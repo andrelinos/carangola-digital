@@ -16,9 +16,7 @@ export async function getAllProperties(): Promise<Record<string, unknown>[]> {
         .get()
     } catch {
       // Fallback sem orderBy caso o índice do collectionGroup ainda não exista
-      propertiesSnapshot = await db
-        .collectionGroup('user_properties')
-        .get()
+      propertiesSnapshot = await db.collectionGroup('user_properties').get()
     }
 
     if (propertiesSnapshot.empty) {

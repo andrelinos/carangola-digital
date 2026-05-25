@@ -6,7 +6,7 @@ import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
 
 interface RegistrationCTAProps {
-  hasSession: boolean;
+  hasSession: boolean
 }
 
 export function RegistrationCTA({ hasSession }: RegistrationCTAProps) {
@@ -23,7 +23,8 @@ export function RegistrationCTA({ hasSession }: RegistrationCTAProps) {
               Anuncie seu imóvel com facilidade!
             </h2>
             <p className="mt-6 max-w-xl text-lg text-primary-foreground/80 lg:text-xl">
-              Alcance milhares de pessoas que buscam imóveis em Carangola todos os dias. Alugue ou venda mais rápido.
+              Alcance milhares de pessoas que buscam imóveis em Carangola todos
+              os dias. Alugue ou venda mais rápido.
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4 lg:justify-start">
@@ -37,7 +38,9 @@ export function RegistrationCTA({ hasSession }: RegistrationCTAProps) {
               </div>
               <div className="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <Key className="size-5" />
-                <span className="font-medium text-sm">Gestão Descomplicada</span>
+                <span className="font-medium text-sm">
+                  Gestão Descomplicada
+                </span>
               </div>
             </div>
 
@@ -48,7 +51,9 @@ export function RegistrationCTA({ hasSession }: RegistrationCTAProps) {
                   size="lg"
                   className="h-16 rounded-2xl bg-white px-10 font-bold text-primary text-xl shadow-xl transition-all hover:scale-105 hover:bg-zinc-100 active:scale-95"
                 >
-                  <Link href="/dashboard/imoveis">Anunciar agora gratuitamente</Link>
+                  <Link href="/dashboard/imoveis">
+                    Anunciar agora gratuitamente
+                  </Link>
                 </Button>
               ) : (
                 <form action={manageAuth}>

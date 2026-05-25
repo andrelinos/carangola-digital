@@ -18,10 +18,5 @@ export default async function BeaconPage({ params }: PageProps) {
     notFound()
   }
 
-  return (
-    <BeaconContent
-      slug={slug}
-      profile={profile}
-    />
-  )
+  return <BeaconContent slug={slug} profile={profile} />
 }

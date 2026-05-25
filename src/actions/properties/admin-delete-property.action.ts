@@ -10,7 +10,10 @@ interface DeleteProps {
   ownerId: string
 }
 
-export async function adminDeleteProperty({ propertyId, ownerId }: DeleteProps) {
+export async function adminDeleteProperty({
+  propertyId,
+  ownerId,
+}: DeleteProps) {
   try {
     await requireAdmin()
   } catch {

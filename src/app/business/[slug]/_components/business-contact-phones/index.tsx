@@ -7,10 +7,10 @@ import type {
   BusinessPhoneProps,
   ProfileDataProps,
 } from '@/_types/profile-data'
+import { registerWhatsappLead } from '@/actions/business/register-whatsapp-lead'
 import { Link } from '@/components/ui/link'
 import { SafeImage } from '@/components/ui/safe-image'
 import { formatPhoneNumber } from '@/utils/format-phone-number'
-import { registerWhatsappLead } from '@/actions/business/register-whatsapp-lead'
 import { ProfileSection } from '../profile-section'
 import { EditContactPhones } from './edit-business-contact-phones'
 
@@ -113,7 +113,10 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
                       <Link
                         onClick={() => {
                           if (profileId) {
-                            registerWhatsappLead({ profileId, ownerId: profileData.userId })
+                            registerWhatsappLead({
+                              profileId,
+                              ownerId: profileData.userId,
+                            })
                           }
                         }}
                         href={`https://wa.me/+55${item.phone}?text=Olá! Vi seu contato no Carangola Digital e gostaria de saber mais.`}

@@ -19,7 +19,8 @@ export function ClientHero() {
             transition={{ duration: 0.5 }}
             className="mb-4 inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 font-medium text-primary text-sm"
           >
-            <Home className="mr-2 size-4" />O melhor lugar para morar ou investir
+            <Home className="mr-2 size-4" />O melhor lugar para morar ou
+            investir
           </motion.div>
 
           <motion.h1

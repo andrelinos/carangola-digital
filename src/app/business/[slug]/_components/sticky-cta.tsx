@@ -14,7 +14,12 @@ interface StickyCtaProps {
   ownerId?: string | null
 }
 
-export function StickyCta({ phones, businessName, profileId, ownerId }: StickyCtaProps) {
+export function StickyCta({
+  phones,
+  businessName,
+  profileId,
+  ownerId,
+}: StickyCtaProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   // Identifica o primeiro telefone que seja WhatsApp
@@ -61,4 +66,3 @@ export function StickyCta({ phones, businessName, profileId, ownerId }: StickyCt
     </AnimatePresence>
   )
 }
-

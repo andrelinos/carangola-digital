@@ -61,8 +61,13 @@ export async function getDashboardStats() {
           .get(),
       ])
 
-    let { activeBusinesses, totalVisits, announcedProperties, newLeads, whatsappClicks } =
-      DEFAULT_STATS
+    let {
+      activeBusinesses,
+      totalVisits,
+      announcedProperties,
+      newLeads,
+      whatsappClicks,
+    } = DEFAULT_STATS
 
     // Processamento seguro dos resultados
     if (businessesResult.status === 'fulfilled') {

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/utils/format-price'
 
-interface SearchProps extends PropertyProps { }
+interface SearchProps extends PropertyProps {}
 
 export default function SearchFormProperties() {
   const [searchTerms, setSearchTerms] = useState('')

@@ -49,7 +49,6 @@ export default function LocationBeaconMap({
   centerLng,
   zoom = 14,
 }: LocationBeaconMapProps) {
-  
   useEffect(() => {
     // Corrige erro de renderização do Leaflet no SSR do Next.js
     delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -73,9 +72,9 @@ export default function LocationBeaconMap({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {businesses.map((business) => {
+        {businesses.map(business => {
           const primaryAddress = business.businessAddresses?.[0]
-          
+
           if (!primaryAddress?.latitude || !primaryAddress?.longitude) {
             return null
           }
@@ -92,7 +91,7 @@ export default function LocationBeaconMap({
                     {business.name}
                   </span>
                   {business.isBeaconActive && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-[10px] text-emerald-600 tracking-wide uppercase">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-[10px] text-emerald-600 uppercase tracking-wide">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                       Beacon Ativo
                     </span>

@@ -163,12 +163,12 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
         onInteractOutside={event => event.preventDefault()}
         className="max-h-[90vh] w-full max-w-4xl overflow-y-auto bg-white p-0 sm:rounded-2xl dark:bg-slate-900"
       >
-        <div className="sticky top-0 z-10 border-b border-slate-100 bg-white/80 px-6 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
+        <div className="sticky top-0 z-10 border-slate-100 border-b bg-white/80 px-6 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black text-slate-900 tracking-tight dark:text-slate-100">
+            <DialogTitle className="font-black text-2xl text-slate-900 tracking-tight dark:text-slate-100">
               Cadastrar Novo Imóvel
             </DialogTitle>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-slate-500 text-sm dark:text-slate-400">
               Preencha os dados abaixo para anunciar sua propriedade.
             </p>
           </DialogHeader>
@@ -177,16 +177,19 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
         <div className="space-y-10 px-6 py-6 md:px-8">
           {/* Informações Principais */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2 dark:border-slate-800">
+            <div className="flex items-center gap-2 border-slate-100 border-b pb-2 dark:border-slate-800">
               <Home className="h-5 w-5 text-blue-600" />
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
+              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">
                 Informações Principais
               </h3>
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-2.5">
-                <Label htmlFor="title" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="title"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Título do Anúncio *
                 </Label>
                 <Input
@@ -200,11 +203,14 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                 />
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="price" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="price"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Valor (R$) *
                 </Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 font-medium text-slate-400">
+                  <span className="absolute top-1/2 left-3 -translate-y-1/2 font-medium text-slate-400">
                     R$
                   </span>
                   <Input
@@ -223,7 +229,10 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <div className="space-y-2.5">
-                <Label htmlFor="type" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="type"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Tipo de Imóvel
                 </Label>
                 <Select
@@ -244,7 +253,10 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                 </Select>
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="listingType" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="listingType"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Finalidade
                 </Label>
                 <Select
@@ -267,7 +279,10 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                 </Select>
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="status" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="status"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Status
                 </Label>
                 <Select
@@ -292,15 +307,18 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
 
           {/* Localização */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2 dark:border-slate-800">
+            <div className="flex items-center gap-2 border-slate-100 border-b pb-2 dark:border-slate-800">
               <MapPin className="h-5 w-5 text-rose-500" />
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
+              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">
                 Localização
               </h3>
             </div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <div className="space-y-2.5 md:col-span-2">
-                <Label htmlFor="address" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="address"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Endereço Completo *
                 </Label>
                 <Input
@@ -313,7 +331,10 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                 />
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="zipCode" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="zipCode"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   CEP *
                 </Label>
                 <Input
@@ -330,15 +351,18 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
 
           {/* Detalhes do Imóvel */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2 dark:border-slate-800">
+            <div className="flex items-center gap-2 border-slate-100 border-b pb-2 dark:border-slate-800">
               <Ruler className="h-5 w-5 text-amber-500" />
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
+              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">
                 Dimensões e Estrutura
               </h3>
             </div>
             <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-5">
               <div className="space-y-2.5">
-                <Label htmlFor="bedrooms" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="bedrooms"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Quartos
                 </Label>
                 <Input
@@ -347,11 +371,14 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                   type="number"
                   value={newProperty.bedrooms}
                   onChange={handleFormChange}
-                  className="h-11 bg-slate-50 text-center text-lg font-medium transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
+                  className="h-11 bg-slate-50 text-center font-medium text-lg transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
                 />
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="bathrooms" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="bathrooms"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Banheiros
                 </Label>
                 <Input
@@ -360,11 +387,14 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                   type="number"
                   value={newProperty.bathrooms}
                   onChange={handleFormChange}
-                  className="h-11 bg-slate-50 text-center text-lg font-medium transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
+                  className="h-11 bg-slate-50 text-center font-medium text-lg transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
                 />
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="garageSpots" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="garageSpots"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Vagas
                 </Label>
                 <Input
@@ -373,11 +403,14 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                   type="number"
                   value={newProperty.garageSpots}
                   onChange={handleFormChange}
-                  className="h-11 bg-slate-50 text-center text-lg font-medium transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
+                  className="h-11 bg-slate-50 text-center font-medium text-lg transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
                 />
               </div>
               <div className="space-y-2.5">
-                <Label htmlFor="area" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="area"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Área (m²)
                 </Label>
                 <Input
@@ -386,11 +419,14 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                   type="number"
                   value={newProperty.area}
                   onChange={handleFormChange}
-                  className="h-11 bg-slate-50 text-center text-lg font-medium transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
+                  className="h-11 bg-slate-50 text-center font-medium text-lg transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
                 />
               </div>
               <div className="col-span-2 space-y-2.5 md:col-span-1">
-                <Label htmlFor="yearBuilt" className="font-semibold text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="yearBuilt"
+                  className="font-semibold text-slate-700 dark:text-slate-300"
+                >
                   Construção
                 </Label>
                 <Input
@@ -400,7 +436,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                   value={newProperty.yearBuilt}
                   onChange={handleFormChange}
                   placeholder="Ex: 2015"
-                  className="h-11 bg-slate-50 text-center text-lg font-medium transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
+                  className="h-11 bg-slate-50 text-center font-medium text-lg transition-colors focus:bg-white dark:bg-slate-800/50 dark:focus:bg-slate-800"
                 />
               </div>
             </div>
@@ -408,14 +444,17 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
 
           {/* Descrição e Diferenciais */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2 dark:border-slate-800">
+            <div className="flex items-center gap-2 border-slate-100 border-b pb-2 dark:border-slate-800">
               <ListPlus className="h-5 w-5 text-emerald-500" />
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
+              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">
                 Mais Detalhes
               </h3>
             </div>
             <div className="space-y-2.5">
-              <Label htmlFor="description" className="font-semibold text-slate-700 dark:text-slate-300">
+              <Label
+                htmlFor="description"
+                className="font-semibold text-slate-700 dark:text-slate-300"
+              >
                 Descrição do Imóvel
               </Label>
               <Textarea
@@ -455,7 +494,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
                       />
                       <Label
                         htmlFor={feature}
-                        className="cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300"
+                        className="cursor-pointer font-medium text-slate-700 text-sm dark:text-slate-300"
                         onClick={e => e.stopPropagation()}
                       >
                         {feature}
@@ -467,7 +506,7 @@ export function AddPropertyModal({ isOpen, onClose }: Props) {
             </div>
           </div>
 
-          <div className="mt-8 border-t border-slate-100 pt-6 dark:border-slate-800">
+          <div className="mt-8 border-slate-100 border-t pt-6 dark:border-slate-800">
             <FooterEditModal
               isSubmitting={isSubmitting}
               onClose={onClose}

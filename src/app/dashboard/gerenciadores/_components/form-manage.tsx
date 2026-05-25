@@ -39,12 +39,12 @@ export function FormManage({ session, profiles }: Props) {
   return (
     <div className="flex w-full flex-col gap-8 pb-10">
       {/* Header Area */}
-      <div className='flex flex-col justify-between gap-4 border-slate-100 border-b pb-6 sm:flex-row sm:items-center dark:border-slate-800'>
+      <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-6 sm:flex-row sm:items-center dark:border-slate-800">
         <div>
-          <h1 className='font-black text-3xl text-slate-900 tracking-tight dark:text-slate-100'>
+          <h1 className="font-black text-3xl text-slate-900 tracking-tight dark:text-slate-100">
             Meus Negócios
           </h1>
-          <p className='mt-1 font-medium text-slate-500 text-sm dark:text-slate-400'>
+          <p className="mt-1 font-medium text-slate-500 text-sm dark:text-slate-400">
             Gerencie o perfil, assinaturas e administradores das suas empresas.
           </p>
         </div>
@@ -52,7 +52,7 @@ export function FormManage({ session, profiles }: Props) {
 
       {/* Search & Filters */}
       <div className="relative max-w-md">
-        <Search className='absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400' />
+        <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400" />
         <Input
           type="search"
           placeholder="Buscar negócio por nome..."
@@ -80,10 +80,11 @@ export function FormManage({ session, profiles }: Props) {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`font-bold text-[10px] uppercase tracking-wider ${profile.planActive?.planType === 'pro'
+                      className={`font-bold text-[10px] uppercase tracking-wider ${
+                        profile.planActive?.planType === 'pro'
                           ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
                           : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
-                        }`}
+                      }`}
                     >
                       {profile.planActive?.planType || 'Grátis'}
                     </Badge>
@@ -91,19 +92,19 @@ export function FormManage({ session, profiles }: Props) {
 
                   <div className="mb-6">
                     <h2
-                      className='truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100'
+                      className="truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100"
                       title={profile.name || profile.slug}
                     >
                       {profile.name || profile.slug}
                     </h2>
                     <div className="mt-4 flex flex-col gap-2.5">
-                      <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                      <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                         <Shield className="size-4 text-emerald-500 dark:text-emerald-400" />
                         <span className="font-medium">
                           {isOwner ? 'Proprietário' : 'Administrador'}
                         </span>
                       </div>
-                      <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                      <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                         <User className="size-4 text-blue-500 dark:text-blue-400" />
                         <span className="font-medium">
                           {profile.admins?.length || 0} gerente(s)
@@ -118,7 +119,9 @@ export function FormManage({ session, profiles }: Props) {
                           {profile.featuredEndAt && (
                             <span className="ml-1 font-medium text-[10px] text-amber-500 italic dark:text-amber-300">
                               até{' '}
-                              {new Date(profile.featuredEndAt).toLocaleDateString('pt-BR', {
+                              {new Date(
+                                profile.featuredEndAt
+                              ).toLocaleDateString('pt-BR', {
                                 day: '2-digit',
                                 month: 'short',
                               })}
@@ -131,7 +134,7 @@ export function FormManage({ session, profiles }: Props) {
 
                   <Button
                     onClick={() => setProfileId(profile.id)}
-                    className='h-11 w-full rounded-xl bg-blue-600 font-bold text-white shadow-blue-500/20 shadow-md transition-all hover:bg-blue-700'
+                    className="h-11 w-full rounded-xl bg-blue-600 font-bold text-white shadow-blue-500/20 shadow-md transition-all hover:bg-blue-700"
                   >
                     <Settings className="mr-2 size-4" />
                     Gerenciar Perfil
@@ -145,11 +148,11 @@ export function FormManage({ session, profiles }: Props) {
 
       {/* Empty State */}
       {listProfiles?.length === 0 && (
-        <div className='mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center dark:border-slate-800 dark:bg-slate-900'>
+        <div className="mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-4 rounded-full bg-slate-50 p-4 dark:bg-slate-800">
             <Store className="size-10 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className='font-bold text-slate-900 text-xl dark:text-slate-100'>
+          <h2 className="font-bold text-slate-900 text-xl dark:text-slate-100">
             Nenhum negócio encontrado
           </h2>
           <p className="mt-2 max-w-sm font-medium text-slate-500 dark:text-slate-400">

@@ -32,7 +32,9 @@ export function rateLimit(options?: RateLimitOptions) {
         // Adicionamos os headers tradicionais de rate limit
         const headers = {
           'X-RateLimit-Limit': limit.toString(),
-          'X-RateLimit-Remaining': isRateLimited ? '0' : (limit - currentUsage).toString(),
+          'X-RateLimit-Remaining': isRateLimited
+            ? '0'
+            : (limit - currentUsage).toString(),
         }
 
         if (isRateLimited) {

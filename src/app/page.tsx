@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { getFeaturedProfiles } from '@/actions/business/get-featured-profiles'
 // import { getLatestPublicProfiles } from '@/actions/business/get-latest-public-profiles'
 import { getLatestPublicProperties } from '@/actions/properties/get-latest-public-properties'
 import { trackServerEvent } from '@/lib/mixpanel'
@@ -8,7 +9,6 @@ import { HomeHero } from './_components/home-hero'
 import { PopularCategories } from './_components/popular-categories'
 import { PropertiesCTA } from './_components/properties-cta'
 import { RecentListings } from './_components/recent-listings'
-import { getFeaturedProfiles } from '@/actions/business/get-featured-profiles'
 
 export const metadata: Metadata = {
   title:

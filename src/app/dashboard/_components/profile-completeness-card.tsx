@@ -84,12 +84,12 @@ export function ProfileCompletenessCard({
         </div>
 
         {/* Content */}
-        <div className='w-full flex-1 space-y-5 text-center'>
+        <div className="w-full flex-1 space-y-5 text-center">
           <div>
-            <h3 className='font-black text-foreground text-xl tracking-tight'>
+            <h3 className="font-black text-foreground text-xl tracking-tight">
               Força do seu Perfil
             </h3>
-            <p className='mx-auto mt-1 max-w-xs font-medium text-muted-foreground text-sm'>
+            <p className="mx-auto mt-1 max-w-xs font-medium text-muted-foreground text-sm">
               Perfis completos aparecem até{' '}
               <span className="font-bold text-primary">3x mais</span> nas buscas
               dos clientes.
@@ -100,7 +100,7 @@ export function ProfileCompletenessCard({
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left transition-colors hover:bg-primary/10">
               <div className="flex flex-col gap-4">
                 <div className="flex items-start gap-3">
-                  <div className='shrink-0 rounded-full bg-primary/20 p-2'>
+                  <div className="shrink-0 rounded-full bg-primary/20 p-2">
                     <AlertCircle className="size-5 text-primary" />
                   </div>
                   <div>
@@ -132,7 +132,7 @@ export function ProfileCompletenessCard({
           ) : (
             <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-4 text-left">
               <div className="flex items-center gap-3">
-                <div className='shrink-0 rounded-full bg-green-500/20 p-2'>
+                <div className="shrink-0 rounded-full bg-green-500/20 p-2">
                   <CheckCircle2 className="size-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
@@ -154,10 +154,11 @@ export function ProfileCompletenessCard({
         {items.map((item, idx) => (
           <div
             key={String(idx)}
-            className={`flex items-center gap-2 rounded-xl border p-2.5 transition-colors ${item.isComplete
+            className={`flex items-center gap-2 rounded-xl border p-2.5 transition-colors ${
+              item.isComplete
                 ? 'border-primary/20 bg-primary/5 dark:bg-primary/10'
                 : 'border-border bg-background'
-              }`}
+            }`}
           >
             {item.isComplete ? (
               <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20">
@@ -167,10 +168,11 @@ export function ProfileCompletenessCard({
               <div className="size-5 shrink-0 rounded-full border-2 border-muted bg-background shadow-inner" />
             )}
             <span
-              className={`truncate text-xs ${item.isComplete
+              className={`truncate text-xs ${
+                item.isComplete
                   ? 'font-bold text-foreground'
                   : 'font-medium text-muted-foreground'
-                }`}
+              }`}
               title={item.label}
             >
               {item.label}

@@ -1,7 +1,13 @@
 import clsx from 'clsx'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
-import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import ReactCrop, {
   type Crop,
   centerCrop,

@@ -14,7 +14,7 @@ export interface BusinessPayload {
 export type WithGeoHash<T> = T & { geohash?: string }
 
 /**
- * Injeta o geohash na raiz do objeto do negócio 
+ * Injeta o geohash na raiz do objeto do negócio
  * usando as coordenadas do endereço principal.
  */
 export function attachGeoHash<T extends BusinessPayload>(

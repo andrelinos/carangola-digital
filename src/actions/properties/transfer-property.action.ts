@@ -30,9 +30,9 @@ export async function transferProperty(
       .doc(currentOwnerId)
       .collection('user_properties')
       .doc(propertyId)
-      
+
     const propertySnap = await oldPropertyRef.get()
-    
+
     if (!propertySnap.exists) {
       return { success: false, message: 'Imóvel não encontrado.' }
     }
@@ -49,7 +49,7 @@ export async function transferProperty(
       .doc(newOwnerId)
       .collection('user_properties')
       .doc(propertyId)
-      
+
     const propertyData = propertySnap.data()
 
     await db.runTransaction(async transaction => {

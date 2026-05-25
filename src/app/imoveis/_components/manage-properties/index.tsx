@@ -1,6 +1,16 @@
 'use client'
 
-import { DollarSign, Eye, Home, MapPin, Plus, Search, Star, Tag, Trash2 } from 'lucide-react'
+import {
+  DollarSign,
+  Eye,
+  Home,
+  MapPin,
+  Plus,
+  Search,
+  Star,
+  Tag,
+  Trash2,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import type { PropertyProps } from '@/_types/property'
@@ -125,12 +135,12 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   return (
     <div className="flex w-full flex-col gap-8 pb-10">
       {/* Header Area */}
-      <div className='flex flex-col justify-between gap-4 border-slate-100 border-b pb-6 sm:flex-row sm:items-center dark:border-slate-800'>
+      <div className="flex flex-col justify-between gap-4 border-slate-100 border-b pb-6 sm:flex-row sm:items-center dark:border-slate-800">
         <div>
-          <h1 className='font-black text-3xl text-slate-900 tracking-tight dark:text-slate-100'>
+          <h1 className="font-black text-3xl text-slate-900 tracking-tight dark:text-slate-100">
             Meus Imóveis
           </h1>
-          <p className='mt-1 font-medium text-slate-500 text-sm dark:text-slate-400'>
+          <p className="mt-1 font-medium text-slate-500 text-sm dark:text-slate-400">
             Gerencie seus imóveis cadastrados, status e valores.
           </p>
         </div>
@@ -146,13 +156,19 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="overflow-hidden border-slate-200 bg-blue-600 shadow-sm dark:border-slate-800 dark:bg-blue-700">
           <CardContent className="p-6">
-            <p className="font-medium text-blue-100 text-sm">Total de Imóveis</p>
-            <p className="mt-2 font-bold text-3xl text-white">{properties.length}</p>
+            <p className="font-medium text-blue-100 text-sm">
+              Total de Imóveis
+            </p>
+            <p className="mt-2 font-bold text-3xl text-white">
+              {properties.length}
+            </p>
           </CardContent>
         </Card>
         <Card className="overflow-hidden border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-6">
-            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">Disponíveis</p>
+            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">
+              Disponíveis
+            </p>
             <p className="mt-2 font-bold text-3xl text-slate-900 dark:text-slate-100">
               {properties.filter(p => p.status === 'Disponível').length}
             </p>
@@ -160,7 +176,9 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
         </Card>
         <Card className="overflow-hidden border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-6">
-            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">Alugados / Vendidos</p>
+            <p className="font-medium text-slate-500 text-sm dark:text-slate-400">
+              Alugados / Vendidos
+            </p>
             <p className="mt-2 font-bold text-3xl text-slate-900 dark:text-slate-100">
               {properties.filter(p => p.status !== 'Disponível').length}
             </p>
@@ -169,7 +187,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
       </div>
 
       <div className="relative max-w-md">
-        <Search className='absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400' />
+        <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400" />
         <Input
           type="search"
           placeholder="Buscar por título ou endereço..."
@@ -197,8 +215,8 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                       property.status === 'Disponível'
                         ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
                         : property.status === 'Alugado'
-                        ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
-                        : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
+                          ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
+                          : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
                     }`}
                   >
                     {property.status}
@@ -207,25 +225,25 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
 
                 <div className="mb-6">
                   <h2
-                    className='truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100'
+                    className="truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100"
                     title={property.title}
                   >
                     {property.title}
                   </h2>
                   <div className="mt-4 flex flex-col gap-2.5">
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <MapPin className="size-4 shrink-0 text-rose-500 dark:text-rose-400" />
                       <span className="truncate font-medium">
                         {property.address}
                       </span>
                     </div>
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <Tag className="size-4 shrink-0 text-blue-500 dark:text-blue-400" />
                       <span className="font-medium">
                         {property.listingType} • {property.type}
                       </span>
                     </div>
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <DollarSign className="size-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
                       <span className="font-bold text-slate-900 dark:text-slate-100">
                         {formatPrice(Number(property.price))}
@@ -243,10 +261,13 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                     {property.featuredEndAt && (
                       <span className="ml-1 font-medium text-[10px] text-amber-500 italic dark:text-amber-300">
                         até{' '}
-                        {new Date(property.featuredEndAt).toLocaleDateString('pt-BR', {
-                          day: '2-digit',
-                          month: 'short',
-                        })}
+                        {new Date(property.featuredEndAt).toLocaleDateString(
+                          'pt-BR',
+                          {
+                            day: '2-digit',
+                            month: 'short',
+                          }
+                        )}
                       </span>
                     )}
                   </div>
@@ -256,7 +277,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                   <Button
                     variant="outline"
                     onClick={() => handleView(property.slug)}
-                    className='h-11 flex-1 rounded-xl font-bold transition-all hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800'
+                    className="h-11 flex-1 rounded-xl font-bold transition-all hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
                   >
                     <Eye className="mr-2 size-4" />
                     Ver
@@ -264,7 +285,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                   <Button
                     variant="outline"
                     onClick={() => handleOpenDeleteModal(property.id)}
-                    className='h-11 rounded-xl border-rose-200 font-bold text-rose-600 transition-all hover:bg-rose-50 hover:text-rose-700 dark:border-rose-900/50 dark:text-rose-400 dark:hover:bg-rose-900/30 dark:hover:text-rose-300'
+                    className="h-11 rounded-xl border-rose-200 font-bold text-rose-600 transition-all hover:bg-rose-50 hover:text-rose-700 dark:border-rose-900/50 dark:text-rose-400 dark:hover:bg-rose-900/30 dark:hover:text-rose-300"
                   >
                     <Trash2 className="size-4" />
                   </Button>
@@ -276,11 +297,11 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
       </div>
 
       {properties?.length === 0 && (
-        <div className='mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center dark:border-slate-800 dark:bg-slate-900'>
+        <div className="mt-4 flex flex-col items-center justify-center rounded-3xl border border-slate-200 border-dashed bg-white py-24 text-center dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-4 rounded-full bg-slate-50 p-4 dark:bg-slate-800">
             <Home className="size-10 text-slate-400 dark:text-slate-500" />
           </div>
-          <h2 className='font-bold text-slate-900 text-xl dark:text-slate-100'>
+          <h2 className="font-bold text-slate-900 text-xl dark:text-slate-100">
             Nenhum imóvel {termsToSearch ? 'encontrado' : 'cadastrado'}
           </h2>
           <p className="mt-2 max-w-sm font-medium text-slate-500 dark:text-slate-400">
@@ -291,7 +312,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
           {!termsToSearch && (
             <Button
               onClick={handleNew}
-              className='mt-6 h-11 rounded-xl bg-blue-600 px-6 font-bold text-white shadow-blue-500/20 shadow-md transition-all hover:bg-blue-700'
+              className="mt-6 h-11 rounded-xl bg-blue-600 px-6 font-bold text-white shadow-blue-500/20 shadow-md transition-all hover:bg-blue-700"
             >
               <Plus className="mr-2 size-4" />
               Cadastrar Imóvel

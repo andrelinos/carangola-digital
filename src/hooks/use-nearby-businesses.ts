@@ -1,7 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getNearbyBusinessesAction, type BusinessData } from '@/actions/dashboard/get-nearby-businesses.action'
+import {
+  type BusinessData,
+  getNearbyBusinessesAction,
+} from '@/actions/dashboard/get-nearby-businesses.action'
 
 export type { BusinessData }
 
@@ -31,10 +34,18 @@ export function useNearbyBusinesses(
       setError(null)
 
       try {
-        const data = await getNearbyBusinessesAction(latitude, longitude, radiusInKm)
+        const data = await getNearbyBusinessesAction(
+          latitude,
+          longitude,
+          radiusInKm
+        )
         setBusinesses(data)
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Erro ao buscar negócios próximos.'))
+        setError(
+          err instanceof Error
+            ? err
+            : new Error('Erro ao buscar negócios próximos.')
+        )
       } finally {
         setLoading(false)
       }

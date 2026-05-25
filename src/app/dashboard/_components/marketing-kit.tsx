@@ -41,7 +41,9 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
 
   const handleSelectProfileLink = (slug: string) => {
     setIsLinkModalOpen(false)
-    navigator.clipboard.writeText(`https://carangoladigital.com.br/business/${slug}`)
+    navigator.clipboard.writeText(
+      `https://carangoladigital.com.br/business/${slug}`
+    )
     toast.success('Link copiado para a área de transferência!')
   }
 
@@ -230,14 +232,18 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
                         className="size-full object-cover"
                       />
                     ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-muted-foreground text-lg">
+                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
                         {profile.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">{profile.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{profile.category}</p>
+                    <p className="font-bold text-sm leading-tight">
+                      {profile.name}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {profile.category}
+                    </p>
                   </div>
                   <div className="flex size-8 items-center justify-center rounded-full bg-pink-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-pink-900/40">
                     <Check className="size-4 text-pink-600 dark:text-pink-400" />
@@ -297,14 +303,18 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
                         className="size-full object-cover"
                       />
                     ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-muted-foreground text-lg">
+                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
                         {profile.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">{profile.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{profile.category}</p>
+                    <p className="font-bold text-sm leading-tight">
+                      {profile.name}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {profile.category}
+                    </p>
                   </div>
                   <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-blue-900/40">
                     <Share2 className="size-4 text-blue-600 dark:text-blue-400" />
@@ -364,14 +374,18 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
                         className="size-full object-cover"
                       />
                     ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-muted-foreground text-lg">
+                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
                         {profile.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">{profile.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{profile.category}</p>
+                    <p className="font-bold text-sm leading-tight">
+                      {profile.name}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {profile.category}
+                    </p>
                   </div>
                   <div className="flex size-8 items-center justify-center rounded-full bg-emerald-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-emerald-900/40">
                     <MapPin className="size-4 text-emerald-600 dark:text-emerald-400" />

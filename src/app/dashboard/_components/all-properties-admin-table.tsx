@@ -57,9 +57,11 @@ export function AllPropertiesAdminTable({
   isAdmin = false,
 }: Props) {
   const [isPending, startTransition] = useTransition()
-  const [selectedProperty, setSelectedProperty] = useState<PropertyProps | null>(null)
+  const [selectedProperty, setSelectedProperty] =
+    useState<PropertyProps | null>(null)
   const [_isLoading, setIsLoading] = useState(false)
-  const [listProperties, setListProperties] = useState<PropertyProps[]>(initialProperties)
+  const [listProperties, setListProperties] =
+    useState<PropertyProps[]>(initialProperties)
 
   const [isTransferModalOpen, setTransferModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -107,7 +109,11 @@ export function AllPropertiesAdminTable({
     setIsLoading(true)
     startTransition(async () => {
       const ownerId = selectedProperty.ownerId || selectedProperty.userId
-      const result = await transferProperty(selectedProperty.id, ownerId, newOwnerId)
+      const result = await transferProperty(
+        selectedProperty.id,
+        ownerId,
+        newOwnerId
+      )
       if (result.success) {
         toast.success(result.message)
         setTransferModalOpen(false)
@@ -125,10 +131,15 @@ export function AllPropertiesAdminTable({
 
     startTransition(async () => {
       const ownerId = selectedProperty.ownerId || selectedProperty.userId
-      const result = await adminDeleteProperty({ propertyId: selectedProperty.id, ownerId })
+      const result = await adminDeleteProperty({
+        propertyId: selectedProperty.id,
+        ownerId,
+      })
       if (result.success) {
         toast.success('Imóvel excluído com sucesso!')
-        setListProperties(prev => prev.filter(p => p.id !== selectedProperty.id))
+        setListProperties(prev =>
+          prev.filter(p => p.id !== selectedProperty.id)
+        )
         setDeleteModalOpen(false)
       } else {
         toast.error(`Erro: ${result.error || 'Falha ao excluir'}`)
@@ -186,12 +197,13 @@ export function AllPropertiesAdminTable({
                   <div className="flex items-center gap-2">
                     <Badge
                       variant="outline"
-                      className={`font-bold text-[10px] uppercase tracking-wider ${property.status === 'Disponível'
+                      className={`font-bold text-[10px] uppercase tracking-wider ${
+                        property.status === 'Disponível'
                           ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
                           : property.status === 'Alugado'
                             ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
                             : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
-                        }`}
+                      }`}
                     >
                       {property.status}
                     </Badge>
@@ -233,7 +245,8 @@ export function AllPropertiesAdminTable({
                                 <Star
                                   className={cn(
                                     'size-4',
-                                    getPropertyFeaturedState(property).isFeatured && 'fill-amber-400'
+                                    getPropertyFeaturedState(property)
+                                      .isFeatured && 'fill-amber-400'
                                   )}
                                 />
                                 <span className="font-bold text-xs uppercase">
@@ -282,25 +295,25 @@ export function AllPropertiesAdminTable({
 
                 <div className="mb-6">
                   <h2
-                    className='truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100'
+                    className="truncate font-bold text-slate-900 text-xl tracking-tight dark:text-slate-100"
                     title={property.title}
                   >
                     {property.title}
                   </h2>
                   <div className="mt-4 flex flex-col gap-2.5">
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <MapPin className="size-4 shrink-0 text-rose-500 dark:text-rose-400" />
                       <span className="truncate font-medium">
                         {property.address}
                       </span>
                     </div>
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <Tag className="size-4 shrink-0 text-blue-500 dark:text-blue-400" />
                       <span className="font-medium">
                         {property.listingType} • {property.type}
                       </span>
                     </div>
-                    <div className='flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400'>
+                    <div className="flex items-center gap-2.5 text-slate-500 text-sm dark:text-slate-400">
                       <DollarSign className="size-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
                       <span className="font-bold text-slate-900 dark:text-slate-100">
                         {formatPrice(Number(property.price))}
@@ -381,9 +394,15 @@ export function AllPropertiesAdminTable({
           propertyId={selectedProperty.id ?? ''}
           propertyTitle={selectedProperty.title}
           ownerId={selectedProperty.ownerId || selectedProperty.userId}
-          currentIsFeatured={getPropertyFeaturedState(selectedProperty).isFeatured}
-          currentFeaturedStartAt={getPropertyFeaturedState(selectedProperty).featuredStartAt}
-          currentFeaturedEndAt={getPropertyFeaturedState(selectedProperty).featuredEndAt}
+          currentIsFeatured={
+            getPropertyFeaturedState(selectedProperty).isFeatured
+          }
+          currentFeaturedStartAt={
+            getPropertyFeaturedState(selectedProperty).featuredStartAt
+          }
+          currentFeaturedEndAt={
+            getPropertyFeaturedState(selectedProperty).featuredEndAt
+          }
           onSuccess={handleFeaturedSuccess}
         />
       )}
