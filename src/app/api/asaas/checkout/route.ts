@@ -42,6 +42,8 @@ interface CheckoutRequestBody {
   addressNumber: string
   province: string // Bairro
   city: string // Nome da cidade ou código IBGE
+  cpfCnpj: string
+  phone: string
 }
 
 /** Mapeia durationMonths → cycle Asaas */
@@ -85,6 +87,8 @@ export async function POST(req: NextRequest) {
     addressNumber,
     province,
     city,
+    cpfCnpj,
+    phone,
   } = body
 
   console.log(JSON.stringify(body, null, 2))
@@ -97,7 +101,9 @@ export async function POST(req: NextRequest) {
     !address ||
     !addressNumber ||
     !province ||
-    !city
+    !city ||
+    !cpfCnpj ||
+    !phone
   ) {
     return NextResponse.json(
       { error: 'Dados do usuário e endereço completo são obrigatórios' },
@@ -127,6 +133,8 @@ export async function POST(req: NextRequest) {
       addressNumber,
       province,
       city,
+      cpfCnpj,
+      phone,
     })
 
     await updateAsaasCustomer(customer.id, {
@@ -135,6 +143,8 @@ export async function POST(req: NextRequest) {
       addressNumber,
       province,
       city,
+      cpfCnpj,
+      phone,
     })
 
     // ========================================================
@@ -150,6 +160,8 @@ export async function POST(req: NextRequest) {
         addressNumber,
         province,
         city,
+        cpfCnpj,
+        phone,
       }),
     })
 
