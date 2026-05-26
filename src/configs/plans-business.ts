@@ -95,7 +95,7 @@ export const plansBusinessConfig = {
     title: 'PRO',
     description: 'O topo da vitrine. Máxima visibilidade.',
     popular: false,
-    price: 5990,
+    price: 100,
     frequency: '/ano',
     durationMonths: 12,
     tag: 'MAIS VANTAJOSO',
