@@ -31,8 +31,14 @@ import { createAsaasPayment } from '@/lib/asaas'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 
-/** Valor mínimo de cobrança aceito pelo Asaas (R$ 5,00) */
-const ASAAS_MIN_CHARGE = 5.0
+/** Valor mínimo de cobrança para upgrade (R$ 9,99) */
+const ASAAS_MIN_CHARGE = 9.99
+
+/**
+ * Taxa de retenção do crédito de pro-rata no upgrade.
+ * O cliente recebe 80% do valor restante como desconto — a plataforma retém 20% como fee de migração.
+ */
+const UPGRADE_CREDIT_RETENTION = 0.8
 
 /** Formata data para YYYY-MM-DD no fuso horário local */
 function toLocalDateString(date: Date): string {
@@ -132,16 +138,19 @@ export async function POST(req: NextRequest) {
   const currentPlanAnnualPriceReais = (currentPlanConfig?.price ?? 0) / 100
   const currentDailyRate = currentPlanAnnualPriceReais / 365
 
-  // Crédito em reais pelos dias não utilizados
-  const creditReais = Math.round(remainingDays * currentDailyRate * 100) / 100
+  // Crédito bruto dos dias não utilizados
+  const rawCreditReais = remainingDays * currentDailyRate
+
+  // Aplica a taxa de retenção: cliente recebe 80% do crédito como desconto
+  const creditReais = Math.round(rawCreditReais * UPGRADE_CREDIT_RETENTION * 100) / 100
 
   // Valor do novo plano (em centavos → reais)
   const newPlanAnnualPriceReais = newPlanConfig.price / 100
 
-  // Preço final do upgrade com o desconto da pró-rata
+  // Preço final do upgrade: novo plano anual menos o desconto efetivo
   const rawUpgradePrice = newPlanAnnualPriceReais - creditReais
 
-  // Garante o mínimo de R$5,00 (limite do Asaas)
+  // Garante o mínimo de R$ 9,99
   const upgradePrice = Math.max(
     Math.round(rawUpgradePrice * 100) / 100,
     ASAAS_MIN_CHARGE
