@@ -170,6 +170,9 @@ export async function POST(req: NextRequest) {
       {
         asaasCustomerId: customer.id,
         asaasSubscriptionStatus: 'PENDING',
+        // Salva o planType ANTES do pagamento para o webhook ler corretamente.
+        // Sem isso, o webhook lê planType='free' do Firestore e ativa o plano errado.
+        planType,
         updatedAt: Timestamp.now().toMillis(),
       },
       { merge: true }
