@@ -158,10 +158,23 @@ async function handlePaymentSuccess(
     return
   }
 
-  // Lê o planType do Firestore (gravado no momento do checkout)
+  // Lê o planType do Firestore
   const userDoc = await db.collection('users').doc(userId).get()
   const userData = userDoc.data()
-  const planType: string = userData?.planType ?? 'basic'
+  let planType: string = userData?.planType ?? 'basic'
+
+  // 🛡️ Prevenção de Fogo Amigo (Condição de Corrida)
+  // Se o usuário clicou para criar a assinatura, mas algum evento anterior
+  // inativou e reverteu para "free" no meio do caminho, usamos o valor do pagamento
+  // para descobrir qual plano ele realmente acabou de assinar.
+  if (payment.value === 29.9) planType = 'basic'
+  else if (payment.value === 59.9) planType = 'pro'
+  else if (payment.value === 99.9) planType = 'master'
+
+  // Fail-safe: se chegou um pagamento maior que zero e ainda diz que é free, força basic.
+  if (planType === 'free' && payment.value > 0) {
+    planType = 'basic'
+  }
 
   // 🛡️ PEGADINHA: Evita estender a assinatura infinitamente se o Asaas enviar o webhook 
   // do mesmo pagamento duplicado ou em atraso
