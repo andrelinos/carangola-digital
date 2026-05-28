@@ -402,7 +402,9 @@ async function handlePaymentReverted(
 /**
  * SUBSCRIPTION_INACTIVATED / SUBSCRIPTION_DELETED
  *
- * Assinatura cancelada — reverte para free.
+ * Assinatura cancelada no Asaas.
+ * Regra Netflix: Se ainda tiver dias restantes, mantém o plano e marca apenas como CANCELLED.
+ * Só reverte para free se já estiver expirado.
  */
 async function handleSubscriptionInactivated(
   subscription: AsaasWebhookSubscription
@@ -420,7 +422,24 @@ async function handleSubscriptionInactivated(
     return
   }
 
+  const userDoc = await db.collection('users').doc(userId).get()
+  const userData = userDoc.data()
+  const planExpiresAt = userData?.planExpiresAt ?? 0
   const now = Timestamp.now().toMillis()
+
+  // Se ainda estiver no período pago, não corta o acesso agora
+  if (planExpiresAt > now) {
+    await db.collection('users').doc(userId).update({
+      asaasSubscriptionStatus: 'CANCELLED',
+      updatedAt: now,
+    })
+    console.info(
+      `[Asaas Webhook] ⚠️ Assinatura inativada no Asaas para userId=${userId}, mas acesso mantido até ${new Date(planExpiresAt).toISOString()}`
+    )
+    return
+  }
+
+  // Se já expirou, reverte para free
   const planEntry = {
     type: 'free',
     expiresAt: null,
@@ -440,7 +459,7 @@ async function handleSubscriptionInactivated(
   await updateProfile(userId, { planActive: planEntry })
 
   console.info(
-    `[Asaas Webhook] ❌ Assinatura inativada para userId=${userId}, sub=${subscription.id}`
+    `[Asaas Webhook] ❌ Assinatura inativada e revertida para free para userId=${userId}, sub=${subscription.id}`
   )
 }
 
