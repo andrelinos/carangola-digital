@@ -160,7 +160,17 @@ async function handlePaymentSuccess(
 
   // Lê o planType do Firestore (gravado no momento do checkout)
   const userDoc = await db.collection('users').doc(userId).get()
-  const planType: string = userDoc.data()?.planType ?? 'basic'
+  const userData = userDoc.data()
+  const planType: string = userData?.planType ?? 'basic'
+
+  // 🛡️ PEGADINHA: Evita estender a assinatura infinitamente se o Asaas enviar o webhook 
+  // do mesmo pagamento duplicado ou em atraso
+  if (userData?.planActive?.lastPaymentId === payment.id) {
+    console.info(
+      `[Asaas Webhook] 🛡️ Pagamento ${payment.id} já processado anteriormente. Ignorando para evitar dupla extensão de vencimento.`
+    )
+    return
+  }
 
   const now = Timestamp.now().toMillis()
   const expiresAt = calculateExpiresAt(planType)
@@ -362,8 +372,9 @@ async function handlePaymentOverdue(
 
 /**
  * PAYMENT_REFUNDED / PAYMENT_DELETED / SUBSCRIPTION_PAYMENT_REFUNDED / SUBSCRIPTION_PAYMENT_DELETED
+ * PAYMENT_CHARGEBACK_REQUESTED / PAYMENT_CHARGEBACK_DISPUTE / PAYMENT_REPROVED_BY_RISK_ANALYSIS
  *
- * Reverte o plano para free.
+ * Reverte o plano para free imediatamente. Em casos de chargeback ou fraude, o acesso deve ser cortado.
  */
 async function handlePaymentReverted(
   payment: AsaasWebhookPayment
@@ -562,7 +573,10 @@ export async function handleAsaasWebhook(
       event === 'PAYMENT_REFUNDED' ||
       event === 'PAYMENT_DELETED' ||
       event === 'SUBSCRIPTION_PAYMENT_REFUNDED' ||
-      event === 'SUBSCRIPTION_PAYMENT_DELETED'
+      event === 'SUBSCRIPTION_PAYMENT_DELETED' ||
+      event === 'PAYMENT_CHARGEBACK_REQUESTED' ||
+      event === 'PAYMENT_CHARGEBACK_DISPUTE' ||
+      event === 'PAYMENT_REPROVED_BY_RISK_ANALYSIS'
     ) {
       if (payment) await handlePaymentReverted(payment)
       return true
@@ -595,8 +609,6 @@ export async function handleAsaasWebhook(
       'PAYMENT_UPDATED',
       'PAYMENT_RESTORED',
       'PAYMENT_RECEIVED_IN_CASH_UNDONE',
-      'PAYMENT_CHARGEBACK_REQUESTED',
-      'PAYMENT_CHARGEBACK_DISPUTE',
       'PAYMENT_AWAITING_CHARGEBACK_REVERSAL',
       'PAYMENT_DUNNING_RECEIVED',
       'PAYMENT_DUNNING_REQUESTED',
