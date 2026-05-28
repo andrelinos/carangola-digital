@@ -11,7 +11,8 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { setFreePlanAction } from '@/actions/user/set-free-plan'
 import { Button } from '@/components/ui/button'
@@ -73,6 +74,20 @@ export function ManagePlans({
   const [selectedPlan, setSelectedPlan] = useState<(PlanItemProps & { upgradePrice?: number }) | null>(null)
   const [isPending, setIsPending] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
+  const [hasStartedCheckout, setHasStartedCheckout] = useState(false)
+  const router = useRouter()
+
+  // Atualiza os dados da página (server components) quando o usuário volta da aba de checkout
+  useEffect(() => {
+    if (!hasStartedCheckout) return
+
+    const handleFocus = () => {
+      router.refresh()
+    }
+
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [hasStartedCheckout, router])
 
   // NOVO: Estado para armazenar o endereço de cobrança
   const [billingAddress, setBillingAddress] = useState({
@@ -117,6 +132,7 @@ export function ManagePlans({
       if (result.success) {
         toast.success(`Plano ${selectedPlan.title} ativado com sucesso!`)
         handleCloseModal()
+        router.refresh() // Atualiza a tela instantaneamente
       } else {
         toast.error(result.error || 'Erro ao ativar plano')
       }
@@ -196,6 +212,7 @@ export function ManagePlans({
     if (!checkoutUrl) return
     // Abre o checkout Asaas em nova aba para não perder a sessão
     window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+    setHasStartedCheckout(true) // Marca que iniciou para dar refresh ao voltar
     handleCloseModal()
     toast.info('Finalize o pagamento na nova aba que foi aberta.')
   }

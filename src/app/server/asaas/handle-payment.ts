@@ -386,6 +386,35 @@ async function handlePaymentReverted(
   )
   if (!userId) return
 
+  const userDoc = await db.collection('users').doc(userId).get()
+  const userData = userDoc.data()
+
+  // 🛡️ Prevenção contra "Fogo Amigo" no Upgrade
+  // Quando deletamos uma assinatura antiga no upgrade, o Asaas cancela todas as cobranças 
+  // futuras dela e dispara PAYMENT_DELETED. Não podemos deixar isso reverter o plano NOVO!
+  if (
+    payment.subscription &&
+    userData?.asaasSubscriptionId &&
+    payment.subscription !== userData.asaasSubscriptionId
+  ) {
+    console.info(
+      `[Asaas Webhook] 🛡️ Ignorando reversão. O pagamento ${payment.id} pertence a uma assinatura antiga (${payment.subscription}). Assinatura atual: ${userData.asaasSubscriptionId}.`
+    )
+    return
+  }
+
+  // Mesma lógica para pagamentos avulsos antigos
+  if (
+    !payment.subscription &&
+    userData?.planActive?.lastPaymentId &&
+    payment.id !== userData.planActive.lastPaymentId
+  ) {
+    console.info(
+      `[Asaas Webhook] 🛡️ Ignorando reversão. O pagamento avulso ${payment.id} não é o ativo no momento.`
+    )
+    return
+  }
+
   const now = Timestamp.now().toMillis()
   const planEntry = {
     type: 'free',
