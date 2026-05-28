@@ -14,10 +14,10 @@ export default function PendingPage() {
         </p>
         <button
           type="button"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/dashboard')}
           className="mt-6 rounded bg-green-500 px-4 py-2 text-white transition hover:bg-green-600"
         >
-          Voltar para o início
+          Voltar para o painel de controle
         </button>
       </div>
     </div>

@@ -71,7 +71,9 @@ export function ManagePlans({
   userEmail,
   userName,
 }: ManagePlansProps) {
-  const [selectedPlan, setSelectedPlan] = useState<(PlanItemProps & { upgradePrice?: number }) | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<
+    (PlanItemProps & { upgradePrice?: number }) | null
+  >(null)
   const [isPending, setIsPending] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
   const [hasStartedCheckout, setHasStartedCheckout] = useState(false)
@@ -143,10 +145,26 @@ export function ManagePlans({
     const isUpgrade = !!selectedPlan.upgradePrice
 
     // Validação dos campos de endereço para planos pagos (somente no checkout novo)
-    const { postalCode, address, addressNumber, province, city, cpfCnpj, phone } =
-      billingAddress
+    const {
+      postalCode,
+      address,
+      addressNumber,
+      province,
+      city,
+      cpfCnpj,
+      phone,
+    } = billingAddress
 
-    if (!isUpgrade && (!postalCode || !address || !addressNumber || !province || !city || !cpfCnpj || !phone)) {
+    if (
+      !isUpgrade &&
+      (!postalCode ||
+        !address ||
+        !addressNumber ||
+        !province ||
+        !city ||
+        !cpfCnpj ||
+        !phone)
+    ) {
       toast.error('Preencha todos os campos do endereço de cobrança.')
       return
     }
@@ -313,7 +331,8 @@ export function ManagePlans({
                       {plan.upgradePrice !== undefined && (
                         <div className="mt-3 space-y-1">
                           <span className="inline-block rounded-full border border-green-200 bg-green-50 px-3 py-1 font-black text-[11px] text-green-700 uppercase tracking-widest dark:border-green-800/40 dark:bg-green-950/30 dark:text-green-400">
-                            Migre agora por {formatPrice(plan.upgradePrice * 100)}
+                            Migre agora por{' '}
+                            {formatPrice(plan.upgradePrice * 100)}
                           </span>
                           <p className="font-medium text-[10px] text-muted-foreground">
                             Inclui desconto do tempo restante no plano atual
@@ -433,7 +452,7 @@ export function ManagePlans({
                       ].map(feat => {
                         const hasFeature =
                           plan.premiumFeatures?.[
-                            feat.key as keyof typeof plan.premiumFeatures
+                          feat.key as keyof typeof plan.premiumFeatures
                           ]
                         return (
                           <li
@@ -478,26 +497,28 @@ export function ManagePlans({
                         plan.name.toLowerCase() === currentPlan?.toLowerCase()
                       }
                       className={cn(
-                        'h-14 w-full rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-300',
+                        'h-auto min-h-[3.5rem] w-full whitespace-normal rounded-2xl px-2 py-3 text-center font-black text-xs leading-snug uppercase tracking-widest transition-all duration-300',
                         plan.name.toLowerCase() === currentPlan?.toLowerCase()
                           ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
                           : plan.upgradePrice !== undefined
-                            ? 'bg-green-600 text-white shadow-lg shadow-green-600/20 hover:scale-[1.02] hover:bg-green-700 dark:shadow-none'
+                            ? 'bg-green-600 text-white shadow-green-600/20 shadow-lg hover:scale-[1.02] hover:bg-green-700 dark:shadow-none'
                             : plan.popular
                               ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] hover:bg-primary/90 dark:shadow-none'
                               : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                       )}
                       variant="ghost"
                     >
-                      {plan.name.toLowerCase() === currentPlan?.toLowerCase()
-                        ? 'Plano Atual'
-                        : plan.upgradePrice !== undefined
-                          ? `Fazer Upgrade por ${formatPrice(plan.upgradePrice * 100)}`
-                          : `Escolher ${plan.title}`}
-                      {plan.name.toLowerCase() !==
-                        currentPlan?.toLowerCase() && (
-                        <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-                      )}
+                      <span className="flex items-center justify-center gap-2 text-center">
+                        {plan.name.toLowerCase() === currentPlan?.toLowerCase()
+                          ? 'Plano Atual'
+                          : plan.upgradePrice !== undefined
+                            ? `Upgrade por ${formatPrice(plan.upgradePrice * 100)}`
+                            : `Escolher ${plan.title}`}
+                        {plan.name.toLowerCase() !==
+                          currentPlan?.toLowerCase() && (
+                            <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                          )}
+                      </span>
                     </Button>
                   </CardFooter>
                 </Card>
@@ -509,8 +530,8 @@ export function ManagePlans({
 
       {/* ── Modal de Confirmação / Checkout ─────────────────────────── */}
       <Dialog open={!!selectedPlan} onOpenChange={handleCloseModal}>
-        <DialogContent className="overflow-hidden rounded-[3rem] border border-slate-100 bg-slate-50 p-4 sm:max-w-[425px] sm:rounded-[3rem] dark:border-slate-850 dark:bg-slate-950">
-          <div className="space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <DialogContent className="max-h-[95vh] w-[95vw] overflow-y-auto rounded-[2rem] border border-slate-100 bg-slate-50 p-2 sm:max-w-[450px] sm:rounded-[3rem] sm:p-4 dark:border-slate-850 dark:bg-slate-950">
+          <div className="space-y-6 rounded-[1.5rem] border border-slate-100 bg-white p-5 shadow-sm sm:rounded-[2.5rem] sm:p-8 dark:border-slate-800 dark:bg-slate-900">
             <DialogHeader className="space-y-4">
               <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10">
                 <ShieldCheck className="size-8 text-primary" />
@@ -564,7 +585,8 @@ export function ManagePlans({
                         + 1 ano no Plano {selectedPlan.title}
                       </p>
                       <p className="mt-2 font-semibold text-[11px] text-muted-foreground">
-                        Desconto calculado com base nos dias restantes do seu plano atual
+                        Desconto calculado com base nos dias restantes do seu
+                        plano atual
                       </p>
                     </>
                   ) : (
@@ -602,8 +624,8 @@ export function ManagePlans({
                   )}
                 </div>
 
-                  {/* Formulário de endereço: apenas para novas assinaturas */}
-                  {selectedPlan.price > 0 && !selectedPlan.upgradePrice && (
+                {/* Formulário de endereço: apenas para novas assinaturas */}
+                {selectedPlan.price > 0 && !selectedPlan.upgradePrice && (
                   <div className="space-y-4 pt-4">
                     <div className="space-y-1">
                       <h4 className="font-bold text-foreground text-sm">
