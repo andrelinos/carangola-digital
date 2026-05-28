@@ -41,7 +41,7 @@ import { formatPhoneNumber } from '@/utils/format-phone-number'
 import { formatPrice } from '@/utils/format-price'
 
 interface ManagePlansProps {
-  plans: PlanItemProps[]
+  plans: (PlanItemProps & { upgradePrice?: number })[]
   currentPlan?: string
   userId: string
   userEmail: string
@@ -70,7 +70,7 @@ export function ManagePlans({
   userEmail,
   userName,
 }: ManagePlansProps) {
-  const [selectedPlan, setSelectedPlan] = useState<PlanItemProps | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<(PlanItemProps & { upgradePrice?: number }) | null>(null)
   const [isPending, setIsPending] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
 
@@ -123,44 +123,66 @@ export function ManagePlans({
       return
     }
 
-    // NOVO: Validação dos campos de endereço para planos pagos
+    // ── Upgrade de plano pago → usa endpoint de upgrade com pro-rata ────
+    const isUpgrade = !!selectedPlan.upgradePrice
+
+    // Validação dos campos de endereço para planos pagos (somente no checkout novo)
     const { postalCode, address, addressNumber, province, city, cpfCnpj, phone } =
       billingAddress
-    if (!postalCode || !address || !addressNumber || !province || !city || !cpfCnpj || !phone) {
+
+    if (!isUpgrade && (!postalCode || !address || !addressNumber || !province || !city || !cpfCnpj || !phone)) {
       toast.error('Preencha todos os campos do endereço de cobrança.')
       return
     }
 
-    // ── Planos Pagos: cria checkout Asaas e redireciona ──────────────────
     setIsPending(true)
 
     try {
-      const res = await fetch('/api/asaas/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          planType: selectedPlan.name as Exclude<PlanTypeProps, 'free'>,
-          userId,
-          userEmail,
-          userName,
-          postalCode,
-          address,
-          addressNumber,
-          province,
-          city,
-          cpfCnpj,
-          phone,
-        }),
-      })
+      if (isUpgrade) {
+        // Upgrade: chama o endpoint de upgrade com pro-rata
+        const res = await fetch('/api/asaas/upgrade-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            newPlanType: selectedPlan.name as Exclude<PlanTypeProps, 'free'>,
+          }),
+        })
 
-      const data = await res.json()
+        const data = await res.json()
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Erro ao criar checkout')
+        if (!res.ok) {
+          throw new Error(data.error || 'Erro ao gerar cobrança de upgrade')
+        }
+
+        setCheckoutUrl(data.invoiceUrl)
+      } else {
+        // Nova assinatura: cria checkout Asaas normal
+        const res = await fetch('/api/asaas/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            planType: selectedPlan.name as Exclude<PlanTypeProps, 'free'>,
+            userId,
+            userEmail,
+            userName,
+            postalCode,
+            address,
+            addressNumber,
+            province,
+            city,
+            cpfCnpj,
+            phone,
+          }),
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Erro ao criar checkout')
+        }
+
+        setCheckoutUrl(data.checkoutUrl)
       }
-
-      // Mostra o link de pagamento antes de redirecionar
-      setCheckoutUrl(data.checkoutUrl)
     } catch (error) {
       const msg =
         error instanceof Error ? error.message : 'Erro ao iniciar pagamento'
@@ -203,6 +225,7 @@ export function ManagePlans({
               tag?: string
               imageGallery?: { enabled: boolean; limit: number }
               premiumFeatures?: Record<string, boolean>
+              upgradePrice?: number
             }
             return (
               <motion.div key={plan.name} variants={item}>
@@ -228,6 +251,15 @@ export function ManagePlans({
                     <div className="pointer-events-none absolute top-0 right-0 size-32 overflow-hidden p-0">
                       <div className="absolute top-4 -right-8 w-32 rotate-45 bg-amber-500 py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
                         {plan.tag}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Badge de desconto de upgrade */}
+                  {plan.upgradePrice !== undefined && (
+                    <div className="pointer-events-none absolute top-0 left-0 size-32 overflow-hidden p-0">
+                      <div className="absolute top-4 -left-8 w-32 -rotate-45 bg-green-600 py-1 text-center font-black text-[10px] text-white uppercase tracking-widest shadow-lg">
+                        Upgrade
                       </div>
                     </div>
                   )}
@@ -259,6 +291,17 @@ export function ManagePlans({
                         <span className="mt-1 font-bold text-muted-foreground/80 text-xs uppercase tracking-widest">
                           Faturado anualmente ({formatPrice(plan.price)})
                         </span>
+                      )}
+                      {/* Preço especial de upgrade */}
+                      {plan.upgradePrice !== undefined && (
+                        <div className="mt-3 space-y-1">
+                          <span className="inline-block rounded-full border border-green-200 bg-green-50 px-3 py-1 font-black text-[11px] text-green-700 uppercase tracking-widest dark:border-green-800/40 dark:bg-green-950/30 dark:text-green-400">
+                            Migre agora por {formatPrice(plan.upgradePrice * 100)}
+                          </span>
+                          <p className="font-medium text-[10px] text-muted-foreground">
+                            Inclui desconto do tempo restante no plano atual
+                          </p>
+                        </div>
                       )}
                     </div>
                     <CardDescription className="pt-2 font-medium text-muted-foreground italic">
@@ -421,15 +464,19 @@ export function ManagePlans({
                         'h-14 w-full rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-300',
                         plan.name.toLowerCase() === currentPlan?.toLowerCase()
                           ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                          : plan.popular
-                            ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] hover:bg-primary/90 dark:shadow-none'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                          : plan.upgradePrice !== undefined
+                            ? 'bg-green-600 text-white shadow-lg shadow-green-600/20 hover:scale-[1.02] hover:bg-green-700 dark:shadow-none'
+                            : plan.popular
+                              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-[1.02] hover:bg-primary/90 dark:shadow-none'
+                              : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                       )}
                       variant="ghost"
                     >
                       {plan.name.toLowerCase() === currentPlan?.toLowerCase()
                         ? 'Plano Atual'
-                        : `Escolher ${plan.title}`}
+                        : plan.upgradePrice !== undefined
+                          ? `Fazer Upgrade por ${formatPrice(plan.upgradePrice * 100)}`
+                          : `Escolher ${plan.title}`}
                       {plan.name.toLowerCase() !==
                         currentPlan?.toLowerCase() && (
                         <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
@@ -482,6 +529,27 @@ export function ManagePlans({
                         Sem custos de manutenção
                       </p>
                     </>
+                  ) : selectedPlan.upgradePrice !== undefined ? (
+                    // ── Upgrade com desconto ──────────────────────────────
+                    <>
+                      <p className="font-bold text-[10px] text-green-700 uppercase tracking-widest dark:text-green-400">
+                        ✦ Preço especial de migração
+                      </p>
+                      <div className="flex items-baseline justify-center gap-2 pt-1">
+                        <p className="font-black text-muted-foreground text-xl line-through opacity-40">
+                          {formatPrice(selectedPlan.price)}
+                        </p>
+                        <p className="font-black text-4xl text-green-700 tracking-tighter dark:text-green-400">
+                          {formatPrice(selectedPlan.upgradePrice * 100)}
+                        </p>
+                      </div>
+                      <p className="mt-1 font-bold text-[11px] text-muted-foreground uppercase tracking-[0.2em]">
+                        + 1 ano no Plano {selectedPlan.title}
+                      </p>
+                      <p className="mt-2 font-semibold text-[11px] text-muted-foreground">
+                        Desconto calculado com base nos dias restantes do seu plano atual
+                      </p>
+                    </>
                   ) : (
                     <>
                       <div className="flex items-baseline justify-center gap-1">
@@ -517,7 +585,8 @@ export function ManagePlans({
                   )}
                 </div>
 
-                {selectedPlan.price > 0 && (
+                  {/* Formulário de endereço: apenas para novas assinaturas */}
+                  {selectedPlan.price > 0 && !selectedPlan.upgradePrice && (
                   <div className="space-y-4 pt-4">
                     <div className="space-y-1">
                       <h4 className="font-bold text-foreground text-sm">
