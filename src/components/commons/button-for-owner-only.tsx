@@ -22,20 +22,15 @@ export function ButtonForOwnerOnly({
 
   return (
     <Button
-      variant="ghost"
+      variant="secondary"
+      size="sm"
       onClick={handleExecute}
       type="button"
-      className="group relative z-1 flex size-fit h-fit gap-1 bg-transparent p-0 text-muted-foreground text-xs hover:cursor-pointer"
+      aria-label={`Editar ${title ?? 'informações'}`}
+      className='h-7 gap-1 rounded-full px-2.5 font-medium text-[11px] text-muted-foreground hover:text-foreground'
     >
-      <Edit className="size-6 transition-all duration-300 group-hover:scale-150 group-hover:text-blue-600 dark:group-hover:text-blue-600" />
+      <Edit className="size-3" />
       {children}
-
-      <span className="absolute -top-7 left-1/2 z-10 hidden w-fit -translate-x-1/2 transform text-nowrap rounded-md bg-amber-200 px-2 py-1 font-bold text-xs text-zinc-700 shadow-lg group-hover:flex">
-        Editar {title ?? 'informações'}
-      </span>
-      <span className="absolute top-7 left-1/2 z-10 hidden w-24 -translate-x-1/2 transform text-wrap rounded-md bg-blue-100 px-2 py-1 font-semibold text-xs text-zinc-950 shadow-lg group-hover:flex">
-        Opção visível apenas para você
-      </span>
     </Button>
   )
 }

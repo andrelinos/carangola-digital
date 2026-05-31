@@ -36,14 +36,13 @@ export function ContactPhones({ profileData, isOwner, isUserAuth }: Props) {
       title="Canais de Contato"
       icon={<PhoneCall className="size-6" />}
       delay={0.4}
+      action={
+        (isOwner || isUserAuth) && (
+          <EditContactPhones data={{ businessPhones, profileId }} />
+        )
+      }
     >
       <div className="relative">
-        {(isOwner || isUserAuth) && (
-          <div className="absolute -top-14 right-0">
-            <EditContactPhones data={{ businessPhones, profileId }} />
-          </div>
-        )}
-
         <div className="space-y-6">
           {phoneContacts && phoneContacts.length > 0 && (
             <div className="space-y-3">

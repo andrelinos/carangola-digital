@@ -24,14 +24,13 @@ export function BusinessAddresses({ profileData, isOwner, isUserAuth }: Props) {
       title="Localização"
       icon={<MapPin className="size-6" />}
       delay={0.3}
+      action={
+        (isOwner || isUserAuth) && (
+          <EditBusinessAddresses data={{ businessAddresses, profileId }} />
+        )
+      }
     >
       <div className="relative">
-        {(isOwner || isUserAuth) && (
-          <div className="absolute -top-12 right-0">
-            <EditBusinessAddresses data={{ businessAddresses, profileId }} />
-          </div>
-        )}
-
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {!businessAddresses?.length ? (
             <p className="col-span-full text-muted-foreground text-sm italic">

@@ -18,6 +18,7 @@ import {
 import { PropertyDescription } from './_components/property-description'
 import { PropertyImageGallery } from './_components/property-image-gallery'
 import { ContentProperty } from './content'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 
 interface Props {
   params: Promise<{
@@ -104,6 +105,9 @@ export default async function PropertyDetailPage({
     user?.id && propertyData?.admins?.some(admin => admin.userId === user.id)
   )
 
+  const isAdmin = await verifyAdmin()
+  const canViewStats = isOwner || isAdmin || isUserAuth
+
   if (!isOwner) {
     await increasePropertyVisits({
       docPath: propertyData.docPath,
@@ -113,7 +117,7 @@ export default async function PropertyDetailPage({
   return (
     <>
       <RealEstateListingJsonLd data={propertyData} />
-      <ContentProperty totalVisits={propertyData?.totalVisits}>
+      <ContentProperty totalVisits={propertyData?.totalVisits} canViewStats={canViewStats}>
         <div className="grid items-start gap-8 lg:grid-cols-3">
           <div className="relative space-y-8 lg:col-span-2">
             <PropertyImageGallery

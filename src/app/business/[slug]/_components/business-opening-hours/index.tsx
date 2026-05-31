@@ -1,11 +1,16 @@
 'use client'
 
-import { Clock } from 'iconoir-react'
-import { ChevronDown } from 'lucide-react' // Adicionado para melhor UX
+import { Clock, NavArrowRight } from 'iconoir-react'
 import { useEffect, useState } from 'react'
 
 import type { ProfileDataProps, ScheduleDay } from '@/_types/profile-data'
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { getOperatingStatus } from '@/utils/get-status-from-day/get-operating-status'
 import { translateWeekDay } from '@/utils/get-status-from-day/translate-week-day'
@@ -23,7 +28,6 @@ export function ContainerOpeningHours({
   isOwner,
   isUserAuth,
 }: Props) {
-  const [isOpen, setIsOpen] = useState(false)
   const [todayDate, setTodayDate] = useState(new Date())
 
   useEffect(() => {
@@ -82,139 +86,126 @@ export function ContainerOpeningHours({
       icon={<Clock className="size-6" />}
       delay={0.2}
       className="p-6"
+      action={
+        (isOwner || isUserAuth) && (
+          <EditBusinessOpeningHours profileData={profileData} />
+        )
+      }
     >
       <div className="relative">
-        {(isOwner || isUserAuth) && (
-          <div className="absolute -top-14 right-0">
-            <EditBusinessOpeningHours profileData={profileData} />
-          </div>
-        )}
-
         <div className="flex flex-col gap-3">
-          {/* BOTÃO PRINCIPAL MELHORADO */}
-          <button
-            type="button"
-            aria-expanded={isOpen}
-            onClick={() => setIsOpen(!isOpen)}
-            className="group flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-slate-800 dark:bg-slate-900/40 dark:hover:bg-slate-900/80"
-          >
-            <div className="flex items-center gap-3">
-              <span className="relative flex size-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/40 opacity-75" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-primary" />
-              </span>
-              <span className="font-semibold text-slate-900 text-sm sm:text-base dark:text-slate-100">
-                {currentStatus}
-              </span>
-            </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button
+                type="button"
+                className="group flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-slate-800 dark:bg-slate-900/40 dark:hover:bg-slate-900/80"
+              >
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
+                  {currentStatus}
+                </div>
 
-            <div className="flex items-center gap-2 text-slate-500 transition-colors group-hover:text-slate-800 dark:text-slate-400 dark:group-hover:text-slate-200">
-              <span className="hidden font-bold text-xs uppercase tracking-wider sm:block">
-                {isOpen ? 'Ocultar' : 'Ver todos'}
-              </span>
-              <ChevronDown
-                className={cn(
-                  'size-5 transition-transform duration-300',
-                  isOpen ? 'rotate-180' : 'rotate-0'
-                )}
-              />
-            </div>
-          </button>
+                <div className="flex shrink-0 items-center gap-0.5 text-slate-300 transition-colors group-hover:text-slate-500 dark:text-slate-600 dark:group-hover:text-slate-400">
+                  <span className="text-[10px]">ver todos</span>
+                  <NavArrowRight className="size-3" />
+                </div>
+              </button>
+            </DialogTrigger>
 
-          {/* LISTA EXPANSÍVEL (ACORDEÃO) */}
-          <div
-            className={cn(
-              'grid transition-all duration-300 ease-in-out',
-              isOpen
-                ? 'grid-rows-[1fr] opacity-100'
-                : 'grid-rows-[0fr] opacity-0'
-            )}
-          >
-            <div className="overflow-hidden">
-              <ul className="mt-2 flex flex-col gap-1 rounded-xl border border-slate-100 bg-slate-50/50 p-2 dark:border-slate-800/60 dark:bg-slate-900/20">
-                {sortedSchedule?.map(
-                  ([day, standardDayObj]: [string, ScheduleDay], index) => {
-                    const targetDayIndex = getJsDayIndex(day)
-                    const currentDayIndex = todayDate.getDay()
-                    const diff = targetDayIndex - currentDayIndex
-                    const rowDate = new Date(todayDate)
-                    rowDate.setDate(todayDate.getDate() + diff)
-                    const rowDateString = rowDate.toLocaleDateString('fr-CA', {
-                      timeZone: 'America/Sao_Paulo',
-                    })
+            <DialogContent className="w-[90vw] max-w-md rounded-2xl p-6 sm:w-full">
+              <DialogHeader>
+                <DialogTitle className="text-xl">
+                  Horário de Funcionamento
+                </DialogTitle>
+              </DialogHeader>
+              <div className="mt-2">
+                <ul className="flex flex-col gap-1 rounded-xl border border-slate-100 bg-slate-50/50 p-2 dark:border-slate-800/60 dark:bg-slate-900/20">
+                  {sortedSchedule?.map(
+                    ([day, standardDayObj]: [string, ScheduleDay], index) => {
+                      const targetDayIndex = getJsDayIndex(day)
+                      const currentDayIndex = todayDate.getDay()
+                      const diff = targetDayIndex - currentDayIndex
+                      const rowDate = new Date(todayDate)
+                      rowDate.setDate(todayDate.getDate() + diff)
+                      const rowDateString = rowDate.toLocaleDateString(
+                        'fr-CA',
+                        {
+                          timeZone: 'America/Sao_Paulo',
+                        }
+                      )
 
-                    const holiday = holidayExceptions.find(
-                      (h: any) => h.date === rowDateString
-                    )
+                      const holiday = holidayExceptions.find(
+                        (h: any) => h.date === rowDateString
+                      )
 
-                    const effectiveDayObj = holiday
-                      ? { ...standardDayObj, ...holiday }
-                      : standardDayObj
+                      const effectiveDayObj = holiday
+                        ? { ...standardDayObj, ...holiday }
+                        : standardDayObj
 
-                    const {
-                      closed,
-                      intervals,
-                      isAppointmentOnly,
-                      description,
-                    } = effectiveDayObj
-                    const isToday = index === todayIndex
+                      const {
+                        closed,
+                        intervals,
+                        isAppointmentOnly,
+                        description,
+                      } = effectiveDayObj
+                      const isToday = index === todayIndex
 
-                    const displayTime = () => {
-                      if (closed) {
-                        return (
-                          <span className="font-medium text-rose-500">
-                            {holiday && description ? description : 'Fechado'}
-                          </span>
-                        )
-                      }
-                      if (isAppointmentOnly) {
-                        return (
-                          <span className="font-medium text-primary italic">
-                            Sob agendamento
-                          </span>
-                        )
-                      }
-                      if (intervals && intervals.length > 0) {
-                        return intervals
-                          .map(
-                            (i: { opening: string; closing: string }) =>
-                              `${i.opening} - ${i.closing}`
-                          )
-                          .join(' / ')
-                      }
-                      return 'Não definido'
-                    }
-
-                    return (
-                      <li
-                        key={day}
-                        className={cn(
-                          'flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm transition-colors',
-                          isToday
-                            ? 'bg-primary/10 font-bold text-primary dark:bg-primary/20'
-                            : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50'
-                        )}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="capitalize">
-                            {translateWeekDay(day)}
-                          </span>
-                          {isToday && (
-                            <span className="rounded bg-primary px-1.5 py-0.5 font-bold text-[10px] text-primary-foreground uppercase dark:text-white">
-                              Hoje
+                      const displayTime = () => {
+                        if (closed) {
+                          return (
+                            <span className="font-medium text-rose-500">
+                              {holiday && description ? description : 'Fechado'}
                             </span>
+                          )
+                        }
+                        if (isAppointmentOnly) {
+                          return (
+                            <span className="font-medium text-primary italic">
+                              Sob agendamento
+                            </span>
+                          )
+                        }
+                        if (intervals && intervals.length > 0) {
+                          return intervals
+                            .map(
+                              (i: { opening: string; closing: string }) =>
+                                `${i.opening} - ${i.closing}`
+                            )
+                            .join(' / ')
+                        }
+                        return 'Não definido'
+                      }
+
+                      return (
+                        <li
+                          key={day}
+                          className={cn(
+                            'flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm transition-colors',
+                            isToday
+                              ? 'bg-primary/10 font-bold text-primary dark:bg-primary/20'
+                              : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50'
                           )}
-                        </div>
-                        <span className="text-right tabular-nums tracking-tight">
-                          {displayTime()}
-                        </span>
-                      </li>
-                    )
-                  }
-                )}
-              </ul>
-            </div>
-          </div>
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="capitalize">
+                              {translateWeekDay(day)}
+                            </span>
+                            {isToday && (
+                              <span className="rounded bg-primary px-1.5 py-0.5 font-bold text-[10px] text-primary-foreground uppercase dark:text-white">
+                                Hoje
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-right tabular-nums tracking-tight">
+                            {displayTime()}
+                          </span>
+                        </li>
+                      )
+                    }
+                  )}
+                </ul>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </ProfileSection>

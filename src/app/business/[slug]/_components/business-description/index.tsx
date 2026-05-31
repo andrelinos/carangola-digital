@@ -18,16 +18,15 @@ export function Description({ profileData, isOwner, isUserAuth }: Props) {
       title="Sobre a Empresa"
       icon={<InfoCircle className="size-6" />}
       delay={0.1}
+      action={
+        (isOwner || isUserAuth) && (
+          <EditBusinessDescription
+            data={{ businessDescription, profileId }}
+          />
+        )
+      }
     >
       <div className="relative">
-        {(isOwner || isUserAuth) && (
-          <div className="absolute -top-12 right-0">
-            <EditBusinessDescription
-              data={{ businessDescription, profileId }}
-            />
-          </div>
-        )}
-
         <div className="prose prose-slate dark:prose-invert max-w-none">
           <p className="font-medium text-muted-foreground/90 text-xl leading-relaxed">
             {profileData.businessDescription
