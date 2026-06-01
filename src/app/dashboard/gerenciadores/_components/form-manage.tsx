@@ -66,8 +66,8 @@ export function FormManage({ session, profiles }: Props) {
         setListProfiles(prev =>
           prev
             ? prev.map(p =>
-              p.id === profileId ? { ...p, isFeatured: !currentStatus } : p
-            )
+                p.id === profileId ? { ...p, isFeatured: !currentStatus } : p
+              )
             : null
         )
       } else {
@@ -127,11 +127,12 @@ export function FormManage({ session, profiles }: Props) {
                       </div>
                       <Badge
                         variant="outline"
-                        className={`font-bold text-[10px] uppercase tracking-wider ${profile.planActive?.planType === 'pro' ||
-                            profile.planActive?.planType === 'master'
+                        className={`font-bold text-[10px] uppercase tracking-wider ${
+                          profile.planActive?.planType === 'pro' ||
+                          profile.planActive?.planType === 'master'
                             ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
                             : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
-                          }`}
+                        }`}
                       >
                         {profile.planActive?.planType || 'Grátis'}
                       </Badge>
@@ -161,18 +162,22 @@ export function FormManage({ session, profiles }: Props) {
                     </div>
                   </div>
 
-                  <div className='mt-6 flex flex-col gap-3 border-slate-100 border-t pt-5 dark:border-slate-800'>
+                  <div className="mt-6 flex flex-col gap-3 border-slate-100 border-t pt-5 dark:border-slate-800">
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
                         onClick={() =>
-                          profile.id && handleToggleFeature(profile.id, !!profile.isFeatured)
+                          profile.id &&
+                          handleToggleFeature(profile.id, !!profile.isFeatured)
                         }
-                        disabled={!profile.id || isTogglingFeature === profile.id}
-                        className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${profile.isFeatured
+                        disabled={
+                          !profile.id || isTogglingFeature === profile.id
+                        }
+                        className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${
+                          profile.isFeatured
                             ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-amber-500/20 shadow-md hover:from-amber-500 hover:to-amber-600'
                             : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                          }`}
+                        }`}
                       >
                         {isTogglingFeature === profile.id ? (
                           <svg
@@ -209,17 +214,18 @@ export function FormManage({ session, profiles }: Props) {
                             `/dashboard/business/beacon/${profile.slug}`
                           )
                         }
-                        className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${profile.beaconActiveIndexes &&
-                            profile.beaconActiveIndexes.length > 0
+                        className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${
+                          profile.beaconActiveIndexes &&
+                          profile.beaconActiveIndexes.length > 0
                             ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white shadow-emerald-500/20 shadow-md hover:from-emerald-500 hover:to-emerald-600'
                             : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                          }`}
+                        }`}
                       >
                         <MapPin
                           className={`mr-1.5 size-3.5 ${profile.beaconActiveIndexes && profile.beaconActiveIndexes.length > 0 ? 'fill-white' : ''}`}
                         />
                         {profile.beaconActiveIndexes &&
-                          profile.beaconActiveIndexes.length > 0
+                        profile.beaconActiveIndexes.length > 0
                           ? 'No Mapa'
                           : 'Mapa'}
                       </Button>

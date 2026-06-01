@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth/next'
 import { increasePropertyVisits } from '@/actions/properties/increase-property-visits'
 import { getPropertyData } from '@/app/server/get-property-data'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import RealEstateListingJsonLd from '@/components/seo/real-estate-json-ld'
 import { authOptions } from '@/lib/auth'
 import {
@@ -18,7 +19,6 @@ import {
 import { PropertyDescription } from './_components/property-description'
 import { PropertyImageGallery } from './_components/property-image-gallery'
 import { ContentProperty } from './content'
-import { verifyAdmin } from '@/app/server/verify-admin.server'
 
 interface Props {
   params: Promise<{
@@ -117,7 +117,10 @@ export default async function PropertyDetailPage({
   return (
     <>
       <RealEstateListingJsonLd data={propertyData} />
-      <ContentProperty totalVisits={propertyData?.totalVisits} canViewStats={canViewStats}>
+      <ContentProperty
+        totalVisits={propertyData?.totalVisits}
+        canViewStats={canViewStats}
+      >
         <div className="grid items-start gap-8 lg:grid-cols-3">
           <div className="relative space-y-8 lg:col-span-2">
             <PropertyImageGallery

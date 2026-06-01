@@ -142,7 +142,8 @@ export async function POST(req: NextRequest) {
   const rawCreditReais = remainingDays * currentDailyRate
 
   // Aplica a taxa de retenção: cliente recebe 80% do crédito como desconto
-  const creditReais = Math.round(rawCreditReais * UPGRADE_CREDIT_RETENTION * 100) / 100
+  const creditReais =
+    Math.round(rawCreditReais * UPGRADE_CREDIT_RETENTION * 100) / 100
 
   // Valor do novo plano (em centavos → reais)
   const newPlanAnnualPriceReais = newPlanConfig.price / 100

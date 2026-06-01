@@ -202,10 +202,11 @@ export function BeaconContent({ slug, profile }: BeaconContentProps) {
                   Endereços ({addresses.length})
                 </p>
                 <p
-                  className={`font-bold text-[10px] uppercase tracking-widest ${atLimit && !isUnlimited
-                    ? 'text-amber-500 dark:text-amber-400'
-                    : 'text-slate-400 dark:text-slate-500'
-                    }`}
+                  className={`font-bold text-[10px] uppercase tracking-widest ${
+                    atLimit && !isUnlimited
+                      ? 'text-amber-500 dark:text-amber-400'
+                      : 'text-slate-400 dark:text-slate-500'
+                  }`}
                 >
                   {isUnlimited
                     ? 'Destaques ilimitados'
@@ -220,10 +221,11 @@ export function BeaconContent({ slug, profile }: BeaconContentProps) {
                 return (
                   <div
                     key={String(idx)}
-                    className={`rounded-2xl border p-4 transition-all ${isActive
-                      ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800/50 dark:bg-emerald-950/20'
-                      : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
-                      }`}
+                    className={`rounded-2xl border p-4 transition-all ${
+                      isActive
+                        ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800/50 dark:bg-emerald-950/20'
+                        : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                    }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5 shrink-0">
@@ -252,14 +254,15 @@ export function BeaconContent({ slug, profile }: BeaconContentProps) {
                       type="button"
                       onClick={() => toggle(idx)}
                       disabled={isSaving || (!isActive && atLimit)}
-                      className={`mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl py-2 font-bold text-xs transition-all ${isSaving
-                        ? 'cursor-wait bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                        : isActive
-                          ? 'bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/50'
-                          : atLimit
-                            ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                            : 'bg-emerald-500 text-white shadow-emerald-500/30 shadow-md hover:bg-emerald-600'
-                        }`}
+                      className={`mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl py-2 font-bold text-xs transition-all ${
+                        isSaving
+                          ? 'cursor-wait bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
+                          : isActive
+                            ? 'bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/50'
+                            : atLimit
+                              ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
+                              : 'bg-emerald-500 text-white shadow-emerald-500/30 shadow-md hover:bg-emerald-600'
+                      }`}
                     >
                       {isSaving ? (
                         <svg

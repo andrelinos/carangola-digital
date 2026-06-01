@@ -10,7 +10,11 @@ interface contentProps {
   canViewStats?: boolean
 }
 
-export function ContentProfile({ children, totalVisits, canViewStats }: contentProps) {
+export function ContentProfile({
+  children,
+  totalVisits,
+  canViewStats,
+}: contentProps) {
   return (
     <main className="mx-auto w-full max-w-7xl pt-6 sm:px-6 lg:px-8">
       <div className="mb-6 flex items-center justify-between px-4 sm:px-0">

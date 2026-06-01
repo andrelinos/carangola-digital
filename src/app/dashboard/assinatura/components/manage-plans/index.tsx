@@ -452,7 +452,7 @@ export function ManagePlans({
                       ].map(feat => {
                         const hasFeature =
                           plan.premiumFeatures?.[
-                          feat.key as keyof typeof plan.premiumFeatures
+                            feat.key as keyof typeof plan.premiumFeatures
                           ]
                         return (
                           <li
@@ -516,8 +516,8 @@ export function ManagePlans({
                             : `Escolher ${plan.title}`}
                         {plan.name.toLowerCase() !==
                           currentPlan?.toLowerCase() && (
-                            <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                          )}
+                          <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                        )}
                       </span>
                     </Button>
                   </CardFooter>

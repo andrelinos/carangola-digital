@@ -1,7 +1,16 @@
 'use client'
 
 import { Instagram } from 'iconoir-react'
-import { Check, Download, MapPin, QrCode, Search, Share2, X, Home } from 'lucide-react'
+import {
+  Check,
+  Download,
+  Home,
+  MapPin,
+  QrCode,
+  Search,
+  Share2,
+  X,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -176,8 +185,7 @@ function SelectPropertyModal({
     if (!q) return properties
     return properties.filter(
       p =>
-        p.title.toLowerCase().includes(q) ||
-        p.type?.toLowerCase().includes(q)
+        p.title.toLowerCase().includes(q) || p.type?.toLowerCase().includes(q)
     )
   }, [properties, query])
 

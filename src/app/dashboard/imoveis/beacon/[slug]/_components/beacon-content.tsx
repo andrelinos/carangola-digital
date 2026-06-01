@@ -49,7 +49,7 @@ export function BeaconContent({ slug, property }: BeaconContentProps) {
       } else {
         toast.success(
           result.message ||
-          (nextState ? 'Imóvel em destaque no mapa!' : 'Destaque removido.')
+            (nextState ? 'Imóvel em destaque no mapa!' : 'Destaque removido.')
         )
       }
     } catch (error) {
@@ -64,25 +64,25 @@ export function BeaconContent({ slug, property }: BeaconContentProps) {
   // Build Marker for the property
   const propertyMarker = hasLocation
     ? [
-      {
-        id: property.id,
-        name: property.title,
-        isBeaconActive: isActive,
-        category: property.type === 'rent' ? 'Aluguel' : 'Venda',
-        logoUrl: property.thumbnail,
-        profileSlug: slug,
-        businessAddresses: [
-          {
-            latitude: property.latitude,
-            longitude: property.longitude,
-            title: property.title,
-            address: property.address,
-            neighborhood: property.neighborhood,
-            cep: property.cep,
-          },
-        ],
-      },
-    ]
+        {
+          id: property.id,
+          name: property.title,
+          isBeaconActive: isActive,
+          category: property.type === 'rent' ? 'Aluguel' : 'Venda',
+          logoUrl: property.thumbnail,
+          profileSlug: slug,
+          businessAddresses: [
+            {
+              latitude: property.latitude,
+              longitude: property.longitude,
+              title: property.title,
+              address: property.address,
+              neighborhood: property.neighborhood,
+              cep: property.cep,
+            },
+          ],
+        },
+      ]
     : []
 
   return (
@@ -161,10 +161,11 @@ export function BeaconContent({ slug, property }: BeaconContentProps) {
           <div className="flex flex-col gap-4">
             <div className="space-y-3">
               <div
-                className={`relative flex flex-col justify-between overflow-hidden rounded-2xl border p-5 transition-all ${isActive
-                  ? 'border-emerald-500 bg-emerald-50 dark:border-emerald-500/50 dark:bg-emerald-900/20'
-                  : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
-                  }`}
+                className={`relative flex flex-col justify-between overflow-hidden rounded-2xl border p-5 transition-all ${
+                  isActive
+                    ? 'border-emerald-500 bg-emerald-50 dark:border-emerald-500/50 dark:bg-emerald-900/20'
+                    : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                }`}
               >
                 {isActive && (
                   <div className="absolute top-0 right-0 rounded-bl-xl bg-emerald-500 px-3 py-1 font-bold text-[10px] text-white uppercase tracking-widest">
@@ -174,10 +175,11 @@ export function BeaconContent({ slug, property }: BeaconContentProps) {
 
                 <div className="mb-4 flex items-center gap-3">
                   <div
-                    className={`flex size-10 items-center justify-center rounded-xl ${isActive
-                      ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400'
-                      : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-                      }`}
+                    className={`flex size-10 items-center justify-center rounded-xl ${
+                      isActive
+                        ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400'
+                        : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                    }`}
                   >
                     <Home className="size-5" />
                   </div>
@@ -192,13 +194,14 @@ export function BeaconContent({ slug, property }: BeaconContentProps) {
                 </div>
 
                 <button
-                  type='button'
+                  type="button"
                   onClick={toggle}
                   disabled={isSaving}
-                  className={`flex w-full items-center justify-center gap-2 rounded-xl py-2.5 font-bold text-sm transition-all ${isActive
-                    ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                    : 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200'
-                    } disabled:cursor-not-allowed disabled:opacity-70`}
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl py-2.5 font-bold text-sm transition-all ${
+                    isActive
+                      ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                      : 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200'
+                  } disabled:cursor-not-allowed disabled:opacity-70`}
                 >
                   {isSaving ? (
                     <span className="flex items-center gap-2">

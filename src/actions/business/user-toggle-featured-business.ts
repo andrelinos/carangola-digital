@@ -3,13 +3,12 @@
 import { Timestamp } from 'firebase-admin/firestore'
 import { revalidatePath } from 'next/cache'
 import { getServerSession } from 'next-auth/next'
-
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/firebase'
 import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
 
 export async function userToggleFeaturedBusiness({
   profileId,
@@ -36,14 +35,16 @@ export async function userToggleFeaturedBusiness({
     // Wait, let's check if the user is the owner or admin of the profile
     const profileRef = db.collection('profiles').doc(profileId)
     const profileSnap = await profileRef.get()
-    
+
     if (!profileSnap.exists) {
       return { success: false, message: 'Negócio não encontrado.' }
     }
-    
+
     const profileData = profileSnap.data()
-    const isAdmin = profileData?.admins?.some((admin: any) => admin.userId === userId)
-    
+    const isAdmin = profileData?.admins?.some(
+      (admin: any) => admin.userId === userId
+    )
+
     if (profileData?.userId !== userId && !isAdmin) {
       return { success: false, message: 'Permissão negada.' }
     }
@@ -51,7 +52,7 @@ export async function userToggleFeaturedBusiness({
     if (isFeatured) {
       const userDoc = await db.collection('users').doc(userId).get()
       const userData = userDoc.data()
-      
+
       const planActive =
         userData?.planActive?.profiles ??
         userData?.planActive ??
@@ -59,17 +60,22 @@ export async function userToggleFeaturedBusiness({
         null
 
       const planType = (planActive?.type || 'free') as PlanTypeProps
-      const planConfig = plansBusinessConfig[planType] ?? plansBusinessConfig.free
-      
+      const planConfig =
+        plansBusinessConfig[planType] ?? plansBusinessConfig.free
+
       // We will assume that if they have prioritySearch or verifiedBadge, they can be featured
-      if (!planConfig.premiumFeatures?.verifiedBadge && !planConfig.premiumFeatures?.prioritySearch) {
-         // But actually, in the user's setup, maybe they just use a limit? 
-         // Since there's no business highlight limit, we just check verifiedBadge
-         // If it's false, we return error.
-         return {
-           success: false,
-           message: 'Seu plano atual não permite destacar negócios. Faça upgrade.',
-         }
+      if (
+        !planConfig.premiumFeatures?.verifiedBadge &&
+        !planConfig.premiumFeatures?.prioritySearch
+      ) {
+        // But actually, in the user's setup, maybe they just use a limit?
+        // Since there's no business highlight limit, we just check verifiedBadge
+        // If it's false, we return error.
+        return {
+          success: false,
+          message:
+            'Seu plano atual não permite destacar negócios. Faça upgrade.',
+        }
       }
     }
 

@@ -58,7 +58,10 @@ const badgeConfig = {
   },
 }
 
-function extractSubtext(children: ReactNode): { primary: string; sub: ReactNode | null } {
+function extractSubtext(children: ReactNode): {
+  primary: string
+  sub: ReactNode | null
+} {
   if (typeof children !== 'string') {
     // Se for JSX (ReactNode com partes), tenta extrair pela string completa
     return { primary: '', sub: children }
@@ -101,27 +104,16 @@ export function ContainerStatus({ status, children }: Props) {
             )}
           />
         </span>
-        <span
-          className={cn(
-            'font-semibold text-sm',
-            config.labelClass
-          )}
-        >
+        <span className={cn('font-semibold text-sm', config.labelClass)}>
           {isStringChild && primary ? primary : config.label}
         </span>
       </div>
 
       {sub && (
-        <p
-          className={cn(
-            'pl-4 text-xs leading-snug',
-            config.subClass
-          )}
-        >
+        <p className={cn('pl-4 text-xs leading-snug', config.subClass)}>
           {sub}
         </p>
       )}
     </div>
   )
 }
-

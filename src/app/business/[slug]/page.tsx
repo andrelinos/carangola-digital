@@ -64,6 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 import { ShieldCheck } from 'iconoir-react'
 import { Sparkles } from 'lucide-react'
 import { getServerSession } from 'next-auth/next'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import { FooterProfile } from '@/components/commons/footer-profile'
 import LocalBusinessJsonLd from '@/components/seo/local-business-json-ld'
 import {
@@ -75,7 +76,6 @@ import { getPlanConfig } from '@/utils/get-plan-config'
 import { BusinessGallery } from './_components/business-gallery'
 import { StickyCta } from './_components/sticky-cta'
 import { ContentProfile } from './content'
-import { verifyAdmin } from '@/app/server/verify-admin.server'
 
 interface Props {
   params: Promise<{
@@ -123,7 +123,10 @@ export default async function BusinessId({ params }: Props) {
   return (
     <>
       <LocalBusinessJsonLd data={profileData} />
-      <ContentProfile totalVisits={profileData?.totalVisits} canViewStats={canViewStats}>
+      <ContentProfile
+        totalVisits={profileData?.totalVisits}
+        canViewStats={canViewStats}
+      >
         <BusinessHero
           profileData={profileData}
           planConfig={planConfig}

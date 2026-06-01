@@ -27,7 +27,7 @@ export function ButtonForOwnerOnly({
       onClick={handleExecute}
       type="button"
       aria-label={`Editar ${title ?? 'informações'}`}
-      className='h-7 gap-1 rounded-full px-2.5 font-medium text-[11px] text-muted-foreground hover:text-foreground'
+      className="h-7 gap-1 rounded-full px-2.5 font-medium text-[11px] text-muted-foreground hover:text-foreground"
     >
       <Edit className="size-3" />
       {children}

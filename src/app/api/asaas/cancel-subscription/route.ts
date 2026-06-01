@@ -34,7 +34,10 @@ export async function POST() {
   const userDoc = await db.collection('users').doc(userId).get()
 
   if (!userDoc.exists) {
-    return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Usuário não encontrado' },
+      { status: 404 }
+    )
   }
 
   const userData = userDoc.data()
@@ -52,7 +55,10 @@ export async function POST() {
 
   if (userData?.asaasSubscriptionStatus === 'CANCELLED') {
     return NextResponse.json(
-      { error: 'A renovação já foi cancelada. Você mantém acesso até o fim do período atual.' },
+      {
+        error:
+          'A renovação já foi cancelada. Você mantém acesso até o fim do período atual.',
+      },
       { status: 400 }
     )
   }
@@ -100,7 +106,8 @@ export async function POST() {
 
   return NextResponse.json({
     success: true,
-    message: 'Renovação cancelada com sucesso. Você mantém o acesso até o fim do período atual.',
+    message:
+      'Renovação cancelada com sucesso. Você mantém o acesso até o fim do período atual.',
     accessUntil: planExpiresAt,
   })
 }

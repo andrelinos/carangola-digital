@@ -245,12 +245,13 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`font-bold text-[10px] uppercase tracking-wider ${property.status === 'Disponível'
-                        ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
-                        : property.status === 'Alugado'
-                          ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
-                          : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
-                        }`}
+                      className={`font-bold text-[10px] uppercase tracking-wider ${
+                        property.status === 'Disponível'
+                          ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
+                          : property.status === 'Alugado'
+                            ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
+                            : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
+                      }`}
                     >
                       {property.status}
                     </Badge>
@@ -296,7 +297,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                   </div>
                 </div>
 
-                <div className='mt-6 flex flex-col gap-3 border-slate-100 border-t pt-5 dark:border-slate-800'>
+                <div className="mt-6 flex flex-col gap-3 border-slate-100 border-t pt-5 dark:border-slate-800">
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
@@ -304,10 +305,11 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                         handleToggleFeature(property.id, !!property.isFeatured)
                       }
                       disabled={isTogglingFeature === property.id}
-                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${property.isFeatured
-                        ? 'bg-linear-to-r from-amber-400 to-amber-500 text-white shadow-amber-500/20 shadow-md hover:from-amber-500 hover:to-amber-600'
-                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                        }`}
+                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${
+                        property.isFeatured
+                          ? 'bg-linear-to-r from-amber-400 to-amber-500 text-white shadow-amber-500/20 shadow-md hover:from-amber-500 hover:to-amber-600'
+                          : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
+                      }`}
                     >
                       {isTogglingFeature === property.id ? (
                         <svg
@@ -345,10 +347,11 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                           `/dashboard/imoveis/beacon/${property.slug}`
                         )
                       }
-                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${property.isBeaconActive
-                        ? 'bg-linear-to-r from-emerald-400 to-emerald-500 text-white shadow-emerald-500/20 shadow-md hover:from-emerald-500 hover:to-emerald-600'
-                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                        }`}
+                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${
+                        property.isBeaconActive
+                          ? 'bg-linear-to-r from-emerald-400 to-emerald-500 text-white shadow-emerald-500/20 shadow-md hover:from-emerald-500 hover:to-emerald-600'
+                          : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
+                      }`}
                     >
                       <MapPin
                         className={`mr-1.5 size-3.5 ${property.isBeaconActive ? 'fill-white' : ''}`}

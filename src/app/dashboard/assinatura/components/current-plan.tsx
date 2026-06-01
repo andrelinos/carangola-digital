@@ -74,12 +74,16 @@ export function CurrentPlan({
   async function handleCancelRenewal() {
     setIsCancelling(true)
     try {
-      const res = await fetch('/api/asaas/cancel-subscription', { method: 'POST' })
+      const res = await fetch('/api/asaas/cancel-subscription', {
+        method: 'POST',
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Erro ao cancelar renovação')
       setIsCancelled(true)
       setShowCancelDialog(false)
-      toast.success('Renovação cancelada. Você mantém o acesso até o fim do período.')
+      toast.success(
+        'Renovação cancelada. Você mantém o acesso até o fim do período.'
+      )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Erro ao cancelar')
     } finally {
@@ -90,12 +94,16 @@ export function CurrentPlan({
   async function handleReactivate() {
     setIsReactivating(true)
     try {
-      const res = await fetch('/api/asaas/reactivate-subscription', { method: 'POST' })
+      const res = await fetch('/api/asaas/reactivate-subscription', {
+        method: 'POST',
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Erro ao reativar')
       setIsCancelled(false)
       setShowReactivateDialog(false)
-      toast.success('Renovação reativada! Sua assinatura será renovada automaticamente.')
+      toast.success(
+        'Renovação reativada! Sua assinatura será renovada automaticamente.'
+      )
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Erro ao reativar')
     } finally {
@@ -152,21 +160,23 @@ export function CurrentPlan({
                     : 'border-yellow-300/30 ring-yellow-300/20'
               )}
             >
-              <span
-                className={cn(
-                  'relative flex size-2.5',
-                )}
-              >
+              <span className={cn('relative flex size-2.5')}>
                 <span
                   className={cn(
                     'absolute inline-flex h-full w-full animate-ping rounded-full opacity-75',
-                    isEffectivelyActive && !isCancelled ? 'bg-green-300' : 'bg-amber-300'
+                    isEffectivelyActive && !isCancelled
+                      ? 'bg-green-300'
+                      : 'bg-amber-300'
                   )}
                 />
                 <span
                   className={cn(
                     'relative inline-flex size-2.5 rounded-full',
-                    isEffectivelyActive && !isCancelled ? 'bg-green-400' : isCancelled ? 'bg-amber-300' : 'bg-yellow-400'
+                    isEffectivelyActive && !isCancelled
+                      ? 'bg-green-400'
+                      : isCancelled
+                        ? 'bg-amber-300'
+                        : 'bg-yellow-400'
                   )}
                 />
               </span>
@@ -313,8 +323,8 @@ export function CurrentPlan({
                   <p className="mt-0.5 font-medium text-amber-700 text-xs leading-relaxed dark:text-amber-400">
                     Você mantém todos os benefícios do plano{' '}
                     <strong>{planTitle}</strong> até{' '}
-                    <strong>{accessUntilDate}</strong>. Após essa data, seu plano
-                    voltará automaticamente para o gratuito.
+                    <strong>{accessUntilDate}</strong>. Após essa data, seu
+                    plano voltará automaticamente para o gratuito.
                   </p>
                 </div>
               </div>
@@ -388,8 +398,7 @@ export function CurrentPlan({
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 text-green-500">✓</span>
                 <p className="font-semibold text-foreground text-sm">
-                  Você mantém o plano{' '}
-                  <strong>{planTitle}</strong> até{' '}
+                  Você mantém o plano <strong>{planTitle}</strong> até{' '}
                   <strong>{accessUntilDate ?? expiresIn}</strong>
                 </p>
               </div>
@@ -436,7 +445,10 @@ export function CurrentPlan({
       </Dialog>
 
       {/* ── Modal de reativação ──────────────────────────────────────────── */}
-      <Dialog open={showReactivateDialog} onOpenChange={setShowReactivateDialog}>
+      <Dialog
+        open={showReactivateDialog}
+        onOpenChange={setShowReactivateDialog}
+      >
         <DialogContent className="overflow-hidden rounded-[3rem] border border-slate-100 bg-slate-50 p-4 sm:max-w-[420px] sm:rounded-[3rem] dark:border-slate-850 dark:bg-slate-950">
           <div className="space-y-6 rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <DialogHeader className="space-y-4">

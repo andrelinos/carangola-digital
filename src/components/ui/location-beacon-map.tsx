@@ -195,11 +195,7 @@ export default function LocationBeaconMap({
               position={[addr.latitude, addr.longitude]}
               icon={createCustomIcon(!!business.isBeaconActive)}
             >
-              <Popup
-                className="gmaps-popup"
-                minWidth={240}
-                maxWidth={240}
-              >
+              <Popup className="gmaps-popup" minWidth={240} maxWidth={240}>
                 <div
                   // biome-ignore lint/security/noDangerouslySetInnerHtml: controlled template string with no user input
                   dangerouslySetInnerHTML={{ __html: popupHtml }}

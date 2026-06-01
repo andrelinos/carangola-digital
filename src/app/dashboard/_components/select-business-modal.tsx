@@ -119,7 +119,9 @@ export function SelectBusinessModal({
 
           {filtered.length === 0 && (
             <p className="py-8 text-center text-muted-foreground text-sm italic">
-              {query ? `Nenhum resultado para "${query}"` : 'Nenhuma empresa encontrada.'}
+              {query
+                ? `Nenhum resultado para "${query}"`
+                : 'Nenhuma empresa encontrada.'}
             </p>
           )}
         </div>

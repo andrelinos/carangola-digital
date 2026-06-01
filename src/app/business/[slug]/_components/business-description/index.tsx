@@ -20,9 +20,7 @@ export function Description({ profileData, isOwner, isUserAuth }: Props) {
       delay={0.1}
       action={
         (isOwner || isUserAuth) && (
-          <EditBusinessDescription
-            data={{ businessDescription, profileId }}
-          />
+          <EditBusinessDescription data={{ businessDescription, profileId }} />
         )
       }
     >
