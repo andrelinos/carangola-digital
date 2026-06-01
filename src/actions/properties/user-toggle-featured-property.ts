@@ -3,13 +3,12 @@
 import { Timestamp } from 'firebase-admin/firestore'
 import { revalidatePath } from 'next/cache'
 import { getServerSession } from 'next-auth/next'
-
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/firebase'
 import {
   type PlanTypeProps,
   plansBusinessConfig,
 } from '@/configs/plans-business'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
 
 export async function userToggleFeaturedProperty({
   propertyId,
@@ -36,7 +35,7 @@ export async function userToggleFeaturedProperty({
       // Fetch user to check plan
       const userDoc = await db.collection('users').doc(userId).get()
       const userData = userDoc.data()
-      
+
       const planActive =
         userData?.planActive?.profiles ??
         userData?.planActive ??
@@ -44,13 +43,15 @@ export async function userToggleFeaturedProperty({
         null
 
       const planType = (planActive?.type || 'free') as PlanTypeProps
-      const planConfig = plansBusinessConfig[planType] ?? plansBusinessConfig.free
-      const limit = planConfig.propertyHighlights?.limit ?? 0
+      const planConfig =
+        plansBusinessConfig[planType] ?? plansBusinessConfig.free
+      const limit = Number(planConfig.propertyHighlights?.limit) ?? 0
 
       if (limit === 0) {
         return {
           success: false,
-          message: 'Seu plano atual não permite destacar imóveis. Faça upgrade.',
+          message:
+            'Seu plano atual não permite destacar imóveis. Faça upgrade.',
         }
       }
 

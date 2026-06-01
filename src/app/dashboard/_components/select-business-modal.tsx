@@ -103,7 +103,7 @@ export function SelectBusinessModal({
                   </div>
                 )}
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="truncate font-bold text-sm leading-tight">
                   {profile.name}
                 </p>

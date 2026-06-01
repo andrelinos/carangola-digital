@@ -28,7 +28,7 @@ export function ProfileSection({
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       className={cn(
-        'relative group w-full overflow-hidden rounded-3xl border bg-card p-6 shadow-black/3 shadow-sm sm:p-8 dark:shadow-none',
+        'group relative w-full overflow-hidden rounded-3xl border bg-card p-6 shadow-black/3 shadow-sm sm:p-8 dark:shadow-none',
         className
       )}
     >
@@ -42,7 +42,7 @@ export function ProfileSection({
       )}
 
       {action && (
-        <div className="absolute right-4 top-4 z-10 transition-opacity duration-150 sm:right-5 sm:top-5 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100">
+        <div className="absolute top-4 right-4 z-10 transition-opacity duration-150 sm:top-5 sm:right-5 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100">
           {action}
         </div>
       )}

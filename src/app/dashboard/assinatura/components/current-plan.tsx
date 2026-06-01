@@ -129,7 +129,7 @@ export function CurrentPlan({
           <div className="relative z-10 flex flex-col justify-between gap-5 md:flex-row md:items-center">
             <div className="space-y-1.5">
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-md ring-1 ring-white/30">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-white/20 ring-1 ring-white/30 backdrop-blur-md">
                   <CreditCard className="size-5 text-white" />
                 </div>
                 <h2 className="font-black text-2xl uppercase italic tracking-tight drop-shadow-sm">
@@ -170,7 +170,7 @@ export function CurrentPlan({
                   )}
                 />
               </span>
-              <span className="font-semibold text-[11px] uppercase tracking-widest text-white">
+              <span className="font-semibold text-[11px] text-white uppercase tracking-widest">
                 {isCancelled
                   ? 'Cancelado — Ativo até expirar'
                   : isEffectivelyActive
@@ -299,11 +299,11 @@ export function CurrentPlan({
           {/* Separator */}
           <div className="mx-8 h-px bg-slate-100 dark:bg-slate-800" />
 
-          <div className="px-8 py-6 space-y-4">
+          <div className="space-y-4 px-8 py-6">
             {/* Aviso de cancelamento pendente */}
             {isCancelled && accessUntilDate && (
               <div className="flex items-start gap-4 rounded-2xl border border-amber-200/60 bg-amber-50/60 p-4 dark:border-amber-800/30 dark:bg-amber-950/20">
-                <div className="shrink-0 flex size-9 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/40">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/40">
                   <AlertTriangle className="size-4 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
@@ -323,7 +323,7 @@ export function CurrentPlan({
             {/* Info Box / Action Buttons */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="group flex flex-1 items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 px-5 py-4 transition-all hover:border-primary/20 hover:bg-primary/[0.02] dark:border-slate-800 dark:bg-slate-900/40 dark:hover:border-primary/30">
-                <div className="shrink-0 flex size-9 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-100 transition-all group-hover:bg-primary/10 group-hover:ring-primary/20 dark:bg-slate-900 dark:ring-slate-800">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-100 transition-all group-hover:bg-primary/10 group-hover:ring-primary/20 dark:bg-slate-900 dark:ring-slate-800">
                   <ArrowRight className="size-4 text-primary" />
                 </div>
                 <div>
@@ -411,7 +411,7 @@ export function CurrentPlan({
               <Button
                 onClick={handleCancelRenewal}
                 disabled={isCancelling}
-                className="h-14 w-full rounded-2xl bg-red-500 font-black text-xs uppercase tracking-widest text-white shadow-red-500/20 shadow-xl hover:bg-red-600"
+                className="h-14 w-full rounded-2xl bg-red-500 font-black text-white text-xs uppercase tracking-widest shadow-red-500/20 shadow-xl hover:bg-red-600"
               >
                 {isCancelling ? (
                   <>
@@ -480,7 +480,7 @@ export function CurrentPlan({
               <Button
                 onClick={handleReactivate}
                 disabled={isReactivating}
-                className="h-14 w-full rounded-2xl bg-green-600 font-black text-xs uppercase tracking-widest text-white shadow-green-600/20 shadow-xl hover:bg-green-700"
+                className="h-14 w-full rounded-2xl bg-green-600 font-black text-white text-xs uppercase tracking-widest shadow-green-600/20 shadow-xl hover:bg-green-700"
               >
                 {isReactivating ? (
                   <>

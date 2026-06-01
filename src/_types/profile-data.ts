@@ -111,6 +111,8 @@ export type ProfileDataProps = {
   isPremium: boolean
   isVerified: boolean
   isFeatured?: boolean
+  isBeaconActive?: boolean
+  beaconActiveIndexes?: number[]
   featuredStartAt?: number | null
   featuredEndAt?: number | null
   reviewCount: number

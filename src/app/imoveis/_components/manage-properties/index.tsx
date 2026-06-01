@@ -2,7 +2,6 @@
 
 import {
   DollarSign,
-  Eye,
   Home,
   MapPin,
   Plus,
@@ -13,11 +12,10 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import type { PropertyProps } from '@/_types/property'
 import { deleteProperty } from '@/actions/properties/delete-property'
 import { userToggleFeaturedProperty } from '@/actions/properties/user-toggle-featured-property'
-import { userTogglePropertyBeacon } from '@/actions/properties/user-toggle-property-beacon'
-import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -41,7 +39,9 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
   const [_isDeleting, setIsDeleting] = useState(false)
   const [propertyToDelete, setPropertyToDelete] =
     useState<PropertyProps | null>(null)
-  const [isTogglingFeature, setIsTogglingFeature] = useState<string | null>(null)
+  const [isTogglingFeature, setIsTogglingFeature] = useState<string | null>(
+    null
+  )
 
   // NOVO: useEffect ajustado com delay para evitar conflito de hidratação/rotas
   useEffect(() => {
@@ -113,7 +113,10 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
     }
   }
 
-  const handleToggleFeature = async (propertyId: string, currentStatus: boolean) => {
+  const handleToggleFeature = async (
+    propertyId: string,
+    currentStatus: boolean
+  ) => {
     setIsTogglingFeature(propertyId)
     try {
       const result = await userToggleFeaturedProperty({
@@ -132,7 +135,7 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
       } else {
         toast.error(result.message)
       }
-    } catch (error) {
+    } catch {
       toast.error('Erro ao processar a ação. Tente novamente.')
     } finally {
       setIsTogglingFeature(null)
@@ -242,13 +245,12 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`font-bold text-[10px] uppercase tracking-wider ${
-                        property.status === 'Disponível'
-                          ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
-                          : property.status === 'Alugado'
-                            ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
-                            : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
-                      }`}
+                      className={`font-bold text-[10px] uppercase tracking-wider ${property.status === 'Disponível'
+                        ? 'border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400'
+                        : property.status === 'Alugado'
+                          ? 'border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400'
+                          : 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400'
+                        }`}
                     >
                       {property.status}
                     </Badge>
@@ -294,39 +296,63 @@ export function PropertyComponentAdmin({ data }: PropertyComponentProps) {
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+                <div className='mt-6 flex flex-col gap-3 border-slate-100 border-t pt-5 dark:border-slate-800'>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
-                      onClick={() => handleToggleFeature(property.id, !!property.isFeatured)}
+                      onClick={() =>
+                        handleToggleFeature(property.id, !!property.isFeatured)
+                      }
                       disabled={isTogglingFeature === property.id}
-                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 text-xs font-bold transition-all ${
-                        property.isFeatured
-                          ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-md shadow-amber-500/20 hover:from-amber-500 hover:to-amber-600'
-                          : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                      }`}
+                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${property.isFeatured
+                        ? 'bg-linear-to-r from-amber-400 to-amber-500 text-white shadow-amber-500/20 shadow-md hover:from-amber-500 hover:to-amber-600'
+                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
+                        }`}
                     >
                       {isTogglingFeature === property.id ? (
-                        <svg className="mr-1.5 size-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                        <svg
+                          className="mr-1.5 size-4 animate-spin"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <title> </title>
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"
+                          />
                         </svg>
                       ) : (
-                        <Star className={`mr-1.5 size-3.5 ${property.isFeatured ? 'fill-white' : ''}`} />
+                        <Star
+                          className={`mr-1.5 size-3.5 ${property.isFeatured ? 'fill-white' : ''}`}
+                        />
                       )}
                       {property.isFeatured ? 'Em Destaque' : 'Destacar'}
                     </Button>
 
                     <Button
                       variant="outline"
-                      onClick={() => router.push(`/dashboard/imoveis/beacon/${property.slug}`)}
-                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 text-xs font-bold transition-all ${
-                        property.isBeaconActive
-                          ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white shadow-md shadow-emerald-500/20 hover:from-emerald-500 hover:to-emerald-600'
-                          : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
-                      }`}
+                      onClick={() =>
+                        router.push(
+                          `/dashboard/imoveis/beacon/${property.slug}`
+                        )
+                      }
+                      className={`relative h-10 flex-1 overflow-hidden rounded-xl border-0 font-bold text-xs transition-all ${property.isBeaconActive
+                        ? 'bg-linear-to-r from-emerald-400 to-emerald-500 text-white shadow-emerald-500/20 shadow-md hover:from-emerald-500 hover:to-emerald-600'
+                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 dark:bg-slate-800/80 dark:text-slate-400 dark:hover:bg-slate-700'
+                        }`}
                     >
-                      <MapPin className={`mr-1.5 size-3.5 ${property.isBeaconActive ? 'fill-white' : ''}`} />
+                      <MapPin
+                        className={`mr-1.5 size-3.5 ${property.isBeaconActive ? 'fill-white' : ''}`}
+                      />
                       {property.isBeaconActive ? 'No Mapa' : 'Mapa'}
                     </Button>
                   </div>

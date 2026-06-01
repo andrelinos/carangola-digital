@@ -497,7 +497,7 @@ export function ManagePlans({
                         plan.name.toLowerCase() === currentPlan?.toLowerCase()
                       }
                       className={cn(
-                        'h-auto min-h-[3.5rem] w-full whitespace-normal rounded-2xl px-2 py-3 text-center font-black text-xs leading-snug uppercase tracking-widest transition-all duration-300',
+                        'h-auto min-h-[3.5rem] w-full whitespace-normal rounded-2xl px-2 py-3 text-center font-black text-xs uppercase leading-snug tracking-widest transition-all duration-300',
                         plan.name.toLowerCase() === currentPlan?.toLowerCase()
                           ? 'cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
                           : plan.upgradePrice !== undefined
