@@ -6,8 +6,10 @@ import { db, getDownloadURLFromPath } from '@/lib/firebase'
 
 export interface UserPropertyTableData {
   id: string
+  slug: string
   title: string
   category: string
+  type: string
   status: 'Ativo' | 'Pendente' | 'Expirado'
   statusColor: 'chart-2' | 'chart-1' | 'destructive'
   image: string | null
@@ -59,8 +61,10 @@ export async function getUserPropertiesForDashboard(): Promise<
 
         return {
           id: doc.id,
+          slug: (data.slug as string) || doc.id,
           title: (data.title as string) || 'Sem título',
           category: (data.category as string) || 'Imóvel',
+          type: (data.type as string) || '',
           status,
           statusColor,
           image: imageUrl,

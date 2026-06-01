@@ -44,6 +44,12 @@ export const plansBusinessConfig = {
     addresses: {
       quantity: 2,
     },
+    mapHighlights: {
+      limit: 1, // Plano gratuito não pode destacar no mapa
+    },
+    propertyHighlights: {
+      limit: 1, // Plano gratuito não destaca imóveis
+    },
   },
   basic: {
     title: 'BÁSICO',
@@ -61,7 +67,7 @@ export const plansBusinessConfig = {
     },
     imageGallery: {
       enabled: true,
-      limit: 10, // Permite até 10 fotos (fachada, produtos, cardápio)
+      limit: 5, // Permite até 5 fotos (fachada, produtos, cardápio)
     },
     socialMedias: {
       linkedin: true,
@@ -90,6 +96,12 @@ export const plansBusinessConfig = {
     addresses: {
       quantity: 4,
     },
+    mapHighlights: {
+      limit: 1, // Pode destacar 1 endereço simultaneamente
+    },
+    propertyHighlights: {
+      limit: 2, // Pode destacar 2 imóveis
+    },
   },
   pro: {
     title: 'PRO',
@@ -108,7 +120,7 @@ export const plansBusinessConfig = {
     },
     imageGallery: {
       enabled: true,
-      limit: 10, // Permite até 10 fotos (fachada, produtos, cardápio)
+      limit: 15, // Permite até 15 fotos (fachada, produtos, cardápio)
     },
     socialMedias: {
       linkedin: true,
@@ -136,6 +148,12 @@ export const plansBusinessConfig = {
     },
     addresses: {
       quantity: 10,
+    },
+    mapHighlights: {
+      limit: 3, // Pode destacar até 3 endereços simultaneamente
+    },
+    propertyHighlights: {
+      limit: 10, // Pode destacar até 10 imóveis
     },
   },
   master: {
@@ -182,6 +200,12 @@ export const plansBusinessConfig = {
     },
     addresses: {
       quantity: -1,
+    },
+    mapHighlights: {
+      limit: -1, // Ilimitado
+    },
+    propertyHighlights: {
+      limit: -1, // Ilimitado
     },
   },
 } as const

@@ -1,28 +1,302 @@
 'use client'
 
 import { Instagram } from 'iconoir-react'
-import { Check, Download, MapPin, QrCode, Share2, X } from 'lucide-react'
+import { Check, Download, MapPin, QrCode, Search, Share2, X, Home } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import type { UserProfileTableData } from '@/actions/dashboard/get-user-profiles.action'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+// ── Reusable modal with search ────────────────────────────────────────────────
+
+interface SelectBusinessModalProps {
+  open: boolean
+  onClose: () => void
+  onSelect: (slug: string) => void
+  profiles: UserProfileTableData[]
+  title: string
+  description: string
+  accentClass?: string
+  checkIcon: React.ReactNode
+}
+
+function SelectBusinessModal({
+  open,
+  onClose,
+  onSelect,
+  profiles,
+  title,
+  description,
+  accentClass = 'hover:border-primary/50 hover:bg-primary/5',
+  checkIcon,
+}: SelectBusinessModalProps) {
+  const [query, setQuery] = useState('')
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return profiles
+    return profiles.filter(
+      p =>
+        p.name.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+    )
+  }, [profiles, query])
+
+  if (!open) return null
+
+  function handleClose() {
+    setQuery('')
+    onClose()
+  }
+
+  function handleSelect(slug: string) {
+    setQuery('')
+    onSelect(slug)
+  }
+
+  return (
+    <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
+      <div className="zoom-in-95 w-full max-w-md animate-in overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
+        {/* Header */}
+        <div className="flex items-center justify-between border-border border-b p-6">
+          <div>
+            <h3 className="font-bold text-lg">{title}</h3>
+            <p className="text-muted-foreground text-xs">{description}</p>
+          </div>
+          <button
+            onClick={handleClose}
+            className="rounded-full p-2 transition-colors hover:bg-muted"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Search */}
+        <div className="border-border border-b px-4 py-3">
+          <div className="relative">
+            <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              autoFocus
+              placeholder="Buscar empresa ou categoria..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              className="h-9 rounded-xl pl-9 text-sm"
+            />
+          </div>
+        </div>
+
+        {/* List */}
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto p-4">
+          {filtered.map(profile => (
+            <button
+              key={profile.id}
+              onClick={() => handleSelect(profile.slug)}
+              className={`group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all ${accentClass}`}
+            >
+              <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
+                {profile.image ? (
+                  <img
+                    src={profile.image}
+                    alt={profile.name}
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
+                    {profile.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-bold text-sm leading-tight">
+                  {profile.name}
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  {profile.category}
+                </p>
+              </div>
+              <div className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100">
+                {checkIcon}
+              </div>
+            </button>
+          ))}
+
+          {filtered.length === 0 && (
+            <p className="py-8 text-center text-muted-foreground text-sm italic">
+              {query
+                ? `Nenhum resultado para "${query}"`
+                : 'Nenhuma empresa encontrada.'}
+            </p>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="bg-muted/30 p-4">
+          <Button
+            variant="outline"
+            className="w-full rounded-2xl"
+            onClick={handleClose}
+          >
+            Cancelar
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Reusable modal for Properties ─────────────────────────────────────────────
+
+interface SelectPropertyModalProps {
+  open: boolean
+  onClose: () => void
+  onSelect: (slug: string) => void
+  properties: any[]
+  title: string
+  description: string
+  accentClass?: string
+  checkIcon: React.ReactNode
+}
+
+function SelectPropertyModal({
+  open,
+  onClose,
+  onSelect,
+  properties,
+  title,
+  description,
+  accentClass = 'hover:border-primary/50 hover:bg-primary/5',
+  checkIcon,
+}: SelectPropertyModalProps) {
+  const [query, setQuery] = useState('')
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return properties
+    return properties.filter(
+      p =>
+        p.title.toLowerCase().includes(q) ||
+        p.type?.toLowerCase().includes(q)
+    )
+  }, [properties, query])
+
+  if (!open) return null
+
+  function handleClose() {
+    setQuery('')
+    onClose()
+  }
+
+  function handleSelect(slug: string) {
+    setQuery('')
+    onSelect(slug)
+  }
+
+  return (
+    <div className="fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
+      <div className="zoom-in-95 w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
+        {/* Header */}
+        <div className="flex items-center justify-between border-border border-b p-6">
+          <div>
+            <h3 className="font-bold text-lg">{title}</h3>
+            <p className="text-muted-foreground text-xs">{description}</p>
+          </div>
+          <button
+            onClick={handleClose}
+            className="rounded-full p-2 transition-colors hover:bg-muted"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Search */}
+        <div className="border-border border-b px-4 py-3">
+          <div className="relative">
+            <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              autoFocus
+              placeholder="Buscar imóvel..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              className="h-9 rounded-xl pl-9 text-sm"
+            />
+          </div>
+        </div>
+
+        {/* List */}
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto p-4">
+          {filtered.map(property => (
+            <button
+              key={property.id}
+              onClick={() => handleSelect(property.slug)}
+              className={`group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all ${accentClass}`}
+            >
+              <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
+                {property.image ? (
+                  <img
+                    src={property.image}
+                    alt={property.title}
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
+                    <Home className="size-4" />
+                  </div>
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-bold text-sm leading-tight">
+                  {property.title}
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  {property.type === 'rent' ? 'Aluguel' : 'Venda'}
+                </p>
+              </div>
+              <div className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100">
+                {checkIcon}
+              </div>
+            </button>
+          ))}
+
+          {filtered.length === 0 && (
+            <p className="py-8 text-center text-muted-foreground text-sm italic">
+              {query
+                ? `Nenhum resultado para "${query}"`
+                : 'Nenhum imóvel encontrado.'}
+            </p>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="bg-muted/30 p-4">
+          <Button
+            variant="outline"
+            className="w-full rounded-2xl"
+            onClick={handleClose}
+          >
+            Cancelar
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 interface MarketingKitProps {
   profiles: UserProfileTableData[]
+  properties?: any[]
 }
 
-export function MarketingKit({ profiles }: MarketingKitProps) {
+export function MarketingKit({ profiles, properties = [] }: MarketingKitProps) {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isStickerModalOpen, setIsStickerModalOpen] = useState(false)
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false)
   const [isMapModalOpen, setIsMapModalOpen] = useState(false)
-
-  const handleOpenFolder = () => setIsModalOpen(true)
-  const handleOpenSticker = () => setIsStickerModalOpen(true)
-  const handleOpenLink = () => setIsLinkModalOpen(true)
-  const handleOpenMap = () => setIsMapModalOpen(true)
+  const [isPropertyMapModalOpen, setIsPropertyMapModalOpen] = useState(false)
 
   const handleSelectProfile = (slug: string) => {
     setIsModalOpen(false)
@@ -37,6 +311,11 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
   const handleSelectProfileMap = (slug: string) => {
     setIsMapModalOpen(false)
     router.push(`/dashboard/business/beacon/${slug}`)
+  }
+
+  const handleSelectPropertyMap = (slug: string) => {
+    setIsPropertyMapModalOpen(false)
+    router.push(`/dashboard/imoveis/beacon/${slug}`)
   }
 
   const handleSelectProfileLink = (slug: string) => {
@@ -54,7 +333,7 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
         'Baixe o QR Code para colocar nas mesas ou no balcão da sua loja física.',
       icon: <QrCode className="size-6 text-primary" />,
       action: 'Baixar PNG',
-      onClick: handleOpenFolder,
+      onClick: () => setIsModalOpen(true),
     },
     {
       title: 'Sticker de Stories',
@@ -62,7 +341,7 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
         'Imagem personalizada "Estamos no Carangola Digital" para seu Instagram.',
       icon: <Instagram className="size-6 text-pink-500" />,
       action: 'Gerar Arte',
-      onClick: handleOpenSticker,
+      onClick: () => setIsStickerModalOpen(true),
     },
     {
       title: 'Link de Divulgação',
@@ -70,15 +349,23 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
         'Copie seu link curto e compartilhe em grupos de WhatsApp e redes sociais.',
       icon: <Share2 className="size-6 text-blue-500" />,
       action: 'Copiar Link',
-      onClick: handleOpenLink,
+      onClick: () => setIsLinkModalOpen(true),
     },
     {
-      title: 'Sinalizador de Local',
+      title: 'Sinalizador de Empresa',
       description:
         'Apareça no mapa com destaque para clientes que estão por perto.',
       icon: <MapPin className="size-6 text-emerald-500" />,
       action: 'Ver no Mapa',
-      onClick: handleOpenMap,
+      onClick: () => setIsMapModalOpen(true),
+    },
+    {
+      title: 'Sinalizador de Imóvel',
+      description:
+        'Destaque seu imóvel no mapa interativo para atrair clientes da região.',
+      icon: <Home className="size-6 text-amber-500" />,
+      action: 'Ver no Mapa',
+      onClick: () => setIsPropertyMapModalOpen(true),
     },
   ]
 
@@ -128,289 +415,80 @@ export function MarketingKit({ profiles }: MarketingKitProps) {
         </div>
       </section>
 
-      {/* Modal de Seleção de Perfil */}
-      {isModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
-          <div className="zoom-in-95 w-full max-w-md animate-in overflow-hidden rounded-3xl bg-white shadow-2xl duration-200">
-            <div className="flex items-center justify-between border-border border-b p-6">
-              <div>
-                <h3 className="font-bold text-lg">Selecionar Empresa</h3>
-                <p className="text-muted-foreground text-xs">
-                  Escolha qual QR Code deseja gerar
-                </p>
-              </div>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="rounded-full p-2 transition-colors hover:bg-muted"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
-              {profiles.map(profile => (
-                <button
-                  key={profile.id}
-                  onClick={() => handleSelectProfile(profile.slug)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all hover:border-primary/50 hover:bg-primary/5"
-                >
-                  <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
-                    {profile.image ? (
-                      <img
-                        src={profile.image}
-                        alt={profile.name}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center text-muted-foreground">
-                        <QrCode className="size-5" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">
-                      {profile.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {profile.category}
-                    </p>
-                  </div>
-                  <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Check className="size-4 text-primary" />
-                  </div>
-                </button>
-              ))}
-              {profiles.length === 0 && (
-                <p className="py-8 text-center text-muted-foreground text-sm italic">
-                  Nenhuma empresa encontrada.
-                </p>
-              )}
-            </div>
-
-            <div className="bg-muted/30 p-6">
-              <Button
-                variant="outline"
-                className="w-full rounded-2xl"
-                onClick={() => setIsModalOpen(false)}
-              >
-                Cancelar
-              </Button>
-            </div>
+      <SelectBusinessModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSelect={handleSelectProfile}
+        profiles={profiles}
+        title="Selecionar Empresa"
+        description="Escolha qual QR Code deseja gerar"
+        accentClass="hover:border-primary/50 hover:bg-primary/5"
+        checkIcon={
+          <div className="flex size-8 items-center justify-center rounded-full bg-primary/10">
+            <Check className="size-4 text-primary" />
           </div>
-        </div>
-      )}
-      {isStickerModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
-          <div className="zoom-in-95 w-full max-w-md animate-in overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-border border-b p-6">
-              <div>
-                <h3 className="font-bold text-lg">Selecionar Empresa</h3>
-                <p className="text-muted-foreground text-xs">
-                  Escolha para qual empresa gerar o Sticker de Stories
-                </p>
-              </div>
-              <button
-                onClick={() => setIsStickerModalOpen(false)}
-                className="rounded-full p-2 transition-colors hover:bg-muted"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
+        }
+      />
 
-            <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
-              {profiles.map(profile => (
-                <button
-                  key={profile.id}
-                  onClick={() => handleSelectProfileSticker(profile.slug)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all hover:border-pink-300 hover:bg-pink-50 dark:hover:border-pink-800 dark:hover:bg-pink-900/20"
-                >
-                  <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
-                    {profile.image ? (
-                      <img
-                        src={profile.image}
-                        alt={profile.name}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
-                        {profile.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">
-                      {profile.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {profile.category}
-                    </p>
-                  </div>
-                  <div className="flex size-8 items-center justify-center rounded-full bg-pink-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-pink-900/40">
-                    <Check className="size-4 text-pink-600 dark:text-pink-400" />
-                  </div>
-                </button>
-              ))}
-              {profiles.length === 0 && (
-                <p className="py-8 text-center text-muted-foreground text-sm italic">
-                  Nenhuma empresa encontrada.
-                </p>
-              )}
-            </div>
-
-            <div className="bg-muted/30 p-6">
-              <Button
-                variant="outline"
-                className="w-full rounded-2xl"
-                onClick={() => setIsStickerModalOpen(false)}
-              >
-                Cancelar
-              </Button>
-            </div>
+      <SelectBusinessModal
+        open={isStickerModalOpen}
+        onClose={() => setIsStickerModalOpen(false)}
+        onSelect={handleSelectProfileSticker}
+        profiles={profiles}
+        title="Selecionar Empresa"
+        description="Escolha para qual empresa gerar o Sticker de Stories"
+        accentClass="hover:border-pink-300 hover:bg-pink-50 dark:hover:border-pink-800 dark:hover:bg-pink-900/20"
+        checkIcon={
+          <div className="flex size-8 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/40">
+            <Check className="size-4 text-pink-600 dark:text-pink-400" />
           </div>
-        </div>
-      )}
+        }
+      />
 
-      {isLinkModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
-          <div className="zoom-in-95 w-full max-w-md animate-in overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-border border-b p-6">
-              <div>
-                <h3 className="font-bold text-lg">Selecionar Empresa</h3>
-                <p className="text-muted-foreground text-xs">
-                  Escolha de qual empresa você deseja copiar o link
-                </p>
-              </div>
-              <button
-                onClick={() => setIsLinkModalOpen(false)}
-                className="rounded-full p-2 transition-colors hover:bg-muted"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
-              {profiles.map(profile => (
-                <button
-                  key={profile.id}
-                  onClick={() => handleSelectProfileLink(profile.slug)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all hover:border-blue-300 hover:bg-blue-50 dark:hover:border-blue-800 dark:hover:bg-blue-900/20"
-                >
-                  <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
-                    {profile.image ? (
-                      <img
-                        src={profile.image}
-                        alt={profile.name}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
-                        {profile.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">
-                      {profile.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {profile.category}
-                    </p>
-                  </div>
-                  <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-blue-900/40">
-                    <Share2 className="size-4 text-blue-600 dark:text-blue-400" />
-                  </div>
-                </button>
-              ))}
-              {profiles.length === 0 && (
-                <p className="py-8 text-center text-muted-foreground text-sm italic">
-                  Nenhuma empresa encontrada.
-                </p>
-              )}
-            </div>
-
-            <div className="bg-muted/30 p-6">
-              <Button
-                variant="outline"
-                className="w-full rounded-2xl"
-                onClick={() => setIsLinkModalOpen(false)}
-              >
-                Cancelar
-              </Button>
-            </div>
+      <SelectBusinessModal
+        open={isLinkModalOpen}
+        onClose={() => setIsLinkModalOpen(false)}
+        onSelect={handleSelectProfileLink}
+        profiles={profiles}
+        title="Selecionar Empresa"
+        description="Escolha de qual empresa você deseja copiar o link"
+        accentClass="hover:border-blue-300 hover:bg-blue-50 dark:hover:border-blue-800 dark:hover:bg-blue-900/20"
+        checkIcon={
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40">
+            <Share2 className="size-4 text-blue-600 dark:text-blue-400" />
           </div>
-        </div>
-      )}
+        }
+      />
 
-      {isMapModalOpen && (
-        <div className="fade-in fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-sm duration-200">
-          <div className="zoom-in-95 w-full max-w-md animate-in overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-border border-b p-6">
-              <div>
-                <h3 className="font-bold text-lg">Selecionar Empresa</h3>
-                <p className="text-muted-foreground text-xs">
-                  Escolha qual empresa visualizar no mapa
-                </p>
-              </div>
-              <button
-                onClick={() => setIsMapModalOpen(false)}
-                className="rounded-full p-2 transition-colors hover:bg-muted"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            <div className="max-h-[60vh] space-y-2 overflow-y-auto p-4">
-              {profiles.map(profile => (
-                <button
-                  key={profile.id}
-                  onClick={() => handleSelectProfileMap(profile.slug)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-border p-3 text-left transition-all hover:border-emerald-300 hover:bg-emerald-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-900/20"
-                >
-                  <div className="size-10 overflow-hidden rounded-xl border border-border bg-muted">
-                    {profile.image ? (
-                      <img
-                        src={profile.image}
-                        alt={profile.name}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center font-bold text-lg text-muted-foreground">
-                        {profile.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-sm leading-tight">
-                      {profile.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {profile.category}
-                    </p>
-                  </div>
-                  <div className="flex size-8 items-center justify-center rounded-full bg-emerald-100 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-emerald-900/40">
-                    <MapPin className="size-4 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                </button>
-              ))}
-              {profiles.length === 0 && (
-                <p className="py-8 text-center text-muted-foreground text-sm italic">
-                  Nenhuma empresa encontrada.
-                </p>
-              )}
-            </div>
-
-            <div className="bg-muted/30 p-6">
-              <Button
-                variant="outline"
-                className="w-full rounded-2xl"
-                onClick={() => setIsMapModalOpen(false)}
-              >
-                Cancelar
-              </Button>
-            </div>
+      <SelectBusinessModal
+        open={isMapModalOpen}
+        onClose={() => setIsMapModalOpen(false)}
+        onSelect={handleSelectProfileMap}
+        profiles={profiles}
+        title="Selecionar Empresa"
+        description="Escolha qual empresa visualizar no mapa"
+        accentClass="hover:border-emerald-300 hover:bg-emerald-50 dark:hover:border-emerald-800 dark:hover:bg-emerald-900/20"
+        checkIcon={
+          <div className="flex size-8 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
+            <MapPin className="size-4 text-emerald-600 dark:text-emerald-400" />
           </div>
-        </div>
-      )}
+        }
+      />
+
+      <SelectPropertyModal
+        open={isPropertyMapModalOpen}
+        onClose={() => setIsPropertyMapModalOpen(false)}
+        onSelect={handleSelectPropertyMap}
+        properties={properties}
+        title="Selecionar Imóvel"
+        description="Escolha qual imóvel visualizar no mapa"
+        accentClass="hover:border-amber-300 hover:bg-amber-50 dark:hover:border-amber-800 dark:hover:bg-amber-900/20"
+        checkIcon={
+          <div className="flex size-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/40">
+            <Home className="size-4 text-amber-600 dark:text-amber-400" />
+          </div>
+        }
+      />
     </>
   )
 }
