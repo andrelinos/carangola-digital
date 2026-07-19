@@ -37,82 +37,81 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
         className
       )}
     >
-      {/* Top Banner / Status */}
-      <div className="absolute top-4 right-4 z-20">
-        {profile.isPremium && (
-          <Badge
-            variant="default"
-            className="flex items-center gap-1 border-none bg-amber-500 shadow-sm hover:bg-amber-600"
-          >
-            <Star className="size-3 fill-current" />
-            <span className="text-[10px] uppercase tracking-wider">
-              Premium
-            </span>
-          </Badge>
-        )}
-      </div>
+      {/* Header with Background Pattern/Gradient */}
+      <div className="relative h-32 w-full bg-linear-to-br from-primary/15 via-primary/5 to-secondary/15">
+        {/* Decorative elements container with overflow-hidden so they don't leak */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-4 -right-4 size-32 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute -bottom-4 -left-4 size-32 rounded-full bg-secondary/20 blur-3xl" />
+          <div className="absolute bottom-0 left-0 h-1/2 w-full bg-linear-to-t from-background/50 to-transparent" />
+        </div>
 
-      {/* Header with Background Pattern/Gradient and Logo */}
-      <div className="relative h-32 w-full overflow-hidden bg-linear-to-br from-primary/10 via-background to-secondary/10">
-        {/* Subtle decorative elements */}
-        <div className="absolute -top-4 -right-4 size-24 rounded-full bg-primary/5 blur-2xl" />
-        <div className="absolute -bottom-4 -left-4 size-24 rounded-full bg-secondary/5 blur-2xl" />
+        {/* Premium Badge */}
+        <div className="absolute top-3 right-3 z-20">
+          {profile.isPremium && (
+            <Badge
+              variant="default"
+              className="flex items-center gap-1 border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-amber-600 shadow-sm backdrop-blur-md hover:bg-amber-500/20 dark:bg-amber-500/20 dark:text-amber-400"
+            >
+              <Star className="size-3 fill-amber-500 text-amber-500" />
+              <span className='font-semibold text-[10px] uppercase tracking-wider'>
+                Premium
+              </span>
+            </Badge>
+          )}
+        </div>
 
-        {/* Logo Container */}
-        <div className="absolute inset-0 flex items-center justify-center p-6">
-          <div className="relative size-20 overflow-hidden rounded-xl border-2 border-white bg-white shadow-md ring-4 ring-primary/5 transition-transform group-hover:scale-105">
+        {/* Overlapping Logo Container */}
+        <div className="absolute -bottom-14 left-1/2 z-10 -translate-x-1/2">
+          <div className="relative size-28 overflow-hidden rounded-2xl border-4 border-background bg-white shadow-lg transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
             <SafeImage
               src={logo}
               alt={profile.name}
               fill
-              className="object-contain p-2"
+              className="object-contain"
             />
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-5">
+      <div className='flex flex-1 flex-col items-center px-5 pt-16 pb-6 text-center'>
+        <h3 className="mb-2 flex items-center justify-center gap-1.5 font-bold text-foreground text-xl tracking-tight transition-colors group-hover:text-primary">
+          <span className="line-clamp-1">{profile.name}</span>
+          {profile.isVerified && (
+            <ShieldCheck className="size-5 shrink-0 text-blue-500" />
+          )}
+        </h3>
+
+        <div className="mb-3 flex justify-center">
+          <Badge
+            variant="secondary"
+            className='bg-secondary/50 font-medium text-[10px] text-secondary-foreground uppercase'
+          >
+            {profile.category || 'Serviços'}
+          </Badge>
+        </div>
+
         {/* Status indicator always visible */}
-        <div className="mb-3 flex justify-center font-medium text-xs">
+        <div className="mb-4 flex justify-center font-medium text-xs">
           {status}
         </div>
 
-        <div className="mb-2 flex flex-col items-center">
-          <h3 className="line-clamp-1 text-center font-bold text-foreground text-lg transition-colors group-hover:text-primary">
-            {profile.name}
-            {profile.isVerified && (
-              <ShieldCheck className="ml-1 inline-block size-4 text-blue-500" />
-            )}
-          </h3>
-
-          <div className="mt-1 flex items-center gap-1 text-muted-foreground text-xs">
-            <Badge
-              variant="secondary"
-              className="px-1.5 py-0 font-normal text-[10px] uppercase"
-            >
-              {profile.category || 'Serviços'}
-            </Badge>
+        {neighborhood && (
+          <div className="mb-6 flex items-center justify-center gap-1.5 text-muted-foreground text-sm">
+            <MapPin className="size-4 shrink-0 text-primary/50" />
+            <span className="line-clamp-1">{neighborhood}</span>
           </div>
-        </div>
+        )}
 
-        <div className="mt-auto space-y-3">
-          {neighborhood && (
-            <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-sm">
-              <MapPin className="size-3.5 text-primary/60" />
-              <span>{neighborhood}</span>
-            </div>
-          )}
-
-          <div className="mt-4 flex items-center justify-center">
-            <Link
-              href={`/business/${profile.slug}`}
-              className="inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-2 font-semibold text-primary text-sm transition-all hover:bg-primary hover:text-white"
-            >
-              Ver perfil
-              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
+        <div className="mt-auto w-full">
+          <Link
+            href={`/business/${profile.slug}`}
+            className="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-primary/5 px-4 py-2.5 font-semibold text-primary text-sm transition-all hover:bg-primary hover:text-primary-foreground"
+          >
+            Ver perfil
+            <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
+          </Link>
         </div>
       </div>
     </motion.div>
