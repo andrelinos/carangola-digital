@@ -1,6 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { cn } from '@/lib/utils'
 
@@ -24,20 +25,27 @@ export function Modal({
 }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null)
 
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       setIsOpen(false)
     }
   }
 
-  if (!isOpen) {
+  if (!isOpen || !mounted) {
     return null
   }
 
-  return (
+  return createPortal(
+    // biome-ignore lint/a11y/noStaticElementInteractions: ignore interaction with the modal overlay
     <div
       onKeyDown={handleKeyDown}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#787878]/10 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
     >
       <div
         ref={ref}
@@ -50,6 +58,7 @@ export function Modal({
         )}
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
