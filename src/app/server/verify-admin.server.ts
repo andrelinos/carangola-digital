@@ -41,7 +41,7 @@ export async function requireAdmin(): Promise<true> {
   const userEmail = session?.user?.email ?? ''
 
   let adminEmails: string[] = []
-  
+
   try {
     // Tenta fazer o parse caso seja um array JSON como '["email1@a.com", "email2@b.com"]'
     if (adminEmailsStr.trim().startsWith('[')) {
@@ -55,7 +55,7 @@ export async function requireAdmin(): Promise<true> {
   }
 
   // Verifica se o email do usuário está na lista de admins
-  const isAuthorized = adminEmails.some(adminEmail => 
+  const isAuthorized = adminEmails.some(adminEmail =>
     safeEmailCompare(userEmail, adminEmail)
   )
 

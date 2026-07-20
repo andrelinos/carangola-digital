@@ -54,7 +54,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
               className="flex items-center gap-1 border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-amber-600 shadow-sm backdrop-blur-md hover:bg-amber-500/20 dark:bg-amber-500/20 dark:text-amber-400"
             >
               <Star className="size-3 fill-amber-500 text-amber-500" />
-              <span className='font-semibold text-[10px] uppercase tracking-wider'>
+              <span className="font-semibold text-[10px] uppercase tracking-wider">
                 Premium
               </span>
             </Badge>
@@ -75,7 +75,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
       </div>
 
       {/* Content */}
-      <div className='flex flex-1 flex-col items-center px-5 pt-16 pb-6 text-center'>
+      <div className="flex flex-1 flex-col items-center px-5 pt-16 pb-6 text-center">
         <h3 className="mb-2 flex items-center justify-center gap-1.5 font-bold text-foreground text-xl tracking-tight transition-colors group-hover:text-primary">
           <span className="line-clamp-1">{profile.name}</span>
           {profile.isVerified && (
@@ -86,7 +86,7 @@ export function BusinessCard({ profile, className }: BusinessCardProps) {
         <div className="mb-3 flex justify-center">
           <Badge
             variant="secondary"
-            className='bg-secondary/50 font-medium text-[10px] text-secondary-foreground uppercase'
+            className="bg-secondary/50 font-medium text-[10px] text-secondary-foreground uppercase"
           >
             {profile.category || 'Serviços'}
           </Badge>

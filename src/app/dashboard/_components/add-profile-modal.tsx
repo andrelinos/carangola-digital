@@ -64,8 +64,8 @@ export function AddProfileModal({ userId }: Props) {
         <DialogTrigger asChild>
           <Button>Criar Novo Perfil</Button>
         </DialogTrigger>
-        <DialogContent className='flex max-h-[90vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-xl p-0 sm:max-w-[425px]'>
-          <div className='border-b px-6 py-5'>
+        <DialogContent className="flex max-h-[90vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-xl p-0 sm:max-w-[425px]">
+          <div className="border-b px-6 py-5">
             <DialogHeader>
               <DialogTitle className="text-xl">Criar Novo Perfil</DialogTitle>
               <DialogDescription>
@@ -76,9 +76,9 @@ export function AddProfileModal({ userId }: Props) {
           </div>
 
           <form action={formAction} className="flex flex-col overflow-hidden">
-            <div className='flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-6'>
+            <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-6">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="name" className='font-semibold text-sm'>
+                <Label htmlFor="name" className="font-semibold text-sm">
                   Nome do Negócio
                 </Label>
                 <Input
@@ -93,14 +93,14 @@ export function AddProfileModal({ userId }: Props) {
               <div className="flex flex-col gap-3">
                 <Label
                   htmlFor="link"
-                  className='flex items-center justify-between font-semibold text-sm'
+                  className="flex items-center justify-between font-semibold text-sm"
                 >
                   <span>Link para o negócio</span>
                   {link && (
                     <Link
                       href={`/business/${link}`}
                       target="_blank"
-                      className='font-medium text-primary text-xs hover:underline'
+                      className="font-medium text-primary text-xs hover:underline"
                     >
                       Ver link gerado
                     </Link>
@@ -118,7 +118,7 @@ export function AddProfileModal({ userId }: Props) {
               </div>
 
               <div className="flex flex-col gap-3">
-                <Label htmlFor="targetUserId" className='font-semibold text-sm'>
+                <Label htmlFor="targetUserId" className="font-semibold text-sm">
                   ID do Usuário
                 </Label>
                 <Input
@@ -127,15 +127,15 @@ export function AddProfileModal({ userId }: Props) {
                   defaultValue={userId}
                   required
                 />
-                <span className='text-muted-foreground text-xs'>
+                <span className="text-muted-foreground text-xs">
                   Se você for o dono, não altere este campo.
                 </span>
               </div>
             </div>
 
-            <DialogFooter className='border-t bg-muted/40 px-6 py-4 sm:justify-end'>
+            <DialogFooter className="border-t bg-muted/40 px-6 py-4 sm:justify-end">
               <Button
-                className='w-full min-w-[140px] sm:w-auto'
+                className="w-full min-w-[140px] sm:w-auto"
                 type="submit"
                 disabled={isPending}
               >

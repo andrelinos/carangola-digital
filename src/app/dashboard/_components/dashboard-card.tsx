@@ -57,7 +57,7 @@ export function DashboardCard({
         <div className="flex h-10 w-20 items-end gap-0.5 opacity-50 transition-opacity group-hover:opacity-100">
           {sparkline.map((h, i) => (
             <div
-              key={i}
+              key={`spark-${i}-${h}`}
               className={cn(
                 'w-1.5 rounded-full bg-primary',
                 i === sparkline.length - 1 && 'animate-pulse bg-primary'

@@ -102,7 +102,7 @@ export function EditBusinessDescription({ data }: Props) {
               />
             </div>
             <p
-              className={`text-xs text-muted-foreground ${businessDescription.length >= 600 && 'text-destructive'}`}
+              className={`text-muted-foreground text-xs ${businessDescription.length >= 600 && 'text-destructive'}`}
             >
               {businessDescription.length}/600
             </p>

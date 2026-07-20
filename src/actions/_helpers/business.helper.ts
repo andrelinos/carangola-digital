@@ -56,7 +56,8 @@ export async function authorizeProfileUpdate(
   const isProfileAdmin = admins.some(admin => admin.userId === currentUserId)
 
   // 3.1. Verificar se é Super Admin do sistema
-  const adminEmailsStr = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || ''
+  const adminEmailsStr =
+    process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || ''
   let systemAdminEmails: string[] = []
   try {
     if (adminEmailsStr.trim().startsWith('[')) {
@@ -67,7 +68,9 @@ export async function authorizeProfileUpdate(
   } catch {
     systemAdminEmails = adminEmailsStr.split(',').map(e => e.trim())
   }
-  const isSystemAdmin = systemAdminEmails.some(adminEmail => adminEmail === user?.email)
+  const isSystemAdmin = systemAdminEmails.some(
+    adminEmail => adminEmail === user?.email
+  )
 
   if (!isOwner && !isProfileAdmin && !isSystemAdmin) {
     console.warn(
