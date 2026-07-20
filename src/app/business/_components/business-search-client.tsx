@@ -1,7 +1,6 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { Filter } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -9,7 +8,6 @@ import {
   type PublicProfileCardData,
 } from '@/actions/business/get-paginated-profiles'
 import { BusinessCard } from '@/components/business/business-card'
-import { cn } from '@/lib/utils'
 
 interface Props {
   initialProfiles: any
@@ -114,8 +112,8 @@ export function BusinessSearchClient({
       {/* Dynamic Header for Search */}
       <div className="flex flex-col items-center gap-4 text-center">
         {isSearchMode ||
-        initialCategory !== 'Todos' ||
-        initialDistance !== 'any' ? (
+          initialCategory !== 'Todos' ||
+          initialDistance !== 'any' ? (
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-primary text-sm">
               <Search className="size-4" />
@@ -131,6 +129,7 @@ export function BusinessSearchClient({
               </p>
             </div>
             <button
+              type="button"
               onClick={clearSearch}
               className="flex items-center justify-center rounded-full bg-slate-200 p-2 text-slate-600 transition-colors hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
               title="Limpar busca"
@@ -159,7 +158,7 @@ export function BusinessSearchClient({
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {profiles.map((profile, i) => (
-            <BusinessCard key={profile.id + i} profile={profile} />
+            <BusinessCard key={`${profile.id}-${String(i)}`} profile={profile} />
           ))}
         </motion.div>
       </AnimatePresence>
