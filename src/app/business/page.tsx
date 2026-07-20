@@ -65,7 +65,6 @@ export default async function BusinessLandingPage(props: PageProps) {
   const category = (searchParams.cat as string) || 'Todos'
   const searchTerm = (searchParams.q as string) || ''
   const distance = (searchParams.dist as string) || 'any'
-  const hasProfileLink = session?.user?.hasProfileLink || false
 
   trackServerEvent('page_view', {
     page: 'business_home',
