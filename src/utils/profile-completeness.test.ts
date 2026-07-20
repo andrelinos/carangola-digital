@@ -20,7 +20,15 @@ const fullProfile: Partial<ProfileDataProps> = {
   categories: ['Alimentação', 'Padaria'],
   logoImageUrl: 'https://cdn.exemplo.com/logo.png',
   coverImageUrl: 'https://cdn.exemplo.com/capa.png',
-  businessPhones: [{ phone: '32988887777', label: 'WhatsApp' }],
+  businessPhones: [
+    {
+      phone: '32988887777',
+      title: 'WhatsApp',
+      nameContact: 'Test',
+      isWhatsapp: true,
+      isOnlyWhatsapp: false,
+    },
+  ],
   businessAddresses: [
     {
       street: 'Rua das Flores',
@@ -123,7 +131,15 @@ describe('calculateProfileCompleteness', () => {
     it('marca "phones" completo quando há pelo menos 1 telefone', () => {
       const profile = {
         ...emptyProfile,
-        businessPhones: [{ phone: '32988887777', label: 'Fixo' }],
+        businessPhones: [
+          {
+            phone: '32988887777',
+            title: 'Fixo',
+            nameContact: 'Test',
+            isWhatsapp: false,
+            isOnlyWhatsapp: false,
+          },
+        ],
       }
       const { items } = calculateProfileCompleteness(
         profile as ProfileDataProps

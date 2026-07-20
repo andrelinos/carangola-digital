@@ -8,6 +8,8 @@ import { authOptions } from '@/lib/auth'
 import { db, storage } from '@/lib/firebase'
 import { generateKeywords } from '@/utils/generate-keywords'
 
+import { authorizeProfileUpdate } from '../_helpers/business.helper'
+
 async function handleImageUpload(
   file: File | null,
   currentPath: string | undefined,
@@ -38,15 +40,13 @@ async function handleImageUpload(
 }
 
 export async function saveProfile(formData: FormData) {
-  const session = await getServerSession(authOptions)
-  const _user = session?.user
-
-  if (!session) {
-    throw new Error('Não autorizado')
-  }
-
   try {
     const profileId = formData.get('profileId') as string
+    const { profileRef, error } = await authorizeProfileUpdate(profileId)
+    if (error) {
+      throw new Error(error.error)
+    }
+
     const name = formData.get('name') as string
     const categoriesJSON = formData.get('categories') as string | null
     const categories = categoriesJSON ? JSON.parse(categoriesJSON) : []
@@ -57,7 +57,6 @@ export async function saveProfile(formData: FormData) {
     const coverPic = coverPicValue instanceof File ? coverPicValue : null
     const logoPic = logoPicValue instanceof File ? logoPicValue : null
 
-    const profileRef = db.collection('profiles').doc(profileId)
     const currentProfileSnap = await profileRef.get()
     const currentData = currentProfileSnap.data()
 

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -58,72 +59,83 @@ export function AddProfileModal({ userId }: Props) {
   }
 
   return (
-    <div className="">
+    <div>
       <Dialog>
         <DialogTrigger asChild>
           <Button>Criar Novo Perfil</Button>
         </DialogTrigger>
-        <DialogContent className="mt-8">
-          <DialogHeader>
-            <DialogTitle>Criar Novo Perfil</DialogTitle>
-          </DialogHeader>
-          <form
-            action={formAction}
-            className="max-h-[90vh] overflow-y-auto py-8"
-          >
-            <div className="flex w-full flex-col gap-2">
-              <div className="flex w-full flex-col items-start gap-2">
-                <Label htmlFor="name" className="mt-4 font-semibold">
-                  Nome
+        <DialogContent className="flex max-h-[90vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-xl p-0 sm:max-w-[425px]">
+          <div className="border-b px-6 py-5">
+            <DialogHeader>
+              <DialogTitle className="text-xl">Criar Novo Perfil</DialogTitle>
+              <DialogDescription>
+                Preencha as informações básicas para registrar o perfil do
+                negócio.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+
+          <form action={formAction} className="flex flex-col overflow-hidden">
+            <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-6">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="name" className="font-semibold text-sm">
+                  Nome do Negócio
                 </Label>
                 <Input
                   id="name"
                   name="name"
-                  placeholder="Nome do estabelecimento"
-                  className="col-span-3"
-                  onChange={handleLinkChange}
-                  required
-                />
-              </div>
-              <div className="flex w-full flex-col items-start gap-2">
-                <Label htmlFor="link" className="mt-4 font-semibold">
-                  <span className="flex gap-2">
-                    Link para o negócio
-                    {link && (
-                      <Link href={`/business/${link}`} target="_blank">
-                        link
-                      </Link>
-                    )}
-                  </span>
-                </Label>
-                <Input
-                  literalerror={!!error}
-                  id="link"
-                  name="link"
-                  value={link}
-                  placeholder="nome..."
-                  className="col-span-3"
+                  placeholder="Ex: Padaria do João"
                   onChange={handleLinkChange}
                   required
                 />
               </div>
 
-              <div className="flex w-full flex-col items-start gap-2">
-                <Label htmlFor="targetUserId" className="mt-4 font-semibold">
+              <div className="flex flex-col gap-3">
+                <Label
+                  htmlFor="link"
+                  className="flex items-center justify-between font-semibold text-sm"
+                >
+                  <span>Link para o negócio</span>
+                  {link && (
+                    <Link
+                      href={`/business/${link}`}
+                      target="_blank"
+                      className="font-medium text-primary text-xs hover:underline"
+                    >
+                      Ver link gerado
+                    </Link>
+                  )}
+                </Label>
+                <Input
+                  literalerror={error ? true : undefined}
+                  id="link"
+                  name="link"
+                  value={link}
+                  placeholder="padaria-do-joao"
+                  onChange={handleLinkChange}
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="targetUserId" className="font-semibold text-sm">
                   ID do Usuário
                 </Label>
                 <Input
                   id="targetUserId"
                   name="targetUserId"
-                  className="col-span-3"
                   defaultValue={userId}
                   required
                 />
+                <span className="text-muted-foreground text-xs">
+                  Se você for o dono, não altere este campo.
+                </span>
               </div>
             </div>
-            <DialogFooter className="p-4">
+
+            <DialogFooter className="border-t bg-muted/40 px-6 py-4 sm:justify-end">
               <Button
-                className="w-full max-w-xs"
+                className="w-full min-w-[140px] sm:w-auto"
                 type="submit"
                 disabled={isPending}
               >

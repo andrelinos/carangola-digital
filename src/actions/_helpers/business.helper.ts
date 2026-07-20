@@ -53,9 +53,26 @@ export async function authorizeProfileUpdate(
   const profileData = profileDoc.data() as ProfileData
   const isOwner = currentUserId === profileData.userId
   const admins = (profileData.admins || []) as AdminUser[]
-  const isAdmin = admins.some(admin => admin.userId === currentUserId)
+  const isProfileAdmin = admins.some(admin => admin.userId === currentUserId)
 
-  if (!isOwner && !isAdmin) {
+  // 3.1. Verificar se é Super Admin do sistema
+  const adminEmailsStr =
+    process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || ''
+  let systemAdminEmails: string[] = []
+  try {
+    if (adminEmailsStr.trim().startsWith('[')) {
+      systemAdminEmails = JSON.parse(adminEmailsStr)
+    } else {
+      systemAdminEmails = adminEmailsStr.split(',').map(e => e.trim())
+    }
+  } catch {
+    systemAdminEmails = adminEmailsStr.split(',').map(e => e.trim())
+  }
+  const isSystemAdmin = systemAdminEmails.some(
+    adminEmail => adminEmail === user?.email
+  )
+
+  if (!isOwner && !isProfileAdmin && !isSystemAdmin) {
     console.warn(
       `ACESSO NEGADO: Usuário ${currentUserId} tentou modificar ${profileId}`
     )

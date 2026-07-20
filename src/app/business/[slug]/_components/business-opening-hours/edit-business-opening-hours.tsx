@@ -105,20 +105,20 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  if (!profileData?.id) {
-    return <div />
-  }
-
-  const profileId = profileData.id
+  const profileId = profileData?.id as string
 
   const initialSchedule = initializeSchedule(
-    profileData.openingHours as unknown as WeeklySchedule | undefined
+    profileData?.openingHours as unknown as WeeklySchedule | undefined
   )
 
   const initialHolidays: HolidayException[] =
-    (profileData.holidayExceptions as unknown as HolidayException[]) || []
+    (profileData?.holidayExceptions as unknown as HolidayException[]) || []
 
   const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [openingHours, setOpeningHours] =
+    useState<WeeklySchedule>(initialSchedule)
+  const [holidays, setHolidays] = useState<HolidayException[]>(initialHolidays)
 
   useEffect(() => {
     const editParam = searchParams.get('edit')
@@ -127,10 +127,9 @@ export function EditBusinessOpeningHours({ profileData }: Props) {
     }
   }, [searchParams])
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [openingHours, setOpeningHours] =
-    useState<WeeklySchedule>(initialSchedule)
-  const [holidays, setHolidays] = useState<HolidayException[]>(initialHolidays)
+  if (!profileData?.id) {
+    return <div />
+  }
 
   function handleOpenModal() {
     setIsOpen(!isOpen)

@@ -176,7 +176,7 @@ async function handlePaymentSuccess(
     planType = 'basic'
   }
 
-  // 🛡️ PEGADINHA: Evita estender a assinatura infinitamente se o Asaas enviar o webhook 
+  // 🛡️ PEGADINHA: Evita estender a assinatura infinitamente se o Asaas enviar o webhook
   // do mesmo pagamento duplicado ou em atraso
   if (userData?.planActive?.lastPaymentId === payment.id) {
     console.info(
@@ -403,7 +403,7 @@ async function handlePaymentReverted(
   const userData = userDoc.data()
 
   // 🛡️ Prevenção contra "Fogo Amigo" no Upgrade
-  // Quando deletamos uma assinatura antiga no upgrade, o Asaas cancela todas as cobranças 
+  // Quando deletamos uma assinatura antiga no upgrade, o Asaas cancela todas as cobranças
   // futuras dela e dispara PAYMENT_DELETED. Não podemos deixar isso reverter o plano NOVO!
   if (
     payment.subscription &&

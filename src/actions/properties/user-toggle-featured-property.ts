@@ -1,0 +1,101 @@
+'use server'
+
+import { Timestamp } from 'firebase-admin/firestore'
+import { revalidatePath } from 'next/cache'
+import { getServerSession } from 'next-auth/next'
+import {
+  type PlanTypeProps,
+  plansBusinessConfig,
+} from '@/configs/plans-business'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/firebase'
+
+export async function userToggleFeaturedProperty({
+  propertyId,
+  isFeatured,
+}: {
+  propertyId: string
+  isFeatured: boolean
+}) {
+  const session = await getServerSession(authOptions)
+  const user = session?.user
+
+  if (!user?.id) {
+    return { success: false, message: 'Não autorizado' }
+  }
+
+  const userId = user.id
+
+  if (!propertyId) {
+    return { success: false, message: 'ID do imóvel não fornecido.' }
+  }
+
+  try {
+    if (isFeatured) {
+      // Fetch user to check plan
+      const userDoc = await db.collection('users').doc(userId).get()
+      const userData = userDoc.data()
+
+      const planActive =
+        userData?.planActive?.profiles ??
+        userData?.planActive ??
+        (user as any).planActive ??
+        null
+
+      const planType = (planActive?.type || 'free') as PlanTypeProps
+      const planConfig =
+        plansBusinessConfig[planType] ?? plansBusinessConfig.free
+      const limit = Number(planConfig.propertyHighlights?.limit) ?? 0
+
+      if (limit === 0) {
+        return {
+          success: false,
+          message:
+            'Seu plano atual não permite destacar imóveis. Faça upgrade.',
+        }
+      }
+
+      if (limit !== -1) {
+        // Count currently featured properties
+        const featuredSnapshot = await db
+          .collection('properties')
+          .doc(userId)
+          .collection('user_properties')
+          .where('isFeatured', '==', true)
+          .get()
+
+        const featuredCount = featuredSnapshot.size
+
+        if (featuredCount >= limit) {
+          return {
+            success: false,
+            message: `Limite atingido. Seu plano permite destacar até ${limit} imóvel(is).`,
+          }
+        }
+      }
+    }
+
+    const propertyRef = db
+      .collection('properties')
+      .doc(userId)
+      .collection('user_properties')
+      .doc(propertyId)
+
+    await propertyRef.update({
+      isFeatured,
+      updatedAt: Timestamp.now().toMillis(),
+    })
+
+    revalidatePath('/dashboard/imoveis')
+    revalidatePath('/dashboard/todos-imoveis')
+    revalidatePath('/')
+
+    return {
+      success: true,
+      message: isFeatured ? 'Imóvel destacado no topo!' : 'Destaque removido.',
+    }
+  } catch (error) {
+    console.error('Erro ao alternar destaque do imóvel:', error)
+    return { success: false, message: 'Erro interno do servidor.' }
+  }
+}

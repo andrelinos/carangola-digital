@@ -55,6 +55,7 @@ export function ShareButton() {
         <div className="relative p-8">
           {/* Close Button */}
           <button
+            type="button"
             onClick={() => setIsOpen(false)}
             className="absolute top-6 right-6 rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
           >
@@ -71,23 +72,21 @@ export function ShareButton() {
           </div>
 
           <div className="mb-10 flex justify-center gap-6">
-            <div onClick={handleShareClick}>
-              <FacebookShareButton
-                url={shareUrl}
-                className="transition-transform hover:scale-110 active:scale-95"
-              >
-                <FacebookIcon size={64} round />
-              </FacebookShareButton>
-            </div>
+            <FacebookShareButton
+              url={shareUrl}
+              className="transition-transform hover:scale-110 active:scale-95"
+              onClick={handleShareClick}
+            >
+              <FacebookIcon size={64} round />
+            </FacebookShareButton>
 
-            <div onClick={handleShareClick}>
-              <WhatsappShareButton
-                url={shareUrl}
-                className="transition-transform hover:scale-110 active:scale-95"
-              >
-                <WhatsappIcon size={64} round />
-              </WhatsappShareButton>
-            </div>
+            <WhatsappShareButton
+              url={shareUrl}
+              className="transition-transform hover:scale-110 active:scale-95"
+              onClick={handleShareClick}
+            >
+              <WhatsappIcon size={64} round />
+            </WhatsappShareButton>
 
             <button
               type="button"
@@ -111,7 +110,10 @@ export function ShareButton() {
           </div>
 
           <div className="space-y-3">
-            <label className="px-1 font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+            <label
+              htmlFor="link-direto"
+              className="px-1 font-black text-[10px] text-slate-400 uppercase tracking-[0.2em]"
+            >
               Link Direto
             </label>
             <div className="flex items-center gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 dark:bg-slate-800/50 dark:ring-slate-800">
@@ -119,6 +121,8 @@ export function ShareButton() {
                 {shareUrl}
               </span>
               <button
+                id="link-direto"
+                type="button"
                 onClick={handleCopy}
                 className="whitespace-nowrap font-black text-[11px] text-blue-600 uppercase tracking-tighter hover:text-blue-700 dark:text-blue-400"
               >

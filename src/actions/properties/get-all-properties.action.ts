@@ -7,7 +7,7 @@ export async function getAllProperties(): Promise<Record<string, unknown>[]> {
   try {
     await requireAdmin()
 
-    let propertiesSnapshot
+    let propertiesSnapshot: FirebaseFirestore.QuerySnapshot
 
     try {
       propertiesSnapshot = await db

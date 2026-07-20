@@ -15,42 +15,42 @@ import Link from 'next/link'
 const popularCategories = [
   {
     name: 'Restaurantes',
-    href: '/business?q=restaurante',
+    href: '/business?cat=Restaurantes#explorar',
     icon: Utensils,
     color: 'text-red-500 bg-red-500/10',
     description: 'Bares e lanchonetes',
   },
   {
     name: 'Saúde',
-    href: '/business?q=saude',
+    href: '/business?cat=Saúde#explorar',
     icon: HeartPulse,
     color: 'text-emerald-500 bg-emerald-500/10',
     description: 'Clínicas e farmácias',
   },
   {
     name: 'Serviços',
-    href: '/business?q=servicos',
+    href: '/business?cat=Serviços#explorar',
     icon: Wrench,
     color: 'text-blue-500 bg-blue-500/10',
     description: 'Profissionais locais',
   },
   {
     name: 'Lojas',
-    href: '/business?q=loja',
+    href: '/business?cat=Lojas#explorar',
     icon: ShoppingBag,
     color: 'text-orange-500 bg-orange-500/10',
     description: 'Comércio em geral',
   },
   {
     name: 'Alugar Imóvel',
-    href: '/imoveis?listingType=Aluguel',
+    href: '/imoveis?listingType=Aluguel#explorar',
     icon: Key,
     color: 'text-purple-500 bg-purple-500/10',
     description: 'Casas e apartamentos',
   },
   {
     name: 'Comprar Imóvel',
-    href: '/imoveis?listingType=Venda',
+    href: '/imoveis?listingType=Venda#explorar',
     icon: Home,
     color: 'text-indigo-500 bg-indigo-500/10',
     description: 'Invista no seu futuro',
@@ -71,7 +71,7 @@ export function PopularCategories() {
             </p>
           </div>
           <Link
-            href="/explorar"
+            href="/business#explorar"
             className="flex items-center gap-2 font-semibold text-primary text-sm hover:underline"
           >
             Ver todas as categorias <ArrowRight className="size-4" />

@@ -89,8 +89,12 @@ async function fetchFeaturedFromFirebase(): Promise<PublicProfileCardData[]> {
 
   // 3. Mescla resultados removendo duplicatas (empresa com as 2 flags ativas)
   const mergedDocs = new Map<string, FirebaseFirestore.QueryDocumentSnapshot>()
-  featuredSnapshot.docs.forEach(doc => mergedDocs.set(doc.id, doc))
-  topCompaniesSnapshot.docs.forEach(doc => mergedDocs.set(doc.id, doc))
+  for (const doc of featuredSnapshot.docs) {
+    mergedDocs.set(doc.id, doc)
+  }
+  for (const doc of topCompaniesSnapshot.docs) {
+    mergedDocs.set(doc.id, doc)
+  }
 
   // 4. Filtra somente empresas dentro do range de vigência de destaque.
   //    Feito em memória: zero custo extra de leituras no Firestore e dispensa

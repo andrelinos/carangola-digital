@@ -15,7 +15,10 @@
 import { Timestamp } from 'firebase-admin/firestore'
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { type PlanTypeProps, plansBusinessConfig } from '@/configs/plans-business'
+import {
+  type PlanTypeProps,
+  plansBusinessConfig,
+} from '@/configs/plans-business'
 import { createAsaasSubscription } from '@/lib/asaas'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
@@ -43,14 +46,18 @@ export async function POST() {
   const userDoc = await db.collection('users').doc(userId).get()
 
   if (!userDoc.exists) {
-    return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Usuário não encontrado' },
+      { status: 404 }
+    )
   }
 
   const userData = userDoc.data()
   const planType: string = userData?.planType ?? 'free'
   const planExpiresAt: number | null = userData?.planExpiresAt ?? null
   const asaasCustomerId: string | null = userData?.asaasCustomerId ?? null
-  const subscriptionStatus: string | null = userData?.asaasSubscriptionStatus ?? null
+  const subscriptionStatus: string | null =
+    userData?.asaasSubscriptionStatus ?? null
 
   // ── 3. Validações de negócio ──────────────────────────────────────────────
   if (planType === 'free') {
@@ -79,7 +86,9 @@ export async function POST() {
 
   if (!asaasCustomerId) {
     return NextResponse.json(
-      { error: 'Cliente Asaas não encontrado. Entre em contato com o suporte.' },
+      {
+        error: 'Cliente Asaas não encontrado. Entre em contato com o suporte.',
+      },
       { status: 400 }
     )
   }

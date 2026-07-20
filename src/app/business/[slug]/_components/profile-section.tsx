@@ -10,6 +10,7 @@ interface ProfileSectionProps {
   icon?: ReactNode
   className?: string
   delay?: number
+  action?: ReactNode
 }
 
 export function ProfileSection({
@@ -18,6 +19,7 @@ export function ProfileSection({
   icon,
   className,
   delay = 0,
+  action,
 }: ProfileSectionProps) {
   return (
     <motion.section
@@ -26,7 +28,7 @@ export function ProfileSection({
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       className={cn(
-        'w-full overflow-hidden rounded-3xl border bg-card p-6 shadow-black/3 shadow-sm sm:p-8 dark:shadow-none',
+        'group relative w-full overflow-hidden rounded-3xl border bg-card p-6 shadow-black/3 shadow-sm sm:p-8 dark:shadow-none',
         className
       )}
     >
@@ -36,6 +38,12 @@ export function ProfileSection({
           <h2 className="font-bold text-foreground text-xl tracking-tight">
             {title}
           </h2>
+        </div>
+      )}
+
+      {action && (
+        <div className="absolute top-4 right-4 z-10 transition-opacity duration-150 sm:top-5 sm:right-5 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100">
+          {action}
         </div>
       )}
       {children}

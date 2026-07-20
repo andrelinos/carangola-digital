@@ -62,6 +62,7 @@ export function ImageGalleryUpload({
             maxFiles: limit - currentImagesCount,
             resourceType: 'image',
             clientAllowedFormats: ['png', 'jpeg', 'jpg', 'webp'],
+            language: 'pt',
           }}
           onSuccess={handleUploadSuccess}
         >

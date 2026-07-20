@@ -1,10 +1,15 @@
 'use client'
 
 import { Rocket, ShieldCheck, TrendingUp, Users } from 'lucide-react'
+import Link from 'next/link'
 import { manageAuth } from '@/actions/manage-auth'
 import { Button } from '@/components/ui/button'
 
-export function RegistrationCTA() {
+interface RegistrationCTAProps {
+  hasSession: boolean
+}
+
+export function RegistrationCTA({ hasSession }: RegistrationCTAProps) {
   return (
     <section className="container mx-auto px-4 py-24">
       <div className="relative overflow-hidden rounded-[2.5rem] bg-primary px-8 py-16 text-primary-foreground shadow-2xl lg:px-24 lg:py-24">
@@ -37,14 +42,28 @@ export function RegistrationCTA() {
               </div>
             </div>
 
-            <form action={manageAuth} className="mt-12">
-              <Button
-                size="lg"
-                className="h-16 rounded-2xl bg-white px-10 font-bold text-primary text-xl shadow-xl transition-all hover:scale-105 hover:bg-zinc-100 active:scale-95"
-              >
-                Anunciar agora gratuitamente
-              </Button>
-            </form>
+            <div className="mt-12">
+              {hasSession ? (
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-16 rounded-2xl bg-white px-10 font-bold text-primary text-xl shadow-xl transition-all hover:scale-105 hover:bg-zinc-100 active:scale-95"
+                >
+                  <Link href="/dashboard/business">
+                    Anunciar agora gratuitamente
+                  </Link>
+                </Button>
+              ) : (
+                <form action={manageAuth}>
+                  <Button
+                    size="lg"
+                    className="h-16 rounded-2xl bg-white px-10 font-bold text-primary text-xl shadow-xl transition-all hover:scale-105 hover:bg-zinc-100 active:scale-95"
+                  >
+                    Anunciar agora gratuitamente
+                  </Button>
+                </form>
+              )}
+            </div>
           </div>
 
           <div className="hidden lg:block">

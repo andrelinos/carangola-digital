@@ -20,14 +20,13 @@ export function SocialMedia({ profileData, isOwner, isUserAuth }: Props) {
       title="Redes Sociais"
       icon={<Network className="size-6" />}
       delay={0.5}
+      action={
+        (isOwner || isUserAuth) && (
+          <EditBusinessSocialMedias profileData={profileData} />
+        )
+      }
     >
       <div className="relative">
-        {(isOwner || isUserAuth) && (
-          <div className="absolute -top-12 right-0">
-            <EditBusinessSocialMedias profileData={profileData} />
-          </div>
-        )}
-
         <div className="flex flex-wrap items-center justify-center gap-3">
           {!hasSocial ? (
             <p className="text-muted-foreground text-sm italic">

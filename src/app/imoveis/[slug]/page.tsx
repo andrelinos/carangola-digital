@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth/next'
 import { increasePropertyVisits } from '@/actions/properties/increase-property-visits'
 import { getPropertyData } from '@/app/server/get-property-data'
+import { verifyAdmin } from '@/app/server/verify-admin.server'
 import RealEstateListingJsonLd from '@/components/seo/real-estate-json-ld'
 import { authOptions } from '@/lib/auth'
 import {
@@ -104,6 +105,9 @@ export default async function PropertyDetailPage({
     user?.id && propertyData?.admins?.some(admin => admin.userId === user.id)
   )
 
+  const isAdmin = await verifyAdmin()
+  const canViewStats = isOwner || isAdmin || isUserAuth
+
   if (!isOwner) {
     await increasePropertyVisits({
       docPath: propertyData.docPath,
@@ -113,7 +117,10 @@ export default async function PropertyDetailPage({
   return (
     <>
       <RealEstateListingJsonLd data={propertyData} />
-      <ContentProperty totalVisits={propertyData?.totalVisits}>
+      <ContentProperty
+        totalVisits={propertyData?.totalVisits}
+        canViewStats={canViewStats}
+      >
         <div className="grid items-start gap-8 lg:grid-cols-3">
           <div className="relative space-y-8 lg:col-span-2">
             <PropertyImageGallery

@@ -28,19 +28,38 @@ function safeEmailCompare(a: string, b: string): boolean {
  * Use em Server Actions e Route Handlers onde o acesso deve ser bloqueado.
  */
 export async function requireAdmin(): Promise<true> {
-  const adminEmail = process.env.ADMIN_EMAIL
+  const adminEmailsStr = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL
 
-  if (!adminEmail) {
+  if (!adminEmailsStr) {
     // Falha fechada: sem configuração, ninguém passa
     throw new Error(
-      '[requireAdmin] Variável de ambiente ADMIN_EMAIL não configurada.'
+      '[requireAdmin] Variável de ambiente ADMIN_EMAILS ou ADMIN_EMAIL não configurada.'
     )
   }
 
   const session = await getServerSession(authOptions)
   const userEmail = session?.user?.email ?? ''
 
-  if (!safeEmailCompare(userEmail, adminEmail)) {
+  let adminEmails: string[] = []
+
+  try {
+    // Tenta fazer o parse caso seja um array JSON como '["email1@a.com", "email2@b.com"]'
+    if (adminEmailsStr.trim().startsWith('[')) {
+      adminEmails = JSON.parse(adminEmailsStr)
+    } else {
+      // Caso contrário, assume que é separado por vírgulas
+      adminEmails = adminEmailsStr.split(',').map(e => e.trim())
+    }
+  } catch {
+    adminEmails = adminEmailsStr.split(',').map(e => e.trim())
+  }
+
+  // Verifica se o email do usuário está na lista de admins
+  const isAuthorized = adminEmails.some(adminEmail =>
+    safeEmailCompare(userEmail, adminEmail)
+  )
+
+  if (!isAuthorized) {
     throw new Error('Unauthorized')
   }
 

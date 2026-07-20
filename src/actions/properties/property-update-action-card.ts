@@ -17,7 +17,6 @@ interface Props {
 }
 
 export async function propertyUpdateActionCard({
-  propertyId,
   propertyDocPath = '',
   actionDescription = '',
   actionContactPhone = '',

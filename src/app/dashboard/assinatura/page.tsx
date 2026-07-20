@@ -30,7 +30,10 @@ function calcUpgradePrice(
   const RETENTION = 0.8
   if (!planExpiresAt) return newPlanPrice / 100
   const msPerDay = 1000 * 60 * 60 * 24
-  const remainingDays = Math.max(0, Math.ceil((planExpiresAt - Date.now()) / msPerDay))
+  const remainingDays = Math.max(
+    0,
+    Math.ceil((planExpiresAt - Date.now()) / msPerDay)
+  )
   const dailyRate = currentPlanPrice / 100 / 365
   const rawCredit = remainingDays * dailyRate
   const credit = Math.round(rawCredit * RETENTION * 100) / 100
@@ -77,7 +80,8 @@ export default async function Plans() {
   // Basic ativo → apenas Pro com preço de upgrade
   // Free / Basic expirado → todos os planos pagos
   const currentPlanType = planStatus.planType
-  const hasActivePaidPlan = currentPlanType !== 'free' && planStatus.status === true
+  const hasActivePaidPlan =
+    currentPlanType !== 'free' && planStatus.status === true
 
   let visiblePlans: (PlanItemProps & { upgradePrice?: number })[] = []
 
@@ -152,4 +156,3 @@ export default async function Plans() {
     </div>
   )
 }
-

@@ -82,17 +82,17 @@ export function EditBusinessDescription({ data }: Props) {
         setIsOpen={onClose}
         title="Descrição"
         description="Dê uma breve descrição sobre você"
-        classname="w-full max-w-lg justify-center rounded-2xl border-[0.5px] border-blue-300 text-zinc-700 bg-white p-6"
+        classname="w-full max-w-lg justify-center rounded-2xl border bg-background p-6"
       >
         <div className="items-end-safe lg:fex-row flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto py-6">
           <div className="flex w-full flex-col gap-4">
-            <div className="flex w-full flex-1 flex-col gap-4 px-1 text-zinc-700">
+            <div className="flex w-full flex-1 flex-col gap-4 px-1">
               <TextArea
                 name="businessDescription"
                 variant="ghost"
                 title="Descrição"
                 placeholder="Fale um pouco sobre você"
-                className="h-64 border-gray-200"
+                className="h-64"
                 value={businessDescription}
                 onChange={e => setBusinessDescription(e.target.value)}
                 autoFocus
@@ -102,7 +102,7 @@ export function EditBusinessDescription({ data }: Props) {
               />
             </div>
             <p
-              className={`text-xs opacity-75 ${businessDescription.length >= 600 && 'text-rose-400'}`}
+              className={`text-muted-foreground text-xs ${businessDescription.length >= 600 && 'text-destructive'}`}
             >
               {businessDescription.length}/600
             </p>
@@ -111,7 +111,7 @@ export function EditBusinessDescription({ data }: Props) {
           <footer className="flex w-full justify-end gap-4 pt-6">
             <button
               type="button"
-              className="font-bold hover:cursor-pointer"
+              className="font-bold text-foreground transition-colors hover:text-primary"
               onClick={onClose}
             >
               Voltar

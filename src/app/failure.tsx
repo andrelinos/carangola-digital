@@ -14,10 +14,10 @@ export default function SuccessPage() {
         </p>
         <button
           type="button"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/dashboard/assinatura')}
           className="mt-6 rounded bg-green-500 px-4 py-2 text-white transition hover:bg-green-600"
         >
-          Voltar para o início
+          Voltar para o painel de assinatura
         </button>
       </div>
     </div>

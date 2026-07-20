@@ -1,7 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Building2, Map, Search, Store } from 'lucide-react'
+import {
+  ArrowRight,
+  Building2,
+  Map as LucideMap,
+  Search,
+  Store,
+} from 'lucide-react'
 import Link from 'next/link'
 
 export function HomeHero() {
@@ -23,7 +29,7 @@ export function HomeHero() {
             transition={{ duration: 0.5 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 shadow-lg backdrop-blur-md"
           >
-            <Map className="size-4 text-blue-300" />
+            <LucideMap className="size-4 text-blue-300" />
             <span className="font-medium text-sm tracking-wide">
               Tudo o que você precisa em Carangola
             </span>
@@ -35,8 +41,7 @@ export function HomeHero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-6 max-w-4xl font-extrabold text-4xl text-white leading-tight tracking-tight md:text-6xl lg:text-7xl"
           >
-            O Guia Completo da Nossa{' '}
-            <span className="text-blue-300">Cidade</span>
+            O Guia Completo de <span className="text-blue-300">Carangola</span>
           </motion.h1>
 
           <motion.p

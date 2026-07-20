@@ -52,6 +52,7 @@ export type PropertyProps = {
   features: string[]
 
   isFeatured?: boolean
+  isBeaconActive?: boolean
   featuredStartAt?: number | null
   featuredEndAt?: number | null
   isPublished: boolean

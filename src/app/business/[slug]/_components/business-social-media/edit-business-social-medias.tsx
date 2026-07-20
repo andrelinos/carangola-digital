@@ -31,17 +31,16 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  if (!profileData?.id) {
-    return <div />
-  }
-
-  const profileId = profileData.id
+  const profileId = profileData?.id as string
 
   const socialMedias = profileData?.socialMedias
   const initialFormValues: FormValuesProps =
     socialMedias || ({} as FormValuesProps)
 
   const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formValues, setFormValues] =
+    useState<FormValuesProps>(initialFormValues)
 
   useEffect(() => {
     const editParam = searchParams.get('edit')
@@ -50,9 +49,9 @@ export function EditBusinessSocialMedias({ profileData }: Props) {
     }
   }, [searchParams])
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formValues, setFormValues] =
-    useState<FormValuesProps>(initialFormValues)
+  if (!profileData?.id) {
+    return <div />
+  }
 
   function handleOpenModal() {
     setIsOpen(!isOpen)

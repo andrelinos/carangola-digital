@@ -4,10 +4,6 @@ import { FieldValue } from 'firebase-admin/firestore'
 import { revalidatePath } from 'next/cache'
 import { getServerSession } from 'next-auth/next'
 import { getProfileData } from '@/app/server/get-profile-data'
-import {
-  type PlanTypeProps,
-  plansBusinessConfig,
-} from '@/configs/plans-business'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/firebase'
 import { getPlanConfig } from '@/utils/get-plan-config'

@@ -49,8 +49,8 @@ describe('plansBusinessConfig', () => {
       expect(plansBusinessConfig.basic.imageGallery.enabled).toBe(true)
     })
 
-    it('permite até 10 imagens na galeria', () => {
-      expect(plansBusinessConfig.basic.imageGallery.limit).toBe(10)
+    it('permite até 5 imagens na galeria', () => {
+      expect(plansBusinessConfig.basic.imageGallery.limit).toBe(5)
     })
 
     it('não possui prioritySearch nem verifiedBadge', () => {
@@ -77,9 +77,9 @@ describe('plansBusinessConfig', () => {
       expect(premiumFeatures.analytics).toBe(true)
     })
 
-    it('tem galeria habilitada com limite 10', () => {
+    it('tem galeria habilitada com limite 15', () => {
       expect(plansBusinessConfig.pro.imageGallery.enabled).toBe(true)
-      expect(plansBusinessConfig.pro.imageGallery.limit).toBe(10)
+      expect(plansBusinessConfig.pro.imageGallery.limit).toBe(15)
     })
   })
 

@@ -63,8 +63,8 @@ export function PropertiesCTA() {
                 'Contato Direto',
                 'SEO Otimizado',
                 'Suporte Local',
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3">
+              ].map(item => (
+                <div key={item} className="flex items-center gap-3">
                   <div className="flex size-6 items-center justify-center rounded-full bg-blue-500/20 text-blue-400">
                     <CheckCircle2 className="size-4" />
                   </div>
