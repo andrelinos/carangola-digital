@@ -1,4 +1,5 @@
 import { ArrowRight, Briefcase, Phone } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPaginatedServices } from '@/actions/services/get-paginated-services'
 import { Badge } from '@/components/ui/badge'
@@ -9,7 +10,7 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
   from: 'A partir de',
   'on-request': 'Consultar',
 }
-90
+
 export async function ServicesCTA() {
   const { services } = await getPaginatedServices(null, null, 4)
 
@@ -21,7 +22,7 @@ export async function ServicesCTA() {
         {/* Header */}
         <div className="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <div className='mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary text-sm'>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary text-sm">
               <Briefcase className="size-3.5" />
               Marketplace de Serviços
             </div>
@@ -53,12 +54,13 @@ export async function ServicesCTA() {
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 {/* Thumbnail */}
-                <div className="aspect-video overflow-hidden bg-muted/40">
+                <div className="relative aspect-video overflow-hidden bg-muted/40">
                   {service.thumbnailUrl ? (
-                    <img
+                    <Image
                       src={service.thumbnailUrl}
                       alt={service.title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center">
