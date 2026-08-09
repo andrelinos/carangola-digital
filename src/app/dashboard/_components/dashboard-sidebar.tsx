@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  Briefcase,
   Building2,
   CreditCard,
   Home,
@@ -173,6 +174,20 @@ export function DashboardSidebar({ isAdmin }: { isAdmin?: boolean }) {
               >
                 <Building2 className="size-5" />
                 <span>Meus Imóveis</span>
+              </Button>
+
+              <Button
+                className={cn(
+                  baseClasses,
+                  pathname.startsWith('/dashboard/servicos')
+                    ? activeClasses
+                    : inactiveClasses
+                )}
+                onClick={() => goToPath('/dashboard/servicos')}
+                variant="ghost"
+              >
+                <Briefcase className="size-5" />
+                <span>Meus Serviços</span>
               </Button>
             </div>
 

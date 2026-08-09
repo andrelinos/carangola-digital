@@ -9,6 +9,7 @@ import { HomeHero } from './_components/home-hero'
 import { PopularCategories } from './_components/popular-categories'
 import { PropertiesCTA } from './_components/properties-cta'
 import { RecentListings } from './_components/recent-listings'
+import { ServicesCTA } from './_components/services-cta'
 
 export const metadata: Metadata = {
   title:
@@ -41,6 +42,8 @@ export default async function Home() {
           profiles={featuredProfiles || []}
           properties={properties || []}
         />
+
+        <ServicesCTA />
 
         <CommunityFeatures />
 

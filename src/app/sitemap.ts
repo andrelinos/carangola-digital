@@ -4,6 +4,7 @@ import { forbiddenPaths } from '@/configs/forbidden-paths'
 import { forbiddenProfiles } from '@/configs/forbidden-profiles'
 import { forbiddenProperties } from '@/configs/forbidden-properties'
 import { pathsSitemap } from '@/configs/paths-to-sitemap'
+import { db } from '@/lib/firebase'
 import { getAllProfileData } from './server/get-all-profile-data'
 import { getAllPropertiesData } from './server/get-all-properties-data'
 
@@ -15,6 +16,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const profiles = await getAllProfileData()
   const properties = await getAllPropertiesData()
+
+  const servicesSnap = await db
+    .collection('service-listings')
+    .where('isActive', '==', true)
+    .select('slug')
+    .get()
+
+  const serviceSlugs = servicesSnap.docs
+    .map(doc => doc.data().slug as string)
+    .filter(Boolean)
 
   const allowedProfiles = profiles?.filter(profile => {
     const profileIdNormalized = profile.slug
@@ -54,9 +65,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
+  const dynamicServicesEntries: MetadataRoute.Sitemap[number][] =
+    serviceSlugs.map(slug => ({
+      url: `${siteUrl}/servicos/${slug}`,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+
   return [
     ...staticEntries,
     ...dynamicProfilesEntries,
     ...dynamicPropertiesEntries,
+    ...dynamicServicesEntries,
   ]
 }

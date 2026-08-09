@@ -10,7 +10,7 @@ export const categories = [
   'Artes e Artesanato',
   'Arquitetura e Urbanismo',
   'Assessoria Jurídica',
-  'Assistência Técnicas',
+  'Assistência Técnica',
   'Automóveis',
   'Autopeças',
   'Bancos e Seguradoras',

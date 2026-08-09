@@ -50,6 +50,9 @@ export const plansBusinessConfig = {
     propertyHighlights: {
       limit: 1, // Plano gratuito não destaca imóveis
     },
+    serviceListings: {
+      quantity: 1, // Plano gratuito: 1 serviço
+    },
   },
   basic: {
     title: 'BÁSICO',
@@ -101,6 +104,9 @@ export const plansBusinessConfig = {
     },
     propertyHighlights: {
       limit: 2, // Pode destacar 2 imóveis
+    },
+    serviceListings: {
+      quantity: 5, // Básico: até 5 serviços
     },
   },
   pro: {
@@ -155,6 +161,9 @@ export const plansBusinessConfig = {
     propertyHighlights: {
       limit: 10, // Pode destacar até 10 imóveis
     },
+    serviceListings: {
+      quantity: 20, // Pro: até 20 serviços
+    },
   },
   master: {
     title: 'MASTER',
@@ -206,6 +215,9 @@ export const plansBusinessConfig = {
     },
     propertyHighlights: {
       limit: -1, // Ilimitado
+    },
+    serviceListings: {
+      quantity: -1, // Master: ilimitado
     },
   },
 } as const
