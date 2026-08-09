@@ -16,7 +16,7 @@ export async function generateJsonFile(data: DataProps) {
   if (!data) return true
 
   try {
-    const filePath = path.join(process.cwd(), serverEnv.FILE_JSON_SEARCH_PATH)
+    const filePath = path.join(/*turbopackIgnore: true*/ process.cwd(), serverEnv.FILE_JSON_SEARCH_PATH)
     let records = []
 
     try {
